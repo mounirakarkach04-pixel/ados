@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#122d35">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <meta name="description" content="ADOS Governance Lite: offlinefähiger, nichtklinischer Forschungsprototyp zur Dokumentation und Prüfung fiktiver Fallbeispiele.">
+  <title>ADOS Governance Lite | Forschungsprototyp</title>
+<style>
+:root {--ink:#182b31;--ink-soft:#607079;--dark:#122d35;--accent:#bd8b59;--accent-wash:#f4ede5;--paper:#fcfbf8;--canvas:#f4f5f2;--line:#e1e5e2;--white:#fff;--good:#277257;--good-bg:#e5f2eb;--warn:#956327;--warn-bg:#f8f0df;--bad:#9e4941;--bad-bg:#fcecea;--unk:#637584;--unk-bg:#eef2f4;--shadow:0 10px 30px rgba(22,38,42,.055);font-synthesis:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}.skip{position:absolute;top:-100px;left:10px;z-index:50;background:#fff;padding:10px}.skip:focus{top:10px}.app-shell{min-height:100vh;display:grid;grid-template-columns:256px minmax(0,1fr)}.sidebar{background:var(--dark);color:#eaf0ed;padding:29px 19px;min-height:100vh;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto}.brand-block{display:flex;align-items:center;gap:14px;padding:4px 9px}.brand-mark{width:43px;height:43px;border:1px solid #73918e;border-radius:13px;display:grid;place-content:center;color:#efe6d8;font:700 25px Georgia,serif;letter-spacing:-3px}.brand-mark span{color:var(--accent)}.brand-title{font:700 24px/1.0 Georgia,serif;letter-spacing:.04em}.brand-caption{font-size:10px;letter-spacing:.21em;color:#adbfbd;margin-top:4px}.scope-tag{margin:38px 8px 4px;border:1px solid #476168;padding:9px 11px;border-radius:7px;letter-spacing:.025em;font-size:11px;color:#c7d2cc}.scope-dot,.connection-mark{display:inline-block;width:7px;height:7px;border-radius:50%;background:#8bc7aa;margin-right:7px}.sidebar-copy{font:italic 15px/1.55 Georgia,serif;color:#bfd0cc;margin:12px 9px 29px}.nav-list{display:flex;flex-direction:column;gap:3px}.nav-item{border:0;color:#b4c5c1;background:transparent;display:flex;align-items:center;gap:14px;padding:11px 12px;text-align:left;border-radius:9px;font-size:13px;transition:background .12s}.nav-item:hover{background:#213e47;color:#fff}.nav-item.active{background:#2d4a53;color:#fff}.nav-num{font-weight:700;font-size:11px;border:1px solid #4a6568;color:#c0d1cd;width:27px;height:27px;display:grid;place-content:center;border-radius:7px}.nav-item.active .nav-num{background:#bd8b59;border-color:#bd8b59;color:#122d35}.sidebar-end{margin-top:auto;padding:35px 9px 8px;color:#bbcbc6;font-size:12px}.sidebar-end small{font-size:11px;color:#98aaa7}.work-area{min-width:0}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,4.5vw,72px);background:#fff;border-bottom:1px solid var(--line)}.top-title{letter-spacing:.015em;font-size:13px}.top-title strong{font-family:Georgia,serif;letter-spacing:.06em}.top-title span{color:#81918d}.header-right{display:flex;align-items:center;gap:18px}.demo-label{color:#936c43;letter-spacing:.15em;font-size:10px;font-weight:700}.icon-button{border:1px solid var(--line);background:#fff;width:34px;height:34px;border-radius:9px;color:#4d6063}.main-content{max-width:1100px;margin:0 auto;padding:30px clamp(22px,4.5vw,72px) 16px;min-height:calc(100vh - 70px)}.alert-strip{color:#75613e;background:#fbf5e8;border:1px solid #eaddc6;padding:11px 16px;font-size:12px;border-radius:9px;margin-bottom:33px}.alert-strip b{font-weight:750}.page{display:none;animation:fadeup .2s ease}.page.is-visible{display:block}@keyframes fadeup{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}.overline,.stage-label,.kicker{font-size:10px;font-weight:750;letter-spacing:.15em;color:#986d47;text-transform:uppercase}h1,h2,h3,h4,p{margin-top:0}h1{font:normal clamp(49px,6.3vw,82px)/1.04 Georgia,'Times New Roman',serif;letter-spacing:-.045em;margin:15px 0 18px}h1 em{color:#b48a61;font-weight:normal}h2{font:normal clamp(31px,4vw,48px)/1.17 Georgia,serif;letter-spacing:-.025em;margin:14px 0 12px}h3{font:700 19px/1.3 Georgia,serif;letter-spacing:-.013em;margin:9px 0 17px}.hero-sub,.page-description{max-width:730px;color:#66767b;line-height:1.65}.hero-sub{font-size:16px;margin-bottom:34px}.page-description{font-size:15px;margin:0 0 26px}.hero-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:26px}.hero-card{background:var(--white);padding:22px 20px;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);min-height:171px}.hero-card strong{display:block;font:700 21px/1.2 Georgia,serif;margin:14px 0 8px}.hero-card span{display:block;color:#738184;font-size:12px}.callout{display:flex;gap:15px;background:var(--accent-wash);border:1px solid #e9ded1;padding:16px 18px;border-radius:11px;font-size:13px;margin:22px 0}.callout-icon{border:1px solid #b18c68;color:#895f35;flex:0 0 23px;height:23px;border-radius:50%;text-align:center;font-weight:700;font:700 16px/22px Georgia,serif}.callout p{margin:4px 0 0;color:#6f6356}.intro-controls{background:white;padding:22px;border:1px solid var(--line);border-radius:12px}.confirm{display:flex;align-items:flex-start;gap:12px;font-size:13px;line-height:1.55;cursor:pointer}.confirm input{margin-top:3px;flex:0 0 auto;accent-color:#43675a;width:17px;height:17px}.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:1px solid #cad3cd;border-radius:9px;padding:11px 17px;font-size:13px;font-weight:700;min-height:43px}.btn-primary{background:#1c4145;color:white;border-color:#1c4145}.btn-primary:hover{background:#2e5354}.btn-secondary{background:white;color:#315258}.btn-secondary:hover{background:#f7f9f8}.btn:disabled{opacity:.44;cursor:not-allowed}.btn:focus-visible,.nav-item:focus-visible,.icon-button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #b88c55;outline-offset:2px}.form-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:clamp(19px,4vw,32px);box-shadow:var(--shadow);margin:13px 0 20px}.form-card h3{border-top:1px solid var(--line);padding-top:22px;margin-top:24px}.form-card h3:first-child{border-top:0;margin-top:0;padding-top:0}.field-block{border:0;padding:0;margin:0 0 24px;min-width:0}.field-block:last-child{margin-bottom:0}.field-block label,.field-block legend{display:block;font-size:13px;font-weight:750;color:#314d53;margin-bottom:9px}.field-block small,.helper{display:block;font-size:12px;color:#788685;margin-top:7px}.req{color:#b37e4e}textarea,input:not([type=radio]):not([type=checkbox]),select{width:100%;border:1px solid #cfd9d5;background:#fbfcfa;padding:11px 12px;border-radius:8px;color:#173038;min-width:0}textarea{resize:vertical;min-height:76px}textarea::placeholder,input::placeholder{color:#a0aca9}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 19px}.form-grid .field-block:nth-child(-n+3){grid-column:1/-1}.radio-stack{display:grid;gap:10px}.choice-card{display:flex;gap:12px;align-items:flex-start;border:1px solid #dce3e0;padding:14px;border-radius:10px;cursor:pointer;background:#fdfefd;transition:background .15s,border-color .15s}.choice-card:has(input:checked){background:#eff6f1;border-color:#87b5a4}.choice-card input{margin-top:4px;accent-color:#407d61;width:16px;height:16px;flex-shrink:0}.choice-card b{font-size:14px;font-weight:700;display:block}.choice-card small{font-size:12px;color:#72817f;display:block;margin-top:4px}.choice-card.danger-choice:has(input:checked){background:#fbebea;border-color:#d49991}.danger-banner{padding:15px 18px;border-radius:10px;border:1px solid #dbaaa3;background:var(--bad-bg);color:#7a332d;margin:15px 0;font-size:13px}.danger-banner[hidden]{display:none}.guide-card{border-left:3px solid #c19a77;padding:14px 17px;background:#f3f1eb;color:#4c5e5d;font-size:13px;border-radius:0 9px 9px 0}.guide-card p{margin:5px 0 0}.gate-preview{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:14px 18px;background:#fff;font-size:13px;color:#536a6d}.status-pill{display:inline-block;padding:5px 11px;border-radius:20px;font-size:11px;letter-spacing:.05em;font-weight:800}.status-pill[data-status=ALLOW]{background:var(--good-bg);color:var(--good)}.status-pill[data-status=DELAY]{background:var(--warn-bg);color:var(--warn)}.status-pill[data-status=BLOCK]{background:var(--bad-bg);color:var(--bad)}.status-pill[data-status=UNKNOWN]{background:var(--unk-bg);color:var(--unk)}.status-pill[data-status=EXPIRED]{background:#ece9f1;color:#735784}.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.result-card{border:1px solid var(--line);background:white;padding:21px 23px;border-radius:12px;box-shadow:var(--shadow)}.result-card>span{display:block;font-size:11px;letter-spacing:.12em;font-weight:800;color:#7a8a8a}.result-card>strong{display:block;font:700 30px/1.1 Georgia,serif;margin:9px 0}.result-card>strong[data-status=ALLOW]{color:var(--good)}.result-card>strong[data-status=DELAY]{color:var(--warn)}.result-card>strong[data-status=BLOCK]{color:var(--bad)}.result-card>strong[data-status=UNKNOWN]{color:var(--unk)}.result-card p{font-size:14px;margin:8px 0}.result-card small{display:block;color:#7a8987;font-size:12px}.review-fields{display:grid;gap:0}.review-row{display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr);gap:16px;border-bottom:1px solid #edf0ed;padding:11px 0;font-size:13px}.review-row dt{font-weight:750;color:#5d6f70}.review-row dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.reasons-list{font-size:13px;margin:0 0 12px;padding-left:21px}.reasons-list li{margin:6px 0}.audit-list{font-size:12px;color:#71817f}.audit-entry{border-bottom:1px solid var(--line);padding:7px 0;display:flex;gap:17px;justify-content:space-between}.audit-entry time{white-space:nowrap;font-variant-numeric:tabular-nums}.footer-nav{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:20px 0 15px;border-top:1px solid var(--line);margin-top:27px}.footer-nav[hidden]{display:none}.flow-progress{font-size:12px;color:#7a8987}.main-footer{color:#9aa6a0;font-size:11px;margin-top:33px;padding:15px 0;border-top:1px solid var(--line)}
+@media(max-width:1000px){.app-shell{grid-template-columns:218px minmax(0,1fr)}.sidebar{padding:20px 10px}.nav-item{gap:8px;padding:9px}.hero-grid{grid-template-columns:1fr 1fr}.hero-grid .hero-card:last-child{grid-column:1/-1;min-height:120px}}@media(max-width:750px){.app-shell{display:block}.sidebar{height:auto;min-height:0;position:static;display:block;padding:14px 16px}.brand-block{padding:0;display:inline-flex}.brand-mark{width:37px;height:37px;font-size:22px}.brand-title{font-size:20px}.scope-tag{display:inline-block;margin:0 0 0 12px;padding:6px 8px;font-size:10px;vertical-align:middle}.sidebar-copy,.sidebar-end{display:none}.nav-list{flex-direction:row;overflow-x:auto;margin:13px -16px -14px;padding:0 16px 12px;scrollbar-width:thin}.nav-item{flex:0 0 auto;padding:7px 10px;gap:7px;font-size:11px;white-space:nowrap}.nav-num{width:24px;height:24px}.topbar{height:55px;padding:0 20px}.main-content{padding:20px 20px 12px}.alert-strip{margin-bottom:25px}.hero-grid{grid-template-columns:1fr}.hero-grid .hero-card:last-child{grid-column:auto}.hero-card{min-height:0}.form-grid{grid-template-columns:1fr}.form-grid .field-block:nth-child(-n+3){grid-column:auto}.result-grid{grid-template-columns:1fr}h1{font-size:55px}.review-row{grid-template-columns:1fr;gap:2px}.demo-label{font-size:9px}.header-right{gap:6px}.footer-nav .btn{padding:10px 11px}.flow-progress{white-space:nowrap}}@media(max-width:360px){.main-content{padding:17px 13px}.top-title span{display:none}h1{font-size:47px}.scope-tag{display:none}.form-card{padding:15px}.button-row .btn{width:100%}.footer-nav{gap:8px}.flow-progress{font-size:10px}}
+@media print{*{box-shadow:none!important}.sidebar,.topbar,.footer-nav,.intro-controls,.button-row,.alert-strip,.main-footer{display:none!important}.app-shell{display:block}.main-content{max-width:none;padding:0}.page{display:none!important}#page-review{display:block!important}.result-grid{grid-template-columns:1fr 1fr}.result-card{break-inside:avoid}body{background:white;color:black;font-size:11pt}.review-row{break-inside:avoid}#review-body{border:0;padding:0}.callout{break-inside:avoid}.stage-label{color:black}h2{font-size:27pt}}
+
+/* v0.2 – scenario lab, accessible trace */
+.scenario-lab{margin-top:24px;border-top:1px solid var(--line);padding-top:23px}
+.scenario-lab h3{font-size:19px;margin:0 0 8px}
+.scenario-lab p{font-size:13px;color:var(--ink-soft);margin:0 0 15px}
+.scenario-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.scenario-button{min-width:0;display:flex;text-align:left;flex-direction:column;align-items:flex-start;gap:3px;border:1px solid var(--line);border-radius:10px;background:#fbfcfa;padding:11px;color:var(--ink)}
+.scenario-button b{font-size:12px}.scenario-button small{font-size:11px;color:var(--ink-soft)}
+.scenario-button:hover{border-color:#9caea4;background:#f2f5f1}.scenario-button:disabled{opacity:.5;cursor:not-allowed}
+#suite-summary:not(:empty){margin-top:10px;padding:10px;border-radius:8px;background:#eef3ef;color:#315249;font-weight:700}
+.suite-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:9px 0;font-size:12px}
+.suite-row small{color:var(--ink-soft)}.suite-ok{color:var(--good);font-weight:800}.suite-fail{color:var(--bad);font-weight:800}
+.trace-list{border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.trace-item{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.trace-item:last-child{border:0}.trace-head{display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.trace-item code{font:700 11px ui-monospace,monospace;color:#657a78}
+.trace-item b{color:#315258}.trace-item p{color:var(--ink-soft);margin:5px 0 0}
+.trace-status{background:#eef2f1;border-radius:6px;font-size:10px;letter-spacing:.04em;padding:3px 6px;font-weight:800}
+@media(max-width:470px){.scenario-grid{grid-template-columns:1fr}.trace-item{padding:10px}}
+@media print{.scenario-lab{display:none}.trace-item{break-inside:avoid}}
+
+/* v0.3 – kernel admission boundary: distinctly separate from demo Gate labels */
+.kernel-boundary{margin:26px 0;border:1px solid #d8b2aa;border-left:4px solid #a45248;background:#fffaf8;padding:16px;border-radius:10px}
+.kernel-boundary p{font-size:13px;color:#52656b}
+.kernel-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.kernel-title h3{margin:0 0 8px;font-size:17px}
+.kernel-blocked{display:inline-block;border-radius:6px;color:#872f27;background:#fbe2df;padding:5px 10px;font-size:12px}
+.bridge-readiness{white-space:pre-wrap;overflow-wrap:anywhere;max-height:240px;overflow:auto;background:#f6f3ef;border:1px solid #e5ded7;border-radius:7px;padding:12px;font-size:12px}
+#export-integrity-status:not(:empty){display:inline-block;max-width:480px;padding:9px 0}
+@media print{#prepare-bridge{display:none}.bridge-readiness{max-height:none}}
+
+/* v0.5 exact-byte RC identity panel */
+.core-verification{border:1px solid #bcc9c4;border-radius:12px;padding:14px;margin:14px 0;background:#f4f8f6;color:#19333a;overflow-wrap:anywhere}
+.core-verification strong{display:block;margin:0 0 6px}
+.core-input{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:.9rem;font-weight:650}
+.core-input input{max-width:100%;font-size:.88rem}
+#core-verdict{font-weight:650;border-left:3px solid #657e7a;padding:7px 9px;background:white;margin:10px 0}
+.core-verification small{display:block;overflow-wrap:anywhere;font-size:.78rem}
+
+/* v0.6 finite/continuous checkpoint interface */
+.loop-register{margin:20px 0;padding:16px;border:1px solid #d5e2df;border-radius:12px;background:#f5f9f7;overflow-wrap:anywhere}
+.loop-stage{display:grid;grid-template-columns:minmax(108px,1.1fr) minmax(100px,.8fr) minmax(130px,2fr);gap:8px;align-items:center;border-bottom:1px solid #dfe7e4;padding:10px 0}
+.loop-stage input,.loop-stage select,.loop-supervisor input:not([type=checkbox]){width:100%;min-width:0;padding:9px;border:1px solid #c4d0cc;border-radius:7px;background:white;font:inherit}
+.loop-check{font-size:12px;display:flex;gap:7px;align-items:center}.loop-check input{width:auto}
+.loop-supervisor{display:grid;gap:13px;margin:14px 0}.loop-supervisor>label{max-width:100%}
+@media(max-width:680px){.loop-stage{grid-template-columns:1fr}.loop-stage>strong{padding-top:4px}}
+@media print{.loop-supervisor button{display:none}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Zum Inhalt springen</a>
+<div class="app-shell">
+  <aside class="sidebar" aria-label="Navigation">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true">A<span>·</span></div>
+      <div><div class="brand-title">ADOS</div><div class="brand-caption">GOVERNANCE LITE</div></div>
+    </div>
+    <div class="scope-tag"><span class="scope-dot"></span> Forschungsprototyp · v0.6</div>
+    <p class="sidebar-copy">Begründungen und Gegengründe nachvollziehbar prüfen – keine Diagnosen automatisieren.</p>
+    <nav aria-label="Prüfschritte" id="desktop-nav" class="nav-list">
+      <button type="button" class="nav-item active" data-page="intro"><span class="nav-num">○</span><span>Übersicht</span></button>
+      <button type="button" class="nav-item" data-page="a"><span class="nav-num">A</span><span>Sofortige Sicherheit</span></button>
+      <button type="button" class="nav-item" data-page="b"><span class="nav-num">B</span><span>Befund und Deutung</span></button>
+      <button type="button" class="nav-item" data-page="c"><span class="nav-num">C</span><span>Gegenprüfung</span></button>
+      <button type="button" class="nav-item" data-page="d"><span class="nav-num">D</span><span>Entscheidende Lücke</span></button>
+      <button type="button" class="nav-item" data-page="e"><span class="nav-num">E</span><span>Begrenzte Aussage</span></button>
+      <button type="button" class="nav-item" data-page="f"><span class="nav-num">F</span><span>Nächster Schritt</span></button>
+      <button type="button" class="nav-item" data-page="depth"><span class="nav-num">+</span><span>Vertiefung</span></button>
+      <button type="button" class="nav-item" data-page="review"><span class="nav-num">✓</span><span>Prüfergebnis</span></button>
+    </nav>
+    <div class="sidebar-end"><span class="connection-mark"></span> Ohne Cloud · ohne Anmeldung<br><small>Keine automatische Datenspeicherung</small></div>
+  </aside>
+  <div class="work-area">
+    <header class="topbar">
+      <div class="top-title"><strong>ADOS</strong><span> / Governance Lite</span></div>
+      <div class="header-right"><span class="demo-label">NUR FIKTIVE FÄLLE</span><button id="print-top" class="icon-button" type="button" title="Prüfprotokoll drucken" aria-label="Prüfprotokoll drucken">↗</button></div>
+    </header>
+    <main id="main" class="main-content">
+      <div id="alert-strip" class="alert-strip" role="status"><b>Demonstrationsmodus.</b> Keine realen Patientendaten eingeben. Keine klinische Diagnose, keine Behandlungsempfehlung, keine CE-Zertifizierung.</div>
+      <section id="page-intro" class="page is-visible" aria-labelledby="intro-title">
+        <div class="overline">PRÜFEN, BEVOR MAN SCHLUSSFOLGERT</div>
+        <h1 id="intro-title">Klarheit vor<br><em>Diagnose.</em></h1>
+        <p class="hero-sub">Ein geführter Dokumentations- und Governance-Prüfweg nach ADOS. Für fiktive Lehrfälle. Präzise, nachvollziehbar und ohne Cloud-KI.</p>
+        <div class="hero-grid">
+          <div class="hero-card"><div class="kicker">01 · PRÜFPFAD</div><strong>Sechs Schritte</strong><span>Vom Originalbefund bis zur dokumentierten Wiedervorlage.</span></div>
+          <div class="hero-card"><div class="kicker">02 · ZWEI GATES</div><strong>Inferenz ≠ Handlung</strong><span>ALLOW gilt ausschließlich für eng begrenzte, nichtklinische Dokumentation.</span></div>
+          <div class="hero-card"><div class="kicker">03 · GLASSBOX</div><strong>Begründung sichtbar</strong><span>Belege, offene Fragen, Regeln und Ergebnis sind einsehbar.</span></div>
+        </div>
+        <div class="callout"><span class="callout-icon">i</span><div><b>Wissenschaftliche und rechtliche Grenze</b><p>Dies ist ein nicht validierter Forschungsprototyp. Er darf nicht zur Diagnostik oder zur Versorgung realer Patientinnen und Patienten verwendet werden. Bei akuter Gefahr gelten die etablierten fachlichen Notfallwege.</p></div></div>
+        <div class="intro-controls">
+          <label class="confirm"><input type="checkbox" id="consent-demo"><span>Ich verwende ausschließlich vollständig fiktive Testdaten und verstehe die Grenzen des Prototyps.</span></label>
+          <div class="button-row"><button class="btn btn-primary" id="start-demo" type="button" disabled>Beispielfall öffnen <span>→</span></button><button class="btn btn-secondary" id="start-empty" type="button" disabled>Leeren Testfall starten</button></div>
+          <div class="scenario-lab" aria-labelledby="lab-title">
+            <h3 id="lab-title">Testlabor · sechs fiktive Szenarien</h3>
+            <p>Durchspiele Sicherheitsstopp, Evidenzlücken und eng begrenzte Dokumentationsfreigaben. Die erwarteten Ergebnisse werden bei jeder Probe gegengeprüft.</p>
+            <div id="scenario-buttons" class="scenario-grid"></div>
+            <button class="btn btn-secondary" id="run-suite" disabled type="button">Alle sechs Szenarien prüfen</button>
+            <p id="suite-summary" role="status" aria-live="polite"></p>
+            <div id="suite-results"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-a" class="page" aria-labelledby="a-title">
+        <div class="stage-label">PRÜFSCHRITT A · ZUERST SCHUTZ</div>
+        <h2 id="a-title">Sofortige Sicherheit</h2><p class="page-description">Bestehen Anzeichen einer akuten Gefährdung oder medizinische Warnzeichen? Dies ist kein klinisches Risikobewertungsinstrument.</p>
+        <div class="form-card">
+          <fieldset class="field-block"><legend>Sicherheitsstatus im fiktiven Fall <span class="req">*</span></legend>
+            <div class="radio-stack">
+              <label class="choice-card"><input type="radio" name="safety" value="no"><span><b>Keine Warnzeichen im fiktiven Beispiel angegeben</b><small>Das ist kein Nachweis, dass keine Gefahr besteht.</small></span></label>
+              <label class="choice-card"><input type="radio" name="safety" value="unknown"><span><b>Unklar / nicht erhoben</b><small>Die Unsicherheit wird als UNKNOWN erfasst.</small></span></label>
+              <label class="choice-card danger-choice"><input type="radio" name="safety" value="yes"><span><b>Akute Warnzeichen angegeben</b><small>Der reguläre Workflow wird gestoppt.</small></span></label>
+            </div>
+          </fieldset>
+          <div class="field-block"><label for="dangerNote">Fiktive Risikohinweise – optional</label><textarea id="dangerNote" data-field="dangerNote" rows="3" placeholder="Nur fiktive Angaben; keine realen Patientendaten"></textarea></div>
+        </div>
+        <div id="danger-banner" class="danger-banner" hidden role="alert"><b>Routineprüfung angehalten.</b> Bei tatsächlicher akuter Gefährdung sind sofort die etablierten fachlichen Notfall- und Schutzverfahren maßgeblich. Dieses Demo-System darf nicht verzögern.</div>
+      </section>
+
+      <section id="page-b" class="page" aria-labelledby="b-title">
+        <div class="stage-label">PRÜFSCHRITT B · BEOBACHTUNG ≠ INTERPRETATION</div>
+        <h2 id="b-title">Drei Ebenen sauber trennen</h2><p class="page-description">Der Originalwortlaut bleibt von der beobachtbaren Information und von der Deutung getrennt.</p>
+        <div class="form-card form-grid">
+          <div class="field-block"><label for="original">1. Originalwortlaut <span class="req">*</span></label><textarea id="original" data-field="original" rows="3" placeholder="Fiktives Originalzitat"></textarea><small>Wörtliche Selbstauskunft ist nicht automatisch ein unabhängiger Befund.</small></div>
+          <div class="field-block"><label for="observed">2. Beobachtet oder überprüft <span class="req">*</span></label><textarea id="observed" data-field="observed" rows="3" placeholder="Was ist tatsächlich berichtet, beobachtet oder geprüft?"></textarea></div>
+          <div class="field-block"><label for="interpretation">3. Deutung / Arbeitshypothese</label><textarea id="interpretation" data-field="interpretation" rows="3" placeholder="Welche Erklärung wird erwogen, nicht festgestellt?"></textarea></div>
+          <div class="field-block"><label for="source">Quelle / Provenienz <span class="req">*</span></label><input id="source" data-field="source" placeholder="z. B. fiktives Interview"></div>
+          <div class="field-block"><label for="observedAt">Zeitpunkt oder Zeitbezug <span class="req">*</span></label><input id="observedAt" data-field="observedAt" placeholder="z. B. Tag 1 (fiktiv)"></div>
+        </div>
+      </section>
+
+      <section id="page-c" class="page" aria-labelledby="c-title">
+        <div class="stage-label">PRÜFSCHRITT C · GEGENMODELL</div><h2 id="c-title">Der eine Gegencheck</h2><p class="page-description">Eine plausible Alternative genügt als erster Prüfstein – sie muss jedoch unterscheidbar sein.</p>
+        <div class="form-card">
+          <div class="field-block"><label for="alternative">Welche andere Erklärung passt ebenfalls? <span class="req">*</span></label><textarea id="alternative" data-field="alternative" rows="4" placeholder="Fiktive alternative Erklärung"></textarea></div>
+          <div class="field-block"><label for="counterEvidence">Welcher Beleg könnte die erste Erklärung widerlegen? <span class="req">*</span></label><textarea id="counterEvidence" data-field="counterEvidence" rows="4" placeholder="Welcher unterscheidende Test oder welche Frage fehlt?"></textarea></div>
+        </div>
+        <div class="guide-card"><b>ARGUS-7 – methodischer Leitgedanke</b><p>Aus einer beobachteten Wirkung folgt nicht automatisch eine zugeschriebene innere Ursache. Fehlende Prüfung ist UNKNOWN, keine Widerlegung.</p></div>
+      </section>
+
+      <section id="page-d" class="page" aria-labelledby="d-title">
+        <div class="stage-label">PRÜFSCHRITT D · ENTSCHEIDUNGSRELEVANZ</div><h2 id="d-title">Die entscheidende Lücke</h2><p class="page-description">Eine fehlende Angabe sollte sichtbar bleiben, anstatt stillschweigend ergänzt zu werden.</p>
+        <div class="form-card">
+          <div class="field-block"><label for="criticalGap">Welche Informationslücke verändert die Bewertung?</label><select id="criticalGap" data-field="criticalGap">
+            <option value="none">Keine entscheidungsrelevante Lücke markiert</option><option value="source">Quelle / Provenienz</option><option value="time">Zeitlicher Verlauf</option><option value="concept">Begriffsdefinition</option><option value="alternative">Alternative Erklärung</option><option value="safety">Sicherheitsklärung</option><option value="revision">Revision / Wiedervorlage</option>
+          </select></div>
+          <div class="field-block"><label for="gapNote">Welche Information fehlt konkret?</label><textarea id="gapNote" data-field="gapNote" rows="4" placeholder="Datenbedarf und Grund der Relevanz"></textarea></div>
+        </div><div class="guide-card"><b>Governance-Regel</b><p>UNKNOWN bedeutet: noch nicht geprüft. BLOCK bedeutet: innerhalb dieses Workflows nicht zulässig. Keine dieser Markierungen beweist die Falschheit einer Hypothese.</p></div>
+      </section>
+
+      <section id="page-e" class="page" aria-labelledby="e-title">
+        <div class="stage-label">PRÜFSCHRITT E · PIGA GATE 1</div><h2 id="e-title">Begrenzte Aussage</h2><p class="page-description">Worüber wird überhaupt entschieden? Die App kann ausschließlich eine beobachtungsbezogene Dokumentation formal prüfen.</p>
+        <div class="form-card">
+          <fieldset class="field-block"><legend>Art der beabsichtigten Aussage</legend><div class="radio-stack">
+            <label class="choice-card"><input type="radio" name="claimType" value="observation"><span><b>Beobachtungsbezogene Dokumentation</b><small>Nur begrenzte Aussage über dokumentierte Daten.</small></span></label>
+            <label class="choice-card"><input type="radio" name="claimType" value="working"><span><b>Arbeitshypothese</b><small>Bleibt im Demo-Prüfweg immer vorläufig.</small></span></label>
+            <label class="choice-card"><input type="radio" name="claimType" value="diagnosis"><span><b>Diagnostische Feststellung</b><small>Außerhalb des Funktionsumfangs. Keine App-Freigabe.</small></span></label>
+          </div></fieldset>
+          <label class="confirm"><input id="evidenceConfirmed" data-field="evidenceConfirmed" type="checkbox"><span>Ich habe die dokumentierten Quellen und Zeitbezüge innerhalb des fiktiven Übungsfalls geprüft (keine klinische Validierung).</span></label>
+        </div>
+        <div class="gate-preview"><span>Aktueller formaler Gate-1-Status</span><span class="status-pill" id="g1-inline">UNKNOWN</span></div>
+      </section>
+
+      <section id="page-f" class="page" aria-labelledby="f-title">
+        <div class="stage-label">PRÜFSCHRITT F · PIGA GATE 2</div><h2 id="f-title">Ein verantwortbarer nächster Schritt</h2><p class="page-description">Der zweite Gate-Status dokumentiert nur den Rahmen des nächsten Vorgangs – keine klinische Handlungsfreigabe.</p>
+        <div class="form-card">
+          <fieldset class="field-block"><legend>Art des nächsten Schritts</legend><div class="radio-stack">
+            <label class="choice-card"><input type="radio" name="nextAction" value="document"><span><b>Nur dokumentieren</b><small>Ein nichtklinischer Verwaltungsschritt.</small></span></label>
+            <label class="choice-card"><input type="radio" name="nextAction" value="clarify"><span><b>Fachliche Klärung vormerken</b><small>Benötigt menschliche Verantwortlichkeit.</small></span></label>
+            <label class="choice-card"><input type="radio" name="nextAction" value="diagnose"><span><b>Diagnose stellen</b><small>Durch diesen Prototyp nicht zulässig.</small></span></label>
+            <label class="choice-card"><input type="radio" name="nextAction" value="treat"><span><b>Behandlung anordnen</b><small>Durch diesen Prototyp nicht zulässig.</small></span></label>
+          </div></fieldset>
+          <div class="field-block"><label for="nextWhat">Was genau ist zu dokumentieren?</label><textarea id="nextWhat" data-field="nextWhat" rows="3"></textarea></div>
+          <div class="field-block"><label for="nextWho">Wer ist verantwortlich?</label><input id="nextWho" data-field="nextWho" placeholder="Fiktive Rolle oder Person"></div>
+          <div class="field-block"><label for="nextWhen">Bis wann? / Wiedervorlage</label><input id="nextWhen" data-field="nextWhen" placeholder="Fiktiver Zeitpunkt"></div>
+        </div>
+        <div class="gate-preview"><span>Aktueller formaler Gate-2-Status</span><span class="status-pill" id="g2-inline">DELAY</span></div>
+      </section>
+
+      <section id="page-depth" class="page" aria-labelledby="depth-title">
+        <div class="stage-label">OPTIONALE VERTIEFUNG</div><h2 id="depth-title">Weiter prüfen, wenn nötig</h2><p class="page-description">Die A7SEM- und ARGUS-7-Felder sind freiwillig. NSF-325 ist kein verpflichtender Patientenscore.</p>
+        <div class="form-card">
+          <h3>A7SEM · sieben zeitliche Perspektiven</h3><div id="a7-fields"></div>
+          <section class="loop-register"><h3>A7SEM Evidence-ID je Stufe</h3><p class="helper">Nur ausdrücklich belegte fiktive Evidence-IDs angeben. Ohne Evidence-ID bleibt die Stufe UNKNOWN. Die Rückwärtsprüfung muss denselben Beleg referenzieren.</p><div id="a7-loop-evidence"></div></section>
+          <h3>ARGUS-7 · epistemische Gegenprüfung</h3><div id="argus-fields"></div>
+          <h3>A7SEM Reverse · Rückwärtsprüfung</h3>
+          <div class="field-block"><label for="reverseLink">Welche Originalbelege tragen die Behauptung?</label><textarea id="reverseLink" data-field="reverseLink" rows="3"></textarea></div>
+          <div class="field-block"><label for="reverseBreak">Wo reißt die Evidenzkette ab?</label><textarea id="reverseBreak" data-field="reverseBreak" rows="3"></textarea></div>
+          <section class="loop-register"><h3>A7SEM Reverse · sieben Belegbindungen</h3><p class="helper">In umgekehrter Reihenfolge: Stufe 7 → Stufe 1. Eine menschlich bestätigte Zuordnung ersetzt weder eine qualifizierte Quellenprüfung noch PIGA-Autorität.</p><div id="a7-loop-reverse"></div></section>
+          <h3>NSF-325 · fallrelevanter Eintrag</h3><p class="helper">Nur eine optional benannte Registerposition dokumentieren. Die App behauptet weder die vollständige Operationalisierung des Registers noch eine klinische Messung.</p>
+          <div class="field-block"><label for="nsfRef">NSF-Kennung, falls bekannt</label><input data-field="nsfRef" id="nsfRef" placeholder="z. B. N1.1.1"></div>
+          <div class="field-block"><label for="nsfStatus">Dokumentationsstatus</label><select data-field="nsfStatus" id="nsfStatus"><option value="OPEN">OPEN</option><option value="PASS">PASS (nur mit Beleg)</option><option value="FAIL">FAIL</option><option value="UNKNOWN">UNKNOWN</option></select></div>
+          <div class="field-block"><label for="nsfEvidence">Belegreferenz, falls vorhanden</label><input data-field="nsfEvidence" id="nsfEvidence" placeholder="Fiktive Beleg-ID"></div>
+        </div>
+      </section>
+
+      <section id="page-review" class="page" aria-labelledby="review-title">
+        <div class="stage-label">GLASSBOX · TRANSPARENTES PRÜFPROTOKOLL</div><h2 id="review-title">Was lässt sich verantworten?</h2><p class="page-description">Die nachstehenden Statuswerte beschreiben ausschließlich die Regeln dieser lokalen Demo – nicht die Entscheidung eines medizinischen Fachsystems.</p>
+        <div class="result-grid">
+          <div class="result-card"><span>PIGA GATE 1</span><strong id="gate1-status">UNKNOWN</strong><p id="gate1-title"></p><small id="gate1-explain"></small></div>
+          <div class="result-card"><span>PIGA GATE 2</span><strong id="gate2-status">DELAY</strong><p id="gate2-title"></p><small id="gate2-explain"></small></div>
+        </div>
+        <div id="emergency-review" class="danger-banner" hidden role="alert">Akute Warnzeichen im fiktiven Fall angegeben. Der reguläre Prüfvorgang wurde ausgesetzt. Im realen Notfall gelten etablierte Notfallverfahren.</div>
+        <div class="form-card" id="review-body">
+          <h3>Prüfkette und Daten</h3><div id="review-fields" class="review-fields"></div>
+          <h3>Offene Punkte und Begründung</h3><div id="review-reasons"></div>
+          <h3>Regelspur und Begründung (nur Demo-Regeln)</h3>
+          <p class="helper" id="ruleset-label">Regelstand</p>
+          <div id="rule-trace" class="trace-list"></div>
+          <section class="kernel-boundary" aria-labelledby="kernel-boundary-title">
+            <div class="kernel-title"><h3 id="kernel-boundary-title">Kanonischer Kernel · Integrationsgrenze</h3><strong id="kernel-state" class="kernel-blocked">BLOCK</strong></div>
+            <p id="kernel-detail">Keine vertrauenswürdige Runtime-Autorität angebunden. Die angezeigten Demo-Gates sind keine kanonischen Bescheide.</p>
+            <p class="helper">Kanonischer Kernel: BLOCK. Optionaler lokaler Node-Testdienst signiert ausschließlich Sperrbescheide mit einem kurzlebigen TESTSCHLÜSSEL. Keine vertrauenswürdige PIGA-Autorität, keine Patientendaten, keine externen Anfragen.</p>
+            <div class="core-verification" aria-label="Identitätsprüfung PIGA-Core">
+              <strong>PIGA K2.1.1 RC · Kernidentität</strong>
+              <p class="helper">Optional: Exakt akzeptiertes Core-ZIP lokal auswählen. Die Datei verlässt das Gerät nicht. Ein passender Hash ist <b>keine</b> PIGA-Freigabe, keine Prüfung der aktuellen Autorität und keine klinische Zulassung.</p>
+              <label class="core-input">Core-Bundle lokal prüfen <input type="file" id="core-file" accept=".zip,application/zip" aria-describedby="core-verdict"></label>
+              <p id="core-verdict" role="status" aria-live="polite">Nicht geprüft · Kernel BLOCK · Externer Review, keine Produktion</p>
+              <small>Referenz: PIGA K2.1.1 RC v0.7 · SHA-256 a84001ad…5bdc63605 · Dokumentierter Scope separat gebunden.</small>
+            </div>
+            <button class="btn btn-secondary" id="prepare-bridge" type="button">Offline-Antragsvertrag prüfen</button> <button class="btn btn-secondary" id="probe-local" type="button">Lokale Test-Bridge prüfen</button>
+            <pre id="bridge-readiness" class="bridge-readiness" role="status">Noch kein Antragsvertrag geprüft.</pre><p id="bridge-transport-info" class="helper" role="status">Aufruf nur bei lokal gestartetem Testdienst auf 127.0.0.1:8767 und nach aktivem Klick. Es werden ausschließlich Metadaten der fiktiven Übung übertragen, keine Falltexte.</p>
+          </section>
+          <section class="loop-register" aria-label="A7SEM-Loop Labor">
+            <h3>A7SEM ↔ Reverse · Finite- und Re-Entry-Labor</h3>
+            <p class="helper">Der Finite Loop verarbeitet höchstens sieben Stufen pro Aufruf. „Infinite“ bedeutet hier nur ein erneuerbarer, von Menschen autorisierter Checkpoint – kein selbsttätig laufender Hintergrundagent. Kein medizinisches Ergebnis, keine Freigabe.</p>
+            <div class="button-row"><button class="btn btn-secondary" type="button" id="run-a7-loop">Finite Loop prüfen (max. 7)</button></div>
+            <div class="loop-supervisor">
+              <label>Neue Evidenz-Epoche <input id="loop-epoch" placeholder="z. B. EPOCH-0001" maxlength="100"></label>
+              <label class="confirm"><input type="checkbox" id="loop-human-reviewed"> Fiktive Prüfung manuell bestätigt</label>
+              <label class="confirm"><input type="checkbox" id="loop-revoked"> Checkpoint widerrufen</label>
+              <button class="btn btn-secondary" type="button" id="tick-a7-loop">Einen Re-Entry-Checkpoint prüfen</button>
+            </div>
+            <pre id="a7-loop-report" class="bridge-readiness" role="status">Noch keine A7SEM-Loop-Prüfung durchgeführt.</pre>
+            <p class="helper"><b>Kanonischer PIGA-Status: BLOCK.</b> Weder ein vollständiger lokaler Review noch ein Loop-Checkpoint erzeugt eine autorisierte Gate-Entscheidung.</p>
+          </section>
+          <h3>Lokaler Ereignisverlauf</h3><div id="audit-list" class="audit-list"></div>
+        </div>
+        <div class="callout"><span class="callout-icon">!</span><div><b>Kein zertifizierter Prüfbescheid – JSON nicht verschlüsselt</b><p>Keine EHR-Schnittstelle und kein kanonischer PIGA-Kernel. Der JSON-Export hat nach Möglichkeit eine SHA-256-Prüfsumme, aber keine digitale Signatur oder vertrauenswürdige Provenienz. Er ist unverschlüsselt. Das Protokoll beschreibt nur die sichtbare Sitzung auf diesem Gerät.</p></div></div>
+        <div class="button-row"><button type="button" class="btn btn-primary" id="download-json">Sitzungsprotokoll als JSON herunterladen ↓</button><span id="export-integrity-status" class="helper" role="status"></span><button type="button" class="btn btn-secondary" id="print-report">Druckansicht öffnen ↗</button><button type="button" class="btn btn-secondary" id="reset-demo">Fall lokal verwerfen</button></div>
+      </section>
+      <div class="footer-nav" id="footer-nav" hidden><button id="back" type="button" class="btn btn-secondary">← Zurück</button><div class="flow-progress" id="flow-progress"></div><button id="next" type="button" class="btn btn-primary">Weiter →</button></div>
+      <footer class="main-footer">ADOS Governance Lite · v0.6.0 · Regelbasierter Forschungsprototyp · Nur für fiktive Fälle · Keine laufenden Kosten durch die App</footer>
+    </main>
+  </div>
+</div>
+<script>
+/* ADOS Governance Lite v0.2.0 - deterministic demonstration rules.
+   NOT the canonical PIGA kernel; NOT a diagnostic or medical device. */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.ADOSEngine = factory();
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const VERSION = '0.5.0';
+  const RULESET = 'ADOS-LITE-DEMO-RULES-0.2';
+  const STATUS = Object.freeze({ALLOW:'ALLOW', DELAY:'DELAY', BLOCK:'BLOCK', UNKNOWN:'UNKNOWN', EXPIRED:'EXPIRED'});
+  const GAP_TYPES = ['none', 'source', 'time', 'concept', 'alternative', 'safety', 'revision'];
+  const A7 = [
+    {key:'resonanz',name:'Resonanz',question:'Was war der erste wahrnehmbare Auslöser oder die erste Veränderung?'},
+    {key:'ausdruck',name:'Ausdruck',question:'Was wurde wörtlich berichtet oder beobachtbar gezeigt?'},
+    {key:'echo',name:'Echo',question:'Wie reagierte das Umfeld? Welche Rückkopplung gab es?'},
+    {key:'bedeutung',name:'Bedeutung',question:'Welche Bedeutung wird zugeschrieben – und von wem?'},
+    {key:'stabilisierung',name:'Stabilisierung',question:'Welche Wiederholungen, aufrechterhaltenden Bedingungen oder Schutzfaktoren sind bekannt?'},
+    {key:'emergenz',name:'Emergenz',question:'Welches neue Muster oder welche Funktionsänderung zeigt sich?'},
+    {key:'feldintegration',name:'Feldintegration',question:'Welche Lebensbereiche sind betroffen und wo liegen Gegenbeispiele?'}
+  ];
+  const ARGUS = [
+    'Welche konkrete Beobachtung liegt vor, und welches Motiv wurde nur vermutet?',
+    'Was sagt die Person wörtlich, und was ist kausal nicht ableitbar?',
+    'Welche Aussage ist noch nicht geprüft und deshalb UNKNOWN?',
+    'Ist eine Aussage widerlegt oder nur derzeit nicht zugelassen?',
+    'Welche Wirkung ist erfasst, welche Urheberschaft wird bloß unterstellt?',
+    'Welche plausible Gegenhypothese erklärt denselben Befund?',
+    'Welcher Befund würde eine Neubewertung auslösen?'
+  ];
+  const emptyCase = () => ({
+    caseRef:'FIKTIV-001', safety:'unknown', dangerNote:'',
+    original:'', observed:'', interpretation:'', source:'', observedAt:'',
+    alternative:'', counterEvidence:'',
+    criticalGap:'none', gapNote:'',
+    claimType:'observation', evidenceConfirmed:false,
+    nextAction:'document', nextWhat:'', nextWho:'', nextWhen:'',
+    reverseLink:'', reverseBreak:'',
+    a7:Object.fromEntries(A7.map(a=>[a.key,''])),
+    argus:Object.fromEntries(ARGUS.map((_,i)=>['a'+(i+1),''])),
+    nsfRef:'', nsfStatus:'OPEN', nsfEvidence:'',
+    reviewer:'', reviewed:false
+  });
+  const demoCase = () => Object.assign(emptyCase(), {
+    caseRef:'FIKTIV-DEMOBEISPIEL', safety:'no',
+    original:'„Seit zwei Wochen sage ich Treffen häufiger ab.“',
+    observed:'Die Person berichtet abgesagte Treffen; unabhängige Überprüfung fehlt.',
+    interpretation:'Ein depressiver Prozess könnte beteiligt sein; nicht bestätigt.',
+    source:'Fiktives Gespräch, subjektive Selbstauskunft', observedAt:'Tag 1 (fiktiv)',
+    alternative:'Schlafmangel oder situative Belastung.',
+    counterEvidence:'Zeitlicher Verlauf, Schlaf und Belastung; Ausnahmen erfragen.',
+    criticalGap:'alternative', gapNote:'Schlaf, Belastung und Verlauf noch ungeprüft.',
+    claimType:'working', nextAction:'clarify',
+    nextWhat:'Fachlich verantwortete Klärung der offenen Fragen dokumentieren.',
+    nextWho:'Zuständige Fachperson', nextWhen:'Nächster vereinbarter Termin',
+    reverseLink:'Rückzug laut Selbstaussage ist belegbar, Ursache offen.',
+    reverseBreak:'Keine unabhängige Prüfung von Verlauf und Alternativen.'
+  });
+  const filled = x => typeof x === 'string' && x.trim().length > 0;
+  const clean = (value, fallback) => typeof value === 'string' ? value : fallback;
+  const norm = input => {
+    const c = emptyCase(), obj = input && typeof input === 'object' ? input : {};
+    for(const key of Object.keys(c)) {
+      if (key === 'a7' || key === 'argus') {
+        const o = obj[key] && typeof obj[key] === 'object' ? obj[key] : {};
+        for(const k of Object.keys(c[key])) c[key][k] = clean(o[k], '');
+      } else if (typeof c[key] === 'boolean') c[key] = obj[key] === true;
+      else c[key] = clean(obj[key], c[key]);
+    }
+    if (!['yes','no','unknown'].includes(c.safety)) c.safety = 'unknown';
+    if (!['observation','working','diagnosis'].includes(c.claimType)) c.claimType = 'working';
+    if (!['document','clarify','diagnose','treat'].includes(c.nextAction)) c.nextAction = 'clarify';
+    if (!GAP_TYPES.includes(c.criticalGap)) c.criticalGap = 'none';
+    if (!['PASS','OPEN','FAIL','UNKNOWN'].includes(c.nsfStatus)) c.nsfStatus = 'UNKNOWN';
+    return c;
+  };
+  const verdict = (status, label, reasons, restrictions) => ({status,label,reasons,restrictions});
+  function evaluate(raw) {
+    const c = norm(raw), missing = [];
+    if (!filled(c.original)) missing.push('Originalwortlaut');
+    if (!filled(c.observed)) missing.push('Beobachtung/Überprüfbarkeit');
+    if (!filled(c.source)) missing.push('Quelle');
+    if (!filled(c.observedAt)) missing.push('Zeitbezug');
+    const hasBase = missing.length === 0;
+    const hasCounter = filled(c.alternative) && filled(c.counterEvidence);
+    let g1, g2, emergency=false;
+    if(c.safety==='yes') {
+      emergency=true;
+      g1=verdict(STATUS.BLOCK, 'Routineprüfung ausgesetzt', ['Akute Gefährdung/Warnzeichen angegeben. Keine reguläre Inferenzprüfung fortsetzen.'], 'Etablierte fachliche Notfall- und Schutzverfahren haben Vorrang.');
+      g2=verdict(STATUS.BLOCK, 'Routinehandlungen ausgesetzt', ['Akute Gefährdung/Warnzeichen angegeben.'], 'Keine Empfehlung zum Abwarten; unverzüglich zuständige Notfall-/Schutzwege nutzen.');
+    } else if (c.safety==='unknown') {
+      g1=c.claimType==='diagnosis'
+        ?verdict(STATUS.BLOCK, 'Diagnose außerhalb der App', ['Diagnose ist unabhängig vom Sicherheitsstatus außerhalb des Demo-Funktionsumfangs.'], 'Keine App-Diagnose.')
+        :verdict(STATUS.UNKNOWN, 'Sicherheit ungeklärt', ['Sicherheitsstatus ist nicht geklärt.'], 'Keine Freigabe aus der App.');
+      g2=['diagnose','treat'].includes(c.nextAction)
+        ?verdict(STATUS.BLOCK, 'Klinische Aktion außerhalb der App', ['Diagnose oder Therapie darf auch bei ungeklärter Sicherheit nicht durch die Demo freigegeben werden.'], 'Keine klinische Handlungsfreigabe.')
+        :verdict(STATUS.DELAY, 'Sicherheitsklärung erforderlich', ['Vor einer Routinefortsetzung Sicherheitsstatus fachlich klären.'], 'Bei Anzeichen akuter Gefahr sofort etablierte Notfallwege.');
+    } else {
+      if(c.claimType === 'diagnosis') {
+        g1=verdict(STATUS.BLOCK, 'Diagnostische Feststellung außerhalb der App', ['Das Demo-System gibt keine medizinischen/psychologischen Diagnosen frei.'], 'Nur eine entsprechend qualifizierte Fachperson kann eine klinische Entscheidung treffen.');
+      } else if(!hasBase) {
+        g1=verdict(STATUS.UNKNOWN, 'Befundgrundlage unvollständig', [`Fehlend: ${missing.join(', ')}.`], 'Keine ungestützte Schlussfolgerung.');
+      } else if(!hasCounter) {
+        g1=verdict(STATUS.DELAY, 'Gegenprüfung unvollständig', ['Alternative Erklärung und unterscheidender Beleg müssen dokumentiert werden.'], 'Vorläufige Dokumentation ist möglich, aber keine definitive Folgerung.');
+      } else if(c.criticalGap !== 'none') {
+        g1=verdict(STATUS.DELAY, 'Entscheidungsrelevante Lücke offen', ['Offene kritische Lücke: '+c.criticalGap+(filled(c.gapNote)?' — '+c.gapNote:'')], 'Keine Entscheidung auf ungeprüfter Grundlage.');
+      } else if(c.claimType === 'working') {
+        g1=verdict(STATUS.DELAY, 'Arbeitshypothese bleibt vorläufig', ['Eine Arbeitshypothese wird im Prototyp nicht als gesicherte Diagnose zugelassen.'], 'Fachliche Prüfung außerhalb dieses Prototyps erforderlich.');
+      } else if(!c.evidenceConfirmed) {
+        g1=verdict(STATUS.DELAY, 'Quellenprüfung ausstehend', ['Quellen und Zeitbezug sind erfasst, aber die Quellenprüfung ist nicht bestätigt.'], 'Bestätigung ist eine Dokumentationshandlung, keine klinische Validierung.');
+      } else {
+        g1=verdict(STATUS.ALLOW, 'Nur beobachtungsbezogene Dokumentation', ['Originalwortlaut, Beobachtung, Quelle, Zeitbezug und Gegenprüfung sind dokumentiert.'], 'ALLOW betrifft ausschließlich die Dokumentation einer Beobachtung, niemals eine Diagnose.');
+      }
+      if(c.nextAction === 'diagnose' || c.nextAction === 'treat') {
+        g2=verdict(STATUS.BLOCK, 'Klinische Maßnahmen nicht durch Demo freigegeben', ['Diagnostische oder therapeutische Handlungen liegen außerhalb der Zweckbestimmung.'], 'Fachliche Verantwortung, gesetzliche und klinische Verfahren bleiben unberührt.');
+      } else if(c.nextAction === 'clarify') {
+        g2=verdict(STATUS.DELAY, 'Weitere fachliche Klärung dokumentieren', ['Der nächste Klärungsschritt ist ein menschlich zu planender Prozess.'], 'Keine medizinische Handlungsfreigabe aus diesem Status.');
+      } else if(!filled(c.nextWhat) || !filled(c.nextWho)) {
+        g2=verdict(STATUS.DELAY, 'Dokumentationsschritt unvollständig', ['Nächster Schritt und zuständige Person fehlen.'], 'Ohne Zuständigkeit keine Prozessfreigabe.');
+      } else {
+        g2=verdict(STATUS.ALLOW, 'Dokumentationsschritt erfasst', ['Zweck und Zuständigkeit des nichtklinischen Dokumentationsschritts sind angegeben.'], 'Keine Freigabe einer Diagnose, Behandlung oder externen Aktion.');
+      }
+    }
+    const trace=makeTrace(c,{hasBase,hasCounter,missing},g1,g2);
+    return {
+      engine:VERSION, ruleset:RULESET, trace, scope:'Nichtklinischer Demo-Prüfworkflow mit fiktiven Fällen',
+      safety: c.safety, emergency, gate1:g1, gate2:g2,
+      gaps:missing,
+      nsfResolvedStatus:(c.nsfStatus==='PASS' && (!filled(c.nsfRef)||!filled(c.nsfEvidence)))?'UNKNOWN':c.nsfStatus,
+      warnings:[
+        ...(c.criticalGap !== 'none' && !filled(c.gapNote) ? ['Kritische Lücke ist markiert, aber nicht erläutert.']:[]),
+        ...(c.nsfStatus === 'PASS' && (!filled(c.nsfEvidence)||!filled(c.nsfRef)) ? ['NSF-PASS ohne Kennung und Beleg wird für diesen Demo-Report als UNKNOWN behandelt.']:[]),
+        ...(c.reviewer && !c.reviewed ? ['Prüfername dokumentiert, menschliche Prüfung nicht bestätigt.']:[])
+      ]
+    };
+  }
+
+  /* These IDs describe THIS local demo only; they are not canonical PIGA rules. */
+  function makeTrace(c,ctx,g1,g2){
+    const check=(id,title,state,note)=>({ruleId:id,title,status:state,explanation:note});
+    const safe=c.safety==='no';
+    return [
+      check('DEMO-S01','Sicherheit zuerst',safe?'DOCUMENTED':c.safety==='yes'?'STOP':'OPEN',
+        c.safety==='yes'?'Akute Warnzeichen angegeben; Routineprüfung ausgesetzt.':c.safety==='unknown'?'Sicherheitsstatus offen.':'Im Testfall keine Warnzeichen angegeben; kein realer Sicherheitsausschluss.'),
+      check('DEMO-E01','Belegkette und Provenienz',ctx.hasBase?'DOCUMENTED':'OPEN',
+        ctx.hasBase?'Originaltext, Beobachtung, Quelle und Zeitbezug sind ausgefüllt.':'Fehlt: '+ctx.missing.join(', ')),
+      check('DEMO-C01','Gegenhypothese',ctx.hasCounter?'DOCUMENTED':'OPEN',
+        ctx.hasCounter?'Alternative und möglicher unterscheidender Gegenbeleg genannt.':'Alternative und/oder möglicher Gegenbeleg fehlen.'),
+      check('DEMO-U01','Entscheidungsrelevante Unsicherheit',c.criticalGap==='none'?'NO_GAP_MARKED':'OPEN',
+        c.criticalGap==='none'?'Keine entscheidungsrelevante Lücke markiert (Selbstauskunft).':'Offener Punkt: '+c.criticalGap),
+      check('DEMO-G01','Gate 1 – begrenzte Inferenzzulassung',g1.status,g1.reasons.join(' ')),
+      check('DEMO-G02','Gate 2 – begrenzte Vorgangszulassung',g2.status,g2.reasons.join(' ')),
+      check('DEMO-N01','NSF-325 – optionale Referenz',c.nsfStatus==='PASS'&&(!filled(c.nsfRef)||!filled(c.nsfEvidence))?'UNKNOWN':c.nsfStatus,
+        c.nsfStatus==='PASS'&&(!filled(c.nsfRef)||!filled(c.nsfEvidence))?'Nicht belegter PASS wird im Report nicht übernommen.':'Referenzfeld ist optional; kein klinischer Gesamtscore.')
+    ];
+  }
+  function scenarios(){
+    const make=(id,title,note,changes,expected)=>{
+      const c=Object.assign(demoCase(),changes);c.caseRef=id;
+      return {id,title,note,case:c,expected};
+    };
+    return [
+      make('FIKTIV-S01','Ungeklärte Sicherheit','Sicherheitsstatus nicht erhoben – keine Freigabe.',{safety:'unknown'},['UNKNOWN','DELAY']),
+      make('FIKTIV-S02','Akute Warnzeichen','Notfallvorrang unterbricht den Routineworkflow.',{safety:'yes',dangerNote:'Fiktiver Sicherheitsalarm.'},['BLOCK','BLOCK']),
+      make('FIKTIV-S03','Fehlende Quelle','Original und Beobachtung da, Quellenangabe fehlt.',{source:''},['UNKNOWN','DELAY']),
+      make('FIKTIV-S04','Offene Gegenhypothese','Entscheidende Alternative bleibt ungeprüft.',{claimType:'observation',evidenceConfirmed:true,criticalGap:'alternative'},['DELAY','DELAY']),
+      make('FIKTIV-S05','Dokumentation ausreichend','Nur nichtklinische Beobachtungsdokumentation – kein Diagnoseurteil.',{claimType:'observation',evidenceConfirmed:true,criticalGap:'none',nextAction:'document'},['ALLOW','ALLOW']),
+      make('FIKTIV-S06','Unzulässige klinische Aktion','Diagnose und Behandlung dürfen nicht durch die Demo zugelassen werden.',{claimType:'diagnosis',nextAction:'treat'},['BLOCK','BLOCK'])
+    ];
+  }
+  function runScenarioChecks(){
+    return scenarios().map(test=>{
+      const r=evaluate(test.case);
+      const actual=[r.gate1.status,r.gate2.status];
+      return {id:test.id,title:test.title,expected:test.expected,actual,pass:test.expected.every((x,i)=>x===actual[i])};
+    });
+  }
+  return {VERSION, RULESET, STATUS, A7, ARGUS, emptyCase, demoCase, norm, evaluate, scenarios, runScenarioChecks};
+});
+
+</script><script>
+/* ADOS v0.6 — deterministic A7SEM/Reverse research loop, no clinical/admission authority.
+   All loop operations are bounded, finite, offline. 'Continuous' is a checkpoint protocol,
+   never a self-running agent. Canonical PIGA authority is always BLOCK in this module. */
+(function(root,factory){ if(typeof module==='object'&&module.exports)module.exports=factory(require('./engine.js'));
+else root.ADOSGovernedLoop=factory(root.ADOSEngine); })(typeof globalThis!=='undefined'?globalThis:this,function(E){
+'use strict';
+const VERSION='0.6.0', SCHEMA='ados.a7sem.reverse.checkpoint/0.6';
+const STEPS=Object.freeze(['resonanz','ausdruck','echo','bedeutung','stabilisierung','emergenz','feldintegration']);
+const AUTHORITY=Object.freeze({status:'BLOCK',reason:'NO_CANONICAL_ADOS_AUTHORITY',rootDeclared:false,policyBound:false,verified:false});
+const text=v=>typeof v==='string'?v.trim():'';
+const own=(o,k)=>!!o&&Object.prototype.hasOwnProperty.call(o,k);
+const safeId=s=>/^[A-Za-z0-9:_-]{4,100}$/.test(text(s));
+const isRef=s=>/^[A-Za-z0-9._:\/-]{4,120}$/.test(text(s));
+const flat=(a)=>a.map(o=>Object.fromEntries(Object.entries(o).sort(([a],[b])=>a.localeCompare(b))));
+function snapshot(caseInput={},opts={}){
+  const c=E.norm(caseInput), detail=E.evaluate(c);
+  const raw=opts.evidence&&typeof opts.evidence==='object'?opts.evidence:{};
+  const evidence=STEPS.map((stage,i)=>{
+    const e=raw[stage]&&typeof raw[stage]==='object'?raw[stage]:{};
+    const status=['PRESENT','UNKNOWN','CONTRADICTED','REVOKED'].includes(e.status)?e.status:'UNKNOWN';
+    return {step:i+1,stage,status,ref:text(e.ref),note:text(e.note)};
+  });
+  const reverse=Array.isArray(opts.reverse)?opts.reverse:[];
+  const reverseRows=STEPS.slice().reverse().map((stage,i)=>{
+    const row=reverse[i]&&typeof reverse[i]==='object'?reverse[i]:{};
+    return {step:7-i,stage,claimRef:text(row.claimRef),sourceRef:text(row.sourceRef),checked:row.checked===true,contradicted:row.contradicted===true};
+  });
+  const statuses=[];
+  if(c.safety!=='no')statuses.push(c.safety==='yes'?'SAFETY_EMERGENCY':'SAFETY_UNKNOWN');
+  if(c.claimType==='diagnosis'||['diagnose','treat'].includes(c.nextAction))statuses.push('CLINICAL_SCOPE_BLOCK');
+  if(detail.gate1.status!=='ALLOW')statuses.push('LOCAL_GATE1_'+detail.gate1.status);
+  if(detail.gate2.status!=='ALLOW')statuses.push('LOCAL_GATE2_'+detail.gate2.status);
+  evidence.forEach(e=>{
+    if(e.status!=='PRESENT')statuses.push('A7_'+e.step+'_'+e.status);
+    else if(!isRef(e.ref))statuses.push('A7_'+e.step+'_REF_MISSING');
+  });
+  reverseRows.forEach((r,i)=>{
+    if(!r.checked||!isRef(r.claimRef)||!isRef(r.sourceRef))statuses.push('REVERSE_'+(7-i)+'_MISSING');
+    if(r.contradicted)statuses.push('REVERSE_'+(7-i)+'_CONTRADICTED');
+    if(evidence[6-i].ref&&r.sourceRef&&r.sourceRef!==evidence[6-i].ref)statuses.push('REVERSE_'+(7-i)+'_SOURCE_MISMATCH');
+  });
+  const localComplete=statuses.length===0;
+  return Object.freeze({schema:SCHEMA,version:VERSION,caseRef:c.caseRef,kind:'RESEARCH_ONLY',purpose:'NON_CLINICAL_DOCUMENTATION',
+    demo:{gate1:detail.gate1.status,gate2:detail.gate2.status},authority:AUTHORITY,
+    evidence,reverse:reverseRows,findings:statuses,localComplete,
+    localResult:localComplete?'REVIEW_READY_NONAUTHORITATIVE':c.safety==='yes'?'SAFETY_STOP':'REVIEW_REQUIRED',
+    externalEffectAuthorized:false,clinicalDecisionAuthorized:false,engineCount:5,createAdditionalEngine:false});
+}
+function finite(input, opts={}, budget=7){
+  const cap=Number.isInteger(budget)?Math.min(7,Math.max(1,budget)):7;
+  const s=snapshot(input,opts),events=[];
+  const seen=new Set();
+  const stop=s.findings.includes('SAFETY_EMERGENCY')||s.findings.includes('CLINICAL_SCOPE_BLOCK');
+  if(stop) return {...s,loop:{mode:'FINITE',limit:cap,iterations:0,steps:[],state:'BLOCK',reason:'SAFETY_OR_CLINICAL_BOUNDARY',nextStep:null}};
+  for(let i=0;i<Math.min(cap,7);i++){
+    const f=s.evidence[i],rv=s.reverse[6-i];
+    const matched=f.status==='PRESENT'&&isRef(f.ref)&&rv.checked&&isRef(rv.sourceRef)&&rv.sourceRef===f.ref&&isRef(rv.claimRef)&&!rv.contradicted;
+    const entry={iteration:i+1,step:f.step,stage:f.stage,evidenceRef:f.ref,reverseSourceRef:rv.sourceRef,transition:matched?'VERIFIED_LOCAL':'UNKNOWN_STOP',newEvidenceManufactured:false};
+    events.push(entry);
+    if(!matched)return {...s,loop:{mode:'FINITE',limit:cap,iterations:events.length,steps:events,state:'DELAY',reason:'MISSING_OR_CONFLICTING_EVIDENCE',nextStep:i+1}};
+    if(seen.has(f.ref))return {...s,loop:{mode:'FINITE',limit:cap,iterations:events.length,steps:events,state:'DELAY',reason:'DUPLICATE_EVIDENCE_REF',nextStep:i+1}};
+    seen.add(f.ref);
+  }
+  const complete=events.length===7;
+  return {...s,loop:{mode:'FINITE',limit:cap,iterations:events.length,steps:events,state:complete&&s.localComplete?'REVIEW_READY_NONAUTHORITATIVE':'DELAY',reason:complete?'BOUNDED_REVIEW_COMPLETE':'BOUNDED_BUDGET_REACHED',nextStep:complete?null:events.length+1}};
+}
+// No unbounded runtime: every caller invocation performs <= 1 tick and returns a durable-serializable checkpoint.
+// Without changed evidence version the loop cannot advance, preventing spurious self-improvement.
+function continuousTick(input,opts={},previous=null,control={}){
+  const time=Number.isFinite(control.now)?control.now:Date.now();
+  const epoch=text(control.evidenceEpoch), consent=control.humanReview===true;
+  const expires=Number.isFinite(control.expiresAt)?control.expiresAt:0;
+  const base={schema:SCHEMA,mode:'FINITE_TICK_SUPERVISOR',issuedAt:time,authority:AUTHORITY,externalEffectAuthorized:false,
+    engineCount:5,createAdditionalEngine:false,epoch,iterations:(Number(previous?.iterations)||0),status:'BLOCK',reason:'UNSPECIFIED'};
+  if(control.revoked===true)return {...base,status:'BLOCK',reason:'REVOKED'};
+  if(!expires||time>=expires)return {...base,status:'EXPIRED',reason:'EXPIRED_OR_MISSING_BOUND'};
+  if(!consent)return {...base,status:'DELAY',reason:'HUMAN_REVIEW_REQUIRED'};
+  if(!safeId(epoch))return {...base,status:'UNKNOWN',reason:'EVIDENCE_EPOCH_UNKNOWN'};
+  if(previous?.epoch===epoch)return {...base,status:'DELAY',reason:'NO_NEW_EVIDENCE_NO_REENTRY'};
+  if(Number(previous?.iterations)>=64)return {...base,status:'BLOCK',reason:'SUPERVISOR_QUOTA_EXHAUSTED'};
+  const s=finite(input,opts,7);
+  return {...base,iterations:base.iterations+1,status:s.loop.state==='BLOCK'?'BLOCK':'DELAY',
+    reason:s.loop.state==='REVIEW_READY_NONAUTHORITATIVE'?'LOCAL_REVIEW_COMPLETED_CANONICAL_AUTHORITY_MISSING':s.loop.reason,
+    localResult:s.loop.state,nextEligible:'NEW_HUMAN_REVIEWED_EVIDENCE_ONLY'};
+}
+function workbookRow(c){const x=E.evaluate(c);return {gate1:x.gate1.status,gate2:x.gate2.status,clinicalAllowed:false,canonical:'BLOCK'};}
+return Object.freeze({VERSION,SCHEMA,STEPS,AUTHORITY,snapshot,finite,continuousTick,workbookRow});
+});
+
+</script><script>
+/* ADOS Governance Lite v0.5: fail-closed OFFLINE contract for a future canonical PIGA adapter.
+   This component neither contains kernel rules nor calls an external service. */
+(function(root, factory){ if(typeof module==='object' && module.exports)module.exports=factory(); else root.ADOSBridge=factory(); })(typeof globalThis!=='undefined'?globalThis:this,function(){
+'use strict';
+const VERSION='0.5.0';
+const CAPABILITY='ADOS_EVIDENCE_GOVERNANCE';
+const STATUS=['ALLOW','DELAY','BLOCK','UNKNOWN','EXPIRED'];
+const denied=(code,reason,status='BLOCK')=>({status,code,reason,authoritative:false});
+const ready=()=>denied('MISSING_RUNTIME_AUTHORITY','Kanonischer PIGA-Kernel, vertrauenswürdige Signaturprüfung und Runtime-Autorität sind in dieser Offline-Demo nicht verbunden. Keine produktive Zulassung.');
+const known=(x,arr)=>typeof x==='string'&&arr.includes(x);
+const idSafe=x=>typeof x==='string'&&/^[A-Za-z0-9:_-]{8,128}$/.test(x);
+function prepareRequest(input,options={}){
+  if(!input || typeof input!=='object')return denied('INVALID_INPUT','Fehlendes Fallobjekt.');
+  if(!known(input.safety,['yes','no','unknown']))return denied('INVALID_SAFETY','Sicherheitsstatus nicht normgerecht.');
+  if(!known(input.claimType,['observation','working','diagnosis']))return denied('INVALID_CLAIM','Aussageart ungültig.');
+  if(!known(input.nextAction,['document','clarify','diagnose','treat']))return denied('INVALID_ACTION','Handlung ungültig.');
+  const now=Number.isFinite(options.now)?options.now:Date.now();
+  const nonce=options.nonce;
+  if(!idSafe(nonce))return denied('MISSING_SECURE_NONCE','Ohne kryptografisch erzeugte Einmal-ID wird kein zulassungsfähiger Antrag erzeugt.');
+  if(input.claimType==='diagnosis'||['diagnose','treat'].includes(input.nextAction))return denied('CLINICAL_SCOPE_BLOCKED','Klinische Diagnose und Behandlung bleiben außerhalb dieses Demo-Adapters.');
+  if(input.safety!=='no')return denied('SAFETY_NOT_CLEARED','Ungeklärte oder akute Sicherheit: kein Antragsübergang.');
+  return {status:'PREPARED_ONLY',code:'LOCAL_NO_TRANSMISSION',authoritative:false,request:{schema:'ados-governance-admission-request/0.3',capability:CAPABILITY,nonce,requestId:'ADOS-'+nonce,createdAt:now,expiresAt:now+5*60*1000,scope:'DEMO_DOCUMENTATION_ONLY',caseRef:'FIKTIV',claimType:input.claimType,nextAction:input.nextAction,safety:input.safety,payload:'NOT_INCLUDED',evidenceRefCount:0}};
+}
+function createNonce(){
+  if(typeof crypto==='undefined'||typeof crypto.getRandomValues!=='function')return null;
+  const a=new Uint8Array(16);crypto.getRandomValues(a);return Array.from(a,b=>b.toString(16).padStart(2,'0')).join('');
+}
+// This state is deliberately ephemeral (in-memory); it does NOT simulate durable, cross-worker nonces.
+function verifierSession(){
+  const consumed=new Set(),revoked=new Set();
+  return {
+    revoke(id){if(idSafe(id))revoked.add(id);},
+    inspect(request,response,now=Date.now(),signatureVerified=false){
+      if(!request||!response||typeof response!=='object')return denied('MISSING_ENVELOPE','Antrag oder Bescheid fehlt.');
+      if(!idSafe(request.requestId)||!idSafe(request.nonce))return denied('INVALID_REQUEST','Ungültige Antragsidentität.');
+      if(revoked.has(request.requestId))return denied('REVOKED','Antrag widerrufen.');
+      if(consumed.has(request.requestId))return denied('NONCE_REPLAY','Einmal-Antrag wurde bereits verbraucht.');
+      if(!Number.isFinite(now)||!Number.isFinite(request.expiresAt)||now>=request.expiresAt)return denied('EXPIRED_REQUEST','Antragsfrist abgelaufen.','EXPIRED');
+      if(response.schema!=='ados-bridge-test-envelope/0.3' || response.requestId!==request.requestId || response.nonce!==request.nonce)return denied('REQUEST_MISMATCH','Bescheid nicht an Antrag gebunden.');
+      if(response.scope!=='DEMO_DOCUMENTATION_ONLY'||request.scope!=='DEMO_DOCUMENTATION_ONLY')return denied('SCOPE_MISMATCH','Unzulässiger Geltungsbereich.');
+      if(response.claimType!==request.claimType||response.nextAction!==request.nextAction)return denied('CLAIM_MISMATCH','Antrag und Bescheid weichen ab.');
+      if(!Number.isFinite(response.expiresAt)||response.expiresAt<=now)return denied('EXPIRED_DECISION','Bescheid abgelaufen.','EXPIRED');
+      if(!Number.isFinite(response.issuedAt)||response.issuedAt>now+30000 ||response.issuedAt<request.createdAt-30000)return denied('TIME_MISMATCH','Ungültiger Ausstellungszeitpunkt.');
+      if(!idSafe(response.policyVersion)||!idSafe(response.keyId)||typeof response.signature!=='string'||response.signature.length<32)return denied('AUTHENTICITY_METADATA_MISSING','Versions-/Signaturinformationen fehlen.');
+      if(!known(response.gate1,STATUS)||!known(response.gate2,STATUS))return denied('INVALID_STATUS','Bescheid enthält ungültige Zustände.');
+      if(signatureVerified!==true)return denied('SIGNATURE_NOT_VERIFIED','Ohne externe kryptografische Signaturprüfung wird kein Bescheid anerkannt.');
+      consumed.add(request.requestId);
+      // Even after cryptographic verification a local adapter is not a clinical action gateway.
+      const candidate=response.gate1==='ALLOW'&&response.gate2==='ALLOW'&&request.claimType==='observation'&&request.nextAction==='document';
+      // A caller-provided boolean is never a real signature verifier. Never output ALLOW from this offline adapter.
+      return {status:'UNKNOWN',code:candidate?'MOCK_CONTRACT_MATCH_NO_AUTHORITY':'NO_DEMO_ADMISSION',authoritative:false,consumed:true,reason:'Testvermerk zur lokalen Vertragsstruktur; selbst bei mock-bestätigter Signatur KEINE kanonische Freigabe.'};
+    },
+    stats(){return {consumed:consumed.size,revoked:revoked.size,persistence:'NONE'};}
+  };
+}
+return {VERSION,CAPABILITY,ready,prepareRequest,createNonce,verifierSession};
+});
+
+</script><script>
+/* SHA-256 detects changes in an exported JSON file, not who authored/signed it. */
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.ADOSIntegrity=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){
+'use strict';
+function sortJSON(x){if(Array.isArray(x))return x.map(sortJSON);if(x&&typeof x==='object'){const o={};for(const k of Object.keys(x).sort())o[k]=sortJSON(x[k]);return o;}return x;}
+function canonical(x){return JSON.stringify(sortJSON(x));}
+async function sha256(text){if(!globalThis.crypto?.subtle)return null;const b=new TextEncoder().encode(text);const hash=await globalThis.crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,'0')).join('');}
+async function seal(payload){const canonicalText=canonical(payload),digest=await sha256(canonicalText);return {payload,integrity:{algorithm:digest?'SHA-256':'UNAVAILABLE',digest:digest||null,kind:'untrusted_local_checksum',scope:'payload_only',warning:'Nur lokale Änderungserkennung, kein digital signierter oder revisionssicherer Nachweis.'}};}
+async function verify(sealed){if(!sealed?.integrity?.digest||!sealed?.payload)return {ok:false,reason:'NO_CHECKSUM'};const h=await sha256(canonical(sealed.payload));return {ok:h!==null&&h===sealed.integrity.digest,reason:h===null?'NO_WEBCRYPTO':h===sealed.integrity.digest?'HASH_MATCH':'HASH_MISMATCH'};}
+return {canonical,sha256,seal,verify};
+});
+
+</script><script>
+/* ADOS v0.5: exact-byte identity check for the separately published K2.1.1 RC bundle.
+   A byte match proves file identity ONLY; it cannot establish authorization, current
+   revocation status, production readiness or clinical validation. */
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.ADOSCoreIdentity=factory()})(typeof globalThis!== 'undefined'?globalThis:this,function(){
+'use strict';
+const CORE={version:'PIGA-K2.1.1-RC-v0.7',name:'PIGA_K2.1.1_RC_20260723_INTEGRATED_PROGRAM_CONTROL_v0.7.zip',sha256:'a84001ad8cf3e5aef9123b33e641f6012b4ffc3b67814630121ebbd5bdc63605',scopeSha256:'e3206c695a0c35b0e796a87bba5484fbb66267b83e16aa586f99cc50091e5c9f',evidence:'PIGA K2.1.1 External Product Dossier v1.3.2, Drive, 23.07.2026',release:'CONTROLLED_EXTERNAL_REVIEW_ONLY',production:'DELAY'};
+function verdict(digest){
+ if(typeof digest!=='string'||!/^[a-f0-9]{64}$/i.test(digest))return {identity:'UNKNOWN',reason:'HASH_MISSING_OR_INVALID',canonicalAdmission:'BLOCK',authoritative:false};
+ const ok=digest.toLowerCase()===CORE.sha256;
+ return {identity:ok?'BYTE_HASH_MATCH':'HASH_MISMATCH',reason:ok?'Exact-byte SHA-256 equals accepted RC bundle reference. Does not prove legitimate authority.':'Supplied file differs from recorded accepted RC bundle.',canonicalAdmission:'BLOCK',authoritative:false,productionAllowed:false,scopeVerified:false,rootOfAuthorityVerified:false,revocationChecked:false,clinicalAllowed:false};
+}
+async function verifyArrayBuffer(buffer){
+ if(!(buffer instanceof ArrayBuffer))return {...verdict(null),computedSha256:null};
+ if(typeof crypto==='undefined'||!crypto.subtle)return {identity:'UNKNOWN',reason:'WEBCRYPTO_UNAVAILABLE',canonicalAdmission:'BLOCK',authoritative:false};
+ const digest=await crypto.subtle.digest('SHA-256',buffer);
+ const hex=Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
+ return {...verdict(hex),computedSha256:hex};
+}
+return {CORE,verdict,verifyArrayBuffer};
+});
+
+</script><script>
+'use strict';
+(()=>{
+const L=window.ADOSGovernedLoop;
+const E=window.ADOSEngine, B=window.ADOSBridge, I=window.ADOSIntegrity, C=window.ADOSCoreIdentity; if(!E||!B||!I||!C){alert('Prüfengine, Kernel-Adapter oder Integritätsmodul fehlt');return;}
+const pages=['intro','a','b','c','d','e','f','depth','review'];
+const byId=id=>document.getElementById(id);
+let latestLoop=null, latestTick=null;
+let data=E.emptyCase(), current='intro', started=false, events=[], lastGate='';
+const now=()=>new Date().toISOString();
+const log=event=>{events.push({at:now(),event}); if(events.length>250)events=events.slice(-250);};
+const detail=[
+ ['Fallkennung (nur fiktiv)','caseRef'],['Sicherheitsstatus','safety'],['Originalaussage','original'],['Beobachtung','observed'],['Arbeitshypothese','interpretation'],['Quelle','source'],['Zeitbezug','observedAt'],['Gegenhypothese','alternative'],['Möglicher Gegenbeleg','counterEvidence'],['Entscheidende Lücke','criticalGap'],['Details zur Lücke','gapNote'],['Art der Aussage','claimType'],['Nächste Prozessart','nextAction'],['Nächster Schritt','nextWhat'],['Zuständig','nextWho'],['Wiedervorlage','nextWhen'],['Reverse: Belegkette','reverseLink'],['Reverse: Bruchstelle','reverseBreak'],['NSF-Kennung','nsfRef'],['NSF-Status','nsfStatus'],['NSF-Beleg','nsfEvidence']
+];
+const statusTone=element=>{element.dataset.status=element.textContent.trim()};
+const text=(tag,value,cls)=>{const x=document.createElement(tag);if(cls)x.className=cls;x.textContent=value;return x;};
+function show(page,force=false){
+ if(!pages.includes(page))return;
+ if(!force && !started && page!=='intro')return;
+ if(!force && data.safety==='yes' && !['a','review'].includes(page))page='a';
+ current=page;
+ if(page==='intro')byId('desktop-nav').scrollLeft=0;
+ pages.forEach(p=>byId('page-'+p).classList.toggle('is-visible',p===page));
+ document.querySelectorAll('[data-page]').forEach(b=>{const active=b.dataset.page===page;b.classList.toggle('active',active);b.setAttribute('aria-current',active?'step':'false')});
+ byId('footer-nav').hidden=page==='intro';
+ const i=pages.indexOf(page);byId('back').disabled=i<=1;byId('next').disabled=i===pages.length-1 || data.safety==='yes' && page==='a';
+ byId('next').textContent=i===pages.length-2?'Prüfergebnis →':'Weiter →';
+ byId('flow-progress').textContent=page==='depth'?'Optionale Vertiefung':page==='review'?'Ergebnis':`${Math.max(1,i)} / 6`;
+ if(page==='review')renderReview();
+ if(window.scrollY>130)window.scrollTo({top:0,behavior:'instant'});
+ log('Bereich geöffnet: '+page);
+}
+function populate(){
+ document.querySelectorAll('[data-field]').forEach(x=>{let v=x.dataset.field.includes('.')?x.dataset.field.split('.').reduce((o,k)=>o?.[k],data):data[x.dataset.field];if(x.type==='checkbox')x.checked=!!v;else x.value=v??''});
+ document.querySelectorAll('[name=safety],[name=claimType],[name=nextAction]').forEach(x=>x.checked=data[x.name]===x.value);
+ renderStatus();
+}
+function statusUpdate(){const result=E.evaluate(data),code=result.gate1.status+'|'+result.gate2.status;
+ if(code!==lastGate && started){log('Statusänderung: Gate 1 '+result.gate1.status+', Gate 2 '+result.gate2.status);lastGate=code;}
+ const s=byId('g1-inline'),t=byId('g2-inline');s.textContent=result.gate1.status;t.textContent=result.gate2.status;statusTone(s);statusTone(t);
+ byId('danger-banner').hidden=!result.emergency;
+ if(current==='a')byId('next').disabled=result.emergency;
+ if(current==='review')renderReview();
+ return result;
+}
+function renderStatus(){statusUpdate()}
+function setData(field,v){latestLoop=null;latestTick=null;const report=byId('a7-loop-report');if(report)report.textContent='Falldaten geändert. A7SEM/Reverse-Loop erneut prüfen.';const seg=field.split('.');if(seg.length===2)data[seg[0]][seg[1]]=v;else data[field]=v;statusUpdate()}
+function renderReview(){
+ const result=E.evaluate(data);
+ for(const n of [1,2]){
+ const gate=result['gate'+n],label=byId('gate'+n+'-status');label.textContent=gate.status;statusTone(label);
+ byId('gate'+n+'-title').textContent=gate.label;byId('gate'+n+'-explain').textContent=gate.restrictions;
+ }
+ byId('emergency-review').hidden=!result.emergency;
+ const out=byId('review-fields');out.replaceChildren();
+ for(const [label,key] of detail){if(!data[key] && key!=='criticalGap')continue;const dl=document.createElement('div');dl.className='review-row';const dt=text('dt',label);const dd=text('dd',String(data[key]||'—'));dl.append(dt,dd);out.append(dl)}
+ for(const [title,items] of [['A7SEM',E.A7.map(a=>[a.name,data.a7[a.key]])],['ARGUS-7',E.ARGUS.map((q,i)=>[(i+1)+'. '+q,data.argus['a'+(i+1)]])]]){
+ const filled=items.filter(x=>x[1]&&x[1].trim()); if(!filled.length)continue;
+ out.append(text('h4',title));for(const [label,value] of filled){const dl=document.createElement('div');dl.className='review-row';dl.append(text('dt',label),text('dd',value));out.append(dl)}
+ }
+ byId('ruleset-label').textContent='Regelstand: '+result.ruleset+' · keine Anbindung an den kanonischen PIGA-Kernel';
+ byId('kernel-state').textContent=B.ready().status;byId('kernel-detail').textContent=B.ready().reason;
+ const trace=byId('rule-trace');trace.replaceChildren();
+ for(const item of result.trace){const row=document.createElement('div');row.className='trace-item';const head=document.createElement('div');head.className='trace-head';const name=text('b',item.title);const code=text('code',item.ruleId);const status=text('span',item.status,'trace-status');head.append(name,code,status);row.append(head,text('p',item.explanation));trace.append(row)}
+ const reasons=byId('review-reasons');reasons.replaceChildren();
+ for(const [label,gate] of [['Gate 1',result.gate1],['Gate 2',result.gate2]]){reasons.append(text('h4',label));const ul=document.createElement('ul');ul.className='reasons-list';for(const r of gate.reasons)ul.append(text('li',r));reasons.append(ul)}
+ if(result.warnings.length){reasons.append(text('h4','Zusätzliche Warnungen'));const ul=document.createElement('ul');ul.className='reasons-list';for(const x of result.warnings)ul.append(text('li',x));reasons.append(ul)}
+ const audit=byId('audit-list');audit.replaceChildren();
+ for(const e of events){const row=document.createElement('div');row.className='audit-entry';row.append(text('span',e.event));const t=text('time',new Date(e.at).toLocaleTimeString('de-DE'));t.dateTime=e.at;row.append(t);audit.append(row)}
+ if(!events.length)audit.append(text('p','Keine Einträge.'));
+}
+function start(which){latestLoop=null;latestTick=null;data=which==='demo'?E.demoCase():E.emptyCase();events=[];lastGate='';started=true;log(which==='demo'?'Fiktiven Beispielfall geladen':'Leeren fiktiven Testfall eröffnet');populate();show('a',true)}
+function startScenario(s){latestLoop=null;latestTick=null;data=E.norm(s.case);events=[];lastGate='';started=true;log('Fiktives Szenario geladen: '+s.id+' – '+s.title);populate();show('review',true)}
+function renderScenarioLab(){const root=byId('scenario-buttons');root.replaceChildren();for(const s of E.scenarios()){
+ const b=document.createElement('button');b.type='button';b.className='scenario-button';b.disabled=!byId('consent-demo').checked;
+ b.append(text('b',s.title),text('small',s.note));b.addEventListener('click',()=>startScenario(s));root.append(b)
+ }}
+function runSuite(){const checks=E.runScenarioChecks();const ok=checks.filter(x=>x.pass).length;byId('suite-summary').textContent=`${ok} von ${checks.length} Demo-Szenarien stimmen mit den erwarteten Gate-Statuswerten überein.`;
+ const target=byId('suite-results');target.replaceChildren();for(const row of checks){const d=document.createElement('div');d.className='suite-row';d.append(text('span',row.title),text('span',`Gate 1 ${row.actual[0]} · Gate 2 ${row.actual[1]} · ${row.pass?'PASS':'FAIL'}`,row.pass?'suite-ok':'suite-fail'));target.append(d)}
+ log('Selbsttest der sechs fiktiven Szenarien: '+ok+'/'+checks.length+' bestanden');
+}
+function reset(){if(!window.confirm('Fiktiven Fall und unexportierten Sitzungsverlauf lokal verwerfen?'))return;
+ latestLoop=null;latestTick=null;data=E.emptyCase();started=false;events=[];lastGate='';populate();show('intro',true)
+}
+function addDepthFields(){
+ const list=[['a7-fields',E.A7,'a7'],['argus-fields',E.ARGUS,'argus']];
+ for(const [id,items,scope] of list){
+ const root=byId(id);
+ items.forEach((item,i)=>{const key=scope==='a7'?item.key:'a'+(i+1),title=scope==='a7'?`${i+1}. ${item.name}`:`${i+1}. ${item}`,question=scope==='a7'?item.question:'Optionales Antwortfeld';
+ const div=document.createElement('div');div.className='field-block';const lbl=text('label',title);lbl.htmlFor=`${scope}-${key}`;const small=text('small',question);const area=document.createElement('textarea');area.id=`${scope}-${key}`;area.rows=2;area.dataset.field=`${scope}.${key}`;area.placeholder='Nur fiktiver Fall / UNKNOWN ist möglich';div.append(lbl,area,small);root.append(div)})
+ }
+}
+async function exportJson(){
+ if(!started)return;
+ log('Lokaler JSON-Export ausgelöst');
+ const result=E.evaluate(data);
+ const payload={format:'ADOS-GOV-LITE-DEMO',schemaVersion:'0.6',version:E.VERSION,ruleset:E.RULESET,exportedAt:now(),notice:'Nur fiktive Testdaten. Keine klinische Diagnose, externe Freigabe oder digitale Signatur. Export ist unverschlüsselt und nicht authentifiziert.',canonicalKernel:B.ready(),case:data,decision:result,finiteLoopReceipt:latestLoop,continuousCheckpoint:latestTick,sessionEvents:events};
+ const sealed=await I.seal(payload);
+ byId('export-integrity-status').textContent=sealed.integrity.digest?'SHA-256-Prüfsumme erstellt (keine digitale Signatur).':'Prüfsumme nicht verfügbar: Browser ohne WebCrypto. Keine Integritätsgarantie.';
+ const blob=new Blob([JSON.stringify(sealed,null,2)],{type:'application/json;charset=utf-8'});
+ const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='ADOS_Governance_Lite_v05_FIKTIV_'+new Date().toISOString().slice(0,10)+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function probeBridge(){
+ const state=B.ready(),nonce=B.createNonce();
+ const prep=B.prepareRequest(data,{nonce});
+ const info={kernel:state.status,code:state.code,localContract:prep.code||prep.status,requestPreview:prep.request?{schema:prep.request.schema,capability:prep.request.capability,scope:prep.request.scope,expiresAfterSeconds:300,payload:prep.request.payload}:null,transmitted:false};
+ byId('bridge-readiness').textContent=JSON.stringify(info,null,2);
+ log('Offline-Kernel-Vertragsprüfung: '+info.localContract+' · KEINE Übertragung');
+}
+
+async function probeLocalBridge(){
+ const display=byId('bridge-transport-info');
+ if(location.protocol!=='http:' || location.hostname!=='127.0.0.1' || location.port!=='8767'){
+   display.textContent='BLOCK · Kein lokaler Demo-Server. Offline-Datei bleibt vollständig getrennt. Starte optional: node server/local-bridge.mjs'; return;
+ }
+ const nonce=B.createNonce(),prep=B.prepareRequest(data,{nonce});
+ if(!prep.request){display.textContent='BLOCK · '+(prep.code||'INVALID_REQUEST')+' (Sicherheitsstatus oder Testmetadaten unzulässig).'; return}
+ try {
+   const response=await fetch('/api/ados/bridge/admission',{method:'POST',headers:{'Content-Type':'application/json','X-ADOS-Local-Demo':'1'},body:JSON.stringify(prep.request),cache:'no-store',credentials:'omit'});
+   if(!response.ok)throw new Error('HTTP '+response.status);
+   const packet=await response.json();
+   if(typeof packet.signedPayload!=='string'||typeof packet.signature!=='string')throw new Error('Unvollständiges Testpaket');
+   const receipt=JSON.parse(packet.signedPayload);
+   if(receipt.status!=='BLOCK'||receipt.authoritative!==false||receipt.requestId!==prep.request.requestId||receipt.nonce!==prep.request.nonce||receipt.schema!=='ados-local-bridge-receipt/0.5'||receipt.gate1!=='UNKNOWN'||receipt.gate2!=='BLOCK'||receipt.engineCount!==5||receipt.additionalEngineCreated!==false||receipt.expiresAt<=Date.now()||receipt.issuedAt>Date.now()+30000)throw new Error('Testbescheid inkonsistent oder abgelaufen');
+   let signatureLocal='NICHT GEPRÜFT';
+   if(window.crypto?.subtle){
+      try{const bytes=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+       const key=await crypto.subtle.importKey('spki',bytes(packet.publicKeySpki),{name:'Ed25519'},false,['verify']);
+       const good=await crypto.subtle.verify('Ed25519',key,bytes(packet.signature),new TextEncoder().encode(packet.signedPayload));
+       signatureLocal=good?'LOKALE TESTSIGNATUR GEPRÜFT':'UNGÜLTIGE TESTSIGNATUR';
+      }catch{signatureLocal='TESTSIGNATUR NICHT PRÜFBAR';}
+   }
+   display.textContent='Kernel BLOCK · Test-Bridge: '+receipt.reason+' · '+signatureLocal+'. Der vom Testdienst mitgelieferte Schlüssel beweist keine kanonische PIGA-Autorität. Keine Falltexte übertragen.';
+   log('Lokale Test-Bridge geprüft: '+receipt.reason+'; kanonische Freigabe BLOCK');
+ }catch(err){display.textContent='BLOCK · Lokale Verbindung fehlgeschlagen: '+String(err).slice(0,150)}
+}
+async function checkLocalCoreFile(){
+ const input=byId('core-file'),out=byId('core-verdict');
+ const file=input.files?.[0];
+ out.textContent='BLOCK · Keine Produktionszulassung.';
+ if(!file)return;
+ if(file.size>24*1024*1024){out.textContent='BLOCK · Datei zu groß (>24 MiB); nicht eingelesen.';return}
+ if(!file.name.toLowerCase().endsWith('.zip')){out.textContent='BLOCK · Nur eine ZIP-Bundle-Datei ist hier prüfbar.';return}
+ try{
+   out.textContent='Prüfe lokale Datei. Keine Übertragung …';
+   const result=await C.verifyArrayBuffer(await file.arrayBuffer());
+   const prefix=result.identity==='BYTE_HASH_MATCH'?'Identität: SHA-256 stimmt überein.':'Identität nicht bestätigt: '+result.reason+'.';
+   out.textContent=prefix+' · PIGA-Autorität: NICHT GEPRÜFT · Gate 1: BLOCK · Gate 2: BLOCK · Nur kontrollierte Evaluation.';
+   log('Lokale Core-Datei geprüft: '+result.identity+'; PIGA-Produktionszulassung BLOCK');
+ }catch(err){out.textContent='BLOCK · Identitätsprüfung technisch fehlgeschlagen: '+String(err).slice(0,110)}
+ finally{input.value=''}
+}
+function loopInputs(){
+ const evidence={};const reverse=[];
+ for(const k of L.STEPS){const st=byId('ev-status-'+k).value,ref=byId('ev-ref-'+k).value.trim();evidence[k]={status:st,ref,note:''};}
+ for(let i=6;i>=0;i--){const k=L.STEPS[i];reverse.push({claimRef:byId('rv-claim-'+k).value.trim(),sourceRef:byId('rv-source-'+k).value.trim(),checked:byId('rv-checked-'+k).checked,contradicted:byId('rv-contradicted-'+k).checked});}
+ return {evidence,reverse};
+}
+function addLoopFields(){
+ if(!L)return;
+ const f=byId('a7-loop-evidence'),r=byId('a7-loop-reverse');
+ for(let i=0;i<7;i++){
+ const k=L.STEPS[i],name=E.A7[i].name;
+ const one=document.createElement('div');one.className='loop-stage';
+ const heading=text('strong',(i+1)+'. '+name);const status=document.createElement('select');status.id='ev-status-'+k;
+ for(const st of ['UNKNOWN','PRESENT','CONTRADICTED','REVOKED']){const op=document.createElement('option');op.value=st;op.textContent=st;status.append(op)}
+ status.setAttribute('aria-label',name+' Quellenstatus');
+ const ref=document.createElement('input');ref.id='ev-ref-'+k;ref.placeholder='Evidence-ID (synthetisch)';ref.maxLength=120;ref.setAttribute('aria-label',name+' Evidence-ID');
+ one.append(heading,status,ref);f.append(one);
+ }
+ for(let i=6;i>=0;i--){const k=L.STEPS[i],name=E.A7[i].name;const one=document.createElement('div');one.className='loop-stage';one.append(text('strong',(i+1)+'. '+name+' · Reverse'));
+ for(const [prefix,placeholder] of [['claim','Behauptungs-ID'],['source','Beleg-ID identisch zu A7SEM']]){const inp=document.createElement('input');inp.id='rv-'+prefix+'-'+k;inp.placeholder=placeholder;inp.maxLength=120;inp.setAttribute('aria-label',name+' '+placeholder);one.append(inp)}
+ for(const [name2,label] of [['checked','Zuordnung geprüft'],['contradicted','Widerspruch']]){const lbl=document.createElement('label');lbl.className='loop-check';const chk=document.createElement('input');chk.id='rv-'+name2+'-'+k;chk.type='checkbox';lbl.append(chk,text('span',label));one.append(lbl)}r.append(one);
+ }
+}
+function runLoop(){if(!started)return;latestLoop=L.finite(data,loopInputs(),7);
+ const s=latestLoop;byId('a7-loop-report').textContent=JSON.stringify({mode:'FINITE',status:s.loop.state,reason:s.loop.reason,iterations:s.loop.iterations,findings:s.findings,steps:s.loop.steps,canonicalAuthority:s.authority.status},null,2);
+ log('Finite A7SEM/Reverse: '+s.loop.state+' · Kernel BLOCK');}
+function tickLoop(){if(!started)return;const prev=latestTick,control={now:Date.now(),expiresAt:Date.now()+5*60*1000,humanReview:byId('loop-human-reviewed').checked,revoked:byId('loop-revoked').checked,evidenceEpoch:byId('loop-epoch').value};
+ latestTick=L.continuousTick(data,loopInputs(),prev,control);
+ byId('a7-loop-report').textContent=JSON.stringify(latestTick,null,2);
+ log('Re-Entry-Checkpoint: '+latestTick.reason+' · keine automatische Wiederholung');}
+function boot(){
+ addDepthFields();addLoopFields();renderScenarioLab();
+ document.querySelectorAll('#a7-loop-evidence input, #a7-loop-evidence select, #a7-loop-reverse input').forEach(el=>el.addEventListener('change',()=>{latestLoop=null;latestTick=null;byId('a7-loop-report').textContent='Belegbindung geändert. Finite Loop und Re-Entry müssen neu geprüft werden.';}));
+ byId("run-a7-loop").addEventListener("click",runLoop);byId("tick-a7-loop").addEventListener("click",tickLoop);
+ byId('consent-demo').addEventListener('change',e=>{byId('start-demo').disabled=!e.target.checked;byId('start-empty').disabled=!e.target.checked;byId('run-suite').disabled=!e.target.checked;renderScenarioLab()});
+ byId('run-suite').addEventListener('click',runSuite);
+ byId('reset-demo').addEventListener('click',reset);
+ byId('start-demo').addEventListener('click',()=>start('demo'));
+ byId('start-empty').addEventListener('click',()=>start('empty'));
+ document.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>show(btn.dataset.page)));
+ byId('back').addEventListener('click',()=>show(pages[Math.max(1,pages.indexOf(current)-1)]));
+ byId('next').addEventListener('click',()=>show(pages[Math.min(pages.length-1,pages.indexOf(current)+1)]));
+ document.querySelectorAll('[data-field]').forEach(x=>{
+ const fn=()=>setData(x.dataset.field,x.type==='checkbox'?x.checked:x.value);
+ x.addEventListener(x.type==='checkbox'||x.tagName==='SELECT'?'change':'input',fn);
+ });
+ document.querySelectorAll('input[name=safety],input[name=claimType],input[name=nextAction]').forEach(x=>x.addEventListener('change',()=>{
+ if(x.checked){setData(x.name,x.value);if(x.name==='safety'&&x.value==='yes')show('a',true)}
+ }));
+ byId('print-top').addEventListener('click',()=>{if(started){renderReview();window.print()}});
+ byId('print-report').addEventListener('click',()=>{renderReview();window.print()});
+ byId('download-json').addEventListener('click',exportJson);
+ byId('prepare-bridge').addEventListener('click',probeBridge);
+ byId('probe-local').addEventListener('click',probeLocalBridge);
+ byId('core-file').addEventListener('change',checkLocalCoreFile);
+ populate();show('intro',true);
+ // On HTTPS/localhost only: cache the static app shell. Never request remote resources.
+ if('serviceWorker' in navigator&&['https:','http:'].includes(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+
+</script>
+</body>
+</html>

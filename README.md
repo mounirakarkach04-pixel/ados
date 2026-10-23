@@ -1,0 +1,1 @@
+﻿# ADOS – Die Architektur des Selbst `n`nPublic nonclinical research demonstration, book introduction and licensing page.`n`nURL: https://mounirakarkach04-pixel.github.io/ados/`n`nUse fictional/synthetic data only. No clinical diagnosis, treatment advice or real patient data. Copyright applies subject to the separate license terms of individual components.`n
