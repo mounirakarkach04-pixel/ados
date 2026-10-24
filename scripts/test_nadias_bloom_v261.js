@@ -13,7 +13,7 @@ ck(await page.locator(".nb-step").count()===4,"four start cards");
 const qa=await page.evaluate(()=>window.NADIAS_BLOOM_QA&&({version:window.NADIAS_BLOOM_QA.version,duaCount:window.NADIAS_BLOOM_QA.duaCount,gate2:window.NADIAS_BLOOM_QA.gate2}));
 ck(qa?.duaCount===365,"365 book-labelled dua entries");
 ck(qa?.gate2==="CONFIRM_REQUIRED","action confirmation");
-ck(qa?.version==="v26.1-barakah-onboarding","version marker");
+ck(qa?.version==="v26.2-happy-safe-live","version marker");
 ck(await page.locator("[data-view]").count()>25,"all primary navigation areas");
 await page.locator("#view-start .nb-step[data-view=aufgaben]").click();
 ck(await page.locator("#view-aufgaben").isVisible(),"navigate to tasks from first view");
