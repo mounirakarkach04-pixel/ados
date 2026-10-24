@@ -52,7 +52,7 @@ footer{background:#071d29;color:#c6dbd5;font-size:11px;padding:20px 0}footer a{c
 <section class="panel full" id="passport"><div class="panelheader"><h2>05 · Research Passport & Reproducibility</h2><span class="pill">Local evidence register</span></div>
 <p class="hint">Export a self-contained account of the conceptual hypothesis, inputs, assumptions, missing checks, model trace and audit events. No server upload; no patient data. A hash is not a certified signature.</p>
 <div class="grid3"><div class="tile"><small>Conceptual reference</small><strong id="passport-profile">01 · Small-cell lung cancer</strong></div><div class="tile"><small>Current Gate 1 state</small><strong id="passport-gate">DELAY</strong></div><div class="tile"><small>Gate 2 (clinical)</small><strong style="color:#a2413a">BLOCK</strong></div></div>
-<div class="actions"><button class="btn gold" id="export-json">Export Research Passport · JSON</button><button class="btn line" id="export-csv">Export toy trajectory · CSV</button><button class="btn line" id="print">Print research summary</button><button class="btn line" id="reset">Reset this exercise</button></div>
+<div class="actions"><button class="btn gold" id="export-json">Export Research Passport · JSON</button><button class="btn line" id="download-offline">Download complete offline app · HTML</button><button class="btn line" id="export-csv">Export toy trajectory · CSV</button><button class="btn line" id="print">Print research summary</button><button class="btn line" id="reset">Reset this exercise</button></div>
 <div class="trail" id="audit" style="margin-top:12px" aria-label="Latest local events"></div>
 <div class="note alert"><strong>Medical scope</strong><p>This research companion does not diagnose cancer, rank cancer severity, predict progression, recommend drugs, or justify changing professional care. The book's original framework is theoretical; independent clinical predictive superiority has not been demonstrated.</p></div>
 <div class="hint">Research provenance: <a href="https://drive.google.com/file/d/1t5Vg0HF8FwmYypUGTgnUeEgtr3MfyfFy/view" target="_blank" rel="noopener noreferrer">Public Specialist Book V119</a> and the author's <a href="https://docs.google.com/document/d/1vgLNpTi7bbqaBeZdz06wZOuH5BxJIwyys0N1mNcfeBQ/edit" target="_blank" rel="noopener noreferrer">Research Evidence Register</a>. These external reading links require Internet; the application itself functions offline.</div>
@@ -104,6 +104,7 @@ function init(){
  $("reverse").addEventListener("click",reverse);
  $("export-json").addEventListener("click",()=>{log("EXPORT","Research Passport JSON");download(JSON.stringify(passport(),null,2),"CANCER_SYSTEM_STATE_RESEARCH_PASSPORT_SYN.json","application/json")});
  $("export-csv").addEventListener("click",()=>{log("EXPORT","Fictional trajectory CSV");download(csv(),"CANCER_SYSTEM_STATE_TOY_TRAJECTORY.csv","text/csv;charset=utf-8")});
+ $("download-offline").addEventListener("click",()=>{log("OFFLINE","Self-contained HTML downloaded");download("<!doctype html>\n"+document.documentElement.outerHTML,"CANCER_SYSTEM_STATE_RESEARCH_COMPANION_OFFLINE.html","text/html;charset=utf-8")});
  $("print").addEventListener("click",()=>window.print());
  $("reset").addEventListener("click",reset);
  reset();
