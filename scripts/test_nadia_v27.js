@@ -21,6 +21,7 @@ check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2026-10").some(x=
 check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2026-10").some(x=>x.date==="2026-10-03"&&x.type==="holidays")),"Germany Unity Day");
 check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2027-12").some(x=>x.date==="2027-12-23"&&x.type==="school")),"book year crossover school holiday");
 check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2027-04").some(x=>x.date==="2027-04-02"&&x.type==="school")),"Easter vacation correct");
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView("kalender"));
 await page.locator("#monthChoose").fill("2026-10");await page.locator("#monthChoose").dispatchEvent("change");
 check((await page.locator("#nbx-month-title").innerText()).includes("Oktober 2026"),"month controls");
 await page.locator("#nbx-next").click();
@@ -35,16 +36,19 @@ const calculated=await page.evaluate(()=>window.NADIA_FAMILY_V27.solar(new Date(
 check(Object.keys(calculated).length===5,"five sun positions");
 check(calculated.Fajr<calculated.Dhuhr&&calculated.Dhuhr<calculated.Asr&&calculated.Asr<calculated.Maghrib&&calculated.Maghrib<calculated.Isha,"prayer sequence");
 check(calculated.Fajr>100&&calculated.Isha<1600,"plausible clock bounds");
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView("iman"));
 await page.locator("#nbx-lat").fill("50.1");await page.locator("#nbx-lon").fill("9.1");await page.locator("#nbx-prayer-auto").click();
 check((await page.locator("#nbx-prayer-info").innerText()).includes("Täglich lokale astronomische Näherung"),"automatic daily prayer mode");
 check(await page.locator("#nbx-prayers .nbx-prayer-cell").count()===5,"prayer panel five rows");
 await page.locator("#nbx-prayer-manual").click();check((await page.locator("#nbx-prayer-info").innerText()).includes("Feste manuelle"),"manual override");
 await page.locator("#nbx-erase-gps").click();check((await page.locator("#nbx-lat").inputValue())==="","coordinates deletion");
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView("happy"));
 await page.locator("#nbx-avatar-hijab").selectOption("no");
 await page.locator("#nbx-avatar-color").selectOption("sage");await page.locator("#nbx-avatar-skin").selectOption("olive");
 check(await page.evaluate(()=>!window.NADIA_HAPPY_FACE_QA.options().hijab),"choose avatar without hijab");
 check(await page.evaluate(()=>window.NADIA_HAPPY_FACE_QA.options().color==="sage"),"change avatar color");
 check(await page.locator("#nbx-happy-face svg").count()===1,"avatar remains visible");
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView("buch"));
 check(await page.evaluate(()=>window.NADIA_AUTH_QA.hasPublishableKey),"safe supabase client key present");
 check(await page.evaluate(()=>!window.NADIA_AUTH_QA.serviceRoleExposed&&window.NADIA_AUTH_QA.cloudSyncEnabled===false),"no secret or silent data sync");
 check(await page.locator("#nbx-code").count()===1&&await page.locator("#nbx-new-pass").count()===1,"code and reset password controls");
