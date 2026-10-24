@@ -35,6 +35,19 @@ const filename=path.resolve("cancer-system-state/index.html");
   check(json.gate2==="BLOCK"&&json.trajectory.length===25&&json.profile.number===34,"passport safety and content");
   const [dlC]=await Promise.all([page.waitForEvent("download"),page.locator("#export-csv").click()]);
   check(dlC.suggestedFilename().endsWith(".csv"),"toy trajectory CSV download");
+  const [dlH]=await Promise.all([page.waitForEvent("download"),page.locator("#download-offline").click()]);
+  check(dlH.suggestedFilename().endsWith(".html"),"complete single-file offline HTML download");
+  const offlineSaved=path.join(require("node:os").tmpdir(),"cancer-companion-offline-"+label+".html");
+  await dlH.saveAs(offlineSaved);
+  const offline=await ctx.newPage();
+  try {
+    await offline.goto("file://"+offlineSaved,{waitUntil:"load"});
+    check(await offline.locator("#profile-list [data-profile]").count()===50,"downloaded HTML bootstraps without any other files");
+    check(await offline.locator("#model-chart polyline").count()===2,"offline toy chart renders");
+  } finally {
+    await offline.close();fs.rmSync(offlineSaved,{force:true});
+  }
+
   await page.locator("#reset").click();
   check((await page.locator("#gate-result").innerText()).includes("Gate 1: DELAY"),"reset restores documentary hold");
   const local=await page.locator("a[href]").evaluateAll(a=>a.map(x=>x.getAttribute("href")).filter(x=>x.startsWith("#")));
