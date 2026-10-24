@@ -26,7 +26,7 @@ document.body.innerHTML=
 '<header><div class="wrap top"><a href="'+C.home+'" class="brand">'+escapeHtml(C.t.brand)+'</a><nav><a href="#start">'+(C.lang==='de'?'Start':'Accueil')+'</a><a href="#result">PIGA</a><a href="#vbr">VBR</a><a href="'+C.home+'">'+(C.lang==='de'?'Zur Buchseite':'Le livre')+' ↗</a></nav></div></header>'+
 '<section class="hero"><div class="wrap"><div class="eyebrow">'+escapeHtml(C.t.eyebrow)+'</div><h1>'+escapeHtml(C.t.hero)+'</h1><p>'+escapeHtml(C.t.intro)+'</p><div class="chips">'+[C.t.tag1,C.t.tag2,C.t.tag3,C.t.tag4].map(x=>'<span>'+escapeHtml(x)+'</span>').join('')+'</div></div></section>'+
 '<main class="wrap main" id="start"><section class="paper"><div class="overline">01 · PIGA GATE 1</div><h2>'+escapeHtml(C.t.formTitle)+'</h2><p class="note">'+escapeHtml(C.t.formIntro)+'</p><div class="notice">'+escapeHtml(C.t.legal)+'</div>'+
-'<form id="auditForm"><label class="drop" id="drop"><span class="up">⇧</span><b>'+escapeHtml(C.t.fileLabel)+'</b><input id="file" type="file" accept=".txt,.csv,.tsv,.json,.md,.html,.htm,.pdf,.docx,.xlsx"></label><div id="fileStatus" role="status" class="file-status">'+escapeHtml(C.t.emptyFile)+'</div>'+
+'<form id="auditForm"><label class="drop" id="drop"><span class="up">⇧</span><b>'+escapeHtml(C.t.fileLabel)+'</b><input id="file" type="file" accept=".txt,.csv,.tsv,.json,.md,.html,.htm,.pdf,.docx,.xlsx"></label><div id="fileStatus" role="status" class="file-status">'+escapeHtml(C.t.emptyFile)+'</div><div class="file-status" id="filePreview" aria-live="polite">Nach der Auswahl erscheint hier ein kurzer, ungeprüfter Textauszug.</div>'+
 '<div class="two"><label>'+escapeHtml(C.t.sourceType)+'<select id="kind">'+option(C.t.sourceChoices)+'</select></label><label>'+escapeHtml(C.t.purpose)+'<select id="purpose">'+option(C.t.purposeChoices)+'</select></label></div>'+
 label('claim',C.t.claim,C.t.claimPH)+label('values',C.t.values,C.t.valuesPH,true)+
 '<div class="two">'+label('source',C.t.source)+label('date',C.t.date)+'</div><div class="two">'+label('method',C.t.method)+label('units',C.t.units)+'</div>'+label('alternate',C.t.alternate,C.t.altPH,true)+
@@ -104,7 +104,7 @@ const unit=lines.find(l=>/^(?:einheit|scale|échelle|unités|units|intervalle|sk
 return n
 }
 async function process(f){
-file={name:'',sha256:'',characters:0,parseError:'',excerpt:''};$('fileStatus').textContent=C.t.emptyFile;
+file={name:'',sha256:'',characters:0,parseError:'',excerpt:''};$('fileStatus').textContent=C.t.emptyFile;$('filePreview').textContent='';
 if(!f)return;
 if(f.size>5*1024*1024){file.parseError=C.t.fileTooBig;$('fileStatus').textContent=file.parseError;return}
 file.name=f.name;
@@ -113,6 +113,8 @@ const [text,hash]=await Promise.all([extract(f),sha256(await f.arrayBuffer())]);
 if(!text.trim())throw Error('No extractable text');
 file.characters=text.length;file.sha256=hash;
 file.excerpt=text.slice(0,1100);
+$('filePreview').textContent=(C.lang==='de'?'Ungeprüfter lokaler Dateiauszug: ':'Extrait local non validé : ')+text.slice(0,650);
+if(!$('values').value.trim()&&$('kind').value!=='PERSONAL')$('values').value=(C.lang==='de'?'UNGEPRÜFTER DATEIAUSZUG (keine Diagnose):\n':'EXTRAIT NON VALIDÉ (aucun diagnostic) :\n')+text.slice(0,2400);
 if(text.length>135000)throw Error('Document text exceeds safe preview boundary');
 const proposed=suggest(text);
 $('fileStatus').textContent=C.t.fileDone+': '+f.name+' · '+file.characters+' caractères/Zeichen · '+proposed+' Vorschläge/suggestions (non validées).';
@@ -131,7 +133,7 @@ $('alternate').value=C.t.sampleAlternative;$('consent').checked=true;
 $('risk').value='';$('blockProof').value='';$('indProof').value='';
 file={name:'synthetic-inline',sha256:'',characters:0,parseError:'',excerpt:''};$('fileStatus').textContent=C.t.demo;
 };
-$('clear').onclick=()=>{if(!confirm(C.t.clear+'?'))return;$('auditForm').reset();file={name:'',sha256:'',characters:0,parseError:'',excerpt:''};last=null;$('status').textContent=C.t.stateUnknown;$('status').className='status unknown';$('fileStatus').textContent=C.t.emptyFile;$('questions').textContent='';$('reason').textContent=C.t.resultIntro;$('coverage').textContent='—';$('count').textContent='—';$('export').disabled=$('exportCsv').disabled=true;$('vbr-status').textContent=C.t.vbrNo;$('vbr-reason').textContent=C.t.vbrDefault};
+$('clear').onclick=()=>{if(!confirm(C.t.clear+'?'))return;$('auditForm').reset();file={name:'',sha256:'',characters:0,parseError:'',excerpt:''};last=null;$('filePreview').textContent='';$('status').textContent=C.t.stateUnknown;$('status').className='status unknown';$('fileStatus').textContent=C.t.emptyFile;$('questions').textContent='';$('reason').textContent=C.t.resultIntro;$('coverage').textContent='—';$('count').textContent='—';$('export').disabled=$('exportCsv').disabled=true;$('vbr-status').textContent=C.t.vbrNo;$('vbr-reason').textContent=C.t.vbrDefault};
 $('auditForm').onsubmit=e=>{
 e.preventDefault();
 const f=fields(),kind=$('kind').value,purpose=$('purpose').value,consent=$('consent').checked;
