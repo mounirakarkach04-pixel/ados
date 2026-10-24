@@ -39,7 +39,7 @@ const companion="https://mounirakarkach04-pixel.github.io/ados/cancer-system-sta
    check(errors.length===0,"no script exceptions "+errors.join("; "));
    await context.close();
   }
-  const html=fs.readFileSync(source,"utf8");assert(/Gate 2[\\s\\S]{0,160}BLOCK/i.test(html),"Clinical Gate 2 BLOCK warning required");checks++;
+  const html=fs.readFileSync(source,"utf8");assert(/Gate 2[\s\S]{0,160}BLOCK/i.test(html),"Clinical Gate 2 BLOCK warning required");checks++;
   console.log(JSON.stringify({result:"PASS_CANCER_SYSTEMS_LAB",checks,headlessChromium:true,desktop:true,mobileWidth390:true,offlineSavedFile:true,toyGate2:"BLOCK",patients:0,sourceBytes:Buffer.byteLength(html)},null,2));
  }catch(e){console.error("SYSTEMS_LAB_FAIL",e.stack||String(e));process.exitCode=1;}finally{await browser.close()}
 })();
