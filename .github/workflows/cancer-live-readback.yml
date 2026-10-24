@@ -1,0 +1,47 @@
+name: Cancer Companion Public URL Readback (Free)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'cancer-system-state/**'
+      - '.github/workflows/cancer-live-readback.yml'
+permissions:
+  contents: read
+jobs:
+  verify-public-content:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify public GitHub Pages URL and exact HTML byte parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://mounirakarkach04-pixel.github.io/ados/cancer-system-state/index.html"
+          EXPECTED="$(sha256sum cancer-system-state/index.html | cut -d' ' -f1)"
+          PASSED=0
+          for attempt in $(seq 1 12); do
+            if curl -fsSL --max-time 18 -H 'Cache-Control: no-cache' "${BASE}?version=${GITHUB_SHA}" -o /tmp/cancer-public.html; then
+              ACTUAL="$(sha256sum /tmp/cancer-public.html | cut -d' ' -f1)"
+              if [ "$ACTUAL" = "$EXPECTED" ]; then
+                printf 'PUBLIC_CANCER_READBACK=PASS sha256=%s attempt=%d\n' "$ACTUAL" "$attempt"
+                PASSED=1
+                break
+              else
+                printf 'PUBLIC_READBACK_STALE attempt=%d expected=%s actual=%s\n' "$attempt" "$EXPECTED" "$ACTUAL"
+              fi
+            else
+              printf 'PUBLIC_READBACK_HTTP_FAIL attempt=%d\n' "$attempt"
+            fi
+            sleep 5
+          done
+          [ "$PASSED" -eq 1 ]
+          echo "### Cancer Research Companion public readback" >> "$GITHUB_STEP_SUMMARY"
+          echo "Verified Pages URL: ${BASE}" >> "$GITHUB_STEP_SUMMARY"
+          echo "SHA-256 parity: ${EXPECTED}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Optional PIGA canonical route check, without asserting rollout success
+        shell: bash
+        run: |
+          STATUS="$(curl -sSL --max-time 10 -o /tmp/cancer-canonical.html -w '%{http_code}' 'https://pigapocket.com/cancer-system-state/' || echo unavailable)"
+          echo "PIGA_CANONICAL_HTTP=${STATUS}"
+          if [ "$STATUS" = 200 ] && grep -q 'Cancer as a' /tmp/cancer-canonical.html; then echo 'Canonical route returns matching title (hash still separately required)'; fi
