@@ -1,0 +1,111 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow"><meta name="theme-color" content="#071d29"><title>LA PREUVE LAB | Suite entièrement hors ligne</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;--bg:#061c29;--gold:#e9c487;--paper:#f5f2eb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:#143443;line-height:1.6}
+a{color:inherit}a:focus-visible,button:focus-visible{outline:3px solid #ecbd73;outline-offset:3px}
+.header{background:var(--bg);color:white;padding:13px 0}.container{max-width:960px;margin:auto;padding:0 20px}
+.headrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:900;letter-spacing:.15em;color:var(--gold)}.nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.nav a{color:#e2f1ed;text-decoration:none}.nav a:hover{text-decoration:underline}
+main{padding:38px 0 80px}.eyebrow{color:#5d6f68;text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:800}
+h1{font:500 clamp(30px,5vw,54px)/1.1 Georgia,serif;letter-spacing:-.035em;margin:9px 0 17px}
+h2{font:500 27px/1.2 Georgia,serif;margin:0 0 13px}.lead{max-width:750px;font-size:16px;color:#49616a}
+.card{border:1px solid #d4deda;background:#fff;border-radius:16px;padding:23px;margin:20px 0;box-shadow:0 10px 35px #11333e0a}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:21px 0}.step{background:#f0f5f1;border:1px solid #d6e1dc;border-radius:12px;padding:16px}
+.num{display:grid;place-items:center;background:#173c48;color:#f0d39f;font-weight:800;width:28px;height:28px;border-radius:9px;margin-bottom:9px}
+.step strong{display:block;font-size:13px}.step small{font-size:12px;color:#49616a}
+button{background:#0c3643;color:#fff;border:0;border-radius:10px;min-height:50px;padding:11px 23px;font:750 14px system-ui;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}.subtle{font-size:12px;color:#56717a}.notice{padding:13px 15px;background:#fff3dc;border-left:4px solid #d0a35d;border-radius:8px;font-size:13px}
+.status{margin-top:12px;min-height:44px;padding:10px 13px;background:#e8f3ed;border-radius:10px;font-size:13px;font-weight:680}
+.progress{height:7px;overflow:hidden;border-radius:20px;background:#cad9d6;margin:12px 0}.progress i{display:block;width:0;background:#c7a46c;height:100%;transition:width .16s}
+li{margin:7px 0}.footer{background:#071d29;color:#d1e3de;padding:19px 0;font-size:12px}
+@media(max-width:700px){.steps{grid-template-columns:1fr}main{padding-top:25px}.card{padding:17px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress i{transition:none}}
+</style></head><body>
+<header class="header"><div class="container headrow"><span class="brand">MOUNIR AKARKACH · LA PREUVE LAB</span><nav class="nav" aria-label="Navigation"><a href="index.html">Le livre</a><a href="app.html">L'app</a><a href="workbench.html">QM Workbench</a><a href="evaluation.html">Étude</a></nav></div></header>
+<main class="container"><span class="eyebrow">La preuve avant le diagnostic · Édition autonome</span><h1>Tous les outils.<br>Sans connexion après installation.</h1>
+<p class="lead">Vous avez téléchargé seulement une page HTML ? Ses liens vers les autres pages peuvent échouer hors ligne. Cette archive regroupe <b>toutes les pages nécessaires</b> dans un seul dossier, avec les mêmes liens relatifs qui fonctionnent une fois l'archive décompressée.</p>
+<div class="card"><h2>Installation en trois étapes</h2>
+<div class="steps"><div class="step"><span class="num">01</span><strong>Créer l'archive ZIP</strong><small>Les fichiers sont assemblés dans votre navigateur depuis ce site.</small></div>
+<div class="step"><span class="num">02</span><strong>Décompresser entièrement</strong><small>Extraire les fichiers ensemble, dans le même dossier ; ne pas ouvrir l'HTML à l'intérieur du ZIP.</small></div>
+<div class="step"><span class="num">03</span><strong>Ouvrir index.html</strong><small>Livre, laboratoire, Workbench, étude, confidentialité et licence restent accessibles localement.</small></div></div>
+<button id="bundle" type="button">Télécharger la suite complète (.ZIP)</button>
+<div class="progress" aria-hidden="true"><i id="bar"></i></div><div class="status" id="status" role="status" aria-live="polite">Prêt à assembler le paquet hors ligne.</div>
+<p class="subtle">Téléchargement gratuit. Aucun compte, aucune donnée patient, aucun serveur pour les calculs locaux. La création du ZIP nécessite Internet une seule fois. Les liens vers Amazon, l'OMS ou PIGA Pocket restent naturellement des sites externes.</p></div>
+<div class="notice"><b>Usage limité :</b> démonstration documentaire avec cas entièrement fictifs. Aucune décision médicale ni traitement de patient. PIGA Gate 2 clinique : <b>BLOCK</b>. Les fichiers du paquet gardent leurs scripts originaux et leurs fonctionnalités locales.</div>
+<div class="card"><h2>Fichiers inclus et reproductibilité</h2><ul>
+<li><b>index.html</b> – présentation du livre, aide et navigation</li><li><b>app.html</b> – LA PREUVE LAB, simulateur documentaire, lots CSV, exercices</li>
+<li><b>workbench.html</b> – catalogue de règles, écarts, CAPA et replay</li><li><b>evaluation.html</b> – étude comparative fictive</li>
+<li><b>confidentialite.html, licence.html</b> – informations légales</li><li><b>manifest.webmanifest, sw.js</b> – métadonnées et ressources techniques</li><li><b>README.txt</b> – instructions d'utilisation locale et limites</li></ul>
+<p class="subtle">Les fichiers du paquet utilisent des liens relatifs entre les pages du même dossier ; la seule app téléchargée séparément ouvre les autres pages sur le site officiel lorsqu'une connexion existe.</p></div>
+</main><footer class="footer"><div class="container">© 2026 Mounir Akarkach · LA PREUVE LAB · PIGA / A7SEM · Recherche non clinique</div></footer>
+<script>
+(function(){
+"use strict";
+var ROOT="https://pigapocket.com/la-preuve-avant-le-diagnostic/";
+var PATHS=["index.html","app.html","workbench.html","evaluation.html","confidentialite.html","licence.html","manifest.webmanifest","sw.js"];
+var encoder=new TextEncoder();
+function le16(a,n,p){a[p]=n&255;a[p+1]=(n>>>8)&255;}
+function le32(a,n,p){le16(a,n&65535,p);le16(a,Math.floor(n/65536),p+2);}
+var table=null;
+function crc32(bytes){
+ if(!table){table=Array.from({length:256},(_,n)=>{for(var i=0;i<8;i++)n=(n&1)?(0xedb88320^(n>>>1)):(n>>>1);return n>>>0;})}
+ var c=0xffffffff;for(var j=0;j<bytes.length;j++)c=table[(c^bytes[j])&255]^(c>>>8);return (c^0xffffffff)>>>0;
+}
+function fileZip(entries){
+ var out=[],directory=[],offset=0;
+ for(var k=0;k<entries.length;k++){
+  var e=entries[k],name=encoder.encode(e.name),data=encoder.encode(e.text),crc=crc32(data);
+  if(name.length>65535||data.length>2500000)throw Error("Fichier trop volumineux");
+  var local=new Uint8Array(30+name.length);
+  le32(local,0x04034b50,0);le16(local,20,4);le16(local,0x800,6);le16(local,0,8);le16(local,0,10);le16(local,0,12);le32(local,crc,14);le32(local,data.length,18);le32(local,data.length,22);le16(local,name.length,26);le16(local,0,28);local.set(name,30);
+  out.push(local,data);
+  var central=new Uint8Array(46+name.length);
+  le32(central,0x02014b50,0);le16(central,20,4);le16(central,20,6);le16(central,0x800,8);le16(central,0,10);le16(central,0,12);le16(central,0,14);le32(central,crc,16);le32(central,data.length,20);le32(central,data.length,24);le16(central,name.length,28);le16(central,0,30);le16(central,0,32);le16(central,0,34);le16(central,0,36);le32(central,0,38);le32(central,offset,42);central.set(name,46);
+  directory.push(central);offset+=local.length+data.length;
+ }
+ var directoryLength=directory.reduce((sum,b)=>sum+b.length,0),end=new Uint8Array(22);
+ le32(end,0x06054b50,0);le16(end,0,4);le16(end,0,6);le16(end,entries.length,8);le16(end,entries.length,10);le32(end,directoryLength,12);le32(end,offset,16);le16(end,0,20);
+ return new Blob(out.concat(directory,[end]),{type:"application/zip"});
+}
+function offlineHtml(raw){
+ // The complete ZIP retains same-folder relative navigation. The single-file online-link
+ // fixer is disabled by this explicit, internal-only marker.
+ raw=raw.replace(/<\/head>/i,'<meta name="ak-suite-bundle" content="local"></head>');
+ var pages=PATHS.concat(["manifest.webmanifest"]);
+ pages.forEach(function(f){raw=raw.split(ROOT+f).join(f)});
+ raw=raw.split(ROOT+"workbench-download").join("workbench.html");
+ raw=raw.split(ROOT+"download").join("app.html");
+ // Full site route links within content, but not external links (e.g. WHO, Amazon).
+ return raw;
+}
+async function build(){
+ var btn=document.getElementById("bundle"),status=document.getElementById("status"),bar=document.getElementById("bar");btn.disabled=true;status.textContent="Lecture des pages et assemblage de l'archive…";
+ try{
+  var entries=[];
+  for(var i=0;i<PATHS.length;i++){
+   var name=PATHS[i],url=new URL(name,document.baseURI);
+   var response=await fetch(url.href,{cache:"no-store",credentials:"same-origin"});
+   if(!response.ok)throw Error("Impossible de récupérer "+name+" (HTTP "+response.status+")");
+   var text=await response.text();
+   if(text.length>2500000||(name.endsWith(".html")&&(!/<html[\s>]/i.test(text)||!/<\/html>/i.test(text))))throw Error("Fichier invalide : "+name);
+   if(i<4&&(!text.includes("Gate 2")||!text.includes("MOUNIR AKARKACH")))throw Error("Version inattendue : "+name);
+   entries.push({name:name,text:name.endsWith(".html")?offlineHtml(text):text});
+   bar.style.width=((i+1)/PATHS.length*85).toFixed(0)+"%";
+   status.textContent="Fichier "+(i+1)+"/"+PATHS.length+" : "+name;
+  }
+  var help="LA PREUVE LAB — SUITE OFFLINE COMPLETE\nMounir Akarkach · 24 octobre 2026\n\n1. Décompressez TOUS les fichiers du ZIP dans le même dossier.\n2. Ouvrez index.html depuis ce dossier (NE PAS lancer un fichier directement dans l'archive ZIP).\n3. La navigation entre le Livre, l'Application, la Workbench et l'Étude fonctionne sans Internet ; les liens EXTERNES (Amazon, OMS, PIGA Pocket, ADOS, mentions légales externes) nécessitent Internet.\n4. N'utilisez que des cas SYNTHETIQUES. Aucune donnée patient ou clinique. Gate 2 clinique : BLOCK.\n5. L'app stocke temporairement les résultats pendant la session; exportez les JSON/CSV avant de fermer.\n6. Chaque HTML individuel téléchargé sur le site peut nécessiter Internet pour ses liens vers les autres pages. Ce paquet complet est la solution entièrement locale.\n© 2026 Mounir Akarkach · Recherche/PIGA.\n";
+  entries.push({name:"README.txt",text:help});
+  var blob=fileZip(entries);
+  var a=document.createElement("a"),href=URL.createObjectURL(blob);
+  a.href=href;a.download="LA_PREUVE_LAB_SUITE_COMPLETE_OFFLINE_2026-10-24.zip";
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),8000);
+  bar.style.width="100%";status.textContent="Archive prête ("+entries.length+" fichiers, "+Math.round(blob.size/1024)+" Ko). Décompressez-la avant de naviguer.";
+ }catch(err){status.textContent="Archive non créée : "+String(err.message||err)+" · Réessayez avec une connexion active.";bar.style.width="0%";}
+ finally{btn.disabled=false;}
+}
+window.LA_PREUVE_OFFLINE_PACK={zip:fileZip,html:offlineHtml,paths:PATHS,crc32:crc32};
+document.getElementById("bundle").addEventListener("click",build);
+})();
+</script></body></html>
