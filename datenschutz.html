@@ -12,4 +12,14 @@
 <section><h2>Cookies und Analytik</h2><p>Der Seitenquellcode enthält keine eigene Reichweitenanalyse, keine Werbepixel und keine eingebundenen Marketing-Tracker. Technisch notwendige Vorgänge des Hosters oder durch Ihren Browser verwendete Cookies liegen außerhalb der eigenen Frontend-Implementierung.</p></section>
 <section><h2>Betroffenenrechte</h2><p>Betroffene können nach Maßgabe der DSGVO Auskunft, Berichtigung, Löschung, Einschränkung oder Widerspruch verlangen und sich an eine zuständige Datenschutzaufsichtsbehörde wenden. Die genaue Rechtsgrundlage und etwaige Drittlandübermittlungen des eingesetzten Hosters sind anhand seiner aktuellen Dokumentation und der konkreten Verarbeitung zu prüfen.</p></section>
 <section><h2>Neues ADOS Evidence Studio (synthetische Lehre)</h2><p>Das zusätzlich bereitgestellte Evidence Studio läuft ohne Anmeldung und verarbeitet die Eingaben während der Nutzung ausschließlich im lokalen Browser-Sitzungsspeicher. Exporte als JSON oder CSV werden nur durch eine bewusste Nutzeraktion lokal ausgelöst und sind nicht verschlüsselt. Es gibt keine automatische Synchronisierung mit einem ADOS-Server. Es dürfen ausschließlich frei erfundene SYN-Lehrfälle verwendet werden; ein SYN-Präfix anonymisiert keine echten Personendaten. Links zu externen Angeboten setzen eine Netzwerkverbindung voraus. Der Anbieter kann die allgemeine Nutzung auf GitHub Pages oder PIGA Pocket anhand technisch erforderlicher Serverzugriffe sehen, nicht aber die lokalen simulierten Fallinhalte.</p></section><section class="info"><strong>Wichtige Grenze:</strong> Dies ist ein sachlicher Datenschutzentwurf für die veröffentlichte Forschungssite und ersetzt keine individuelle rechtliche Prüfung. Es werden keine patientenbezogenen Dienste angeboten.</section>
-<p><a href="./">Zurück zu ADOS</a> · <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a></p></main></body></html>
+<p><a href="./">Zurück zu ADOS</a> · <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a></p></main><script id="ados-android-link-fix">(function(){if(location.protocol!=="file:"&&location.protocol!=="content:")return;
+var root="https://pigapocket.com/ados/";
+document.querySelectorAll("a[href]").forEach(function(a){
+var h=a.getAttribute("href"),p=h||"";
+if(/^(?:\.\/|index\.html|studio\.html|datenschutz\.html|nutzungsbedingungen\.html)(?:[?#].*)?$/.test(p)||/^downloads\/[A-Za-z0-9_.-]+$/.test(p)){
+a.setAttribute("href",root+(p==="./"?"":p));a.setAttribute("data-online-link","true");
+}});
+var box=document.createElement("div");box.setAttribute("role","status");box.style.cssText="padding:12px 18px;background:#fff0d7;color:#193840;text-align:center;font:13px/1.5 system-ui";
+box.innerHTML="Offline-Dateiansicht: Verweise zu anderen ADOS-Seiten oder Downloads öffnen die Webseite und benötigen Internet. Interne Sprungmarken bleiben lokal verfügbar.";
+(document.querySelector("header")||document.body.firstElementChild)?.insertAdjacentElement("afterend",box);
+})();</script></body></html>
