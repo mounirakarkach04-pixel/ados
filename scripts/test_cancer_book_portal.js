@@ -31,7 +31,7 @@ const source=path.resolve("cancer-system-state/book.html");
       check(await page.locator("a[href*='drive.google.com/file/d/1t5Vg0H']").count()===2,"source book references");
       check(await page.locator("#buy").count()===1,"dedicated Amazon book section");
       check((await page.locator("#buy").innerText()).includes("Cancer as a Legitimate System State"),"named Amazon book");
-      check(await page.locator("#apps a[href*='/cancer-system-state/evidence']").count()===1,"Evidence Workbench canonical link");
+      check(await page.locator('#apps a[href="https://pigapocket.com/cancer-system-state/evidence"]').count()===1,"Evidence Workbench canonical link");
       check(await page.locator("a[href$='/cancer-system-state/evidence-workbench.html']").count()===1,"Evidence Workbench public backup");
       check((await page.locator("#apps").innerText()).includes("stages A–E"),"clinical evidence stages described");
       const amazon=await page.locator("#amazon-de-link").getAttribute("href");
