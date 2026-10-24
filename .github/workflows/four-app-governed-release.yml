@@ -1,0 +1,31 @@
+name: PIGA Four-App Governance · Finite QA
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'research-intake.html'
+      - 'cancer-system-state/intake.html'
+      - 'la-preuve-avant-le-diagnostic/intake.html'
+      - 'nadias-bloom/index.html'
+      - 'scripts/test_four_app_release.js'
+      - '.github/workflows/four-app-governed-release.yml'
+permissions:
+  contents: read
+concurrency:
+  group: four-app-governed-release-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  four-app-local-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up ephemeral free Chromium
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: PIGA Gate 1 and A7SEM Reverse finite browser audit
+        run: node scripts/test_four_app_release.js
