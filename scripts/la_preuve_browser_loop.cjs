@@ -67,12 +67,12 @@ async function checkStudio(context,cycle){
   check((await page.locator("#exam-feedback").innerText()).includes("Correct"),"Studio exam mismatch");
   await page.locator("#lab").click();check(await page.locator("#doctor").isEnabled(),"Doctor role not activated");
   await page.locator("#doctor").click();check(await page.locator("#doctor").isDisabled(),"Doctor step incomplete");
-  await page.locator("#prev").fill("3");await page.locator("#prev").dispatchEvent("input");
+  await page.locator("#prev").evaluate(el=>{el.value="3";el.dispatchEvent(new Event("input",{bubbles:true}))});
   check(await page.locator(".dot").count()===1000,"Bayes slider redraw error");
   await page.locator("#demo-fhir").click();await page.locator("#demo-hl7").click();
   check((await page.locator("#total-cases").innerText()).trim()==="6","Studio demo imports not added");
   await page.locator("#file").setInputFiles({name:"faux_patient.json",mimeType:"application/json",buffer:Buffer.from('{"resourceType":"Patient","id":"real"}')});
-  check((await page.locator("#import-status").innerText()).includes("BLOQUÉ"),"Unsafe file was accepted");
+  await page.waitForFunction(()=>document.querySelector("#import-status")?.textContent.includes("BLOQUÉ"),null,{timeout:5000});
   for(const id of ["json","csv"]){
    const [dl]=await Promise.all([page.waitForEvent("download"),page.locator("#"+id).click()]);
    check(dl.suggestedFilename().endsWith("."+id),"Studio export "+id+" filename");
