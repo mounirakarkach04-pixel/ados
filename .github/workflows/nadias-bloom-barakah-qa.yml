@@ -1,0 +1,31 @@
+name: Nadia Barakah Home Family Studio QA (Free)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadias_bloom_barakah.js'
+      - '.github/workflows/nadias-bloom-barakah-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: nadia-barakah-qa
+  cancel-in-progress: true
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup open-source Chromium
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Check responsive offline app three bounded cycles
+        run: |
+          node scripts/test_nadias_bloom_barakah.js
+          node scripts/test_nadias_bloom_barakah.js
+          node scripts/test_nadias_bloom_barakah.js
