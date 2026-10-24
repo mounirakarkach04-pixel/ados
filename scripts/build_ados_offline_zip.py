@@ -109,6 +109,9 @@ def rewrite(original:str,page:str)->str:
                 break
         parsed=urlsplit(rel)
         dest=parsed.path
+        # Cancer research apps live separately; ADOS ZIP must retain reachable ONLINE URLs.
+        if dest in ("cancer/index.html","cancer-system-state/index.html"):
+            return attr+"="+quote+"https://mounirakarkach04-pixel.github.io/ados/"+dest+quote
         if dest=="downloads/ADOS_GOVERNANCE_LITE_FINAL_V0_6_GESAMTPAKET.zip":
             return attr+"="+quote+"https://mounirakarkach04-pixel.github.io/ados/downloads/ADOS_GOVERNANCE_LITE_FINAL_V0_6_GESAMTPAKET.zip"+quote
         if dest.startswith("la-preuve-avant-le-diagnostic/"):
