@@ -46,13 +46,29 @@ jobs:
           set -eu
           git config user.name "PIGA Offline QA Worker"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip
-          if git diff --staged --quiet; then
-             echo "ZIP already up-to-date"
-          else
-             git commit -m "release(lapreuve): self-contained verified French offline ZIP [skip ci]"
-             git push origin HEAD:main
-          fi
+          # Concurrent page updates may land while an earlier ZIP worker is running.
+          # Rebuild from the CURRENT branch head on each bounded retry; never publish
+          # a stale archive prepared from an earlier revision.
+          published=0
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 scripts/build_french_offline_zip.py
+            git add la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip
+            if git diff --staged --quiet; then
+              echo "ZIP already up-to-date with the latest HTML (attempt $attempt)"
+              published=1
+              break
+            fi
+            git commit -m "release(lapreuve): verified latest full offline ZIP [skip ci]"
+            if git push origin HEAD:main; then
+              published=1
+              break
+            fi
+            echo "Concurrent source update; rebuilding ZIP from fresh main ($attempt/4)"
+            sleep 2
+          done
+          test "$published" = 1
       - name: Release summary
         run: |
           echo "### French LA PREUVE LAB Offline" >> "$GITHUB_STEP_SUMMARY"
