@@ -129,20 +129,22 @@ def rewrite(original:str,page:str)->str:
             return attr+"="+quote+"index.html"+quote
         return match.group(0)
     result=re.sub(r'\b(href|src)\s*=\s*(["\'])(.*?)\2',attr_replacer,result,flags=re.I|re.S)
-    # A secondary fallback must not silently point to the same local book as
-    # the primary 'back' action. Only the alternative link requires Internet.
+    # Preserve an alternate internet-only destination, not a duplicate book button.
     result=re.sub(
-        r'(<a\b[^>]*\bhref=")index\.html("[^>]*>\s*Alternative Buchseite ↗</a>)',
-        r'\g<1>https://mounirakarkach04-pixel.github.io/ados/\g<2>',
+        r'(<a[^>]*href=")index[.]html("[^>]*>Alternative Buchseite ↗</a>)',
+        lambda match: match.group(1)+"https://mounirakarkach04-pixel.github.io/ados/"+match.group(2),
         result, flags=re.I
     )
-    # Normal local navigation must STAY in the same browser tab, not download
-    # a duplicate HTML file or open a new tab that leaves page.url unchanged.
-    def local_anchor(match:re.Match[str])->str:
+    # Local HTML navigation must open in the SAME tab without a download flag.
+    def local_anchor(match):
         tag=match.group(0)
-        href=re.search(r'\bhref\s*=\s*["\x27]([^"\x27]+)',tag,re.I)
-        if not href or not re.match(
-            r'^(?:index|studio|governance-lite|offline-downloads|datenschutz|nutzungsbedingungen)\.html(?:#.*)?
+        href=re.search(r'href="([^"]+)"',tag,re.I)
+        if href and re.match(r'^(index|studio|governance-lite|offline-downloads|datenschutz|nutzungsbedingungen)[.]html($|#)',href.group(1),re.I):
+            tag=re.sub(r'[ ]+(target|download)="[^"]*"', "",tag,flags=re.I)
+            tag=re.sub(r'[ ]+download(?=[ >])', "",tag,flags=re.I)
+        return tag
+    result=re.sub(r'<a[^>]*>',local_anchor,result,flags=re.I)
+    return result
 
 def audit(pages:dict[str,str])->int:
     allfiles=set(PAGES)|set(ASSETS)|{"README.txt"}
