@@ -393,7 +393,7 @@ if(typeof document!=="undefined"&&document.addEventListener){document.addEventLi
    In the installed complete ZIP a meta marker retains relative fully-offline links. */
 (function(){
 "use strict";
-if(location.protocol!=="file:"||document.querySelector('meta[name="ak-suite-bundle"][content="local"]'))return;
+if((location.protocol!=="file:"&&location.protocol!=="content:")||(location.protocol==="file:"&&document.querySelector('meta[name="ak-suite-bundle"][content="local"]')))return;
 var root="https://pigapocket.com/la-preuve-avant-le-diagnostic/";
 var pages=/^(?:index|app|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html(?:[?#].*)?$/i;
 var rewritten=0;
