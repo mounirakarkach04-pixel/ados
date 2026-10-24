@@ -12,10 +12,10 @@ try{for(const [name,viewport] of [["desktop",{width:1440,height:900}],["mobile",
  function check(v,label){assert(v,name+": "+label);checks++}
  check((await p.title()).includes("Nadia’s Bloom"),"title");check(await p.evaluate(()=>window.NADIAS_BLOOM_QA?.duaCount===365),"365 book duas");
  check(await p.evaluate(()=>window.NADIAS_BLOOM_QA?.gate2==="CONFIRM_REQUIRED"),"confirmed action gate");
- check(await p.locator(".side-btn[data-view]").count()===12,"12 areas");check(await p.locator("#view-buch a[href*='drive.google.com']").count()===1,"real book reference");
+ check(await p.locator(".side-btn[data-view]").count()===12,"12 areas");check(await p.locator("#mobileModules [data-view]").count()===12,"all 12 mobile-accessible modules");check(await p.locator("#view-buch a[href*='drive.google.com']").count()===1,"real book reference");
  check((await p.locator("#homeDua").innerText()).length>30,"book dua shown");
  check((await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth))<=2,"responsive");
- async function nav(id){await p.locator('.side-btn[data-view="'+id+'"]').click();check(await p.locator("#view-"+id+".active").count()===1,id+" opens")}
+ async function nav(id){if(name==="mobile"){await p.locator('.mobilebar [data-view="buch"]').click();await p.locator('#mobileModules [data-view="'+id+'"]').click()}else{await p.locator('.side-btn[data-view="'+id+'"]').click()}check(await p.locator("#view-"+id+".active").count()===1,id+" opens")}
  await nav("aufgaben");await p.locator('#taskForm [name=title]').fill("Testaufgabe");await p.locator("#taskForm button").click();check((await p.locator("#taskList").innerText()).includes("Testaufgabe"),"task add");
  await p.locator("#taskList [data-toggle]").first().click();check(await p.locator("#taskList .done").count()===1,"task toggle");
  await nav("einkauf");await p.locator('#shopForm [name=title]').fill("Brot");await p.locator("#shopForm button").click();check((await p.locator("#shopList").innerText()).includes("Brot"),"shopping");
