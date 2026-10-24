@@ -493,11 +493,22 @@ sessionStorage.setItem(NB_AUTH_SESSION_KEY,JSON.stringify(nbSession));
 if($('nb-remember-email').checked&&nbSession.email)localStorage.setItem('nadia-auth-remembered-email',nbSession.email);
 nbAuthRender()
 }
+async function nbRefreshSession(){
+if(!nbSession?.refresh_token)return false;
+if(Date.now()/1000<(Number(nbSession.expires_at)||0)-90)return true;
+try{const data=await nbAuthCall('token?grant_type=refresh_token','POST',{refresh_token:nbSession.refresh_token});
+if(!data?.access_token||!data?.refresh_token)throw Error('Sitzung abgelaufen');
+nbSession.access_token=data.access_token;nbSession.refresh_token=data.refresh_token;
+nbSession.expires_at=Math.floor(Date.now()/1000)+(Number(data.expires_in)||3600);
+nbSession.email=data.user?.email||nbSession.email;
+sessionStorage.setItem(NB_AUTH_SESSION_KEY,JSON.stringify(nbSession));nbAuthRender();return true;
+}catch{nbSession=null;sessionStorage.removeItem(NB_AUTH_SESSION_KEY);nbAuthRender();nbAuthStatus('Sitzung abgelaufen. Bitte erneut anmelden.');return false}
+}
 function nbAuthRender(){
 const active=!!nbSession?.access_token;
 $('nb-auth-logged-out').hidden=active;$('nb-auth-logged-in').hidden=!active;
 $('nb-auth-current-email').textContent=active?(nbSession.email||'bestätigtes Konto'):'';
-if(active)nbAuthStatus('Angemeldet. Familienplaner-Daten bleiben lokal; keine automatische Cloud-Synchronisation.');
+if(active)nbAuthStatus('E-Mail-Konto bestätigt. Familienplaner-Daten bleiben in diesem Browser; die Anmeldung verschlüsselt oder synchronisiert sie nicht. Bitte ein privates Gerät verwenden.');
 }
 async function nbAuthAction(action){
 const button=$(action),buttons=['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password'];
@@ -530,6 +541,7 @@ nbAuthStatus('Falls ein Konto mit dieser E-Mail existiert, erhältst du einen Pa
 }
 if(action==='nb-update-password'){
 if(!nbSession?.access_token)throw Error('Bitte zuerst den Wiederherstellungslink öffnen und bestätigen.');
+if(!(await nbRefreshSession()))throw Error('Sitzung abgelaufen. Bitte erneut anmelden.');
 const next=$('nb-new-password').value;
 if(next.length<8)throw Error('Das neue Passwort muss mindestens acht Zeichen haben.');
 await nbAuthCall('user','PUT',{password:next},nbSession.access_token);
@@ -563,6 +575,7 @@ if(type==='recovery')nbAuthStatus('Wiederherstellungslink bestätigt. Im Bereich
 }
 })();
 nbAuthRender();
+if(nbSession?.refresh_token)void nbRefreshSession();
 window.NADIA_AUTH_QA={configured:!!NB_SUPABASE_KEY,provider:'supabase-goTrue',app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true};
 
 window.NADIAS_BLOOM_QA={version:'v27-portrait-avatar-calendar-prayer',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',happyProvider:'happy-live-token',read:()=>structuredClone(state),setView:openView};
