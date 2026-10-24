@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'scripts/verify_cancer_canonical_parity.py'
+      - 'scripts/verify_nadia_canonical_readback.py'
+      - 'nadias-bloom/**'
       - '.github/workflows/cancer-canonical-parity.yml'
       - 'cancer-system-state/book.html'
       - 'cancer-system-state/intake.html'
@@ -24,3 +26,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Verify nine production routes and hashes with at most seven reads
         run: python3 scripts/verify_cancer_canonical_parity.py
+      - name: Verify Nadia book-first app, downloads, health and unchanged owner voice
+        run: python3 scripts/verify_nadia_canonical_readback.py
