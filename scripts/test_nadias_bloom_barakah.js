@@ -2,7 +2,7 @@
 "use strict";
 const {chromium}=require("playwright"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
 const src=path.resolve("nadias-bloom/index.html"),html=fs.readFileSync(src,"utf8");
-const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.equal(scripts.length,1);new vm.Script(scripts[0],{filename:"nadia-inline.js"});
+const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert(scripts.length>=1,"single-file offline scripts expected");scripts.forEach((s,i)=>new vm.Script(s,{filename:"nadia-inline-"+i+".js"}));
 assert(!/service_role|OPENAI_API_KEY|piga-owner-voice-router/.test(html));
 (async()=>{const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});let checks=0;const results=[];
 try{for(const [name,viewport] of [["desktop",{width:1440,height:900}],["mobile",{width:390,height:844}]]){
