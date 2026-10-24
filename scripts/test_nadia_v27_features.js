@@ -54,7 +54,7 @@ await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('happy'));
 check(await page.locator('#nb-avatar-photo').isVisible(),'friendly photo first option');
 await page.locator('#nb-avatar-mode').selectOption('illustration');
 await page.locator('#nb-avatar-hijab').selectOption('no');
-await page.locator('#nb-avatar-color').fill('#588167');
+await page.locator('#nb-avatar-color').evaluate(el=>{el.value='#588167';el.dispatchEvent(new Event('change',{bubbles:true}))});
 check(await page.locator('#nb-avatar-illustration').isVisible(),'animated vector avatar available');
 check(await page.locator('#nb-hair').evaluate(el=>getComputedStyle(el).display)!=='none','no-hijab choice shows hair');
 let setting=await page.evaluate(()=>window.NADIAS_BLOOM_QA.read().settings.happyAvatar);
