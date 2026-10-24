@@ -69,6 +69,18 @@ const source=path.resolve("cancer-system-state/evidence-workbench.html");
   test(csv.suggestedFilename().endsWith(".csv"),"aggregate CSV export");
   const [template]=await Promise.all([page.waitForEvent("download"),page.locator("#template-omics").click()]);
   test(template.suggestedFilename().includes("TEMPLATE"),"strict CSV import template");
+  const [offlineDownload]=await Promise.all([page.waitForEvent("download"),page.locator("#download-workbench").click()]);
+  test(offlineDownload.suggestedFilename().endsWith(".html"),"standalone full HTML app exported");
+  const offlinePath=path.join(require("node:os").tmpdir(),"piga-evidence-offline-"+size+".html");
+  await offlineDownload.saveAs(offlinePath);
+  const offline=await context.newPage();
+  try{
+    await offline.goto("file://"+offlinePath,{waitUntil:"load"});
+    test(await offline.locator("#load-gdc").count()===1,"offline app boots with public catalog controls");
+    test((await offline.locator("#passport-status").innerText()).includes("Gate 2: BLOCK"),"offline downloaded app Gate2 BLOCK");
+    test(await offline.evaluate(()=>window.PIGA_CANCER_RESEARCH.getStatus().gate2==="BLOCK"),"offline script operates without backend");
+  }finally{await offline.close();fs.unlinkSync(offlinePath);}
+
   const missing=await page.evaluate(()=>[...document.querySelectorAll("a[href^='#']")].map(n=>n.getAttribute("href")).filter(h=>h.length>1&&!document.getElementById(h.slice(1))));
   test(missing.length===0,"all internal anchors valid");
   test(errors.length===0,"no JavaScript exceptions");
