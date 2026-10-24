@@ -29,14 +29,14 @@ li{margin:7px 0}.footer{background:#071d29;color:#d1e3de;padding:19px 0;font-siz
 <div class="card"><h2>Installation en trois étapes</h2>
 <div class="steps"><div class="step"><span class="num">01</span><strong>Créer l'archive ZIP</strong><small>Les fichiers sont assemblés dans votre navigateur depuis ce site.</small></div>
 <div class="step"><span class="num">02</span><strong>Décompresser entièrement</strong><small>Extraire les fichiers ensemble, dans le même dossier ; ne pas ouvrir l'HTML à l'intérieur du ZIP.</small></div>
-<div class="step"><span class="num">03</span><strong>Ouvrir index.html</strong><small>Livre, laboratoire, Workbench, étude, confidentialité et licence restent accessibles localement.</small></div></div>
+<div class="step"><span class="num">03</span><strong>Ouvrir index.html</strong><small>Livre, laboratoire, Workbench, Studio, étude, confidentialité et licence restent accessibles localement.</small></div></div>
 <button id="bundle" type="button">Télécharger la suite complète (.ZIP)</button>
 <div class="progress" aria-hidden="true"><i id="bar"></i></div><div class="status" id="status" role="status" aria-live="polite">Prêt à assembler le paquet hors ligne.</div>
 <p class="subtle">Téléchargement gratuit. Aucun compte, aucune donnée patient, aucun serveur pour les calculs locaux. La création du ZIP nécessite Internet une seule fois. Les liens vers Amazon, l'OMS ou PIGA Pocket restent naturellement des sites externes.</p></div>
 <div class="notice"><b>Usage limité :</b> démonstration documentaire avec cas entièrement fictifs. Aucune décision médicale ni traitement de patient. PIGA Gate 2 clinique : <b>BLOCK</b>. Les fichiers du paquet gardent leurs scripts originaux et leurs fonctionnalités locales.</div>
 <div class="card"><h2>Fichiers inclus et reproductibilité</h2><ul>
 <li><b>index.html</b> – présentation du livre, aide et navigation</li><li><b>app.html</b> – LA PREUVE LAB, simulateur documentaire, lots CSV, exercices</li>
-<li><b>workbench.html</b> – catalogue de règles, écarts, CAPA et replay</li><li><b>evaluation.html</b> – étude comparative fictive</li>
+<li><b>workbench.html</b> – catalogue de règles, écarts, CAPA et replay</li><li><b>studio.html</b> – visualisation bayésienne, exercice, import fictif et deux rôles</li><li><b>evaluation.html</b> – étude comparative fictive</li>
 <li><b>confidentialite.html, licence.html</b> – informations légales</li><li><b>manifest.webmanifest, sw.js</b> – métadonnées et ressources techniques</li><li><b>README.txt</b> – instructions d'utilisation locale et limites</li></ul>
 <p class="subtle">Les fichiers du paquet utilisent des liens relatifs entre les pages du même dossier ; la seule app téléchargée séparément ouvre les autres pages sur le site officiel lorsqu'une connexion existe.</p></div>
 </main><footer class="footer"><div class="container">© 2026 Mounir Akarkach · LA PREUVE LAB · PIGA / A7SEM · Recherche non clinique</div></footer>
@@ -44,7 +44,7 @@ li{margin:7px 0}.footer{background:#071d29;color:#d1e3de;padding:19px 0;font-siz
 (function(){
 "use strict";
 var ROOT="https://pigapocket.com/la-preuve-avant-le-diagnostic/";
-var PATHS=["index.html","app.html","workbench.html","evaluation.html","confidentialite.html","licence.html","manifest.webmanifest","sw.js"];
+var PATHS=["index.html","app.html","workbench.html","studio.html","evaluation.html","confidentialite.html","licence.html","manifest.webmanifest","sw.js"];
 var encoder=new TextEncoder();
 function le16(a,n,p){a[p]=n&255;a[p+1]=(n>>>8)&255;}
 function le32(a,n,p){le16(a,n&65535,p);le16(a,Math.floor(n/65536),p+2);}
@@ -100,7 +100,7 @@ async function build(){
    bar.style.width=((i+1)/PATHS.length*85).toFixed(0)+"%";
    status.textContent="Fichier "+(i+1)+"/"+PATHS.length+" : "+name;
   }
-  var help="LA PREUVE LAB — SUITE OFFLINE COMPLETE\nMounir Akarkach · 24 octobre 2026\n\n1. Décompressez TOUS les fichiers du ZIP dans le même dossier.\n2. Ouvrez index.html depuis ce dossier (NE PAS lancer un fichier directement dans l'archive ZIP).\n3. La navigation entre le Livre, l'Application, la Workbench et l'Étude fonctionne sans Internet ; les liens EXTERNES (Amazon, OMS, PIGA Pocket, ADOS, mentions légales externes) nécessitent Internet.\n4. N'utilisez que des cas SYNTHETIQUES. Aucune donnée patient ou clinique. Gate 2 clinique : BLOCK.\n5. L'app stocke temporairement les résultats pendant la session; exportez les JSON/CSV avant de fermer.\n6. Chaque HTML individuel téléchargé sur le site peut nécessiter Internet pour ses liens vers les autres pages. Ce paquet complet est la solution entièrement locale.\n© 2026 Mounir Akarkach · Recherche/PIGA.\n";
+  var help="LA PREUVE LAB — SUITE OFFLINE COMPLETE\nMounir Akarkach · 24 octobre 2026\n\n1. Décompressez TOUS les fichiers du ZIP dans le même dossier.\n2. Ouvrez index.html depuis ce dossier (NE PAS lancer un fichier directement dans l'archive ZIP).\n3. La navigation entre le Livre, l'Application, la Workbench, le Studio et l'Étude fonctionne sans Internet ; les liens EXTERNES (Amazon, OMS, PIGA Pocket, ADOS, mentions légales externes) nécessitent Internet.\n4. N'utilisez que des cas SYNTHETIQUES. Aucune donnée patient ou clinique. Gate 2 clinique : BLOCK.\n5. L'app stocke temporairement les résultats pendant la session; exportez les JSON/CSV avant de fermer.\n6. Chaque HTML individuel téléchargé sur le site peut nécessiter Internet pour ses liens vers les autres pages. Ce paquet complet est la solution entièrement locale.\n© 2026 Mounir Akarkach · Recherche/PIGA.\n";
   entries.push({name:"README.txt",text:help});
   var blob=fileZip(entries);
   var a=document.createElement("a"),href=URL.createObjectURL(blob);
