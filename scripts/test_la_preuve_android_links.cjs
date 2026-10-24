@@ -48,6 +48,8 @@ const downloader=landing.match(/<script>([\s\S]*?)<\/script>/)?.[1];assert(downl
 new vm.Script(downloader,{filename:"offline-downloads.html"});
 const app=fs.readFileSync(path.join(folder,"app.html"),"utf8");
 assert(app.includes('location.protocol==="content:"'),"Current app Android guard absent");
+assert(app.includes('id="lapreuve-offline-book-return"'),"Downloaded French app has no visible return to book");
+assert(landing.includes("location.hostname.endsWith(\"github.io\")"),"Missing GitHub Pages path fallback");
 assert(downloader.includes('location.protocol==="content:"'),"Download validation does not match actual Android guard");
 const controls=new Map(),links=[];
 function control(id){
@@ -58,8 +60,8 @@ const doc={getElementById:control,createElement(){return {download:"",href:"",cl
 let blob=null,fetchCalls=0;
 class TestBlob{constructor(parts,options){this.size=parts.reduce((n,x)=>n+x.length,0);blob=this}}
 const uri={createObjectURL(){return"blob:android-test"},revokeObjectURL(){}};
-const fetcher=async uri=>{fetchCalls++;assert(uri.includes("?android_fix="));return {ok:true,text:async()=>app}};
-vm.runInNewContext(downloader,{document:doc,Blob:TestBlob,URL:uri,fetch:fetcher,setTimeout(){}},{timeout:3000});
+const fetcher=async uri=>{fetchCalls++;assert(uri.startsWith("/la-preuve-avant-le-diagnostic/app.html?android_fix="),"Canonical-domain download must use French root, not /ados subpath");return {ok:true,text:async()=>app}};
+vm.runInNewContext(downloader,{document:doc,Blob:TestBlob,URL:uri,fetch:fetcher,location:{hostname:"pigapocket.com"},setTimeout(){}},{timeout:3000});
 (async()=>{
  await control("lab-download").click.call(control("lab-download"));
  assert.equal(fetchCalls,1);
