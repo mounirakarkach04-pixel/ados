@@ -25,7 +25,7 @@
 .nb-trust{margin-top:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:11px;color:#766b74}
 .nb-trust span{padding:5px 10px;border-radius:99px;background:#ffffffc7;border:1px solid #ede5e3}
 .nb-happy-note{margin-top:12px;padding:13px 14px;border-radius:14px;border:1px solid #efdfdd;background:#fff9f8;font-size:12px;color:#66545e;line-height:1.6}
-.nb-book-shortcut{display:inline-flex;margin:10px 0 0;align-items:center;gap:8px;font-size:12px;font-weight:750;color:#734455;text-decoration:underline;text-underline-offset:4px}
+.nb-book-shortcut{display:inline-flex;margin:10px 0 0;align-items:center;gap:8px;font-size:12px;font-weight:750;color:#734455;text-decoration:underline;text-underline-offset:4px;border:0;background:transparent;padding:0;cursor:pointer;text-align:left}
 @media(max-width:1060px){.nb-step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.nb-quickstart{padding:17px;border-radius:20px}.nb-step-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.nb-step{padding:13px;min-height:142px;border-radius:15px}.nb-step b{font-size:12px}.nb-step small{font-size:10px}.nb-trust{gap:6px}.nb-happy-note{padding:10px}}
 @media(prefers-reduced-motion:reduce){.nb-step{transition:none}.nb-step:hover{transform:none}}
@@ -47,7 +47,7 @@
 <button class="nb-step" type="button" data-view="happy"><span class="nb-icon" aria-hidden="true">✦</span><b>Happy fragen</b><small>Sofort im lokalen Modus; Online-Gespräch nur nach deiner Wahl.</small></button>
 </div>
 <div class="nb-trust"><span>✿ Ohne Registrierung</span><span>⌂ Planung bleibt lokal</span><span>☾ Buchbasierte Duʿā 2027</span><span>✦ Happy separat von PIGA Voice</span></div>
-<a class="nb-book-shortcut" href="#buch" data-view="buch">Das zugrunde liegende Buch BARAKAH HOME 2027 kennenlernen ↗</a>
+<button class="nb-book-shortcut" type="button" data-view="buch">Das zugrunde liegende Buch BARAKAH HOME 2027 kennenlernen ↗</button>
 </section><h2 class="section-name">Dein Tag auf einen Blick</h2><div class="cards3"><div class="card stat"><span>▣</span><div class="num" id="statEvents">0</div><small>Termine heute</small></div><div class="card stat"><span>✓</span><div class="num" id="statTasks">0</div><small>Offene Aufgaben</small></div><div class="card stat"><span>☷</span><div class="num" id="statShop">0</div><small>Einkaufspunkte</small></div></div>
 <h2 class="section-name">Was heute wirklich zählt</h2><div class="grid"><div class="card"><h2>Niyyah & Top 3</h2><p>Beginne mit einer klaren Absicht. Drei Dinge sind genug.</p><div class="form one"><label class="field">Meine Niyyah heute<textarea id="dailyNiyyah" placeholder="Wofür möchte ich heute bewusst Zeit schenken?"></textarea></label><label class="field">Priorität 1<input id="priority1" placeholder="Was ist heute wichtig?"></label><label class="field">Priorität 2<input id="priority2" placeholder="Ein weiterer schöner Schritt"></label><label class="field">Priorität 3<input id="priority3" placeholder="Was darf heute gelingen?"></label></div><button class="btn primary" id="saveDay">Tagesplan speichern</button></div><div class="card"><h2>Heute gemeinsam</h2><div id="homeEvents" class="stack"></div><h3 style="margin-top:20px">Offene Aufgaben</h3><div id="homeTasks" class="stack"></div><button class="btn soft" data-view="kalender">Kalender öffnen ↗</button></div></div>
 <div class="grid" style="margin-top:18px"><div class="dua"><div class="eyebrow">BARAKAH HOME 2027 · EIN IMPULS</div><h3>Ein Moment für dein Herz</h3><p id="homeDua"></p><div class="actions"><button class="btn sage" data-view="iman">Iman & Duʿā öffnen</button></div></div><div class="card"><h2>Happy ist an deiner Seite</h2><p>Frag nach offenen Aufgaben, einer Einkaufsliste oder einem sanften Tagesüberblick. Online nur nach deinem Wunsch.</p><div class="actions"><button class="btn primary" data-view="happy">Mit Happy sprechen ✦</button></div><p class="note">Kein dauerhaft eingeschaltetes Mikrofon. Sprachfunktionen benötigen eine explizite Freigabe.</p></div></div></section>
@@ -161,7 +161,7 @@ function localAnswer(q){const t=q.toLowerCase(),d=date(),todo=state.tasks.filter
 function intent(q){const a=q.match(/(?:füge|setze|packe|schreibe)\s+(.{1,100}?)\s+(?:auf|in|zur)\s+(?:die\s+)?einkaufsliste(?:\s+hinzu)?/i);if(a)return {kind:'shop',title:a[1].trim()};const b=q.match(/(?:füge|erstelle|notiere)\s+(?:eine\s+)?aufgabe\s*[:\-]?\s*(.{2,100})/i);if(b)return{kind:'tasks',title:b[1].trim()};return null}
 function stopOnline(){try{live?.close()}catch{}live=null;livePromise=null;stopLiveAudio();if(onlineTurn){clearTimeout(onlineTurn.timer);onlineTurn.reject(Error('Gestoppt'));onlineTurn=null}}
 async function happyPreflight(){
-  if(location.protocol!=='https:'&&location.hostname!=='localhost')throw Error('Live-Modus benötigt die sichere Website. Die heruntergeladene HTML-Version bleibt lokal.');
+  if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')throw Error('Live-Modus benötigt die sichere Website. Die heruntergeladene HTML-Version bleibt lokal.');
   if(typeof WebSocket==='undefined')throw Error('WebSocket wird auf diesem Gerät nicht unterstützt.');
   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),6500);
   try{
