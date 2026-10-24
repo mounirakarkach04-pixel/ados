@@ -1,0 +1,60 @@
+name: LA PREUVE LAB — Publish Complete Offline ZIP
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'la-preuve-avant-le-diagnostic/*.html'
+      - 'la-preuve-avant-le-diagnostic/*.js'
+      - 'la-preuve-avant-le-diagnostic/*.webmanifest'
+      - 'scripts/build_french_offline_zip.py'
+      - '.github/workflows/french-offline-package.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lapreuve-french-offline-bundle
+  cancel-in-progress: false
+
+jobs:
+  package-verify-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout all static French application pages
+        uses: actions/checkout@v4
+      - name: Build audited complete ZIP (fail on dead local link)
+        run: python3 scripts/build_french_offline_zip.py
+      - name: Verify central directory, source markers and checksums
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          p=Path("la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip")
+          with ZipFile(p) as z:
+              names=z.namelist()
+              assert len(names)==10 and z.testzip() is None
+              for name in ["index.html","app.html","workbench.html","studio.html","evaluation.html","confidentialite.html","licence.html"]:
+                  h=z.read(name).decode("utf-8")
+                  assert '<meta name="ak-suite-bundle" content="local">' in h
+                  assert 'href="offline-suite.html"' not in h
+              print("PASS_OFFLINE_LINK_QA",len(names),"files",p.stat().st_size,"bytes")
+          PY
+      - name: Publish ready ZIP as direct public file
+        shell: bash
+        run: |
+          set -eu
+          git config user.name "PIGA Offline QA Worker"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip
+          if git diff --staged --quiet; then
+             echo "ZIP already up-to-date"
+          else
+             git commit -m "release(lapreuve): self-contained verified French offline ZIP [skip ci]"
+             git push origin HEAD:main
+          fi
+      - name: Release summary
+        run: |
+          echo "### French LA PREUVE LAB Offline" >> "$GITHUB_STEP_SUMMARY"
+          echo "Created and checked ten locally linked artifacts. Gate 2 clinical BLOCK." >> "$GITHUB_STEP_SUMMARY"
+          echo "Public file: /la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip" >> "$GITHUB_STEP_SUMMARY"
