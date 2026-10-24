@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'cancer-system-state/**'
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadias_bloom_v261.js'
       - 'cancer/**'
       - 'scripts/test_cancer_book_portal.js'
       - 'scripts/test_cancer_intake.js'
@@ -42,6 +44,7 @@ jobs:
           node scripts/test_cancer_systems_lab.js
           node scripts/test_cancer_book_portal.js
           node scripts/test_cancer_intake.js
+          node scripts/test_nadias_bloom_v261.js
           node scripts/test_cancer_evidence_workbench.js
           node scripts/test_cancer_evidence_workbench.js
           node scripts/test_cancer_evidence_workbench.js
