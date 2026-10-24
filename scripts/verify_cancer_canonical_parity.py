@@ -43,7 +43,7 @@ def get_one(case, nonce):
         if download and "attachment" not in disposition.lower(): errors.append("missing_attachment_disposition")
         if not download and label == "book":
             if b"Three research applications" not in actual: errors.append("book_portal_three_apps_marker_missing")
-            if b"www.amazon.de/s?k=Cancer+as+a+Legitimate+System+State+Mounir+Akarkach" not in actual: errors.append("book_portal_amazon_discovery_missing")
+            if b"amzn.eu/d/09KbBTIE" not in actual: errors.append("book_portal_author_amazon_link_missing")
         return dict(label=label, path=route, code=response_code, expected_sha256=checksum(expected),
                     observed_sha256=checksum(actual), gate2=clinical, content_type=content,
                     attachment=bool("attachment" in disposition.lower()), errors=errors)
