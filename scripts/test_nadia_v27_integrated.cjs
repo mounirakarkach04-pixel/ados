@@ -48,7 +48,7 @@ await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView("happy"));
 ck(await page.locator("#nb-avatar-photo").count()===1,"friendly face exists");
 await page.locator("#nb-avatar-enlarge").click();
 ck(await page.locator("#nb-happy-avatar").evaluate(el=>el.classList.contains("nb-avatar-zoom")),"face can be enlarged");
-await page.locator("#nb-avatar-dismiss").click();
+await page.locator("#nb-avatar-dismiss").click({position:{x:24,y:24}});
 ck(!(await page.locator("#nb-happy-avatar").evaluate(el=>el.classList.contains("nb-avatar-zoom"))),"face can be closed");
 await page.locator("#nb-avatar-mode").selectOption("illustration");
 await page.locator("#nb-avatar-hijab").selectOption("no");
