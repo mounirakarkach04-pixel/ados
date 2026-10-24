@@ -1,0 +1,31 @@
+name: Nadia Bloom PIGA Happy Safe Release QA
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadias_bloom_v261.js'
+      - 'scripts/test_nadia_happy_v262.js'
+      - '.github/workflows/nadia-bloom-release-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: nadia-bloom-release-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  happy-browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium (existing free CI path)
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify 365 Duas, family planning, Happy local and mock online speech
+        run: |
+          node scripts/test_nadias_bloom_v261.js
+          node scripts/test_nadia_happy_v262.js
