@@ -1,0 +1,26 @@
+name: PIGA Four-App Canonical Readback · Bounded
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/verify_four_app_live.py'
+      - '.github/workflows/four-app-live-readback.yml'
+      - 'research-intake.html'
+      - 'cancer-system-state/intake.html'
+      - 'la-preuve-avant-le-diagnostic/intake.html'
+      - 'nadias-bloom/index.html'
+      - 'nadias-bloom/icon-192.png'
+      - 'nadias-bloom/icon-512.png'
+permissions:
+  contents: read
+concurrency:
+  group: four-app-live-readback-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify current canonical content, 6 routes, and PIGA nonclinical invariants
+        run: python3 scripts/verify_four_app_live.py
