@@ -19,7 +19,7 @@ await page.locator('#evidenceForm button[type=submit]').click();
 const report=await page.evaluate(()=>window.PIGA_CANCER_INTAKE_QA.getReport());
 ck(report.gate1==='ALLOW','cancer synthetic research admission ALLOW');
 ck(report.gate2==='BLOCK_CLINICAL','cancer always clinical BLOCK');
-ck(report.vbr?.actualExternalNonExecutionVerified===false,'cancer VBR never auto-verifies non-effect');
+ck(report.vbr?.actualNonExecutionVerified===false,'cancer VBR never auto-verifies non-effect');
 await page.locator('#kind').selectOption('PERSONAL');await page.locator('#evidenceForm button[type=submit]').click();
 ck((await page.locator('#state').innerText()).startsWith('BLOCK'),'cancer identifiable patient BLOCK');
 await page.locator('#kind').selectOption('SYNTHETIC');await page.locator('#purpose').selectOption('RESEARCH');
