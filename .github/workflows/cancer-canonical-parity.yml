@@ -6,6 +6,7 @@ on:
       - 'scripts/verify_cancer_canonical_parity.py'
       - '.github/workflows/cancer-canonical-parity.yml'
       - 'cancer-system-state/book.html'
+      - 'cancer-system-state/intake.html'
       - 'cancer-system-state/evidence-workbench.html'
       - 'cancer-system-state/index.html'
       - 'cancer/index.html'
@@ -21,5 +22,5 @@ jobs:
     steps:
       - name: Checkout evidence source
         uses: actions/checkout@v4
-      - name: Verify seven production routes and hashes with at most seven reads
+      - name: Verify nine production routes and hashes with at most seven reads
         run: python3 scripts/verify_cancer_canonical_parity.py
