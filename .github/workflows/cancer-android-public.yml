@@ -1,0 +1,22 @@
+name: PIGA Cancer and Android Public Release Verification
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/verify_cancer_android_public.sh'
+      - 'cancer/index.html'
+      - 'cancer-system-state/index.html'
+      - 'la-preuve-avant-le-diagnostic/app.html'
+      - 'offline-downloads.html'
+      - '.github/workflows/cancer-android-public.yml'
+permissions:
+  contents: read
+jobs:
+  live-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - name: Public release source parity, offline ZIP consistency
+        shell: bash
+        run: bash scripts/verify_cancer_android_public.sh
