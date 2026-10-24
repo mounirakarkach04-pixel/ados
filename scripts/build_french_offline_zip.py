@@ -26,6 +26,7 @@ ROOTS = (
 )
 ALIAS = {"download": "app.html", "workbench-download": "workbench.html"}
 BUNDLE = '<meta name="ak-suite-bundle" content="local">'
+DIRECT_ZIP_URL = "https://mounirakarkach04-pixel.github.io/ados/la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip"
 INSTALL_MESSAGE = (
     "Suite hors ligne installée — ouvrir LA PREUVE LAB"
 )
@@ -73,6 +74,10 @@ def rewrite(content: str, name: str) -> str:
             content = content.replace(root + file, file)
         for short, target in ALIAS.items():
             content = content.replace(root + short, target)
+    # The archive is ALREADY extracted; direct ZIP links would require Internet and are unnecessary.
+    content = content.replace('href="' + DIRECT_ZIP_URL + '"', 'href="app.html"')
+    content = content.replace("Télécharger directement la suite complète (.ZIP) ↓", "Suite installée · ouvrir LA PREUVE LAB →")
+    content = content.replace("Télécharger directement le ZIP complet ↓", "Suite installée · ouvrir LA PREUVE LAB →")
     # zip builder is deliberately NOT included: running fetch() from file:// is restricted
     content = re.sub(
         r'(<a\b[^>]*href=["\'])offline-suite\.html(["\'][^>]*>).*?(</a>)',
