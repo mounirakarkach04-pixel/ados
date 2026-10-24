@@ -1,0 +1,19 @@
+{
+  "name": "ADOS Evidence Studio — Mounir Akarkach",
+  "short_name": "ADOS Studio",
+  "lang": "de",
+  "description": "Nichtklinische, offlinefähige Forschungs- und Lernwerkzeuge mit fiktiven Fällen. PIGA Gate 2 BLOCK.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#081f2b",
+  "theme_color": "#081f2b",
+  "icons": [
+    {
+      "src": "./ados-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
