@@ -25,7 +25,7 @@ get("scenario").listeners.change({target:{value:"0"}});assert.equal(app.getState
 let before=app.getState().evidence.length;
 const hypothetical=app.simulate();assert.equal(app.getState().evidence.length,before,"simulation mutated evidence");assert.equal(hypothetical.gate2,"BLOCK");assert(!get("sim-result").classList.contains?.("something"));
 get("kind").value="counter";get("stance").value="b";get("claim").value="Fiktiver synthetischer Gegenbeleg für eine Übung";get("provenance").value="PATIENT-A";
-assert.equal(get("add-evidence").click(),undefined);assert.equal(app.getState().evidence.length,before);
+assert.equal(get("add-evidence").click(),false);assert.equal(app.getState().evidence.length,before);
 get("provenance").value="SYN-TRAINING-A";get("evidence-level").value="documented";
 get("add-evidence").click();assert.equal(app.getState().evidence.length,before+1);
 get("student-status").value=app.getState().gate1;get("grade").click();assert(get("grade-result").innerHTML.includes("Korrekt"));
