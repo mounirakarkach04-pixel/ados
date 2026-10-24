@@ -23,6 +23,7 @@ ck(report.vbr?.actualNonExecutionVerified===false,'cancer VBR never auto-verifie
 await page.locator('#kind').selectOption('PERSONAL');await page.locator('#evidenceForm button[type=submit]').click();
 ck((await page.locator('#state').innerText()).startsWith('BLOCK'),'cancer identifiable patient BLOCK');
 await page.locator('#kind').selectOption('SYNTHETIC');await page.locator('#purpose').selectOption('RESEARCH');
+await page.locator('#values').fill('');
 await page.locator('#file').setInputFiles({name:'synthetic-evidence.csv',mimeType:'text/csv',buffer:Buffer.from('source: Research teaching example\nQuestion: synthetic evidence test\n2026-02-11\nMarker-Z,2.5,arbitrary units\n')});
 await wait(page,'#fileStatus','File read locally');
 ck((await page.locator('#filePreview').innerText()).includes('synthetic'),'cancer document preview local');
@@ -50,6 +51,7 @@ await page.locator('#auditForm button[type=submit]').click();
 let v=await page.evaluate(()=>window.PIGA_SHARED_INTAKE_QA.report().vbr);
 ck(v.state==='SELF_REPORTED_EVIDENCE_CANDIDATE_NOT_VERIFIED',variant+' VBR remains candidate');
 ck(v.thirdPartyReadbackPerformed===false,variant+' never claims independent readback');
+await page.locator('#values').fill('');
 await page.locator('#file').setInputFiles({name:'synthetic-evidence.csv',mimeType:'text/csv',buffer:Buffer.from('source: synthetic case\nmethod: observation checklist\n2026-04-18\nScore,4,arbitrary\n')});
 await wait(page,'#fileStatus',variant==='ados'?'Datei lokal eingelesen':'Fichier lu localement');
 ck((await page.locator('#filePreview').innerText()).includes('synthetic'),variant+' local file preview');
