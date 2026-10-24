@@ -78,6 +78,8 @@ try{
  assert(page.url().endsWith("/studio.html"),"Offline book cannot open Studio");
  await page.locator("#scenario").selectOption("5");
  assert.equal((await page.locator("#gate1").innerText()).trim(),"ALLOW");
+ assert.equal(await page.locator('#ados-studio-book-return a[href="index.html"]').count(),1,"Duplicate local book return in Evidence Studio");
+ assert.equal(await page.locator('#ados-studio-book-return a[href^="https://mounirakarkach04-pixel.github.io/ados/"]').count(),1,"Missing independent online fallback link");
  await page.locator('#ados-studio-book-return a[href="index.html"]').click();
  assert(page.url().endsWith("/index.html"),"Studio cannot return to local book");
  await page.locator('a[href="offline-downloads.html"]').first().click();
