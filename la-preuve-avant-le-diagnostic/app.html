@@ -35,6 +35,7 @@
  <span class="eyebrow">v2.0 · contrôle documentaire en série</span><h2>Analyser jusqu'à 300 lignes fictives</h2>
  <p class="muted">Collez un CSV local (point-virgule ou virgule). Vérifiez les dossiers et les motifs de DELAY/BLOCK/UNKNOWN en une opération. Aucun envoi serveur, aucun accès à un SIL/LIMS.</p>
  <div class="actions"><button class="btn alt" id="lot-demo">Charger 100 cas synthétiques</button><button class="btn alt" id="lot-template">Télécharger le modèle CSV</button><button class="btn alt" id="lot-clear">Effacer la saisie</button></div>
+ <div class="field"><label for="lot-file">Ou importer un fichier CSV fictif depuis votre appareil (max. 250 Ko)</label><input id="lot-file" type="file" accept=".csv,text/csv" aria-label="Importer un fichier CSV fictif exclusivement"></div>
  <div class="field"><label for="lot-text">CSV fictif · colonnes id;analyte;value;lower;upper;unit;source;method;sample;population;identity;quality;interference</label><textarea id="lot-text" class="v2text" spellcheck="false" placeholder="id;analyte;value;lower;upper;unit;source;method;sample;population;identity;quality;interference" aria-label="CSV de simulations uniquement"></textarea></div>
  <div class="actions"><button class="btn" id="lot-run">Analyser le lot</button><button class="btn alt" id="lot-export">Exporter résultats CSV</button></div>
  <div id="lot-summary" class="v2line" aria-live="polite">Aucun lot évalué.</div><div id="lot-output" class="v2table v2scroll"></div>
@@ -192,7 +193,17 @@ function boot(){
  $("q-issue").addEventListener("click",function(){setQuick(sample(10))});
  $("lot-demo").addEventListener("click",function(){$("lot-text").value=csv(Array.from({length:100},function(_,i){return sample(i)}),cols);$("lot-summary").textContent="100 scénarios fictifs chargés."});
  $("lot-template").addEventListener("click",function(){browserDownload(csv([sample(0),sample(3),sample(8)],cols),"LA_PREUVE_LAB_v2_modele_SYNTHETIQUE.csv","text/csv;charset=utf-8")});
+ $("lot-file").addEventListener("change",async function(){
+  var file=this.files&&this.files[0];if(!file)return;
+  if(file.size>250000||!/\.csv$/i.test(file.name)){$("lot-summary").className="v2error";$("lot-summary").textContent="Choisissez un fichier .csv fictif de 250 Ko maximum.";this.value="";return;}
+  try{var content=await file.text(),checked=parseCSV(content);
+   if(checked.errors.length){$("lot-summary").className="v2error";$("lot-summary").textContent=checked.errors.join(" | ");this.value="";return;}
+   $("lot-text").value=content;$("lot-summary").className="v2line";$("lot-summary").textContent="Fichier local préparé : "+checked.rows.length+" lignes fictives. Cliquez sur « Analyser le lot ».";
+  }catch(e){$("lot-summary").className="v2error";$("lot-summary").textContent="Lecture du fichier impossible. Aucun envoi serveur."}
+  this.value="";
+ });
  $("lot-clear").addEventListener("click",function(){$("lot-text").value="";lastLot=[];$("lot-summary").textContent="Lot vidé.";$("lot-output").innerHTML=""});
+ $("lot-text").addEventListener("keydown",function(e){if(e.ctrlKey&&e.key==="Enter")$("lot-run").click()});
  $("lot-run").addEventListener("click",function(){
   var parsed=parseCSV($("lot-text").value);
   if(parsed.errors.length){lastLot=[];$("lot-output").innerHTML="";$("lot-summary").className="v2error";$("lot-summary").textContent=parsed.errors.join(" | ");return;}
