@@ -1,0 +1,20 @@
+name: Nadia Supabase Auth Safe Provider Check
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/probe_nadia_auth_provider.js'
+      - '.github/workflows/nadia-auth-provider-qa.yml'
+permissions:
+  contents: read
+jobs:
+  auth-provider-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify configured email provider and Supabase health only (no real email sent)
+        run: node scripts/probe_nadia_auth_provider.js
