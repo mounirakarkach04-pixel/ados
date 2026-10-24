@@ -65,8 +65,10 @@ check(!(await page.locator('#nb-auth-logged-out').isHidden()),'no forced login')
 await page.locator('#nb-auth-email').fill('synthetic@example.com');
 await page.locator('#nb-auth-password').fill('Synthetic#Pass876');
 await page.locator('#nb-email-code').click();
+await page.waitForFunction(()=>document.querySelector('#nb-auth-status').textContent.includes('Einmalcode')||document.querySelector('#nb-auth-status').textContent.includes('DELAY'));
 check((await page.locator('#nb-auth-status').innerText()).includes('Einmalcode'),'mock OTP request works');
 await page.locator('#nb-login').click();
+await page.waitForFunction(()=>!document.querySelector('#nb-auth-logged-in').hidden||document.querySelector('#nb-auth-status').textContent.includes('DELAY'));
 check(!(await page.locator('#nb-auth-logged-in').isHidden()),'mock email/password login');
 check((await page.locator('#nb-auth-current-email').innerText()).includes('synthetic'),'signed in identity visible');
 await page.locator('#nb-logout').click();
