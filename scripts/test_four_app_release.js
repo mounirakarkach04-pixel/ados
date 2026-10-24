@@ -79,7 +79,8 @@ const documentFixtures=[
 for(const sample of documentFixtures){
   await page.locator('#values').fill('');
   await page.locator('#file').setInputFiles({name:sample.name,mimeType:sample.mime,buffer:zipOne(sample.inner,sample.xml)});
-  await wait(page,'#fileStatus',isCancer?'File read locally':variant==='ados'?'Datei lokal eingelesen':'Fichier lu localement');
+  await wait(page,'#fileStatus',sample.name);
+  await wait(page,'#filePreview','SYNTHETIC');
   const preview=await page.locator('#filePreview').innerText();
   ck(preview.includes('SYNTHETIC'),variant+' extracts compressed '+sample.kind+' locally');
 }
