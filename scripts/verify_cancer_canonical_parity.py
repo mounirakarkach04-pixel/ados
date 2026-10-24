@@ -12,6 +12,7 @@ CASES = [
     ("reader_download", "cancer-system-state/index.html", "/cancer-system-state/download", True),
     ("systems_lab", "cancer/index.html", "/cancer-system-state/systems-lab", False),
     ("systems_lab_download", "cancer/index.html", "/cancer-system-state/systems-lab-download", True),
+    ("evidence_workbench", "cancer-system-state/evidence-workbench.html", "/cancer-system-state/evidence", False),
 ]
 MAX_ATTEMPTS = 7
 WAIT_SECONDS = 9
