@@ -36,3 +36,4 @@ jobs:
           node scripts/test_cancer_systems_lab.js
           node scripts/test_cancer_companion.js
           node scripts/test_cancer_systems_lab.js
+          node scripts/test_cancer_book_portal.js
