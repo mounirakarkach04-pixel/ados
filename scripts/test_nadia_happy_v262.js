@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+// Bounded deterministic mock: never use live Gemini session tokens.
 const {chromium}=require('playwright');
 const fs=require('node:fs');
 const path=require('node:path');
