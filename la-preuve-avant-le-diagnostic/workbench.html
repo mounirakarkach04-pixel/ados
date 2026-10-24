@@ -69,10 +69,77 @@ body:has(.ak-welcome) :where(h1,h2){text-wrap:balance}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 @media print{.ak-skip,.ak-mast,.ak-header,.ak-welcome{display:none!important}}
 
-</style></head><body>
+
+/* AKARKACH / LA PREUVE LAB · Edition 2026.10.24 V4
+   Editorial precision × calm scientific workbench. No remote fonts, assets or tracking. */
+:root{--ak-cream:#f8f4ec;--ak-midnight:#061d2a;--ak-ice:#d9efeb;--ak-gold2:#dfba77;--ak-curve:cubic-bezier(.2,.7,.2,1)}
+body.ak-v4{font-kerning:normal;font-feature-settings:"kern","liga";accent-color:#b89560}
+.ak-v4 .ak-mast{background:#071924;border-bottom:1px solid #ffffff12}
+.ak-v4 .ak-author{font-size:clamp(13px,1.7vw,16px);letter-spacing:.14em;line-height:1.35}
+.ak-v4 .ak-header{background:#0a2632ee!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.ak-v4 .ak-mark{letter-spacing:.115em}
+.ak-v4 .ak-mark-icon{background:linear-gradient(145deg,#4c5c5a55,#10283588);border-color:#eacb9680;box-shadow:inset 0 1px 0 #ffffff18}
+.ak-v4 .ak-links a{border:1px solid transparent;transition:background .16s ease,border-color .16s ease,color .16s ease}
+.ak-v4 .ak-links a[aria-current="page"]{border-color:#668787aa;box-shadow:inset 0 -2px 0 #e6c68e}
+.ak-v4 .ak-welcome{margin-top:22px}
+.ak-v4 .ak-welcome-body{padding:clamp(22px,3vw,38px);background:radial-gradient(circle at 90% -30%,#256c7088,transparent 47%),linear-gradient(116deg,#102e3b 0%,#061e2a 62%,#0c3942 100%);box-shadow:0 22px 70px #021c2a2b;border-color:#76948c58;border-radius:22px}
+.ak-v4 .ak-welcome-body:before{width:320px;height:320px;top:-160px;right:-80px;opacity:.5}
+.ak-v4 .ak-welcome-body:after{width:470px;height:470px;top:-240px;right:-200px;opacity:.48}
+.ak-v4 .ak-welcome h2{font-size:clamp(26px,4.4vw,42px);line-height:1.14;max-width:750px;letter-spacing:-.037em}
+.ak-v4 .ak-welcome p{font-size:clamp(13px,1.5vw,15px);max-width:800px;line-height:1.7}
+.ak-v4 .ak-eyebrow{letter-spacing:.18em;word-spacing:.1em}
+.ak-v4 .ak-guide-step{min-width:0;background:#ffffff0b;border:1px solid #abc7bc35;padding:15px 14px;border-radius:12px;text-decoration:none;color:#f7faf7;cursor:pointer;align-items:center}
+.ak-v4 a.ak-guide-step:hover{background:#ffffff15;border-color:#e1be82aa;transform:translateY(-2px)}
+.ak-v4 a.ak-guide-step:focus-visible{outline:3px solid #f9dcab;outline-offset:3px}
+.ak-v4 .ak-guide-step b{font-size:13px;color:#fff}
+.ak-v4 .ak-guide-step small{font-size:11.5px;line-height:1.5}
+.ak-v4 .ak-num{background:#f0cf9c;width:30px;height:30px;flex-basis:30px;border-radius:9px}
+.ak-v4 .ak-action{background:linear-gradient(120deg,#f4d59d,#e3bb76);border-color:#f4d5a5;box-shadow:0 4px 17px #03182450}
+.ak-v4 .ak-action:hover{background:#fbe3b8;box-shadow:0 6px 22px #05192570;transform:translateY(-1px)}
+.ak-v4 :where(.surface,.panel,.card,.v2card){box-shadow:0 2px 14px #00131c0b}
+.ak-v4 :where(.surface,.panel){border-radius:17px!important}
+.ak-v4 :where(.card,.v2card){transition:border-color .17s var(--ak-curve),transform .17s var(--ak-curve),box-shadow .17s var(--ak-curve)}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+ .ak-v4 :where(.card,.v2card):hover{transform:translateY(-2px);box-shadow:0 12px 28px #041e2920}
+}
+.ak-v4 h1{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.057em;line-height:1.07;font-weight:500}
+.ak-v4 .hero .eyebrow{font-weight:800}
+.ak-v4 .hero:where(:not(.x)){position:relative;isolation:isolate}
+.ak-v4 .hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#c8b3890c 1px,transparent 1px),linear-gradient(90deg,#c8b3890c 1px,transparent 1px);background-size:38px 38px;pointer-events:none;z-index:-1;mask-image:linear-gradient(110deg,transparent 18%,black 100%)}
+.ak-v4 .tabs{gap:5px;scrollbar-color:#baa47c66 transparent;scrollbar-width:thin}
+.ak-v4 .tabs .tab{border-radius:10px;white-space:nowrap;min-height:45px;font-weight:730}
+.ak-v4 :where(input,select,textarea){min-height:43px}
+.ak-v4 :where(.warning,.notice){border-radius:10px}
+.ak-v4 .ak-guide-foot{align-items:center}
+.ak-v4 .ak-mobile-dock{display:none}
+.ak-v4 .ak-mini-note{font-size:11px;letter-spacing:.045em;color:#c8e1df;opacity:.88}
+.ak-v4.ak-book{background:#faf7f0}
+.ak-v4.ak-book .section:nth-of-type(even){background:#f1f1e9}
+.ak-v4.ak-book .section h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}
+.ak-v4.ak-book .card{border-color:#d7dfda;background:linear-gradient(157deg,#fff,#fbfcf8)}
+.ak-v4.ak-book .bookframe{filter:drop-shadow(0 30px 35px #00192444)}
+.ak-v4.ak-study .panel{box-shadow:0 7px 35px #031e2912}
+.ak-v4.ak-study .ak-welcome-body .ak-guide-step{border-color:#9ebcba40}
+.ak-v4.ak-lab :where(.v2card,.surface){border-color:#7fa2a128}
+.ak-v4.ak-qm .surface{border-color:#7fa2a12f}
+@media(max-width:760px){
+ .ak-v4 .ak-mobile-dock{display:flex;position:fixed;z-index:25;bottom:0;left:0;right:0;padding:7px max(9px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(9px,env(safe-area-inset-left));justify-content:space-around;gap:5px;background:#081f2ff2;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid #68838764;box-shadow:0 -7px 26px #041c2966}
+ .ak-v4 .ak-mobile-dock a{display:flex;flex:1;min-width:0;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:7px 2px;min-height:48px;text-decoration:none;color:#bad7d5;border-radius:9px;font-size:10px;font-weight:760}
+ .ak-v4 .ak-mobile-dock a[aria-current="page"]{color:#efd09a;background:#32525d}
+ .ak-v4 .ak-mobile-dock svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+ body.ak-v4{padding-bottom:calc(75px + env(safe-area-inset-bottom))}
+ .ak-v4 .ak-header{position:relative}
+ .ak-v4 .ak-welcome h2{font-size:27px}
+ .ak-v4 .ak-welcome-body{border-radius:17px}
+ .ak-v4 .ak-guide-step{padding:12px}
+ .ak-v4 .ak-mast-right .ak-small{display:none}
+}
+@media(prefers-reduced-motion:reduce){.ak-v4 a.ak-guide-step:hover,.ak-v4 .ak-action:hover,.ak-v4 :where(.card,.v2card):hover{transform:none}}
+
+</style></head><body class="ak-v4 ak-qm">
 <a class="ak-skip" href="#ak-main">Aller au contenu principal</a>
 <div class="ak-mast"><div class="ak-wrap"><div><strong class="ak-author">MOUNIR AKARKACH</strong> <span class="ak-author-sub">· Auteur & chercheur indépendant · PIGA / A7SEM</span></div><div class="ak-mast-right"><span>Autre programme en psychologie :</span><a href="https://pigapocket.com/ados/">ADOS — Akarkach Diagnostic Operating System</a><span class="ak-small">(distinct de ce laboratoire)</span></div></div></div>
-<header class="ak-header"><div class="ak-bar"><a class="ak-mark" href="index.html"><span class="ak-mark-icon" aria-hidden="true">✦</span> LA PREUVE <em>LAB</em></a><nav class="ak-links" aria-label="Navigation principale"><a href="index.html">Livre</a><a href="app.html">LA PREUVE LAB</a><a href="workbench.html" aria-current="page">QM Workbench</a><a href="evaluation.html">Étude pilote</a></nav></div></header><section class="ak-welcome" aria-labelledby="ak-title"><div class="ak-welcome-body"><span class="ak-eyebrow">Mounir Akarkach · La preuve avant le diagnostic · Recherche 2026</span><h2 id="ak-title">Bienvenue dans votre atelier qualité.</h2><div class="ak-accent-line"></div><p>La Workbench relie contrôles automatiques, règles, écarts et actions correctives. Démarrez avec un seul cycle : 48 dossiers fictifs, puis explorez les résultats.</p><div class="ak-guide" aria-label="Guide de démarrage"><div class="ak-guide-step"><span class="ak-num" aria-hidden="true">1</span><span><b>Lancer 48 cas</b><small>Sélectionner « 1 cycle » puis exécuter.</small></span></div><div class="ak-guide-step"><span class="ak-num" aria-hidden="true">2</span><span><b>Examiner les écarts</b><small>Consulter les priorités et les règles.</small></span></div><div class="ak-guide-step"><span class="ak-num" aria-hidden="true">3</span><span><b>Documenter et rejouer</b><small>Compléter les CAPA, lancer le replay, exporter.</small></span></div></div><div class="ak-guide-foot"><a class="ak-action" href="#dashboard">Accéder au tableau de bord →</a><details class="ak-details"><summary>Guide d'utilisation et limites</summary><p>Aucune action corrective ne débloque un résultat clinique. Le replay vérifie la cohérence d'un exercice, pas une décision médicale. <a href="index.html">Comprendre le livre</a> · <a href="workbench.html">Explorer les règles QM</a> · <a href="app.html">Ouvrir la simulation.</a></p></details><span class="ak-purpose">Gate 2 clinique : BLOCK</span></div></div></section>
+<header class="ak-header"><div class="ak-bar"><a class="ak-mark" href="index.html"><span class="ak-mark-icon" aria-hidden="true">✦</span> LA PREUVE <em>LAB</em></a><nav class="ak-links" aria-label="Navigation principale"><a href="index.html">Livre</a><a href="app.html">LA PREUVE LAB</a><a href="workbench.html" aria-current="page">QM Workbench</a><a href="evaluation.html">Étude pilote</a></nav></div></header><section class="ak-welcome" aria-labelledby="ak-title"><div class="ak-welcome-body"><span class="ak-eyebrow">Mounir Akarkach · La preuve avant le diagnostic · Recherche 2026</span><h2 id="ak-title">Bienvenue dans votre atelier qualité.</h2><div class="ak-accent-line"></div><p>La Workbench relie contrôles automatiques, règles, écarts et actions correctives. Démarrez avec un seul cycle : 48 dossiers fictifs, puis explorez les résultats.</p><div class="ak-guide" aria-label="Guide de démarrage"><a class="ak-guide-step" href="#dashboard" data-ak-pane="dashboard"><span class="ak-num" aria-hidden="true">1</span><span><b>Lancer 48 cas</b><small>Sélectionner « 1 cycle » puis exécuter.</small></span></a><a class="ak-guide-step" href="#deviations" data-ak-pane="deviations"><span class="ak-num" aria-hidden="true">2</span><span><b>Examiner les écarts</b><small>Consulter les priorités et les règles.</small></span></a><a class="ak-guide-step" href="#capa" data-ak-pane="capa"><span class="ak-num" aria-hidden="true">3</span><span><b>Documenter et rejouer</b><small>Compléter les CAPA, lancer le replay, exporter.</small></span></a></div><div class="ak-guide-foot"><a class="ak-action" href="#dashboard">Accéder au tableau de bord →</a><details class="ak-details"><summary>Guide d'utilisation et limites</summary><p>Aucune action corrective ne débloque un résultat clinique. Le replay vérifie la cohérence d'un exercice, pas une décision médicale. <a href="index.html">Comprendre le livre</a> · <a href="workbench.html">Explorer les règles QM</a> · <a href="app.html">Ouvrir la simulation.</a></p></details><span class="ak-purpose">Gate 2 clinique : BLOCK</span></div></div></section>
 <section class="hero"><div class="wrap"><div class="eyebrow">Nouveau · Workbench v3.0 · qualité documentaire</div><h1>Contrôler. Prioriser.<br>Corriger. Prouver.</h1><p class="lead">Atelier expérimental de précontrôle automatique, règles de qualité, écarts et mesures correctives, sans connexion à un laboratoire et sans décision médicale.</p><div class="pills"><span class="pill">100 % simulation locale</span><span class="pill">PIGA Gate 1 : documentaire</span><span class="pill block">Gate 2 : BLOCK clinique</span><span class="pill">A7SEM Reverse · boucle bornée</span></div>
 <div class="warning"><b>CAS SYNTHÉTIQUES EXCLUSIVEMENT.</b> Aucun résultat patient, nom, fichier médical ou identifiant réel. Les mesures correctives concernent uniquement les fiches pédagogiques. Cette application n'est ni un logiciel de diagnostic, ni un SIL/LIMS, ni un système d'audit certifié. Ne saisissez aucune information personnelle ou sensible.</div></div></section>
 <main id="ak-main" class="wrap">
@@ -237,4 +304,7 @@ function wire(){
 window.LA_PREUVE_QM={SCHEMA,VERSION,makeCase,defaults,evaluate,runSuite,verify,validCase,validRule,stable,makeCsv,exportedStateValid,importState,advance,execute,getState:()=>jsonClone(state)};
 if(typeof document!=='undefined'&&$('run'))wire();
 })();
-</script></body></html>
+
+// Navigation des étapes d'accueil (n'affecte aucune décision de laboratoire).
+if(typeof document!=="undefined"&&document.addEventListener){document.addEventListener("click",function(event){var node=event.target&&event.target.closest?event.target.closest("a[data-ak-pane]"):null;if(!node)return;var target=node.getAttribute("data-ak-pane");var tab=document.querySelector('[data-tab="'+target+'"],[data-page="'+target+'"]');if(tab&&typeof tab.click==="function"){tab.click();var pane=document.getElementById(target);if(pane&&typeof pane.scrollIntoView==="function"){requestAnimationFrame(function(){pane.scrollIntoView({block:"start",behavior:"smooth"})})}}})}
+</script><nav class="ak-mobile-dock" aria-label="Accès rapide sur mobile"><a href="index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 5.5c3-1.5 6-1.5 9 .4 3-1.9 6-1.9 9-.4v13c-3-1.5-6-1.5-9 .4-3-1.9-6-1.9-9-.4z"/><path d="M12 6v13"/></svg>Livre</a><a href="app.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M8 15h8"/></svg>Laboratoire</a><a href="workbench.html" aria-current="page"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>Qualité</a><a href="evaluation.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20h16M6 20V5h12v15M9 9h6M9 13h6"/></svg>Étude</a></nav></body></html>
