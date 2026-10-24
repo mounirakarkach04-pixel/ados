@@ -1,12 +1,58 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#092734"><title>La Preuve LAB | Poste de contrôle PIGA</title><link rel="manifest" href="manifest.webmanifest"><style>
 :root{font-family:Inter,system-ui,Arial,sans-serif;background:#0b202c;color:#edf8f4;--gold:#eac283;--muted:#b2c9cd;--line:#365967}*{box-sizing:border-box}body{margin:0;line-height:1.55}a{color:var(--gold)}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.wrap{max-width:1150px;margin:auto;padding:0 17px}header{background:#071b26;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:4}.nav{display:flex;justify-content:space-between;align-items:center;min-height:59px;gap:10px}.brand{font-weight:850;color:white;text-decoration:none;letter-spacing:.11em}.brand span,.eyebrow{color:var(--gold)}.nav a{font-size:12px}.hero{padding:34px 0 13px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:800}h1{font-size:clamp(29px,5vw,50px);line-height:1.06;letter-spacing:-.04em;margin:12px 0}h2{font-size:23px;margin:0 0 12px}h3{font-size:17px;margin:10px 0}p{margin:0 0 14px}.muted,.fine{color:var(--muted)}.fine{font-size:12px}.warning{border-left:4px solid var(--gold);background:#5a432b44;color:#ffdfab;border-radius:8px;padding:12px 15px;margin:17px 0;font-size:12px}.tabs{display:flex;overflow-x:auto;gap:8px;padding:13px 0}.tab{border:1px solid var(--line);border-radius:99px;padding:10px 14px;background:#173742;color:#d1e2e5;white-space:nowrap;font-size:12px;font-weight:800}.tab.active{background:var(--gold);color:#092734}.pane{display:none}.pane.active{display:block}.surface{background:#12303e;border:1px solid var(--line);border-radius:15px;padding:19px;margin:15px 0}.cols{display:grid;grid-template-columns:1fr 1fr;gap:15px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.field{margin:0 0 13px}label{display:block;font-size:12px;color:#deece9;font-weight:700;margin-bottom:6px}input,select{width:100%;background:#081f2c;border:1px solid #52707c;color:white;border-radius:8px;padding:10px;min-height:43px}.btn{background:var(--gold);color:#102633;border:1px solid var(--gold);border-radius:8px;padding:12px 16px;font-weight:800}.btn.alt{background:#224452;color:#fff;border-color:#52707c}.actions{display:flex;gap:9px;flex-wrap:wrap}.status{padding:16px;background:#0a2634;border:1px solid #4a6975;border-radius:12px}.pill{display:inline-block;border-radius:99px;padding:4px 10px;font-size:11px;font-weight:900;letter-spacing:.06em;background:#3c5160}.pill.block{background:#683e3b;color:#ffe1d8}.pill.delay{background:#66552c;color:#fff0bb}.pill.allow{background:#2b5f4d;color:#dbffea}.atlas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.tile{background:#0a2634;border:1px solid #3c6070;border-radius:9px;padding:12px}.tile strong{color:var(--gold)}.tile small{display:block;color:var(--muted);margin-top:4px}.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.step{border:1px solid #416473;background:#0a2634;padding:10px;border-radius:9px;font-size:11px}.step b{display:block;color:var(--gold)}.audit{max-height:370px;overflow:auto}.event{padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}.metric{padding:15px;border:1px solid var(--line);border-radius:11px;background:#173b47}.metric strong{display:block;font-size:24px}.metric span{font-size:11px;color:var(--muted)}main{padding-bottom:65px}footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:11px}@media(max-width:800px){.cols,.three{grid-template-columns:1fr}.atlas{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}}@media(max-width:440px){.atlas{grid-template-columns:1fr}.btn{flex:1}}@media print{header,.tabs,.actions,.warning{display:none!important}.pane{display:block}body{background:white;color:black}.surface,.status{color:black;background:white}input,select{color:black;background:white}}
+
+/* v2 · accessible, bounded research-only laboratory workflow */
+.hidden{display:none!important}.v2hint{font-size:12px;color:#c6d9d8}.v2line{border-left:3px solid #eac283;padding:10px 13px;background:#1b414e;border-radius:7px;margin:10px 0}.v2grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.v2card{background:#0a2634;border:1px solid #466779;border-radius:12px;padding:15px;margin:8px 0}.v2card h3{margin-top:0}.v2tags{display:flex;gap:7px;flex-wrap:wrap}.v2tag{border-radius:99px;background:#315463;font-size:11px;padding:3px 9px;color:#e5f3ee;font-weight:750}.v2error{border-left:4px solid #e3a061;background:#573d35;padding:12px;border-radius:8px;color:#ffe9d5}.v2ok{border-left:4px solid #85d8b3;background:#245345;padding:12px;border-radius:8px}.v2table{overflow:auto;max-height:460px;border:1px solid #315769;border-radius:10px}.v2table table{width:100%;border-collapse:collapse;font-size:12px}.v2table th,.v2table td{border-bottom:1px solid #355565;text-align:left;padding:8px 9px;vertical-align:top}.v2table th{position:sticky;top:0;background:#183b48;color:#eac283}.v2code{padding:12px;border:1px solid #315769;border-radius:9px;white-space:pre-wrap;word-break:break-word;background:#081f2b;color:#d2e5e4;font:12px/1.6 ui-monospace,monospace}.v2small{font-size:12px;color:#bcd1cf}.v2label{display:inline-flex;gap:7px;align-items:center;font-size:13px;font-weight:700;margin-right:9px}.v2label input{width:auto;min-height:auto}.v2result{min-height:56px}.v2title{font-size:16px;color:#eac283}.v2status{font-weight:850}.v2muted{color:#a7c8d0}.v2scroll{max-height:520px;overflow:auto}.v2text{width:100%;min-height:140px;background:#081f2c;border:1px solid #557580;border-radius:9px;padding:12px;color:white;font:12px/1.5 ui-monospace,monospace}.v2focus{background:#264d4d;border:1px solid #547d70;border-radius:12px;padding:15px}.v2link{color:#eac283}.v2foot{margin:12px 0;font-size:12px;color:#b8cfcd}@media(max-width:760px){.v2grid{grid-template-columns:1fr}.v2table{max-height:330px}.v2card{padding:12px}}
 </style></head><body><header><div class="wrap nav"><a class="brand" href="index.html">LA PREUVE <span>LAB</span></a><a href="index.html">← Présentation du livre</a></div></header><div class="wrap"><section class="hero"><span class="eyebrow">PIGA · A7SEM · Glassbox · Reverse</span><h1>La preuve avant<br>le diagnostic.</h1><p class="muted">Atelier documentaire pour techniciens, biologistes, pharmaciens et chercheurs : comparaison d'une valeur à <b>l'intervalle fourni</b>, vérification de provenance, registre auditable et calcul bayésien pédagogique.</p><aside class="warning">VERSION DE RECHERCHE / FORMATION — <b>cas fictifs exclusivement.</b> Ni diagnostic, ni prescription, ni interprétation clinique validée, ni transmission vers un laboratoire. Ne saisir aucune donnée de patient identifiable. Gate 2 clinique toujours BLOCK.</aside></section>
-<nav class="tabs" aria-label="Modules"><button class="tab active" data-tab="controle">Contrôle labo</button><button class="tab" data-tab="governance">PIGA & Reverse</button><button class="tab" data-tab="atlas">40 dossiers</button><button class="tab" data-tab="bayes">Calcul Bayes</button><button class="tab" data-tab="journal">Registre</button></nav>
-<main><section class="pane active" id="controle"><div class="three"><div class="metric"><strong id="count">0</strong><span>Contrôles de cette session</span></div><div class="metric"><strong id="suspended">0</strong><span>Retenus, inconnus ou bloqués</span></div><div class="metric"><strong>0</strong><span>Actions cliniques exécutées</span></div></div><div class="cols"><div class="surface"><h2>Contrôle de preuve</h2><p class="fine">Saisie locale uniquement. Aucune valeur ni identification réelle : même l'export doit rester fictif.</p><div class="field"><label for="ref">Code fictif</label><input id="ref" maxlength="60" value="DEMO-001" autocomplete="off"></div><div class="field"><label for="analyte">Paramètre</label><input id="analyte" maxlength="100" placeholder="Hémoglobine, créatinine, etc."></div><div class="three"><div class="field"><label for="value">Valeur</label><input id="value" type="number" step="any" placeholder="99"></div><div class="field"><label for="lower">Borne basse</label><input id="lower" type="number" step="any" placeholder="120"></div><div class="field"><label for="upper">Borne haute</label><input id="upper" type="number" step="any" placeholder="160"></div></div><div class="cols"><div class="field"><label for="unit">Unité commune</label><input id="unit" maxlength="30" placeholder="g/L"></div><div class="field"><label for="source">Source de l'intervalle, version</label><input id="source" maxlength="170" placeholder="Référentiel fictif, version, date"></div></div><div class="cols"><div class="field"><label for="method">Méthode / appareil</label><input id="method" maxlength="100"></div><div class="field"><label for="sample">Type de prélèvement</label><input id="sample" maxlength="100"></div></div><div class="field"><label for="population">Population et contexte de l'intervalle</label><input id="population" maxlength="140" placeholder="Contexte de validité, jamais universel"></div><div class="three"><div class="field"><label for="identity">Correspondance échantillon</label><select id="identity"><option value="unknown">Inconnue</option><option value="yes">Vérifiée, fiction</option><option value="no">Non conforme</option></select></div><div class="field"><label for="quality">Contrôle qualité</label><select id="quality"><option value="unknown">Inconnu</option><option value="yes">Conforme, fiction</option><option value="no">Non conforme</option></select></div><div class="field"><label for="interference">Interférence / hémolyse</label><select id="interference"><option value="unknown">Non vérifiée</option><option value="no">Absente, fiction</option><option value="yes">Suspectée ou présente</option></select></div></div><div class="actions"><button class="btn" id="run">Contrôler</button><button class="btn alt" id="example">Exemple fictif</button><button class="btn alt" id="reset">Effacer</button></div></div><div class="surface"><h2>Lecture documentée</h2><div id="result" class="status" aria-live="polite"><span class="pill">UNKNOWN</span><h3>Pas encore de contrôle</h3><p>Complétez les champs ; l'outil ne conclut jamais à une maladie.</p></div><h3>Principes non négociables</h3><p class="fine">Un marqueur anormal n'indique pas automatiquement une maladie. Une PCR positive ne prouve pas la viabilité d'un pathogène. Une valeur normale n'exclut pas une pathologie. L'application ne fournit ni seuils cliniques universels ni recommandations thérapeutiques.</p></div></div></section>
+<nav class="tabs" aria-label="Modules"><button class="tab" data-tab="controle">Contrôle avancé</button><button class="tab" data-tab="governance">PIGA & Reverse</button><button class="tab" data-tab="atlas">40 dossiers</button><button class="tab" data-tab="bayes">Calcul Bayes</button><button class="tab" data-tab="journal">Registre</button><button class="tab active" data-tab="guide">Saisie facile</button><button class="tab" data-tab="lots">Lots CSV</button><button class="tab" data-tab="fiches">40 fiches interactives</button><button class="tab" data-tab="rapports">Rapports QM</button></nav>
+<main><section class="pane" id="controle"><div class="three"><div class="metric"><strong id="count">0</strong><span>Contrôles de cette session</span></div><div class="metric"><strong id="suspended">0</strong><span>Retenus, inconnus ou bloqués</span></div><div class="metric"><strong>0</strong><span>Actions cliniques exécutées</span></div></div><div class="cols"><div class="surface"><h2>Contrôle de preuve</h2><p class="fine">Saisie locale uniquement. Aucune valeur ni identification réelle : même l'export doit rester fictif.</p><div class="field"><label for="ref">Code fictif</label><input id="ref" maxlength="60" value="DEMO-001" autocomplete="off"></div><div class="field"><label for="analyte">Paramètre</label><input id="analyte" maxlength="100" placeholder="Hémoglobine, créatinine, etc."></div><div class="three"><div class="field"><label for="value">Valeur</label><input id="value" type="number" step="any" placeholder="99"></div><div class="field"><label for="lower">Borne basse</label><input id="lower" type="number" step="any" placeholder="120"></div><div class="field"><label for="upper">Borne haute</label><input id="upper" type="number" step="any" placeholder="160"></div></div><div class="cols"><div class="field"><label for="unit">Unité commune</label><input id="unit" maxlength="30" placeholder="g/L"></div><div class="field"><label for="source">Source de l'intervalle, version</label><input id="source" maxlength="170" placeholder="Référentiel fictif, version, date"></div></div><div class="cols"><div class="field"><label for="method">Méthode / appareil</label><input id="method" maxlength="100"></div><div class="field"><label for="sample">Type de prélèvement</label><input id="sample" maxlength="100"></div></div><div class="field"><label for="population">Population et contexte de l'intervalle</label><input id="population" maxlength="140" placeholder="Contexte de validité, jamais universel"></div><div class="three"><div class="field"><label for="identity">Correspondance échantillon</label><select id="identity"><option value="unknown">Inconnue</option><option value="yes">Vérifiée, fiction</option><option value="no">Non conforme</option></select></div><div class="field"><label for="quality">Contrôle qualité</label><select id="quality"><option value="unknown">Inconnu</option><option value="yes">Conforme, fiction</option><option value="no">Non conforme</option></select></div><div class="field"><label for="interference">Interférence / hémolyse</label><select id="interference"><option value="unknown">Non vérifiée</option><option value="no">Absente, fiction</option><option value="yes">Suspectée ou présente</option></select></div></div><div class="actions"><button class="btn" id="run">Contrôler</button><button class="btn alt" id="example">Exemple fictif</button><button class="btn alt" id="reset">Effacer</button></div></div><div class="surface"><h2>Lecture documentée</h2><div id="result" class="status" aria-live="polite"><span class="pill">UNKNOWN</span><h3>Pas encore de contrôle</h3><p>Complétez les champs ; l'outil ne conclut jamais à une maladie.</p></div><h3>Principes non négociables</h3><p class="fine">Un marqueur anormal n'indique pas automatiquement une maladie. Une PCR positive ne prouve pas la viabilité d'un pathogène. Une valeur normale n'exclut pas une pathologie. L'application ne fournit ni seuils cliniques universels ni recommandations thérapeutiques.</p></div></div></section>
 <section class="pane" id="governance"><div class="surface"><h2>Double admission PIGA</h2><div class="cols"><div class="status"><span id="gate1" class="pill">UNKNOWN</span><h3>Gate 1 · Inférence documentaire</h3><p id="g1text">Vérification conditionnelle des unités, méthodes, bornes, provenance et contrôles.</p></div><div class="status"><span class="pill block">BLOCK</span><h3>Gate 2 · Action clinique</h3><p>Toujours bloqué. Aucune délivrance de résultat patient, prescription, triage médical, décision de traitement ou action SIL/LIMS.</p></div></div><h3>Sept vérifications opérationnelles</h3><div class="steps" id="steps"></div><p class="fine">Séquence documentaire adaptée à la lecture de l'ouvrage ; elle ne revendique pas de certification A7SEM.</p><h3>A7SEM Reverse</h3><p id="reverse">Aucun contrôle exécuté : la remontée de preuves reste inconnue.</p><button class="btn alt" id="reentry">Réentrée : vérifier à nouveau</button><p class="fine">Boucle finie : 7 réentrées maximum par dossier fictif. Une nouvelle fiche lance un nouveau cycle ; aucune boucle infinie autonome ni action en arrière-plan.</p></div></section>
 <section class="pane" id="atlas"><div class="surface"><h2>Index des 40 diagnostics infectieux</h2><p class="fine">Titres tirés de « La preuve avant le diagnostic », dossiers D-001 à D-040. Index seulement : pas de conseil clinique.</p><div class="field"><label for="search">Filtrer les dossiers</label><input id="search" type="search" placeholder="STEC, méningite, VIH…"></div><div id="atlaslist" class="atlas"></div></div></section>
 <section class="pane" id="bayes"><div class="surface"><h2>Valeurs prédictives · étude fictive</h2><p class="fine">VPP = Se × p / [Se × p + (1 − Sp) × (1 − p)]. Exemple du livre : 95 % de sensibilité, 98 % de spécificité, 1 % de prévalence → environ 32,4 % de VPP. Aucune probabilité individuelle ne peut être déduite sans validation contextuelle.</p><div class="three"><div class="field"><label for="se">Sensibilité (%)</label><input id="se" type="number" value="95" min="0" max="100" step="any"></div><div class="field"><label for="sp">Spécificité (%)</label><input id="sp" type="number" value="98" min="0" max="100" step="any"></div><div class="field"><label for="pre">Prévalence préalable (%)</label><input id="pre" type="number" value="1" min="0" max="100" step="any"></div></div><div class="field"><label for="bayesSource">Source / population</label><input id="bayesSource" placeholder="Pédagogique fictif · aucune transposition clinique"></div><button class="btn" id="compute">Calculer VPP et VPN</button><div id="bayesout" class="status" style="margin-top:14px" aria-live="polite">Renseignez des hypothèses cohérentes, exprimées en pourcentage.</div></div></section>
-<section class="pane" id="journal"><div class="surface"><h2>Glassbox · journal de session</h2><p class="fine">Journal en mémoire volatile : aucun envoi et aucun stockage permanent. Rechargement = effacement. Exportez uniquement des simulations.</p><div class="actions"><button class="btn" id="json">Exporter JSON</button><button class="btn alt" id="csv">Exporter CSV</button><button class="btn alt" id="print">Imprimer / PDF</button><button class="btn alt" id="erase">Effacer journal</button></div><div class="audit" id="events"><p class="fine">Aucun événement.</p></div></div></section></main></div><footer><div class="wrap">© 2026 Mounir Akarkach · LA PREUVE LAB v1.0 · Recherche et pédagogie seulement · <a href="licence.html">Licence</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="https://pigapocket.com/">PIGA Pocket</a></div></footer>
+<section class="pane" id="journal"><div class="surface"><h2>Glassbox · journal de session</h2><p class="fine">Journal en mémoire volatile : aucun envoi et aucun stockage permanent. Rechargement = effacement. Exportez uniquement des simulations.</p><div class="actions"><button class="btn" id="json">Exporter JSON</button><button class="btn alt" id="csv">Exporter CSV</button><button class="btn alt" id="print">Imprimer / PDF</button><button class="btn alt" id="erase">Effacer journal</button></div><div class="audit" id="events"><p class="fine">Aucun événement.</p></div></div></section>
+<section class="pane active" id="guide"><div class="surface">
+ <span class="eyebrow">Nouveau · v2.0 · laboratoire documentaire fictif</span><h2>Saisie facile en trois étapes</h2>
+ <p class="muted">Une seule fiche guidée. Les champs essentiels sont expliqués ; les contrôles utilisent la même fonction Gate 1 que la version classique. Aucun identifiant ni résultat réel.</p>
+ <div class="v2grid">
+  <div class="v2card"><h3>1 · Valeur et intervalle</h3><div class="field"><label for="q-id">Identifiant fictif (SYN-…)</label><input id="q-id" value="SYN-DEMO-001" maxlength="50"></div>
+   <div class="field"><label for="q-analyte">Paramètre fictif</label><input id="q-analyte" value="ANALYTE_FICTIF" maxlength="80"></div>
+   <div class="three"><div class="field"><label for="q-value">Valeur</label><input id="q-value" type="number" step="any" value="140"></div><div class="field"><label for="q-low">Minimum</label><input id="q-low" type="number" step="any" value="120"></div><div class="field"><label for="q-high">Maximum</label><input id="q-high" type="number" step="any" value="160"></div></div>
+   <div class="field"><label for="q-unit">Unité commune · aucune conversion automatique</label><input id="q-unit" value="U_fictive" maxlength="30"></div>
+  </div>
+  <div class="v2card"><h3>2 · Origine et qualité</h3>
+   <div class="field"><label for="q-source">Source/version de l'intervalle</label><input id="q-source" value="Reference_fictive_v1" maxlength="100"></div>
+   <div class="field"><label for="q-method">Méthode / instrument</label><input id="q-method" value="Instrument_fictif" maxlength="100"></div>
+   <div class="field"><label for="q-sample">Type de prélèvement</label><input id="q-sample" value="Prelevement_fictif" maxlength="80"></div>
+   <div class="field"><label for="q-population">Population de référence / contexte fictif</label><input id="q-population" value="Population_fictive" maxlength="100"></div>
+   <div class="three"><div class="field"><label for="q-identity">Identité</label><select id="q-identity"><option value="yes">Conforme</option><option value="unknown">Inconnue</option><option value="no">Non conforme</option></select></div>
+   <div class="field"><label for="q-quality">Qualité</label><select id="q-quality"><option value="yes">Conforme</option><option value="unknown">Inconnue</option><option value="no">Non conforme</option></select></div>
+   <div class="field"><label for="q-interference">Interférence</label><select id="q-interference"><option value="no">Absente</option><option value="unknown">Inconnue</option><option value="yes">Suspectée</option></select></div></div>
+  </div>
+ </div>
+ <div class="v2card"><h3>3 · Contrôle et explication</h3><div class="actions"><button class="btn" id="q-run">Vérifier le dossier fictif</button><button class="btn alt" id="q-issue">Simuler un défaut</button><button class="btn alt" id="q-reset">Restaurer l'exemple</button></div><div id="q-out" class="v2result v2line" aria-live="polite">Prêt pour la simulation. Gate 2 clinique : BLOCK.</div><p class="v2hint">Un ALLOW autorise seulement la comparaison arithmétique documentaire et ne valide jamais un examen médical.</p></div>
+</div></section>
+<section class="pane" id="lots"><div class="surface">
+ <span class="eyebrow">v2.0 · contrôle documentaire en série</span><h2>Analyser jusqu'à 300 lignes fictives</h2>
+ <p class="muted">Collez un CSV local (point-virgule ou virgule). Vérifiez les dossiers et les motifs de DELAY/BLOCK/UNKNOWN en une opération. Aucun envoi serveur, aucun accès à un SIL/LIMS.</p>
+ <div class="actions"><button class="btn alt" id="lot-demo">Charger 100 cas synthétiques</button><button class="btn alt" id="lot-template">Télécharger le modèle CSV</button><button class="btn alt" id="lot-clear">Effacer la saisie</button></div>
+ <div class="field"><label for="lot-text">CSV fictif · colonnes id;analyte;value;lower;upper;unit;source;method;sample;population;identity;quality;interference</label><textarea id="lot-text" class="v2text" spellcheck="false" placeholder="id;analyte;value;lower;upper;unit;source;method;sample;population;identity;quality;interference" aria-label="CSV de simulations uniquement"></textarea></div>
+ <div class="actions"><button class="btn" id="lot-run">Analyser le lot</button><button class="btn alt" id="lot-export">Exporter résultats CSV</button></div>
+ <div id="lot-summary" class="v2line" aria-live="polite">Aucun lot évalué.</div><div id="lot-output" class="v2table v2scroll"></div>
+ <p class="v2foot">Sécurité : les identifiants doivent commencer par SYN-. N'importez jamais d'identifiants, de données de santé ou de fichiers de patients. La validation de préfixe n'est pas un système d'anonymisation.</p>
+</div></section>
+<section class="pane" id="fiches"><div class="surface">
+ <span class="eyebrow">v2.0 · formation par l'erreur</span><h2>40 fiches, chacune avec un exercice</h2><p class="muted">Consultez les quarante intitulés de l'ouvrage et entraînez-vous à identifier une condition manquante avant une inférence. Ces exercices ne fournissent aucun diagnostic ni protocole thérapeutique.</p>
+ <div class="field"><label for="f-search">Rechercher une fiche</label><input id="f-search" type="search" placeholder="VIH, tuberculose, paludisme, D-030…"></div>
+ <div id="f-list" class="v2grid v2scroll"></div><div id="f-exercise" class="v2card hidden" aria-live="polite"></div>
+</div></section>
+<section class="pane" id="rapports"><div class="surface">
+ <span class="eyebrow">v2.0 · transparence et reproductibilité</span><h2>Tableau de bord documentaire</h2>
+ <p class="muted">Synthèse des vérifications réalisées dans les modules v2 de cette session. L'ancien journal reste accessible dans l'onglet « Registre ». Aucun rapport n'est médicalement certifié.</p>
+ <div class="three"><div class="metric"><strong id="r-total">0</strong><span>Cas fictifs contrôlés v2</span></div><div class="metric"><strong id="r-holds">0</strong><span>Statuts non ALLOW</span></div><div class="metric"><strong id="r-block">BLOCK</strong><span>Gate 2 clinique : permanent</span></div></div>
+ <div class="v2card"><h3>Registre avec empreinte SHA-256 (si disponible)</h3><div class="actions"><button class="btn" id="r-json">Exporter rapport JSON</button><button class="btn alt" id="r-csv">Exporter journal CSV</button><button class="btn alt" id="r-print">Imprimer / PDF</button><button class="btn alt" id="r-clear">Effacer v2</button></div><p class="v2hint">Le hachage détecte certaines modifications du fichier lorsqu'on compare l'empreinte à une copie fiable. Il ne crée ni signature, ni horodatage tiers, ni journal juridiquement inviolable.</p><div id="r-status" class="v2line">Aucune donnée conservée.</div></div>
+ <div id="r-table" class="v2table"></div><p class="fine">Références méthodologiques : <a target="_blank" rel="noopener noreferrer" href="https://www.who.int/publications/i/item/9789241548274">OMS – Laboratory Quality Management System</a>. Aucun label ISO/CE ni conformité à la norme n'est revendiqué.</p>
+</div></section>
+</main></div><footer><div class="wrap">© 2026 Mounir Akarkach · LA PREUVE LAB v2.0 · Recherche et pédagogie seulement · <a href="licence.html">Licence</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="https://pigapocket.com/">PIGA Pocket</a></div></footer>
 <script>
 (function(){
 "use strict";
@@ -43,5 +89,156 @@ $("json").addEventListener("click",function(){download(JSON.stringify({schema:"l
 $("csv").addEventListener("click",function(){var header=["time","ref","parameter","value","unit","comparison","gate1","gate2","reason"], rows=events.map(function(r){return header.map(function(k){return r[k]===undefined?"":r[k]})});var quote=function(x){return '"'+String(x===null?"":x).replace(/^[=+\-@]/,"'$&").replace(/"/g,'""')+'"'};download("\uFEFF"+[header].concat(rows).map(function(r){return r.map(quote).join(";")}).join("\r\n"),"LA_PREUVE_LAB_exemples.csv","text/csv;charset=utf-8")});
 $("erase").addEventListener("click",function(){events.length=0;cycles=0;last=null;render()});$("print").addEventListener("click",function(){window.print()});
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js",{scope:"./"}).catch(function(){});
+})();
+</script>
+<script>
+(function(){
+"use strict";
+var cols=["id","analyte","value","lower","upper","unit","source","method","sample","population","identity","quality","interference"];
+var diseases=["VIH-1","VIH-2","SIDA : stadification clinique et immunologique","Hépatite B","Hépatite C","Papillomavirus humain","Herpès simplex","SARS-CoV-2","Grippe","Virus respiratoire syncytial","Virus Epstein-Barr","Cytomégalovirus","Dengue","Zika","Rougeole","Rubéole","Tuberculose","Syphilis","Gonorrhée","Infection à Chlamydia","Maladie de Lyme","Sepsis bactérien","Méningite bactérienne","Infection pneumococcique","Infection à SARM","Infection à Clostridioides difficile","Infection à Helicobacter pylori","Salmonellose","Campylobactériose","Infection à STEC/EHEC","Légionellose","Infection à Mycoplasma pneumoniae","Coqueluche","Lèpre","Paludisme","Toxoplasmose","Schistosomiase","Candidose invasive","Aspergillose invasive","Cryptococcose"];
+var head=cols.join(";");
+function esc(s){return String(s??"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function txt(s){return String(s??"").trim()}
+function finite(s){if(txt(s)==="")return NaN;var n=Number(s);return Number.isFinite(n)?n:NaN}
+function sample(i){
+ var c={id:"SYN-"+String(i+1).padStart(3,"0"),analyte:"ANALYTE_FICTIF",value:"140",lower:"120",upper:"160",unit:"U_fictive",source:"Ref_fictive_v1",method:"Instrument_fictif",sample:"Prélèvement_fictif",population:"Population_fictive",identity:"yes",quality:"yes",interference:"no"};
+ switch(i%12){case 1:c.value="105";break;case 2:c.value="170";break;case 3:c.source="";break;case 4:c.method="";break;case 5:c.population="";break;case 6:c.quality="unknown";break;case 7:c.identity="unknown";break;case 8:c.identity="no";break;case 9:c.quality="no";break;case 10:c.interference="yes";break;case 11:c.upper="100";break;}
+ return c;
+}
+function classify(row){
+ var x={};cols.forEach(function(k){x[k]=txt(row[k])});
+ var errors=[],state="ALLOW",v=finite(x.value),lo=finite(x.lower),hi=finite(x.upper);
+ var valid=Number.isFinite(v)&&Number.isFinite(lo)&&Number.isFinite(hi)&&lo<hi;
+ var relation=!valid?"Non calculable":v<lo?"Sous intervalle":v>hi?"Au-dessus intervalle":"Dans intervalle";
+ if(x.identity==="no")errors.push("Identité non conforme");
+ if(x.quality==="no")errors.push("Contrôle qualité non conforme");
+ if(x.interference==="yes")errors.push("Interférence déclarée");
+ if(errors.length)state="BLOCK";
+ else if(!valid){state="UNKNOWN";errors.push("Valeur ou bornes invalides");}
+ else{
+  var missing=["analyte","unit","source","method","sample","population"].filter(function(k){return !x[k]});
+  var badflag=["identity","quality","interference"].filter(function(k){return !["yes","no","unknown"].includes(x[k])});
+  if(missing.length||badflag.length||x.identity==="unknown"||x.quality==="unknown"||x.interference==="unknown"){
+   state="DELAY";if(missing.length)errors.push("Documentation manquante : "+missing.join(", "));
+   if(badflag.length)errors.push("Statut de qualité invalide : "+badflag.join(", "));
+   if(x.identity==="unknown"||x.quality==="unknown"||x.interference==="unknown")errors.push("Contrôle de qualité encore inconnu");
+  }
+ }
+ if(!errors.length)errors.push("Comparaison arithmétique documentaire seulement");
+ return {id:x.id,state:state,comparison:relation,reasons:errors,gate2:"BLOCK",research_only:true};
+}
+function parseCSV(text){
+ text=String(text||"").replace(/^\uFEFF/,"").trim();
+ if(!text)return {rows:[],errors:["CSV vide"]};
+ if(text.length>250000)return {rows:[],errors:["Fichier trop volumineux (max. 250 000 caractères)"]};
+ var first=text.split(/\r?\n/,1)[0],sep=(first.match(/;/g)||[]).length>=(first.match(/,/g)||[]).length?";":",";
+ var grid=[],row=[],field="",quoted=false;
+ for(var i=0;i<text.length;i++){var c=text[i];
+  if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c;}
+  else if(c==='"'&&field==="")quoted=true;
+  else if(c===sep){row.push(field);field="";}
+  else if(c==="\r"||c==="\n"){if(c==="\r"&&text[i+1]==="\n")i++;row.push(field);grid.push(row);row=[];field="";}
+  else field+=c;
+ }
+ if(quoted)return {rows:[],errors:["Guillemets CSV non fermés"]};
+ row.push(field);grid.push(row);
+ var header=grid.shift().map(txt);
+ if(header.join("|")!==cols.join("|"))return {rows:[],errors:["En-têtes attendus : "+head]};
+ if(grid.length>300)return {rows:[],errors:["Maximum 300 lignes par lot"]};
+ var errors=[],rows=[];
+ grid.forEach(function(c,i){
+  if(c.length!==cols.length){errors.push("Ligne "+(i+2)+" : colonnes incomplètes");return;}
+  var x={};cols.forEach(function(k,j){x[k]=txt(c[j])});
+  if(!/^SYN-[A-Za-z0-9_-]{1,46}$/.test(x.id)){errors.push("Ligne "+(i+2)+" : identifiant fictif SYN- obligatoire");return;}
+  rows.push(x);
+ });
+ return errors.length?{rows:[],errors:errors.slice(0,12)}:{rows:rows,errors:[]};
+}
+function quote(s){s=String(s??"");if(/^[=+@]/.test(s)||(/^-(?!\d+(?:\.\d+)?$)/.test(s)))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+function csv(rows,fields){return "\uFEFF"+[fields.map(quote).join(";")].concat(rows.map(function(x){return fields.map(function(k){return quote(x[k])}).join(";")})).join("\r\n")+"\r\n"}
+function browserDownload(content,name,mime){
+ var blob=new Blob([content],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
+}
+var events=[],lastLot=[],ticket=0;
+function pushRecord(r,from){events.push({sequence:++ticket,when:new Date().toISOString(),from:from,id:r.id,state:r.state,comparison:r.comparison,reason:r.reasons.join(" | "),gate2:"BLOCK"});if(events.length>500)events.shift();refresh();}
+function renderRow(r){return "<tr><td>"+esc(r.id)+"</td><td><b>"+esc(r.state)+"</b></td><td>"+esc(r.comparison)+"</td><td>"+esc(r.reasons.join(" · "))+"</td><td>BLOCK</td></tr>"}
+function refresh(){
+ var $=function(k){return document.getElementById(k)};
+ if(!$("r-total"))return;
+ $("r-total").textContent=String(events.length);$("r-holds").textContent=String(events.filter(function(e){return e.state!=="ALLOW"}).length);
+ $("r-status").textContent=events.length?events.length+" vérifications en mémoire, exportées uniquement sur demande.":"Aucune donnée conservée.";
+ $("r-table").innerHTML=events.length?'<table><thead><tr><th>Code</th><th>Gate 1</th><th>Comparaison</th><th>Motif</th><th>Gate 2</th></tr></thead><tbody>'+events.slice(-100).reverse().map(function(r){return renderRow({id:r.id,state:r.state,comparison:r.comparison,reasons:[r.reason]})}).join("")+'</tbody></table>':"";
+}
+function boot(){
+ var $=function(k){return document.getElementById(k)};
+ if(!$("q-run"))return;
+ var qmap={id:"q-id",analyte:"q-analyte",value:"q-value",lower:"q-low",upper:"q-high",unit:"q-unit",source:"q-source",method:"q-method",sample:"q-sample",population:"q-population",identity:"q-identity",quality:"q-quality",interference:"q-interference"};
+ function setQuick(x){cols.forEach(function(k){$(qmap[k]).value=x[k]??""});$("q-out").textContent="Exemple chargé. Gate 2 : BLOCK."}
+ function quick(){
+  var x={};cols.forEach(function(k){x[k]=$(qmap[k]).value});
+  if(!/^SYN-[A-Za-z0-9_-]{1,46}$/.test(x.id)){$("q-out").className="v2error";$("q-out").textContent="Utilisez exclusivement un identifiant fictif commençant par SYN-.";return;}
+  // Delegate the authoritative Gate 1 single-case decision to the EXISTING original app.
+  var transfer={id:"ref",analyte:"analyte",value:"value",lower:"lower",upper:"upper",unit:"unit",source:"source",method:"method",sample:"sample",population:"population",identity:"identity",quality:"quality",interference:"interference"};
+  Object.keys(transfer).forEach(function(k){$(transfer[k]).value=x[k]});
+  $("run").click();
+  var observed=$("gate1").textContent,explain=classify(x);
+  if(observed!==explain.state){$("q-out").className="v2error";$("q-out").textContent="DISCORDANCE DE CONTRÔLE, arrêt de la simulation. Aucun résultat admis.";return;}
+  pushRecord(explain,"GUIDE");
+  $("q-out").className=observed==="ALLOW"?"v2ok":"v2error";
+  $("q-out").innerHTML='<b>Gate 1 : '+esc(observed)+'</b> · '+esc(explain.comparison)+'<br>'+esc(explain.reasons.join(" · "))+'<br><b>Gate 2 clinique : BLOCK</b>. Aucune conclusion médicale.';
+ }
+ $("q-run").addEventListener("click",quick);
+ $("q-reset").addEventListener("click",function(){setQuick(sample(0))});
+ $("q-issue").addEventListener("click",function(){setQuick(sample(10))});
+ $("lot-demo").addEventListener("click",function(){$("lot-text").value=csv(Array.from({length:100},function(_,i){return sample(i)}),cols);$("lot-summary").textContent="100 scénarios fictifs chargés."});
+ $("lot-template").addEventListener("click",function(){browserDownload(csv([sample(0),sample(3),sample(8)],cols),"LA_PREUVE_LAB_v2_modele_SYNTHETIQUE.csv","text/csv;charset=utf-8")});
+ $("lot-clear").addEventListener("click",function(){$("lot-text").value="";lastLot=[];$("lot-summary").textContent="Lot vidé.";$("lot-output").innerHTML=""});
+ $("lot-run").addEventListener("click",function(){
+  var parsed=parseCSV($("lot-text").value);
+  if(parsed.errors.length){lastLot=[];$("lot-output").innerHTML="";$("lot-summary").className="v2error";$("lot-summary").textContent=parsed.errors.join(" | ");return;}
+  lastLot=parsed.rows.map(classify);
+  lastLot.forEach(function(x){pushRecord(x,"LOT")});
+  var counts={ALLOW:0,DELAY:0,BLOCK:0,UNKNOWN:0};lastLot.forEach(function(x){counts[x.state]++});
+  $("lot-summary").className="v2line";$("lot-summary").textContent="Analyse locale : "+lastLot.length+" lignes · ALLOW "+counts.ALLOW+" · DELAY "+counts.DELAY+" · BLOCK "+counts.BLOCK+" · UNKNOWN "+counts.UNKNOWN+". Gate 2 BLOCK sans exception.";
+  $("lot-output").innerHTML='<table><thead><tr><th>Référence fictive</th><th>Gate 1</th><th>Intervalle</th><th>Justification</th><th>Gate 2</th></tr></thead><tbody>'+lastLot.map(renderRow).join("")+'</tbody></table>';
+ });
+ $("lot-export").addEventListener("click",function(){
+  if(!lastLot.length){$("lot-summary").textContent="Lancez d'abord une analyse fictive.";return;}
+  browserDownload(csv(lastLot.map(function(r){return {id:r.id,gate1:r.state,comparison:r.comparison,reason:r.reasons.join(" | "),gate2:"BLOCK"}}),["id","gate1","comparison","reason","gate2"]),"LA_PREUVE_LAB_v2_resultats_lot.csv","text/csv;charset=utf-8");
+ });
+ function drawFiches(){
+  var term=txt($("f-search").value).toLocaleLowerCase("fr"),html="";
+  diseases.forEach(function(n,i){var id="D-"+String(i+1).padStart(3,"0");if(!(id+" "+n).toLocaleLowerCase("fr").includes(term))return;
+   html+='<div class="v2card"><div class="v2tags"><span class="v2tag">'+id+'</span><span class="v2tag">Formation sans clinique</span></div><h3>'+esc(n)+'</h3><p class="v2small">Quel prérequis documentaire devez-vous rechercher avant de conclure ?</p><button class="btn alt" data-fiche="'+i+'">Lancer un exercice →</button></div>';
+  });
+  $("f-list").innerHTML=html||"Aucune fiche.";
+  $("f-list").querySelectorAll("[data-fiche]").forEach(function(b){b.addEventListener("click",function(){launchFiche(+b.dataset.fiche)})});
+ }
+ function launchFiche(i){
+  var record=sample(i),state=classify(record);
+  $("f-exercise").classList.remove("hidden");
+  $("f-exercise").innerHTML='<h3>'+esc("D-"+String(i+1).padStart(3,"0")+" · "+diseases[i])+'</h3><p class="v2small">Exercice fictif : '+esc(["Un élément du protocole manque","Une incohérence de qualité est déclarée","Évaluez la cohérence de la fiche"][i%3])+'. La classification ci-dessous concerne uniquement la recevabilité documentaire.</p><p class="v2hint">Source : '+esc(record.source||"absente")+' · QC : '+esc(record.quality)+' · Identité : '+esc(record.identity)+' · Interférence : '+esc(record.interference)+' · Bornes : '+esc(record.lower)+"–"+esc(record.upper)+'</p><div class="actions">'+["ALLOW","DELAY","BLOCK","UNKNOWN"].map(function(st){return '<button class="btn alt" data-answer="'+st+'">'+st+"</button>"}).join("")+'</div><div id="f-feedback" class="v2line">Sélectionnez un statut Gate 1.</div>';
+  $("f-exercise").querySelectorAll("[data-answer]").forEach(function(b){b.addEventListener("click",function(){
+    $("f-feedback").className=b.dataset.answer===state.state?"v2ok":"v2error";
+    $("f-feedback").textContent=(b.dataset.answer===state.state?"Concordance documentaire. ":"À reconsidérer. ")+"Statut attendu : "+state.state+". "+state.reasons.join("; ")+". Gate 2 : BLOCK.";
+  })});
+  $("f-exercise").scrollIntoView({block:"nearest",behavior:"smooth"});
+ }
+ $("f-search").addEventListener("input",drawFiches);drawFiches();
+ $("r-json").addEventListener("click",async function(){
+  var payload={schema:"lapreuve.lab.research.v2",research_only:true,gate2:"BLOCK",appVersion:"2.0",exportedAt:new Date().toISOString(),events:events};
+  var canonical=JSON.stringify(payload),digest=null;
+  if(typeof crypto!=="undefined"&&crypto.subtle&&typeof TextEncoder!=="undefined"){
+   var hash=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(canonical));digest=Array.from(new Uint8Array(hash)).map(function(b){return b.toString(16).padStart(2,"0")}).join("");
+  }
+  browserDownload(JSON.stringify({payload:payload,sha256_of_payload:digest,digest_status:digest?"available_not_signed":"unavailable_no_claim"},null,2),"LA_PREUVE_LAB_v2_recherche.json","application/json");
+ });
+ $("r-csv").addEventListener("click",function(){browserDownload(csv(events,["sequence","when","from","id","state","comparison","reason","gate2"]),"LA_PREUVE_LAB_v2_journal.csv","text/csv;charset=utf-8")});
+ $("r-print").addEventListener("click",function(){window.print()});
+ $("r-clear").addEventListener("click",function(){events=[];lastLot=[];ticket=0;refresh();$("lot-output").innerHTML="";$("lot-summary").textContent="Journal v2 effacé.";});
+ refresh();
+}
+if(typeof window!=="undefined")window.LA_PREUVE_LAB_V2={classify:classify,parseCSV:parseCSV,sample:sample,csv:csv,diseases:diseases,columns:cols,version:"2.0"};
+if(typeof document!=="undefined")boot();
 })();
 </script></body></html>
