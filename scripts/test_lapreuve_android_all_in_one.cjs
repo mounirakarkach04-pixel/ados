@@ -21,8 +21,8 @@ async function check(){
    const nav=page.locator("#offline-nav");
    assert.equal(await nav.locator("button").count(),7);
    const iframe=page.frameLocator("#workspace");
-   await iframe.locator("#lot-demo").waitFor({timeout:15000});
    await iframe.locator('[data-tab="lots"]').first().click();
+   await iframe.locator("#lot-demo").waitFor({timeout:15000});
    await iframe.locator("#lot-demo").click();
    await iframe.locator("#lot-run").click();
    assert.equal(await iframe.locator("#lot-output tbody tr").count(),100,"100 CSV rows");
