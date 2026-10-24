@@ -155,4 +155,5 @@ document.querySelectorAll("a[href]").forEach(function(a){var h=a.getAttribute("h
 var m=document.createElement("p");m.setAttribute("role","status");m.style.cssText="margin:0;padding:12px 20px;text-align:center;background:#fff1d6;color:#21434a;font:13px/1.5 system-ui";m.innerHTML="Offline-Modus Android oder Datei: Das Evidence Studio läuft lokal. Die Links zu Buch, Datenschutz und Governance Lite öffnen die öffentliche Webseite und benötigen Internet.";
 document.querySelector("header")?.insertAdjacentElement("afterend",m);
 })();
-</script></body></html>
+</script><script id="ados-pwa-offline-register">(function(){if(location.protocol!=="https:"||!("serviceWorker" in navigator))return;var m=document.createElement("link");m.rel="manifest";m.href="./manifest.webmanifest";document.head.appendChild(m);window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(function(e){console.warn("ADOS offline unavailable",String(e))})});})();</script>
+</body></html>
