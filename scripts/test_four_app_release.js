@@ -44,6 +44,7 @@ ck(r.vbr?.actualExternalNonExecutionVerified===false,variant+' VBR not falsely v
 await page.locator('#kind').selectOption('PERSONAL');await page.locator('#auditForm button[type=submit]').click();
 ck((await page.locator('#status').innerText()).startsWith('BLOCK'),variant+' personal records blocked');
 await page.locator('#kind').selectOption('SYNTHETIC');await page.locator('#purpose').selectOption('RESEARCH');
+await page.locator('details.vbr-input summary').click();
 await page.locator('#risk').fill('Simulated unapproved action');
 await page.locator('#blockProof').fill('Synthetic gate log reference');
 await page.locator('#indProof').fill('Unverified external log claimed');
