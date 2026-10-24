@@ -19,6 +19,7 @@ CHECKS = [
     (BASE + "studio.html", ["ADOS Evidence Studio", "ados-studio-book-return", "https://pigapocket.com/ados/"]),
     (BASE + "offline-downloads.html", ["ados-download", "lab-download", "la-preuve-avant-le-diagnostic/app.html"]),
     (BASE + "downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html", ["ados-offline-book-return", "https://pigapocket.com/ados/"]),
+    (BASE + "ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip", []),
     (FRENCH, ["La preuve avant le diagnostic", "LA PREUVE LAB", "app.html"]),
     (FRENCH + "app.html", ["lapreuve-offline-book-return", "https://pigapocket.com/la-preuve-avant-le-diagnostic/"]),
     (FRENCH + "offline-suite.html", ["LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip"]),
@@ -40,6 +41,9 @@ def check_live():
             missing = [m for m in markers if m not in data]
             item = {"url":url,"status":status,"bytes":len(body),"sha256":hashlib.sha256(body).hexdigest(),"missing":missing}
             checks.append(item)
+            if url.endswith(".zip"):
+                expected=(REPORT["ados_zip"]["sha256"] if "ADOS_BUCH" in url else REPORT["zip"]["sha256"])
+                if item["sha256"]!=expected: missing.append("source_sha256_mismatch")
             if status != 200 or missing or len(body)<300:
                 issues.append(item)
         except Exception as e:
@@ -67,13 +71,24 @@ def check_local():
             assert 'href="index.html"' in src, page
             assert 'href="https://pigapocket.com/la-preuve-avant-le-diagnostic/"' not in src, page
         REPORT["zip"]={"files":len(required),"bytes":bundle.stat().st_size,"sha256":hashlib.sha256(bundle.read_bytes()).hexdigest(),"book_return_local":True}
+    ados = Path("ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip")
+    required_ados = {"index.html","studio.html","governance-lite.html","offline-downloads.html","datenschutz.html","nutzungsbedingungen.html","cover.jpg","ados-icon.svg","manifest.webmanifest","sw.js","ADOS_A7SEM_PIGA_GOVERNANCE_MATRIX_v0_6.xlsx","README.txt"}
+    with ZipFile(ados) as z:
+        assert set(z.namelist())==required_ados, "ADOS ZIP manifest"
+        assert z.testzip() is None, "ADOS ZIP CRC"
+        for page in ["index.html","studio.html","governance-lite.html","offline-downloads.html","datenschutz.html","nutzungsbedingungen.html"]:
+            src=z.read(page).decode("utf-8")
+            assert '<meta name="ados-offline-bundle" content="local">' in src, page
+            assert 'href="index.html"' in src, page
+            assert 'ados-single-file-nav' not in src and 'ados-android-document-links' not in src, page
+        REPORT["ados_zip"]={"files":len(required_ados),"bytes":ados.stat().st_size,"sha256":hashlib.sha256(ados.read_bytes()).hexdigest(),"book_return_local":True}
     return True
 
 def canonical_readback():
     testcases = [
-        ("https://pigapocket.com/ados/", ["Die Architektur des Selbst", "offline-downloads.html"]),
+        ("https://pigapocket.com/ados/", ["Die Architektur des Selbst", "offline-downloads.html", "ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip"]),
         ("https://pigapocket.com/ados/studio.html", ["ados-studio-book-return", "https://pigapocket.com/ados/"]),
-        ("https://pigapocket.com/ados/offline-downloads.html", ['id="ados-download"', 'id="lab-download"']),
+        ("https://pigapocket.com/ados/offline-downloads.html", ['id="ados-download"', 'id="lab-download"', "ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip"]),
         ("https://pigapocket.com/la-preuve-avant-le-diagnostic/", ["LA PREUVE LAB", "app.html"]),
         ("https://pigapocket.com/la-preuve-avant-le-diagnostic/app.html", ["lapreuve-offline-book-return"]),
     ]
