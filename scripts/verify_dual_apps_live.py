@@ -80,6 +80,10 @@ def check_local():
             src=z.read(page).decode("utf-8")
             assert '<meta name="ados-offline-bundle" content="local">' in src, page
             assert 'href="index.html"' in src, page
+            if page == "studio.html":
+                assert src.count('href="index.html"') >= 1
+                assert 'https://mounirakarkach04-pixel.github.io/ados/' in src, "Online backup book link missing"
+                assert 'href="index.html" target="_blank"' not in src, "Book return opens another tab"
             assert 'ados-single-file-nav' not in src and 'ados-android-document-links' not in src, page
         REPORT["ados_zip"]={"files":len(required_ados),"bytes":ados.stat().st_size,"sha256":hashlib.sha256(ados.read_bytes()).hexdigest(),"book_return_local":True}
     return True
