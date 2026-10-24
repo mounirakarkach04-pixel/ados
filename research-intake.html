@@ -77,7 +77,13 @@ async function extract(f){
 const suffix=(f.name.split('.').pop()||'').toLowerCase();
 if(['txt','csv','tsv','md','json','html','htm'].includes(suffix)){let text=(await f.text()).slice(0,135000);if(suffix==='json')JSON.parse(text);if(suffix==='html'||suffix==='htm')text=new DOMParser().parseFromString(text,'text/html').body.textContent||'';return text}
 if(suffix==='docx'){const xml=await zipXml(new Uint8Array(await f.arrayBuffer()),'word/document.xml');const doc=new DOMParser().parseFromString(xml,'application/xml');const rows=[...doc.getElementsByTagName('w:p')].map(p=>p.textContent.trim()).filter(Boolean);return rows.join('\n').slice(0,135000)}
-if(suffix==='xlsx'){const u8=new Uint8Array(await f.arrayBuffer());const xml=await zipXml(u8,'xl/worksheets/sheet1.xml');const doc=new DOMParser().parseFromString(xml,'application/xml');return [...doc.getElementsByTagName('row')].slice(0,650).map(r=>r.textContent.trim()).filter(Boolean).join('\n').slice(0,135000)}
+if(suffix==='xlsx'){const u8=new Uint8Array(await f.arrayBuffer());const xml=await zipXml(u8,'xl/worksheets/sheet1.xml');let shared=[];try{const xmlShared=await zipXml(u8,'xl/sharedStrings.xml');const sharedDoc=new DOMParser().parseFromString(xmlShared,'application/xml');shared=[...sharedDoc.getElementsByTagName('si')].slice(0,5000).map(si=>[...si.getElementsByTagName('t')].map(t=>t.textContent||'').join(''))}catch{}
+const doc=new DOMParser().parseFromString(xml,'application/xml');
+return [...doc.getElementsByTagName('row')].slice(0,650).map(row=>[...row.getElementsByTagName('c')].slice(0,40).map(cell=>{
+ const raw=(cell.getElementsByTagName('v')[0]?.textContent||cell.getElementsByTagName('is')[0]?.textContent||'').trim();
+ const value=cell.getAttribute('t')==='s'?shared[Number(raw)]||'':raw;
+ return (cell.getAttribute('r')||'?')+'='+value;
+}).filter(x=>!x.endsWith('=')).join(' | ')).filter(Boolean).join('\n').slice(0,135000)}
 if(suffix==='pdf'){
  if(!navigator.onLine)throw Error('PDF parser needs internet once; use text transcription offline');
  const pdf=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
@@ -107,7 +113,7 @@ const [text,hash]=await Promise.all([extract(f),sha256(await f.arrayBuffer())]);
 if(!text.trim())throw Error('No extractable text');
 file.characters=text.length;file.sha256=hash;
 file.excerpt=text.slice(0,1100);
-if(!/^[\S\s]{0,10000}$/.test(text))throw Error('Invalid document');
+if(text.length>135000)throw Error('Document text exceeds safe preview boundary');
 const proposed=suggest(text);
 $('fileStatus').textContent=C.t.fileDone+': '+f.name+' · '+file.characters+' caractères/Zeichen · '+proposed+' Vorschläge/suggestions (non validées).';
 }catch(e){file.parseError=human(e?.message||C.t.fileError);$('fileStatus').textContent=C.t.fileError+' ('+file.parseError.slice(0,90)+')'}
