@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="https://mounirakarkach04-pixel.github.io/ados"
-for file in cancer-system-state/index.html cancer/index.html la-preuve-avant-le-diagnostic/app.html offline-downloads.html; do
+for file in cancer-system-state/book.html cancer-system-state/index.html cancer/index.html la-preuve-avant-le-diagnostic/app.html offline-downloads.html; do
  expected="$(sha256sum "$file" | cut -d' ' -f1)"
  ok=0
  for attempt in $(seq 1 12); do
@@ -33,4 +33,4 @@ with ZipFile(p) as f:
  assert 'ak-suite-bundle' in html
  print(f"REMOTE_FRENCH_ZIP=PASS files={len(names)} bytes={p.stat().st_size} gate2=BLOCK")
 PY
-echo "PUBLIC_RELEASE=PASS cancer=2 android=content+file offlinezip=10"
+echo "PUBLIC_RELEASE=PASS cancer=2 book_portal=1 android=content+file offlinezip=10"
