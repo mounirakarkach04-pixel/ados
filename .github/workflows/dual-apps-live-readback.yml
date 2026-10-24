@@ -1,0 +1,37 @@
+name: ADOS + LA PREUVE LAB — A7SEM Reverse Live Release
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/verify_dual_apps_live.py'
+      - '.github/workflows/dual-apps-live-readback.yml'
+      - 'offline-downloads.html'
+      - 'downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html'
+      - 'studio.html'
+      - 'la-preuve-avant-le-diagnostic/*.html'
+      - 'la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: piga-dual-apps-readback-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  finite-gate1-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test BOTH released offline assets and live GitHub Pages navigation
+        run: python scripts/verify_dual_apps_live.py
+      - name: Preserve signed-by-CI run evidence without clinical admission
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dual-apps-readback-${{ github.run_id }}
+          path: qa-reports/dual-apps-live.json
+          retention-days: 30
+          if-no-files-found: warn
