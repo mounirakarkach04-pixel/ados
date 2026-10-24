@@ -73,6 +73,8 @@ def rewrite(content: str, name: str) -> str:
     else:
         content = re.sub(r"<body\b", BUNDLE + "<body", content, count=1, flags=re.I)
     for root in ROOTS:
+        # Book-return buttons in a complete ZIP must open the bundled book page, not the network.
+        content = content.replace('href="' + root + '"', 'href="index.html"')
         for file in FILES:
             content = content.replace(root + file, file)
         for short, target in ALIAS.items():
