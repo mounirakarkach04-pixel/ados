@@ -3,7 +3,7 @@
 /* ADOS 2026: three bounded browser loops, fictional-data-only test. */
 const fs=require("node:fs"),path=require("node:path"),os=require("node:os"),http=require("node:http"),crypto=require("node:crypto"),assert=require("node:assert/strict");
 const {chromium}=require("playwright");
-const baseDir=path.resolve("."),docs=new Set(["index.html","studio.html","datenschutz.html","nutzungsbedingungen.html","downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html","cover.jpg"]);
+const baseDir=path.resolve("."),docs=new Set(["index.html","studio.html","offline-downloads.html","datenschutz.html","nutzungsbedingungen.html","downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html","cover.jpg"]);
 let browser,server,base,events=[],failed=[];
 const hash=x=>crypto.createHash("sha256").update(x).digest("hex");
 async function start(){server=http.createServer((req,res)=>{let pathname=decodeURIComponent(new URL(req.url,"http://localhost").pathname).replace(/^\/+/,"");if(pathname==="")pathname="index.html";if(!docs.has(pathname)){res.writeHead(404);res.end("Not found");return;}try{const f=fs.readFileSync(path.join(baseDir,pathname));res.writeHead(200,{"content-type":pathname.endsWith(".html")?"text/html;charset=utf-8":"image/jpeg","cache-control":"no-store"});res.end(f)}catch(e){res.writeHead(404);res.end("Missing")}});await new Promise(r=>server.listen(0,"127.0.0.1",r));base="http://127.0.0.1:"+server.address().port}
@@ -12,6 +12,7 @@ async function studio(context,cycle){
 const {page,errors}=await open(context,"studio.html");try{
  await page.setViewportSize({width:390,height:845});
  assert((await page.locator(".author").innerText()).includes("MOUNIR AKARKACH"));
+ assert.equal(await page.locator("#ados-studio-book-return a[href=\"https://pigapocket.com/ados/\"]").count(),1,"Studio has no direct return to canonical book");
  assert.equal(await page.locator(".step").count(),3);
  let dimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
  assert(dimensions.scroll<=dimensions.width+2,"Mobile overflow "+JSON.stringify(dimensions));
@@ -35,10 +36,11 @@ const {page,errors}=await open(context,"studio.html");try{
  assert.equal(errors.length,0,"JS errors "+JSON.stringify(errors));
  events.push({cycle,area:"studio",pass:true,mobile:dimensions,downloads:2,features:11});
 }finally{await page.close()}}
-async function site(context,cycle){for(const file of ["index.html","datenschutz.html","nutzungsbedingungen.html"]){const {page,errors}=await open(context,file);try{
+async function site(context,cycle){for(const file of ["index.html","offline-downloads.html","datenschutz.html","nutzungsbedingungen.html"]){const {page,errors}=await open(context,file);try{
  const links=await page.locator("a[href]").evaluateAll(as=>as.map(x=>x.getAttribute("href")));
  for(const h of links){if(h.startsWith("#"))assert(await page.locator('[id="'+h.slice(1)+'"]').count(),"Missing anchor "+file+" "+h);if(/^[\w-]+\.html$/.test(h))assert(docs.has(h),"Missing HTML link "+file+" -> "+h)}
  if(file==="index.html"){assert(await page.locator('a[href="studio.html"]').count()>0);assert(await page.locator('.author-line,.logo').count()>0);assert((await page.locator("#evidence-title").innerText()).includes("Weniger Behauptung"))}
+ if(file==="offline-downloads.html"){assert.equal(await page.locator("#ados-download").count(),1);const [dl]=await Promise.all([page.waitForEvent("download"),page.locator("#ados-download").click()]);assert(dl.suggestedFilename().includes("ANDROID_FIX"),"Hub delivers outdated or unmarked ADOS file") }
  assert.equal(errors.length,0,file+" JS errors: "+errors.join(";"));
  events.push({cycle,area:file,pass:true,links:links.length});
 }finally{await page.close()}}}
@@ -62,6 +64,6 @@ try{await page.goto("file://"+single,{waitUntil:"load"});assert.equal(await page
  assert.equal(errs.length,0,errs.join("; "));
  events.push({cycle,area:"file-offline-studio",pass:true});
 }finally{await page.close();fs.rmSync(dir,{recursive:true,force:true})}}
-async function remote(){const hosts=["https://mounirakarkach04-pixel.github.io/ados/","https://pigapocket.com/ados/"];const paths=["index.html","studio.html","datenschutz.html","nutzungsbedingungen.html","downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html"];const list=[];
+async function remote(){const hosts=["https://mounirakarkach04-pixel.github.io/ados/","https://pigapocket.com/ados/"];const paths=["index.html","studio.html","offline-downloads.html","datenschutz.html","nutzungsbedingungen.html","downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html"];const list=[];
 for(const host of hosts)for(const p of paths){let x={host,p,status:null,hashMatch:false};try{const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),12000);try{const res=await fetch(host+p,{signal:ac.signal});const raw=Buffer.from(await res.arrayBuffer());x.status=res.status;x.byteLength=raw.length;const local=fs.readFileSync(path.join(baseDir,p));x.hashMatch=res.ok&&hash(raw)===hash(local);x.liveHash=hash(raw);x.sourceHash=hash(local);if(host.includes("pigapocket")&&p==="studio.html"){x.authority=res.headers.get("x-piga-ados-authority");x.csp=res.headers.get("content-security-policy")}}finally{clearTimeout(tm)}}catch(e){x.error=String(e.message||e)}list.push(x)}return list}
 (async()=>{let success=true,live=[];try{await start();browser=await chromium.launch({headless:true,args:["--no-sandbox"]});const context=await browser.newContext({acceptDownloads:true,reducedMotion:"reduce"});for(let cycle=1;cycle<=3;cycle++){for(const [name,fn] of [["studio",studio],["site",site],["legacy",legacy],["offline",offline]])try{await fn(context,cycle)}catch(e){const err={cycle,area:name,message:String(e.stack||e).slice(0,3000)};failed.push(err);console.error("ADOS_QA_FAIL "+JSON.stringify(err));throw e}console.log("ADOS_QA_LOOP "+cycle+"/3: PASS")}await context.close();live=await remote()}catch(e){success=false;console.error("ADOS_QA_WORKER_HALTED "+String(e.message||e))}finally{if(browser)await browser.close().catch(()=>{});if(server)await new Promise(r=>server.close(r));const report={status:success?"PASS":"FAIL",cycles:3,finishedLoops:[...new Set(events.filter(e=>e.area==="file-offline-studio").map(e=>e.cycle))].length,checks:events,failures:failed,live,clinicalGate2:"BLOCK",realPatientData:false};fs.mkdirSync("qa-reports",{recursive:true});fs.writeFileSync("qa-reports/ados-evidence-loop.json",JSON.stringify(report,null,2));console.log("ADOS_QA_SUMMARY "+JSON.stringify({status:report.status,loops:report.finishedLoops,checks:events.length,failures:failed.length,liveMatched:live.filter(x=>x.hashMatch).length,liveTotal:live.length}));if(!success||failed.length)process.exitCode=1}})();
