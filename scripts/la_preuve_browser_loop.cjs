@@ -199,6 +199,17 @@ async function remoteReadback(){
      item.status=resp.status;item.bytes=Buffer.byteLength(text);item.sourceSha256=crypto.createHash("sha256").update(local).digest("hex");
      item.liveSha256=crypto.createHash("sha256").update(text).digest("hex");
      item.pass=resp.ok&&item.sourceSha256===item.liveSha256;
+     if(!item.pass&&a==="index.html"&&base==="https://pigapocket.com/la-preuve-avant-le-diagnostic/"){
+      // Official Cloudflare book page deliberately exposes canonical download routes.
+      // Public GitHub Pages mirror uses relative no-router fallbacks instead.
+      // Normalize only these two known links; do not mask unrelated source differences.
+      const normalized=text
+       .replaceAll("https://pigapocket.com/la-preuve-avant-le-diagnostic/workbench-download","workbench.html")
+       .replaceAll("https://pigapocket.com/la-preuve-avant-le-diagnostic/download","app.html");
+      item.normalizedSha256=crypto.createHash("sha256").update(normalized).digest("hex");
+      item.pass=resp.ok&&item.normalizedSha256===item.sourceSha256;
+      if(item.pass)item.variant="EXPECTED_CANONICAL_DOWNLOAD_URLS";
+     }
     }finally{clearTimeout(alarm)}
    }catch(e){item.error=String(e.message||e).slice(0,150)}
    output.push(item);
