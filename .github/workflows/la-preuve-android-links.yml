@@ -1,0 +1,20 @@
+name: LA PREUVE LAB Android content-link regression
+on:
+  push:
+    paths:
+      - 'offline-downloads.html'
+      - 'la-preuve-avant-le-diagnostic/*.html'
+      - 'scripts/test_la_preuve_android_links.cjs'
+      - '.github/workflows/la-preuve-android-links.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android-single-file-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout existing free public repository
+        uses: actions/checkout@v4
+      - name: Test Android content:// links, ZIP file:// and browser download
+        run: node scripts/test_la_preuve_android_links.cjs
