@@ -8,4 +8,7 @@ a.setAttribute("href",root+(p==="./"?"":p));a.setAttribute("data-online-link","t
 var box=document.createElement("div");box.setAttribute("role","status");box.style.cssText="padding:12px 18px;background:#fff0d7;color:#193840;text-align:center;font:13px/1.5 system-ui";
 box.innerHTML="Offline-Dateiansicht: Verweise zu anderen ADOS-Seiten oder Downloads öffnen die Webseite und benötigen Internet. Interne Sprungmarken bleiben lokal verfügbar.";
 (document.querySelector("header")||document.body.firstElementChild)?.insertAdjacentElement("afterend",box);
-})();</script></body></html>
+})();</script><script id="ados-android-document-links">
+(function(){"use strict";if(location.protocol!=="content:"&&location.protocol!=="file:")return;var root="https://mounirakarkach04-pixel.github.io/ados/";document.querySelectorAll("a[href]").forEach(function(a){var h=a.getAttribute("href");if(h==="./"||h==="index.html")a.href=root+"index.html";else if(/^(?:studio|datenschutz|nutzungsbedingungen)\.html$/.test(h))a.href=root+h;else if(/^downloads\/[A-Za-z0-9_.-]+$/.test(h))a.href=root+h;});})();
+</script>
+</body></html>
