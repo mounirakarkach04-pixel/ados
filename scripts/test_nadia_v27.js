@@ -22,7 +22,7 @@ check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2026-10").some(x=
 check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2027-12").some(x=>x.date==="2027-12-23"&&x.type==="school")),"book year crossover school holiday");
 check(await page.evaluate(()=>window.NADIA_FAMILY_V27.records("2027-04").some(x=>x.date==="2027-04-02"&&x.type==="school")),"Easter vacation correct");
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView("kalender"));
-await page.locator("#monthChoose").fill("2026-10");await page.locator("#monthChoose").dispatchEvent("change");
+await page.locator("#monthChoose").evaluate(el=>{el.value="2026-10";el.dispatchEvent(new Event("change",{bubbles:true}))});
 check((await page.locator("#nbx-month-title").innerText()).includes("Oktober 2026"),"month controls");
 await page.locator("#nbx-next").click();
 check((await page.locator("#nbx-month-title").innerText()).includes("November 2026"),"next month continuity");
