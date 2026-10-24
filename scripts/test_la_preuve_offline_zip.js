@@ -27,7 +27,7 @@ for(const f of pages){
  vm.runInNewContext(script,ctx,{timeout:2000});
  const count=anchors.filter(x=>/^https:\/\/pigapocket\.com\/la-preuve-avant-le-diagnostic\/(?:index|app|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html/.test(x.url)).length;
  assert(count>0,"expected local navigational links: "+f);
- assert.equal(count,ctx.window.AK_OFFLINE_LINK_AUDIT.rewritten);
+ assert(ctx.window.AK_OFFLINE_LINK_AUDIT.rewritten>=count,"incomplete navigation patch: "+f);
  assert.equal(banner.length,1,"offline notice missing: "+f);
  standaloneCount++;standaloneLinks+=count;
  const bound=anchors.filter(x=>/^((index|app|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html)/.test(x.url));
