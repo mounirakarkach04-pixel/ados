@@ -44,4 +44,18 @@ jobs:
         run: |
           STATUS="$(curl -sSL --max-time 10 -o /tmp/cancer-canonical.html -w '%{http_code}' 'https://pigapocket.com/cancer-system-state/' || echo unavailable)"
           echo "PIGA_CANONICAL_HTTP=${STATUS}"
-          if [ "$STATUS" = 200 ] && grep -q 'Cancer as a' /tmp/cancer-canonical.html; then echo 'Canonical route returns matching title (hash still separately required)'; fi
+          if [ "$STATUS" = 200 ] && grep -q 'Cancer as a' /tmp/cancer-canonical.html; then
+            ACTUAL="$(sha256sum /tmp/cancer-canonical.html | cut -d' ' -f1)"
+            EXPECTED="$(sha256sum cancer-system-state/index.html | cut -d' ' -f1)"
+            if [ "$ACTUAL" = "$EXPECTED" ]; then echo "PIGA_CANONICAL_SHA256=PASS:$ACTUAL"; else echo "PIGA_CANONICAL_SHA256=STALE expected:$EXPECTED actual:$ACTUAL"; fi
+          fi
+          DOWNLOAD_URL="https://pigapocket.com/cancer-system-state/download"
+          HEADER="$(mktemp)"
+          DOWNLOAD_STATUS="$(curl -sSL --max-time 12 -D "$HEADER" -o /tmp/cancer-offline-download.html -w '%{http_code}' "$DOWNLOAD_URL" || echo unavailable)"
+          echo "PIGA_OFFLINE_DOWNLOAD_HTTP=$DOWNLOAD_STATUS"
+          if [ "$DOWNLOAD_STATUS" = "200" ]; then
+            DOWNLOAD_HASH="$(sha256sum /tmp/cancer-offline-download.html | cut -d' ' -f1)"
+            EXPECTED="$(sha256sum cancer-system-state/index.html | cut -d' ' -f1)"
+            echo "PIGA_OFFLINE_DOWNLOAD_SHA256_MATCH=$([ "$DOWNLOAD_HASH" = "$EXPECTED" ] && echo true || echo false)"
+            grep -iE '^(content-disposition|x-piga-cancer-gate2):' "$HEADER" || true
+          fi
