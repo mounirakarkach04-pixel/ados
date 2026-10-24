@@ -1,0 +1,84 @@
+name: ADOS — Publish complete Offline Studio ZIP
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_ados_offline_zip.py'
+      - 'index.html'
+      - 'studio.html'
+      - 'offline-downloads.html'
+      - 'downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html'
+      - 'datenschutz.html'
+      - 'nutzungsbedingungen.html'
+      - 'cover.jpg'
+      - '.github/workflows/ados-offline-package.yml'
+permissions:
+  contents: write
+concurrency:
+  group: ados-offline-zip-publisher
+  cancel-in-progress: false
+jobs:
+  create-audited-zip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build bounded offline archive and verify all relative paths
+        run: python scripts/build_ados_offline_zip.py
+      - name: Verify reproducibility, ZIP CRC and offline paths
+        run: |
+          set -euo pipefail
+          python scripts/build_ados_offline_zip.py
+          python - <<'PY'
+          from zipfile import ZipFile
+          from pathlib import Path
+          p=Path("ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip")
+          with ZipFile(p) as z:
+              assert len(z.namelist()) == 12
+              assert z.testzip() is None
+              assert b'ados-offline-bundle' in z.read('index.html')
+              assert b'ados-offline-bundle' in z.read('studio.html')
+              assert b'ados-offline-bundle' in z.read('governance-lite.html')
+              assert b'ados-android-document-links' not in z.read('index.html')
+              assert b'ados-single-file-nav' not in z.read('studio.html')
+              assert b'ADOSEvidenceStudio' in z.read('studio.html')
+              assert b'ADOSGovernedLoop' in z.read('governance-lite.html')
+          print("ADOS_OFFLINE_ARCHIVE_VERIFIED")
+          PY
+      - name: Publish exact latest source as one cost-free static ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "PIGA Offline QA Worker"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          published=0
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/build_ados_offline_zip.py
+            git add ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip
+            if git diff --cached --quiet; then
+              echo "Already current with main"
+              published=1
+              break
+            fi
+            git commit -m "release(ados): complete verified offline book+studio+governance ZIP [skip ci]"
+            if git push origin HEAD:main; then
+              published=1
+              break
+            fi
+            echo "Concurrent main update; bounded rebuild attempt $attempt/4"
+            sleep 2
+          done
+          test "$published" = 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ADOS-audited-offline-package-${{ github.run_id }}
+          path: ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip
+          retention-days: 30
+          if-no-files-found: warn
