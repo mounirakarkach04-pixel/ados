@@ -13,6 +13,8 @@ CASES = [
     ("systems_lab", "cancer/index.html", "/cancer-system-state/systems-lab", False),
     ("systems_lab_download", "cancer/index.html", "/cancer-system-state/systems-lab-download", True),
     ("evidence_workbench", "cancer-system-state/evidence-workbench.html", "/cancer-system-state/evidence", False),
+    ("intake", "cancer-system-state/intake.html", "/cancer-system-state/intake", False),
+    ("intake_html", "cancer-system-state/intake.html", "/cancer-system-state/intake.html", False),
 ]
 MAX_ATTEMPTS = 7
 WAIT_SECONDS = 9
@@ -41,6 +43,7 @@ def get_one(case, nonce):
         if not clinical.startswith("BLOCK"): errors.append("missing_gate2_BLOCK_header")
         if "text/html" not in content: errors.append("not_html")
         if download and "attachment" not in disposition.lower(): errors.append("missing_attachment_disposition")
+        if label.startswith("intake") and b"Clinical Gate 2: BLOCK" not in actual: errors.append("intake_clinical_block_missing")
         if not download and label == "book":
             if b"Three research applications" not in actual: errors.append("book_portal_three_apps_marker_missing")
             if b"amzn.eu/d/09KbBTIE" not in actual: errors.append("book_portal_author_amazon_link_missing")
