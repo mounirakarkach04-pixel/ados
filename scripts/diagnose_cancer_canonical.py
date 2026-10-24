@@ -7,7 +7,7 @@ cases=[
  ("lab","cancer/index.html","/cancer-system-state/systems-lab")]
 for label,file,route in cases:
  e=(root/file).read_bytes()
- with urllib.request.urlopen(urllib.request.Request("https://pigapocket.com"+route+"?piga_diag=20261024",headers={"Cache-Control":"no-cache","Pragma":"no-cache"}),timeout=25) as r:
+ with urllib.request.urlopen(urllib.request.Request("https://pigapocket.com"+route+"?piga_diag=20261024",headers={"Cache-Control":"no-cache","Pragma":"no-cache","User-Agent":"PIGA-Cancer-Canonical-Bounded-Readback/1.0"}),timeout=25) as r:
   a=r.read()
   h=dict(r.headers.items())
  n=0
