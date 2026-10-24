@@ -1,0 +1,24 @@
+name: Nadia v27 Integrated Synthetic QA
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/test_nadia_v27_integrated.cjs'
+      - '.github/workflows/nadia-v27-integrated-qa.yml'
+permissions:
+  contents: read
+jobs:
+  verify-features:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install ephemeral browser
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test PIGA Nadia features without live mail or model inference
+        run: node scripts/test_nadia_v27_integrated.cjs
