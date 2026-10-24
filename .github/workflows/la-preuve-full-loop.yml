@@ -1,0 +1,69 @@
+name: LA PREUVE LAB Full Worker Loop QA (zero-cost public)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/la_preuve_browser_loop.cjs'
+      - 'scripts/test_la_preuve_studio.js'
+      - 'scripts/test_la_preuve_offline_zip.js'
+      - 'la-preuve-avant-le-diagnostic/**'
+      - '.github/workflows/la-preuve-full-loop.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: la-preuve-full-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromium-finite-loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Fetch PIGA / LA PREUVE LAB sources
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test runner (runner-local, no added production dependencies)
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Three bounded software regression loops
+        shell: bash
+        run: |
+          set -euo pipefail
+          for cycle in 1 2 3; do
+            echo "=== PIGA SYNTHETIC QA LOOP $cycle/3 ==="
+            node scripts/test_la_preuve_studio.js la-preuve-avant-le-diagnostic/studio.html
+            node scripts/test_la_preuve_offline_zip.js la-preuve-avant-le-diagnostic
+          done
+      - name: Three bounded real Chromium E2E loops (desktop, mobile, ZIP, file://)
+        env:
+          QA_CYCLES: '3'
+        run: node scripts/la_preuve_browser_loop.cjs
+      - name: Publish an auditable QA summary
+        if: always()
+        shell: bash
+        run: |
+          if test -s qa-reports/la_preuve_browser_loop.json; then
+            node -e 'const x=require("./qa-reports/la_preuve_browser_loop.json");console.log(JSON.stringify({completed:x.completed,cycles:x.cyclesCompleted,checks:x.checks.length,failures:x.errors.length,remote:x.liveReadback.map(o=>({host:o.base,file:o.file,shaMatch:o.pass,status:o.status||null}))},null,2))' | tee qa-reports/worker-summary.json
+            echo "### LA PREUVE LAB — Worker QA" >> "$GITHUB_STEP_SUMMARY"
+            echo "Cycles: $(node -p 'require("./qa-reports/la_preuve_browser_loop.json").cyclesCompleted')" >> "$GITHUB_STEP_SUMMARY"
+            echo "Interactive checks: $(node -p 'require("./qa-reports/la_preuve_browser_loop.json").checks.length')" >> "$GITHUB_STEP_SUMMARY"
+            echo "Failures: $(node -p 'require("./qa-reports/la_preuve_browser_loop.json").errors.length')" >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf '{"status":"EARLY_SETUP_OR_TEST_FAILURE","note":"See workflow logs"}\n' > qa-reports-failure.json
+          fi
+      - name: Archive reproducible QA reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: la-preuve-worker-qa-${{ github.run_id }}
+          path: |
+            qa-reports/
+            qa-reports-failure.json
+          if-no-files-found: warn
+          retention-days: 30
