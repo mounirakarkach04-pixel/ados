@@ -19,7 +19,7 @@ tasks.forEach(function(task){
    if(!response.ok)throw Error("HTTP "+response.status);
    var html=await response.text();
    if(html.length<task.min||!html.includes(task.verify))throw Error("Unerwartete oder unvollständige HTML-Version");
-   if(task.button==="lab-download"&&!html.includes('location.protocol!=="content:"'))throw Error("Android-Fix fehlt");
+   if(task.button==="lab-download"&&!(html.includes('location.protocol==="content:"')||html.includes('location.protocol!=="content:"')))throw Error("Android-Fix fehlt");
    if(task.button==="ados-download"&&!html.includes("mounirakarkach04-pixel.github.io/ados"))throw Error("IDOS-Navigationskorrektur fehlt");
    var blob=new Blob([html],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob);
    var anchor=document.createElement("a");anchor.href=url;anchor.download=task.name;document.body.appendChild(anchor);anchor.click();anchor.remove();
