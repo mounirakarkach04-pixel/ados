@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'cancer-system-state/**'
+      - 'cancer/**'
+      - 'scripts/test_cancer_systems_lab.js'
       - 'scripts/test_cancer_companion.js'
       - '.github/workflows/cancer-companion-qa.yml'
 permissions:
@@ -29,5 +31,8 @@ jobs:
       - name: Complete offline research companion browser QA
         run: |
           node scripts/test_cancer_companion.js
+          node scripts/test_cancer_systems_lab.js
           node scripts/test_cancer_companion.js
+          node scripts/test_cancer_systems_lab.js
           node scripts/test_cancer_companion.js
+          node scripts/test_cancer_systems_lab.js
