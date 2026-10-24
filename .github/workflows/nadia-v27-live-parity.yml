@@ -1,0 +1,27 @@
+name: Nadia v27 Live Parity (Read-only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/check_nadia_v27_live.cjs'
+      - '.github/workflows/nadia-v27-live-parity.yml'
+permissions:
+  contents: read
+concurrency:
+  group: nadia-v27-readonly-parity
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout public app sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Node version
+        run: node --version
+      - name: Verify GitHub Pages and Cloudflare bytes (GET only)
+        run: node scripts/check_nadia_v27_live.cjs
