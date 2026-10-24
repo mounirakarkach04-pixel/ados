@@ -1,0 +1,28 @@
+name: LA PREUVE LAB Android Complete Offline Browser QA
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_ANDROID_TOUT_EN_UN_OFFLINE.html'
+      - 'scripts/test_lapreuve_android_all_in_one.cjs'
+      - '.github/workflows/android-all-in-one-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: lapreuve-android-onefile-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser locally on public free runner
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Mobile + desktop seven-module functional navigation
+        run: node scripts/test_lapreuve_android_all_in_one.cjs
