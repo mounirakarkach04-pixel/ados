@@ -1,0 +1,29 @@
+name: LA PREUVE LAB Studio QA (public free)
+on:
+  push:
+    paths:
+      - 'la-preuve-avant-le-diagnostic/studio.html'
+      - 'la-preuve-avant-le-diagnostic/offline-suite.html'
+      - 'scripts/test_la_preuve_studio.js'
+      - '.github/workflows/la-preuve-studio-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-studio-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch source
+        uses: actions/checkout@v4
+      - name: Run offline synthetic checks
+        run: node scripts/test_la_preuve_studio.js la-preuve-avant-le-diagnostic/studio.html
+      - name: Validate navigational static assets
+        shell: bash
+        run: |
+          for file in index.html app.html workbench.html evaluation.html offline-suite.html studio.html; do
+            test -s "la-preuve-avant-le-diagnostic/$file" || exit 1
+          done
+          grep -q 'studio.html' la-preuve-avant-le-diagnostic/offline-suite.html
+          grep -q 'lapreuve-lab-v5-studio' la-preuve-avant-le-diagnostic/sw.js
+          echo "Static studio and offline suite: PASS"
