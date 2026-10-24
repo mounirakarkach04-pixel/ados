@@ -1,0 +1,110 @@
+name: PIGA Dual-App Reproducible Release Archive
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/piga-dual-release-drive-archive.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare-final-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruct both offline packages from exact source
+        run: |
+          python scripts/build_ados_offline_zip.py
+          python scripts/build_french_offline_zip.py
+      - name: Verify synthetics and local Android links
+        run: |
+          node scripts/test_ados_evidence.cjs .
+          node scripts/test_la_preuve_android_links.cjs
+      - name: Create reproducible evidence and source snapshot
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, zipfile
+          candidates=[
+            "ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip",
+            "la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip",
+            "index.html","studio.html","offline-downloads.html","datenschutz.html","nutzungsbedingungen.html",
+            "downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html",
+            "downloads/ADOS_A7SEM_PIGA_GOVERNANCE_MATRIX_v0_6.xlsx",
+            "la-preuve-avant-le-diagnostic/index.html",
+            "la-preuve-avant-le-diagnostic/app.html",
+            "la-preuve-avant-le-diagnostic/offline-suite.html",
+            "la-preuve-avant-le-diagnostic/workbench.html",
+            "la-preuve-avant-le-diagnostic/studio.html",
+            "la-preuve-avant-le-diagnostic/evaluation.html",
+            "la-preuve-avant-le-diagnostic/confidentialite.html",
+            "la-preuve-avant-le-diagnostic/licence.html",
+            "la-preuve-avant-le-diagnostic/manifest.webmanifest",
+            "la-preuve-avant-le-diagnostic/sw.js",
+            "scripts/build_ados_offline_zip.py",
+            "scripts/build_french_offline_zip.py",
+            "scripts/test_ados_evidence.cjs",
+            "scripts/ados_browser_worker.cjs",
+            "scripts/test_la_preuve_android_links.cjs",
+            "scripts/verify_dual_apps_live.py",
+            ".github/workflows/ados-evidence-loop.yml",
+            ".github/workflows/ados-offline-package.yml",
+            ".github/workflows/french-offline-package.yml",
+            ".github/workflows/dual-apps-live-readback.yml",
+            "manifest.webmanifest","sw.js","cover.jpg","ados-icon.svg"
+          ]
+          missing=[p for p in candidates if not Path(p).is_file()]
+          if missing: raise RuntimeError("Missing required source assets: "+str(missing))
+          m={"date":"2026-10-24","commit":os.environ["GITHUB_SHA"],"files":{},"governance":{"gate2":"BLOCK","synthetic_only":True,"clinical_validation":False},"qa_evidence":{
+           "browser_three_cycles":"https://github.com/mounirakarkach04-pixel/ados/actions/runs/40069683157",
+           "dual_apps_live":"https://github.com/mounirakarkach04-pixel/ados/actions/runs/40069844134",
+           "offline_ados_zip":"https://github.com/mounirakarkach04-pixel/ados/actions/runs/40069606828"}}
+          for path in candidates:
+            b=Path(path).read_bytes()
+            m["files"][path]={"bytes":len(b),"sha256":hashlib.sha256(b).hexdigest()}
+          for path in [candidates[0],candidates[1]]:
+            with zipfile.ZipFile(path) as z:
+              if z.testzip(): raise RuntimeError(path+" CRC failure")
+          text="""PIGA MASTER GOVERNANCE — ADOS + LA PREUVE LAB / REPRODUKTIONSARCHIV
+          24.10.2026. Enthält die beiden vollständigen Offline-Suiten, den aktuellen
+          Web-Quellstand, QA-Testskripte, GitHub-Actions-Workflows und MANIFEST_SHA256.json.
+          ADOS ZIP: Buchvorstellung + Evidence Studio + Governance Lite + Rechtstexte
+          + Excel. Französisches ZIP: 10 lokal navigierbare Dateien.
+          Benutzung: innere ZIP-Datei vollständig entpacken und index.html öffnen.
+          Android content://-Dateianbieter können Mehrseitenlinks einschränken;
+          Einzeldatei-/Online-Variante bleibt vorhanden.
+          Der tatsächliche Samsung-Gerätetest ist NICHT abgeschlossen.
+          Alle Beispiele sind synthetisch; Gate 2 klinisch BLOCK. Keine CE-/MDR-Zulassung,
+          keine klinische Validierung oder vollautonome Handlungszulassung.
+          Kanonische Seiten: https://pigapocket.com/ados/
+          https://pigapocket.com/la-preuve-avant-le-diagnostic/
+          Der komplette digitale Inhalt der Bücher selbst ist nicht in den Apps enthalten.
+          Die Archive sind statische Forschungssoftware; die wissenschaftlichen
+          Buchmanuskripte müssen gesondert archiviert bleiben.
+          """.replace("          ","")
+          p=Path("PIGA_ADOS_LAPREUVE_MASTER_SOURCES_AND_APPS_20261024.zip")
+          with zipfile.ZipFile(p,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+            for rel in sorted(candidates):
+              z.write(rel,arcname="release/"+rel)
+            z.writestr("MANIFEST_SHA256.json",json.dumps(m,ensure_ascii=False,indent=2))
+            z.writestr("README_RELEASE.txt",text)
+          with zipfile.ZipFile(p) as z:
+            assert z.testzip() is None
+            assert len(z.namelist())==len(candidates)+2
+          print("PIGA_RELEASE_ARCHIVE_PASS",len(candidates),"files",p.stat().st_size,"bytes",hashlib.sha256(p.read_bytes()).hexdigest())
+          PY
+      - name: Preserve complete self-contained release for Drive
+        uses: actions/upload-artifact@v4
+        with:
+          name: PIGA_MASTER_DUAL_APP_RELEASE_20261024
+          path: PIGA_ADOS_LAPREUVE_MASTER_SOURCES_AND_APPS_20261024.zip
+          retention-days: 30
+          if-no-files-found: error
