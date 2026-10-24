@@ -1,0 +1,31 @@
+name: Nadia Happy Safe Health Probe
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/nadia-happy-health.yml'
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Probe existing Happy service without minting tokens or calling AI
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, urllib.error
+          url='https://qjvopzschqukitvudgfz.supabase.co/functions/v1/happy-live-token/health'
+          req=urllib.request.Request(url,headers={'Origin':'https://pigapocket.com','User-Agent':'PIGA-Happy-Health-NoInference/1'})
+          try:
+            with urllib.request.urlopen(req,timeout=12) as resp:
+              raw=resp.read(2048);status=resp.status
+              cors=resp.headers.get('access-control-allow-origin','')
+            j=json.loads(raw)
+            print(json.dumps({'service':j.get('service'),'version':j.get('version'),'configured':j.get('keyConfigured'),'status':status,'corsAllowed':cors=='https://pigapocket.com','model':j.get('model'),'audioInference':'NOT_RUN','tokenMint':'NOT_RUN'}))
+            if not(j.get('ok') and j.get('keyConfigured') and cors=='https://pigapocket.com'):raise SystemExit(1)
+          except Exception as e:
+            print('HAPPY_HEALTH_CHECK=DELAY',type(e).__name__,str(e)[:180])
+            raise
+          PY
