@@ -25,4 +25,5 @@ box.innerHTML="Offline-Dateiansicht: Verweise zu anderen ADOS-Seiten oder Downlo
 })();</script><script id="ados-android-document-links">
 (function(){"use strict";if(location.protocol!=="content:"&&location.protocol!=="file:")return;var root="https://mounirakarkach04-pixel.github.io/ados/";document.querySelectorAll("a[href]").forEach(function(a){var h=a.getAttribute("href");if(h==="./"||h==="index.html")a.href=root+"index.html";else if(/^(?:studio|datenschutz|nutzungsbedingungen)\.html$/.test(h))a.href=root+h;else if(/^downloads\/[A-Za-z0-9_.-]+$/.test(h))a.href=root+h;});})();
 </script>
+<script id="ados-pwa-offline-register">(function(){if(location.protocol!=="https:"||!("serviceWorker" in navigator))return;var m=document.createElement("link");m.rel="manifest";m.href="./manifest.webmanifest";document.head.appendChild(m);window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(function(e){console.warn("ADOS offline unavailable",String(e))})});})();</script>
 </body></html>
