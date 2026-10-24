@@ -78,6 +78,17 @@ def rewrite(content: str, name: str) -> str:
     content = content.replace('href="' + DIRECT_ZIP_URL + '"', 'href="app.html"')
     content = content.replace("Télécharger directement la suite complète (.ZIP) ↓", "Suite installée · ouvrir LA PREUVE LAB →")
     content = content.replace("Télécharger directement le ZIP complet ↓", "Suite installée · ouvrir LA PREUVE LAB →")
+    # Any <a download> for a standalone app would merely save another HTML file.
+    # In the installed ZIP those are ordinary LOCAL NAVIGATION links, not downloads.
+    def make_local_navigation(match: re.Match[str]) -> str:
+        attrs, target = match.group(1), match.group(2)
+        attrs = re.sub(r'\s+download\s*=\s*(?:"[^"]*"|\x27[^\x27]*\x27)', '', attrs, flags=re.I)
+        label = ("Ouvrir LA PREUVE LAB locale" if target == "app" else "Ouvrir QM Workbench locale")
+        return "<a" + attrs + ">" + label + "</a>"
+    content = re.sub(
+        r'<a\b([^>]*\bhref="(app|workbench)\.html"[^>]*\bdownload="[^"]*"[^>]*)>.*?</a>',
+        make_local_navigation, content, flags=re.I | re.S
+    )
     # zip builder is deliberately NOT included: running fetch() from file:// is restricted
     content = re.sub(
         r'(<a\b[^>]*href=["\'])offline-suite\.html(["\'][^>]*>).*?(</a>)',
