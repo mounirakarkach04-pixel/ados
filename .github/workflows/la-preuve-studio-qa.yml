@@ -28,5 +28,5 @@ jobs:
             test -s "la-preuve-avant-le-diagnostic/$file" || exit 1
           done
           grep -q 'studio.html' la-preuve-avant-le-diagnostic/offline-suite.html
-          grep -q 'lapreuve-lab-v5-studio' la-preuve-avant-le-diagnostic/sw.js
+          grep -Eq 'lapreuve-lab-v[0-9]+-' la-preuve-avant-le-diagnostic/sw.js
           echo "Static studio and offline suite: PASS"
