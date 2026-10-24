@@ -79,6 +79,7 @@ try{
  await page.locator("#scenario").selectOption("5");
  assert.equal((await page.locator("#gate1").innerText()).trim(),"ALLOW");
  assert.equal(await page.locator('#ados-studio-book-return a[href="index.html"]').count(),1,"Duplicate local book return in Evidence Studio");
+ assert.equal(await page.locator('#ados-studio-book-return a[href="index.html"][target="_blank"]').count(),0,"Local book return must stay in the same tab");
  assert.equal(await page.locator('#ados-studio-book-return a[href^="https://mounirakarkach04-pixel.github.io/ados/"]').count(),1,"Missing independent online fallback link");
  await page.locator('#ados-studio-book-return a[href="index.html"]').click();
  assert(page.url().endsWith("/index.html"),"Studio cannot return to local book");
