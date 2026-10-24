@@ -39,6 +39,7 @@ await page.locator("#source").fill("Synthetic course sheet");
 await page.locator("#method").fill("");await page.locator("#evidenceForm button[type=submit]").click();
 ck(await page.locator("#state").innerText().then(x=>x.startsWith("DELAY")),"missing method delay");
 await page.locator("#sample").click();await page.locator("#file").setInputFiles({name:"research.csv",mimeType:"text/csv",buffer:Buffer.from("marker,value,unit,date\nMarker-X,1.4,arbitrary,2026-01-01\n")});
+await page.waitForTimeout(850);
 ck(await page.locator("#fileStatus").innerText().then(x=>x.includes("File read locally")),"offline CSV parsing");
 await page.locator("#evidenceForm button[type=submit]").click();
 const downloadPromise=page.waitForEvent("download");await page.locator("#export").click();const download=await downloadPromise;
