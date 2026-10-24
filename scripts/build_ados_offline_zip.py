@@ -109,6 +109,10 @@ def rewrite(original:str,page:str)->str:
                 break
         parsed=urlsplit(rel)
         dest=parsed.path
+        if dest=="downloads/ADOS_GOVERNANCE_LITE_FINAL_V0_6_GESAMTPAKET.zip":
+            return attr+"="+quote+"https://mounirakarkach04-pixel.github.io/ados/downloads/ADOS_GOVERNANCE_LITE_FINAL_V0_6_GESAMTPAKET.zip"+quote
+        if dest.startswith("la-preuve-avant-le-diagnostic/"):
+            return attr+"="+quote+"https://pigapocket.com/"+dest+quote
         if dest.startswith("downloads/"):
             dest=dest[len("downloads/"):]
         if dest=="ADOS_Governance_Lite_v0_6_OFFLINE.html":
