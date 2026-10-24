@@ -129,8 +129,81 @@ def rewrite(original:str,page:str)->str:
             return attr+"="+quote+"index.html"+quote
         return match.group(0)
     result=re.sub(r'\b(href|src)\s*=\s*(["\'])(.*?)\2',attr_replacer,result,flags=re.I|re.S)
-    # A local html page should OPEN local content, never download a new duplicate copy.
-    result=re.sub(r'(<a\b[^>]*href=["\'](?:index|studio|governance-lite|offline-downloads|datenschutz|nutzungsbedingungen)\.html["\'][^>]*?)\s+download(?:=(?:"[^"]*"|\'[^\']*\'))?([^>]*>)',r'\1\2',result,flags=re.I)
+    # A secondary fallback must not silently point to the same local book as
+    # the primary 'back' action. Only the alternative link requires Internet.
+    result=re.sub(
+        r'(<a\b[^>]*\bhref=")index\.html("[^>]*>\s*Alternative Buchseite ↗</a>)',
+        r'\g<1>https://mounirakarkach04-pixel.github.io/ados/\g<2>',
+        result, flags=re.I
+    )
+    # Normal local navigation must STAY in the same browser tab, not download
+    # a duplicate HTML file or open a new tab that leaves page.url unchanged.
+    def local_anchor(match:re.Match[str])->str:
+        tag=match.group(0)
+        href=re.search(r'\bhref\s*=\s*["\x27]([^"\x27]+)',tag,re.I)
+        if not href or not re.match(
+            r'^(?:index|studio|governance-lite|offline-downloads|datenschutz|nutzungsbedingungen)\.html(?:#.*)?
+
+def audit(pages:dict[str,str])->int:
+    allfiles=set(PAGES)|set(ASSETS)|{"README.txt"}
+    parsed={name:Parser() for name in pages}
+    for name in pages: parsed[name].feed(pages[name])
+    issues=[];count=0
+    for name,tree in parsed.items():
+        if OFFLINE_MARKER not in pages[name]: issues.append(name+": marker missing")
+        if re.search(r'<script\b[^>]*\bid=["\'](?:ados-android-link-fix|ados-android-document-links|ados-single-file-nav)',pages[name]):
+            issues.append(name+": single-file online redirect still active")
+        for _,attr,value in tree.links:
+            value=value.strip()
+            if value.startswith(("https://","http://","mailto:","tel:","data:","blob:","javascript:","//")):
+                continue
+            part=urlsplit(value)
+            target=unquote(part.path)
+            if target in ("",".","./"):
+                target=name
+            if target.startswith("/") or "../" in target:
+                issues.append(name+": external filesystem path "+value)
+                continue
+            count+=1
+            if target not in allfiles:
+                issues.append(name+": unavailable local resource "+value)
+            elif part.fragment and target in parsed and part.fragment not in parsed[target].ids:
+                issues.append(name+": missing fragment target "+value)
+    for page in ("index.html","studio.html","governance-lite.html"):
+        t=parsed[page]
+        if not any(k=="href" and v=="index.html" for _,k,v in t.links):
+            issues.append(page+": no local book return")
+    if issues:
+        for issue in issues:print("BLOCK",issue,file=sys.stderr)
+        raise SystemExit("BLOCK: "+str(len(issues))+" missing offline references")
+    return count
+
+def main():
+    content={dest:rewrite((ROOT/src).read_text(encoding="utf-8"),dest) for dest,src in PAGES.items()}
+    link_count=audit(content)
+    with ZipFile(ARCHIVE,"w",ZIP_DEFLATED,compresslevel=9) as z:
+        for dest,src in {**PAGES,**ASSETS}.items():
+            data=content[dest].encode("utf-8") if dest in PAGES else (ROOT/src).read_bytes()
+            entry=ZipInfo(dest,(2026,10,24,0,0,0));entry.compress_type=ZIP_DEFLATED;entry.external_attr=0o644<<16
+            z.writestr(entry,data,compress_type=ZIP_DEFLATED,compresslevel=9)
+        entry=ZipInfo("README.txt",(2026,10,24,0,0,0));entry.compress_type=ZIP_DEFLATED;entry.external_attr=0o644<<16
+        z.writestr(entry,README.encode("utf-8"),compress_type=ZIP_DEFLATED,compresslevel=9)
+    with ZipFile(ARCHIVE) as z:
+        assert z.testzip() is None
+        assert len(z.namelist()) == len(PAGES)+len(ASSETS)+1
+        assert b'ADOSGovernedLoop' in z.read("governance-lite.html")
+        assert b'ADOSEvidenceStudio' in z.read("studio.html")
+    digest=hashlib.sha256(ARCHIVE.read_bytes()).hexdigest()
+    print(f"ADOS_OFFLINE_BUNDLE_PASS files={len(PAGES)+len(ASSETS)+1} links={link_count} size={ARCHIVE.stat().st_size} sha256={digest}")
+if __name__=="__main__":main()
+,
+            href.group(1),re.I
+        ):
+            return tag
+        tag=re.sub(r'\s+download(?:=(?:"[^"]*"|\x27[^\x27]*\x27))?', '',tag,flags=re.I)
+        tag=re.sub(r'\s+target\s*=\s*(?:"[^"]*"|\x27[^\x27]*\x27)', '',tag,flags=re.I)
+        return tag
+    result=re.sub(r'<a\b[^>]*>',local_anchor,result,flags=re.I)
     return result
 
 def audit(pages:dict[str,str])->int:
