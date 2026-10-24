@@ -28,7 +28,8 @@ def check(item,attempt):
   if name=="nadia" and (b"nb-promo" not in raw or b"icon-192.png" not in raw):bad.append("nadia_pwa_or_book_missing")
   if name.endswith("icon") and "image/png" not in h.get("content-type",""):bad.append("png_mime_missing")
   if name=="cancer" and not h.get(header,"").startswith("BLOCK"):bad.append("clinical_gate2_header_missing")
-  return dict(name=name,route=route,http=code,match=hash_bytes(raw)==hash_bytes(expect),header=h.get(header,""),problems=bad)
+  diff=next((i for i,(a,b) in enumerate(zip(raw,expect)) if a!=b), min(len(raw),len(expect)) if len(raw)!=len(expect) else -1)
+  return dict(name=name,route=route,http=code,match=hash_bytes(raw)==hash_bytes(expect),header=h.get(header,""),problems=bad,**({"expectedSha":hash_bytes(expect),"actualSha":hash_bytes(raw),"expectedBytes":len(expect),"actualBytes":len(raw),"firstDiff":diff,"cfBeacon":b"cloudflareinsights" in raw,"workerScriptMutation":b"data-cf-beacon" in raw} if bad else {}))
  except Exception as exc:return dict(name=name,route=route,problems=[type(exc).__name__+":"+str(exc)[:100]])
 def main():
  for attempt in range(1,6):
