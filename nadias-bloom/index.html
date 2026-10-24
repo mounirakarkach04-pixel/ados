@@ -295,6 +295,16 @@ return res.sort((a,b)=>a.date.localeCompare(b.date));
 }
 function nbPrayerConfig(){state.settings||={};state.settings.nbPrayer||={mode:'manual',lat:null,lon:null,city:'',asr:1,adjust:{}};return state.settings.nbPrayer}
 const nbDeg=x=>x*Math.PI/180,nbRad=x=>x*180/Math.PI;
+function nbLocalOffsetMinutes(y,m,d,lat,lon){
+  if(lat>=47&&lat<=56&&lon>=5&&lon<=16){
+    try{
+      const v=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',timeZoneName:'shortOffset',hour:'2-digit'}).formatToParts(new Date(Date.UTC(y,m-1,d,12))).find(p=>p.type==='timeZoneName')?.value||'';
+      const match=v.match(/^GMT([+-])(\\d{1,2})(?::(\\d{2}))?$/);
+      if(match)return(match[1]==='+'?1:-1)*(Number(match[2])*60+Number(match[3]||0));
+    }catch{}
+  }
+  return -new Date(y,m-1,d,12).getTimezoneOffset();
+}
 function nbSolarForDay(ds,lat,lon,asrFactor){
 const y=Number(ds.slice(0,4)),m=Number(ds.slice(5,7)),d=Number(ds.slice(8,10));
 const day=Date.UTC(y,m-1,d,12,0,0)/86400000+2440587.5;
@@ -310,7 +320,7 @@ const eps=eps0+.00256*Math.cos(nbDeg(omega));
 const decl=Math.asin(Math.sin(nbDeg(eps))*Math.sin(nbDeg(lambda)));
 const q=Math.tan(nbDeg(eps)/2)**2;
 const eq=4*nbRad(q*Math.sin(nbDeg(2*L))-2*e*Math.sin(nbDeg(M))+4*e*q*Math.sin(nbDeg(M))*Math.cos(nbDeg(2*L))-.5*q*q*Math.sin(nbDeg(4*L))-1.25*e*e*Math.sin(nbDeg(2*M)));
-const noon=720-4*lon-eq-new Date(y,m-1,d,12).getTimezoneOffset();
+const noon=720-4*lon-eq+nbLocalOffsetMinutes(y,m,d,lat,lon);
 const phi=nbDeg(lat);
 function angle(alt,evening){
 const cos=(Math.sin(nbDeg(alt))-Math.sin(phi)*Math.sin(decl))/(Math.cos(phi)*Math.cos(decl));
