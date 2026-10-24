@@ -72,11 +72,16 @@ function fileZip(entries){
 function offlineHtml(raw){
  // The complete ZIP retains same-folder relative navigation. The single-file online-link
  // fixer is disabled by this explicit, internal-only marker.
- raw=raw.replace(/<\/head>/i,'<meta name="ak-suite-bundle" content="local"></head>');
+ var marker='<meta name="ak-suite-bundle" content="local">';
+ if(/<\/head>/i.test(raw))raw=raw.replace(/<\/head>/i,marker+"</head>");
+ else raw=raw.replace(/<body\b/i,marker+"<body");
  var pages=PATHS.concat(["manifest.webmanifest"]);
  pages.forEach(function(f){raw=raw.split(ROOT+f).join(f)});
  raw=raw.split(ROOT+"workbench-download").join("workbench.html");
  raw=raw.split(ROOT+"download").join("app.html");
+ // In the already-installed ZIP, the generator CTA must not point to a file that is not included.
+ raw=raw.split('href="offline-suite.html"').join('href="app.html"');
+ raw=raw.split("Créer et télécharger le ZIP complet →").join("Suite installée · Ouvrir LA PREUVE LAB →");
  // Full site route links within content, but not external links (e.g. WHO, Amazon).
  return raw;
 }
