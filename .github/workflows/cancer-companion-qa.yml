@@ -6,6 +6,7 @@ on:
       - 'cancer-system-state/**'
       - 'cancer/**'
       - 'scripts/test_cancer_book_portal.js'
+      - 'scripts/test_cancer_intake.js'
       - 'scripts/test_cancer_evidence_workbench.js'
       - 'scripts/test_cancer_public_catalogues_live.js'
       - 'scripts/test_cancer_systems_lab.js'
@@ -40,6 +41,7 @@ jobs:
           node scripts/test_cancer_companion.js
           node scripts/test_cancer_systems_lab.js
           node scripts/test_cancer_book_portal.js
+          node scripts/test_cancer_intake.js
           node scripts/test_cancer_evidence_workbench.js
           node scripts/test_cancer_evidence_workbench.js
           node scripts/test_cancer_evidence_workbench.js
