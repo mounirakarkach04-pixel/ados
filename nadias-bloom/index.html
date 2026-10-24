@@ -299,7 +299,7 @@ function nbLocalOffsetMinutes(y,m,d,lat,lon){
   if(lat>=47&&lat<=56&&lon>=5&&lon<=16){
     try{
       const v=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',timeZoneName:'shortOffset',hour:'2-digit'}).formatToParts(new Date(Date.UTC(y,m-1,d,12))).find(p=>p.type==='timeZoneName')?.value||'';
-      const match=v.match(/^GMT([+-])(\\d{1,2})(?::(\\d{2}))?$/);
+      const match=v.match(/^GMT([+-])(\d{1,2})(?::(\d{2}))?$/);
       if(match)return(match[1]==='+'?1:-1)*(Number(match[2])*60+Number(match[3]||0));
     }catch{}
   }
