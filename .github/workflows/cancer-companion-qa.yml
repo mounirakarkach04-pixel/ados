@@ -5,6 +5,7 @@ on:
     paths:
       - 'cancer-system-state/**'
       - 'cancer/**'
+      - 'scripts/test_cancer_evidence_workbench.js'
       - 'scripts/test_cancer_systems_lab.js'
       - 'scripts/test_cancer_companion.js'
       - '.github/workflows/cancer-companion-qa.yml'
@@ -37,3 +38,6 @@ jobs:
           node scripts/test_cancer_companion.js
           node scripts/test_cancer_systems_lab.js
           node scripts/test_cancer_book_portal.js
+          node scripts/test_cancer_evidence_workbench.js
+          node scripts/test_cancer_evidence_workbench.js
+          node scripts/test_cancer_evidence_workbench.js
