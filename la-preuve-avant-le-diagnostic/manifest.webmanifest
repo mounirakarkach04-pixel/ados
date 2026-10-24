@@ -1,0 +1,12 @@
+{
+  "name": "LA PREUVE LAB — La preuve avant le diagnostic",
+  "short_name": "LA PREUVE LAB",
+  "lang": "fr",
+  "description": "Prototype pédagogique de contrôle documentaire PIGA/A7SEM; cas fictifs uniquement",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b202c",
+  "theme_color": "#092734",
+  "icons": []
+}
