@@ -79,6 +79,11 @@ def rewrite(content: str, name: str) -> str:
             content = content.replace(root + file, file)
         for short, target in ALIAS.items():
             content = content.replace(root + short, target)
+    # The Android monolith is offered separately on the website. Inside a complete
+    # modular ZIP, send its two buttons to the bundled local app instead of a
+    # non-existent sibling and strip the redundant HTML-download behaviour below.
+    content = content.replace("LA_PREUVE_LAB_ANDROID_TOUT_EN_UN_OFFLINE.html", "app.html")
+    content = content.replace("Tester la version complète dans le navigateur →", "Ouvrir la version LAB locale →")
     # The archive is ALREADY extracted; direct ZIP links would require Internet and are unnecessary.
     content = content.replace('href="' + DIRECT_ZIP_URL + '"', 'href="app.html"')
     content = content.replace("Télécharger directement la suite complète (.ZIP) ↓", "Suite installée · ouvrir LA PREUVE LAB →")
