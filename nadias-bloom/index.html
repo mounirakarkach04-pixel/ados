@@ -438,7 +438,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('nb-avatar-dismi
 function nbAvatarRender(){
 const opt=nbAvatarOptions();
 $('nb-avatar-mode').value=opt.mode;$('nb-avatar-hijab').value=opt.hijab;$('nb-avatar-color').value=opt.color;$('nb-avatar-skin').value=opt.skin;
-$('nb-avatar-photo').hidden=opt.mode!=='portrait';$('nb-avatar-illustration').hidden=opt.mode!=='illustration';
+$('nb-avatar-photo').hidden=opt.mode!=='portrait';$('nb-avatar-illustration').toggleAttribute('hidden',opt.mode!=='illustration');
 $('nb-avatar-hijab').disabled=opt.mode==='portrait';$('nb-avatar-color').disabled=opt.mode==='portrait';$('nb-avatar-skin').disabled=opt.mode==='portrait';
 $('nb-avatar-illustration').querySelectorAll('.nb-hijab').forEach(x=>{x.style.display=opt.hijab==='yes'?'':'none';x.setAttribute('fill',opt.color)});
 $('nb-avatar-illustration').querySelectorAll('.nb-skin').forEach(x=>x.setAttribute('fill',opt.skin));
