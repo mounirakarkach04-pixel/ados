@@ -1,0 +1,19 @@
+name: PIGA Nadia Happy Bounded Live Provider Probe
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/probe_nadia_happy.js'
+permissions:
+  contents: read
+jobs:
+  happy-provider-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test Happy health, CORS and one-time token mint without AI calls
+        run: node scripts/probe_nadia_happy.js
