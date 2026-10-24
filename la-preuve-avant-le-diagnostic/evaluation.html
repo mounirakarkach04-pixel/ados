@@ -292,4 +292,29 @@ $("exportCsv").addEventListener("click",()=>exportData("csv"));
 $("print").addEventListener("click",()=>window.print());
 $("clear").addEventListener("click",()=>{records=[];order=[];index=0;seed=0;participant="";hide("finish");show("start");$("consent").checked=false;$("begin").disabled=true;});
 })();
-</script><nav class="ak-mobile-dock" aria-label="Accès rapide sur mobile"><a href="index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 5.5c3-1.5 6-1.5 9 .4 3-1.9 6-1.9 9-.4v13c-3-1.5-6-1.5-9 .4-3-1.9-6-1.9-9-.4z"/><path d="M12 6v13"/></svg>Livre</a><a href="app.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M8 15h8"/></svg>Laboratoire</a><a href="workbench.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>Qualité</a><a href="evaluation.html" aria-current="page"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20h16M6 20V5h12v15M9 9h6M9 13h6"/></svg>Étude</a></nav></body></html>
+</script><nav class="ak-mobile-dock" aria-label="Accès rapide sur mobile"><a href="index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 5.5c3-1.5 6-1.5 9 .4 3-1.9 6-1.9 9-.4v13c-3-1.5-6-1.5-9 .4-3-1.9-6-1.9-9-.4z"/><path d="M12 6v13"/></svg>Livre</a><a href="app.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M8 15h8"/></svg>Laboratoire</a><a href="workbench.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>Qualité</a><a href="evaluation.html" aria-current="page"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20h16M6 20V5h12v15M9 9h6M9 13h6"/></svg>Étude</a></nav><script id="ak-offline-links-v1">
+/* Downloaded single-file HTML: cross-page navigation requires a full local bundle.
+   In the installed complete ZIP a meta marker retains relative fully-offline links. */
+(function(){
+"use strict";
+if(location.protocol!=="file:"||document.querySelector('meta[name="ak-suite-bundle"][content="local"]'))return;
+var root="https://pigapocket.com/la-preuve-avant-le-diagnostic/";
+var pages=/^(?:index|app|workbench|evaluation|licence|confidentialite)\.html(?:[?#].*)?$/i;
+var rewritten=0;
+document.querySelectorAll("a[href]").forEach(function(a){
+ var href=a.getAttribute("href");
+ if(pages.test(href||"")){a.setAttribute("href",root+href);a.setAttribute("data-online-link","true");rewritten++;}
+});
+var manifest=document.querySelector('link[rel="manifest"]');
+if(manifest)manifest.remove();
+var panel=document.createElement("div");
+panel.id="ak-local-navigation-notice";panel.setAttribute("role","status");
+panel.style.cssText="margin:12px auto 10px;max-width:1120px;padding:13px 16px;border:1px solid #bfa16b;border-radius:12px;background:#fff3d9;color:#1e3741;font:13px/1.6 system-ui";
+panel.innerHTML='<b>Mode hors ligne activé.</b> Cette page fonctionne localement. Les liens vers les autres pages nécessitent Internet lorsque vous avez téléchargé un seul fichier. Pour les utiliser tous sans connexion, téléchargez et décompressez la <a href="'+root+'offline-suite.html" target="_blank" rel="noopener noreferrer" style="color:#173947;text-decoration:underline;font-weight:800">suite hors ligne complète (ZIP)</a>.';
+var h=document.querySelector(".ak-header,header");
+if(h&&h.parentNode)h.insertAdjacentElement("afterend",panel);
+else document.body.insertBefore(panel,document.body.firstChild);
+window.AK_OFFLINE_LINK_AUDIT={rewritten:rewritten,mode:"single-file",clinical_gate2:"BLOCK"};
+})();
+</script>
+</body></html>
