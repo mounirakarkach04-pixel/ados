@@ -1,0 +1,121 @@
+name: PIGA Dual App — Immutable Release Snapshot
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/piga-dual-release-drive-snapshot.yml']
+permissions:
+  contents: read
+jobs:
+  bounded-release-archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm published release packages and build source snapshot manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,pathlib,subprocess,zipfile
+          ados=pathlib.Path('ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip')
+          lab=pathlib.Path('la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip')
+          expected={ados:'30e36f709b4c0fbf960191a18aef998bb5bf1fc716c5d032a8e1929635135ad5',
+                    lab:'409cdb017409c826ab3a646a9a4f0d14a11c4989571ffa62a96f4595c2536182'}
+          for path,sha in expected.items():
+              assert path.is_file(),str(path)+' missing'
+              digest=hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest==sha,(str(path),digest,sha)
+              with zipfile.ZipFile(path) as z:
+                  assert z.testzip() is None
+                  assert len(z.namelist()) == (12 if path==ados else 10)
+              print('PASS_RELEASE_ZIP',path,len(path.read_bytes()),digest)
+          group=[
+            'index.html','studio.html','offline-downloads.html','datenschutz.html',
+            'nutzungsbedingungen.html','sw.js','manifest.webmanifest','ados-icon.svg','cover.jpg',
+            'downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html',
+            'downloads/ADOS_A7SEM_PIGA_GOVERNANCE_MATRIX_v0_6.xlsx',
+            'ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip',
+            'la-preuve-avant-le-diagnostic/index.html',
+            'la-preuve-avant-le-diagnostic/app.html',
+            'la-preuve-avant-le-diagnostic/studio.html',
+            'la-preuve-avant-le-diagnostic/workbench.html',
+            'la-preuve-avant-le-diagnostic/evaluation.html',
+            'la-preuve-avant-le-diagnostic/offline-suite.html',
+            'la-preuve-avant-le-diagnostic/confidentialite.html',
+            'la-preuve-avant-le-diagnostic/licence.html',
+            'la-preuve-avant-le-diagnostic/manifest.webmanifest',
+            'la-preuve-avant-le-diagnostic/sw.js',
+            'la-preuve-avant-le-diagnostic/README.md',
+            'la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip',
+            'scripts/build_ados_offline_zip.py','scripts/build_french_offline_zip.py',
+            'scripts/ados_browser_worker.cjs','scripts/test_ados_evidence.cjs',
+            'scripts/verify_dual_apps_live.py',
+            '.github/workflows/ados-offline-package.yml',
+            '.github/workflows/french-offline-package.yml',
+            '.github/workflows/ados-evidence-loop.yml',
+            '.github/workflows/dual-apps-live-readback.yml',
+            '.github/workflows/piga-dual-release-drive-snapshot.yml'
+          ]
+          pathlib.Path('release-evidence').mkdir(exist_ok=True)
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          lines=['PIGA MASTER GOVERNANCE | STATIC RELEASE SOURCE SNAPSHOT',
+                 'Capture: 2026-10-24 | Git commit: '+sha,
+                 'Scope: ADOS + LA PREUVE LAB public research demonstrations (synthetic only)',
+                 'No real patient data. Gate 2 clinical BLOCK. No authority expansion.',
+                 'Actual final evaluation: Chromium 3/3, 24 checks, 0 errors (run 40069683157).',
+                 'Dual-app live QA: GitHub Actions run 40069844134, 9 GitHub Pages resources, 5 canonical.',
+                 'Known limitation: physical Samsung Android content:// navigation remains unverified.',
+                 'Production Cloudflare Actions failures are separate from observed public HTTP 200.',
+                 'Every digest below covers the ORIGINAL bytes of the file inside this snapshot.',
+                 '']
+          for f in group:
+              path=pathlib.Path(f)
+              assert path.is_file(),f+' missing'
+              lines.append(hashlib.sha256(path.read_bytes()).hexdigest()+'  '+f)
+          pathlib.Path('release-evidence/MANIFEST_SHA256.txt').write_text('\n'.join(lines)+'\n',encoding='utf8')
+          pathlib.Path('release-evidence/FILES.txt').write_text('\n'.join(group)+'\n',encoding='utf8')
+          print('PIGA_DUAL_RELEASE_SNAPSHOT_PASS',len(group),'files',sha)
+          PY
+      - name: Publish full offline application sources, binaries and manifest as finite QA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PIGA_ADOS_LA_PREUVE_RELEASE_20261024
+          retention-days: 90
+          if-no-files-found: error
+          path: |
+            index.html
+            studio.html
+            offline-downloads.html
+            datenschutz.html
+            nutzungsbedingungen.html
+            sw.js
+            manifest.webmanifest
+            ados-icon.svg
+            cover.jpg
+            downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html
+            downloads/ADOS_A7SEM_PIGA_GOVERNANCE_MATRIX_v0_6.xlsx
+            ADOS_BUCH_STUDIO_GOVERNANCE_OFFLINE_COMPLETE.zip
+            la-preuve-avant-le-diagnostic/index.html
+            la-preuve-avant-le-diagnostic/app.html
+            la-preuve-avant-le-diagnostic/studio.html
+            la-preuve-avant-le-diagnostic/workbench.html
+            la-preuve-avant-le-diagnostic/evaluation.html
+            la-preuve-avant-le-diagnostic/offline-suite.html
+            la-preuve-avant-le-diagnostic/confidentialite.html
+            la-preuve-avant-le-diagnostic/licence.html
+            la-preuve-avant-le-diagnostic/manifest.webmanifest
+            la-preuve-avant-le-diagnostic/sw.js
+            la-preuve-avant-le-diagnostic/README.md
+            la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip
+            scripts/build_ados_offline_zip.py
+            scripts/build_french_offline_zip.py
+            scripts/ados_browser_worker.cjs
+            scripts/test_ados_evidence.cjs
+            scripts/verify_dual_apps_live.py
+            .github/workflows/ados-offline-package.yml
+            .github/workflows/french-offline-package.yml
+            .github/workflows/ados-evidence-loop.yml
+            .github/workflows/dual-apps-live-readback.yml
+            .github/workflows/piga-dual-release-drive-snapshot.yml
+            release-evidence/
