@@ -6,6 +6,7 @@ on:
     paths:
       - 'nadias-bloom/**'
       - 'scripts/check_nadia_v27_live.cjs'
+      - 'scripts/test_nadia_v27_pure.cjs'
       - '.github/workflows/nadia-v27-live-parity.yml'
 permissions:
   contents: read
@@ -23,5 +24,7 @@ jobs:
           persist-credentials: false
       - name: Node version
         run: node --version
+      - name: Verify Nadia v27 source invariants (offline, no dependencies)
+        run: node scripts/test_nadia_v27_pure.cjs
       - name: Verify GitHub Pages and Cloudflare bytes (GET only)
         run: node scripts/check_nadia_v27_live.cjs
