@@ -74,12 +74,19 @@
 @keyframes nb-mouth{from{transform:scaleY(.8)}to{transform:scaleY(1.48)}}
 @media(max-width:600px){.nb-happy-top{grid-template-columns:110px 1fr;gap:13px}.nb-happy-avatar{width:108px;height:108px;border-width:4px}.nb-avatar-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.nb-happy-top h2{font-size:21px}.nb-happy-top p{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.nb-happy-avatar.speaking .nb-happy-wave,.nb-happy-avatar.speaking #nb-avatar-mouth{animation:none}}
+
+.nb-account{background:linear-gradient(145deg,#fffdfb 0,#fdf3f5 54%,#eef6ee 100%);border:1px solid #ebdfe2;box-shadow:0 15px 38px #64344910}
+.nb-account .field{margin-top:10px}.nb-account .actions{margin:12px 0}.nb-account .btn{white-space:normal}
+.nb-auth-recovery{margin-top:14px;border:1px solid #e7d4dc;background:#ffffffbe;border-radius:14px;padding:12px 14px}.nb-auth-recovery summary{cursor:pointer;font-size:12px;font-weight:850;color:#6a4961}
+.nb-auth-recovery button{margin-top:8px}.nb-auth-status{background:#f4ecef;border:1px solid #ead4da;border-radius:11px;padding:12px;font-size:12px;color:#654b5c;overflow-wrap:anywhere;margin-top:15px}
+.nb-account #nb-auth-logged-in[hidden],.nb-account #nb-auth-logged-out[hidden]{display:none}
+@media(max-width:600px){#nb-auth-open{font-size:11px;padding:8px 9px}.nb-account .actions{gap:7px}.nb-account .actions .btn{flex:1 1 45%;font-size:11px}}
 </style></head><body><a class="skip" href="#main">Zum Inhalt springen</a>
 <div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><span class="flower">✿</span><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
 <div class="side-title">MIT LIEBE ORGANISIERT</div><button class="side-btn" data-view="haushalt"><span class="sym">✧</span>Home & Haushalt</button><button class="side-btn" data-view="geld"><span class="sym">€</span>Home & Money</button><button class="side-btn" data-view="iman"><span class="sym">☾</span>Iman & Barakah</button><button class="side-btn" data-view="journal"><span class="sym">❀</span>Dankbarkeit & Shura</button><button class="side-btn" data-view="happy"><span class="sym">✦</span>Happy · Assistentin</button><button class="side-btn" data-view="buch"><span class="sym">▤</span>Buch & Einstellungen</button>
 <div class="side-bottom">Ein liebevoller Raum für deinen Familienalltag.<br>Deine Notizen bleiben auf diesem Gerät.<br><a href="https://pigapocket.com/datenschutz" target="_blank" rel="noopener">Datenschutz ↗</a> · <a href="https://pigapocket.com/impressum" target="_blank" rel="noopener">Impressum ↗</a></div></aside>
-<main id="main" class="content"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><span class="pill">✿ Lokal & privat</span><button class="btn soft" data-view="happy">✦ Happy fragen</button><div class="avatar" aria-hidden="true">N</div></div></div>
+<main id="main" class="content"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Konto & Anmeldung">♙ Konto</button><span class="pill">✿ Lokal & privat</span><button class="btn soft" data-view="happy">✦ Happy fragen</button><div class="avatar" aria-hidden="true">N</div></div></div>
 <section id="view-start" class="view active"><div class="hero"><div><div class="eyebrow">DEIN ALLTAG. DEIN RHYTHMUS.</div><h1>Weniger im Kopf.<br><em>Mehr im Herzen.</em></h1><p>Ein Ort für eure Termine, Kinder, Mahlzeiten, Gebete und kleinen Glücksmomente – liebevoll inspiriert vom Buch BARAKAH HOME 2027.</p><div class="actions"><button class="btn primary" data-view="aufgaben">+ Den Tag planen</button><button class="btn light" data-view="iman">Duʿā des Tages ↗</button></div></div><div class="hero-bloom" aria-hidden="true">❀</div></div>
 <section class="nb-promo" aria-label="Buch und Installation">
  <div class="nb-promo-book"><span class="nb-promo-kicker">DAS BUCH HINTER NADIA’S BLOOM</span><div class="nb-promo-copy"><div aria-hidden="true" class="nb-mini-cover"><span>BARAKAH</span><strong>HOME<br>2027</strong><small>FAMILIE · GLAUBE · ALLTAG</small></div><div><h2>BARAKAH HOME 2027</h2><p>Ein ruhiger Familienplaner für Tagesziele, Kinder-Kompass, Mahlzeiten, Haushalt, Iman und 365 Duʿā.</p><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch auf Amazon finden ↗</a><button class="btn soft" type="button" data-view="buch">Kostenlose Leseprobe ansehen</button></div><small>Amazon-Titelsuche; die genaue Produkt-ASIN ist nicht verifiziert. Keine vollständige Buch-PDF öffentlich.</small></div></div></div>
@@ -131,7 +138,29 @@
 <p class="note">Hijabfarbe und Hautton verändern die gezeichnete Version. Beim fotorealistischen Portrait bleiben die ursprünglichen Farben erhalten. Die Auswahl wird ausschließlich auf diesem Gerät gespeichert.</p>
 </section><div class="grid"><div class="card"><div class="happy"><strong>Happy ist für dich da.</strong><p style="color:#f8e8ef">Frag mich, was heute ansteht. Oder sprich deine Nachricht, wenn dein Gerät Spracheingabe unterstützt.</p><span id="happyStatus" class="flag">Lokal bereit</span></div><div class="nb-happy-note">✦ <b>Privat by default:</b> Lokale Vorschläge bleiben auf deinem Gerät. Nur wenn du „Online“ bewusst aktivierst, wird deine Nachricht an den separaten Happy-Dienst übermittelt. Teile dort bitte keine sensiblen Gesundheits-, Zahlungs- oder Kinderangaben.</div><div id="happyChat" class="chat" aria-live="polite"><div class="bubble">Assalamu alaikum 🌷 Ich bin Happy. Was darf ich dir heute leichter machen?</div></div><form id="happyForm" class="chatbar"><input class="input" id="happyInput" maxlength="1200" placeholder="Frag Happy etwas …" aria-label="Nachricht an Happy" required><button class="btn soft" type="button" id="happyMic" title="Spracheingabe">🎙</button><button class="btn primary" id="happySend">Senden</button></form><div class="actions"><label class="checkrow"><input type="checkbox" id="happyOnline"> Happy Live aktivieren (externe KI, nach ausdrücklicher Freigabe)</label><label class="checkrow"><input type="checkbox" id="happySpeak"> Antworten vorlesen</label></div><div class="actions"><button class="btn outline" type="button" id="happyStop">Sprachausgabe / Zuhören stoppen</button></div><p class="note">Happy benutzt eine getrennte, bestehende Happy-Live-API nur auf deinen ausdrücklichen Wunsch. Online-Anfragen werden an einen externen KI-Dienst weitergeleitet. Ohne Online-Freigabe bleibt Happy lokal. Der externe KI-Anbieter kann bei aktivierter Live-Nutzung Kosten berechnen. Der API-Test allein erzeugt keine KI-Antwort. Die PIGA-Sprach-KI der Hauptseite ist davon getrennt.</p></div>
 <div class="card"><h2>Das kann Happy für dich tun</h2><div class="tagrow"><button class="btn soft" data-happy="Was steht heute an?">Mein Tag</button><button class="btn soft" data-happy="Was steht auf meiner Einkaufsliste?">Einkauf</button><button class="btn soft" data-happy="Welche Aufgaben sind offen?">Aufgaben</button><button class="btn soft" data-happy="Was können wir essen?">Essensplan</button><button class="btn soft" data-happy="Zeige mir meine Duʿā">Duʿā</button></div><div class="softpanel" style="margin-top:23px"><h3>Änderungen? Nur mit Freigabe.</h3><p>Beispiel: „Füge Brot zur Einkaufsliste hinzu“. Happy zeigt die geplante Änderung und fragt dich, bevor sie lokal gespeichert wird.</p><p class="note">Keine automatischen Zahlungen, Nachrichten, Buchungen oder externen Handlungen.</p></div><h3 style="margin-top:25px">Status</h3><div id="happyDiagnostics" class="note">Happy ist lokal nutzbar. Online-Verbindung wird erst bei deiner Anfrage aufgebaut.</div></div></div></section>
-<section id="view-buch" class="view"><div class="eyebrow">DIE QUELLE DIESER APP</div><h1 class="title">BARAKAH HOME 2027</h1><p class="sub">Der islamische Familien- & Alltagsplaner · Deutschland Edition, von Mounir Akarkach. Das Buch inspiriert die digitale Alltagsgestaltung.</p><div class="card mobile-directory" id="mobileModules"><h2>Alle Bereiche auf einen Blick</h2><p>Wähle, was dir gerade hilft. Alles ist direkt erreichbar – auch auf dem Handy.</p><div class="mobile-directory-grid"><button class="btn soft" data-view="start">⌂ Mein Zuhause</button><button class="btn soft" data-view="kalender">▣ Kalender</button><button class="btn soft" data-view="aufgaben">✓ Aufgaben</button><button class="btn soft" data-view="kinder">♡ Kinder-Kompass</button><button class="btn soft" data-view="essen">♨ Essensplan</button><button class="btn soft" data-view="einkauf">☷ Einkauf</button><button class="btn soft" data-view="haushalt">✧ Haushalt</button><button class="btn soft" data-view="geld">€ Home & Money</button><button class="btn soft" data-view="iman">☾ Iman & Barakah</button><button class="btn soft" data-view="journal">❀ Dankbarkeit</button><button class="btn soft" data-view="happy">✦ Happy</button><button class="btn soft" data-view="buch">▤ Buch & Sicherheit</button></div></div><div class="grid"><div class="card"><h2>Das Buch entdecken</h2><p><b>Weniger im Kopf. Mehr im Blick.</b> Ein liebevoller Begleiter für die Balance zwischen Familie, Haushalt, Essen, Terminen, Niyyah, Gebet und Dankbarkeit. Die App enthält 365 aus der Buchfassung übernommene Tages-Duʿā für 2027.</p><div class="nb-excerpts"><div class="eyebrow">AUSZÜGE AUS DEM BUCH · KEINE GESAMTAUSGABE</div><blockquote>„Ein Planer, der dir dienen soll – nicht umgekehrt.“</blockquote><p>Der Kinder-Kompass hilft, Schule, Kita, Termine und die Bedürfnisse jedes Kindes im Blick zu behalten. <em>Home &amp; Money</em> bringt Klarheit in Haushalt, Einkauf und Geld.</p><blockquote>„Du musst nicht jede Zeile ausfüllen und du musst auch nicht jeden Tag perfekt planen.“</blockquote><p>Der Tagesrhythmus verbindet <b>Niyyah</b>, drei machbare Prioritäten, Gebete und <b>Mental Load</b>: Was darf heute delegiert, verschoben oder weggelassen werden?</p><p class="note">Kurze redaktionelle Leseprobe auf Basis der Ausgabe BARAKAH HOME 2027. Weitere Buchinhalte und die vollständige PDF sind hier bewusst nicht öffentlich verlinkt.</p></div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">BARAKAH HOME 2027 auf Amazon suchen ↗</a><button class="btn soft" type="button" data-view="start">Zurück zu Nadia’s Bloom</button></div></div><div class="card"><h2>Deine Daten & Privatsphäre</h2><p>Alle Planungsdaten werden ausschließlich im Browser dieses Geräts gespeichert. Keine automatische Cloud-Synchronisation und kein gemeinsamer Account. Sichere daher regelmäßig eine Sicherungsdatei.</p><div class="actions"><button class="btn primary" id="backup">Sicherung (JSON) speichern</button><button class="btn outline" id="restore">Sicherung wiederherstellen</button><input class="hidden" type="file" accept=".json,application/json" id="restoreFile"></div><button class="btn soft" id="downloadOffline">Offline-Version dieser App speichern</button><p class="note"><a href="https://pigapocket.com/nadias-bloom/legacy" rel="noopener noreferrer">Bisherige Nadia’s-Bloom-Version inkl. alter Galerie und Feiern öffnen ↗</a>. Die alten Browserdaten bleiben erhalten.</p><p class="note">Eine gespeicherte HTML-Datei funktioniert lokal ohne Cloud. Online-Happy, externe Links und Geräte-Sprache hängen von Internet bzw. Browserfunktionen ab.</p></div><div class="card"><h2>Gebetszeiten · einmal einstellen</h2>
+<section id="view-buch" class="view"><div class="eyebrow">DIE QUELLE DIESER APP</div><h1 class="title">BARAKAH HOME 2027</h1><p class="sub">Der islamische Familien- & Alltagsplaner · Deutschland Edition, von Mounir Akarkach. Das Buch inspiriert die digitale Alltagsgestaltung.</p><div class="card mobile-directory" id="mobileModules"><h2>Alle Bereiche auf einen Blick</h2><p>Wähle, was dir gerade hilft. Alles ist direkt erreichbar – auch auf dem Handy.</p><div class="mobile-directory-grid"><button class="btn soft" data-view="start">⌂ Mein Zuhause</button><button class="btn soft" data-view="kalender">▣ Kalender</button><button class="btn soft" data-view="aufgaben">✓ Aufgaben</button><button class="btn soft" data-view="kinder">♡ Kinder-Kompass</button><button class="btn soft" data-view="essen">♨ Essensplan</button><button class="btn soft" data-view="einkauf">☷ Einkauf</button><button class="btn soft" data-view="haushalt">✧ Haushalt</button><button class="btn soft" data-view="geld">€ Home & Money</button><button class="btn soft" data-view="iman">☾ Iman & Barakah</button><button class="btn soft" data-view="journal">❀ Dankbarkeit</button><button class="btn soft" data-view="happy">✦ Happy</button><button class="btn soft" data-view="buch">▤ Buch & Sicherheit</button></div></div><div class="grid"><div class="card"><h2>Das Buch entdecken</h2><p><b>Weniger im Kopf. Mehr im Blick.</b> Ein liebevoller Begleiter für die Balance zwischen Familie, Haushalt, Essen, Terminen, Niyyah, Gebet und Dankbarkeit. Die App enthält 365 aus der Buchfassung übernommene Tages-Duʿā für 2027.</p><div class="nb-excerpts"><div class="eyebrow">AUSZÜGE AUS DEM BUCH · KEINE GESAMTAUSGABE</div><blockquote>„Ein Planer, der dir dienen soll – nicht umgekehrt.“</blockquote><p>Der Kinder-Kompass hilft, Schule, Kita, Termine und die Bedürfnisse jedes Kindes im Blick zu behalten. <em>Home &amp; Money</em> bringt Klarheit in Haushalt, Einkauf und Geld.</p><blockquote>„Du musst nicht jede Zeile ausfüllen und du musst auch nicht jeden Tag perfekt planen.“</blockquote><p>Der Tagesrhythmus verbindet <b>Niyyah</b>, drei machbare Prioritäten, Gebete und <b>Mental Load</b>: Was darf heute delegiert, verschoben oder weggelassen werden?</p><p class="note">Kurze redaktionelle Leseprobe auf Basis der Ausgabe BARAKAH HOME 2027. Weitere Buchinhalte und die vollständige PDF sind hier bewusst nicht öffentlich verlinkt.</p></div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">BARAKAH HOME 2027 auf Amazon suchen ↗</a><button class="btn soft" type="button" data-view="start">Zurück zu Nadia’s Bloom</button></div></div><div class="card nb-account" id="nb-auth-card">
+<div class="eyebrow">DEIN PERSÖNLICHER ZUGANG · FREIWILLIG</div><h2>Anmelden &amp; Zugang sichern</h2>
+<p>Optionales Konto mit E-Mail und Passwort oder einmaligem E-Mail-Code. Du kannst den Familienplaner weiterhin ohne Anmeldung verwenden. <b>Wichtig:</b> Kalender-, Kinder- und Finanzdaten bleiben vorerst ausschließlich auf diesem Gerät und werden auch nach Anmeldung <b>nicht</b> automatisch synchronisiert.</p>
+<div id="nb-auth-logged-out">
+<label class="field">Deine E-Mail-Adresse<input id="nb-auth-email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="name@beispiel.de"></label>
+<label class="field">Passwort<input id="nb-auth-password" type="password" autocomplete="current-password" maxlength="120" placeholder="Mindestens 8 Zeichen"></label>
+<div class="actions"><button class="btn primary" type="button" id="nb-login">Anmelden</button><button class="btn soft" type="button" id="nb-register">Neues Konto erstellen</button><button class="btn outline" type="button" id="nb-email-code">E-Mail-Code oder Anmeldelink senden</button></div>
+<label class="field">Code aus der E-Mail (falls als Code zugestellt)<input id="nb-auth-otp" type="text" autocomplete="one-time-code" inputmode="numeric" maxlength="12" placeholder="6-stelliger Code"></label>
+<button class="btn sage" type="button" id="nb-verify-code">Einmalcode bestätigen</button>
+<details class="nb-auth-recovery"><summary>Passwort oder Zugangsdaten vergessen?</summary>
+<p class="note">Passwort vergessen: Gib deine bestätigte E-Mail-Adresse oben ein und fordere einen Wiederherstellungslink an. Den Link öffnest du wieder in Nadia’s Bloom.</p>
+<button class="btn soft" type="button" id="nb-recover-password">E-Mail zum Passwortzurücksetzen senden</button>
+<label class="field">Neues Passwort (nur nach erfolgreichem Wiederherstellungslink)<input id="nb-new-password" type="password" minlength="8" maxlength="120" autocomplete="new-password" placeholder="Neues Passwort"></label>
+<button class="btn soft" type="button" id="nb-update-password">Neues Passwort speichern</button>
+<p class="note"><b>E-Mail-Adresse vergessen?</b> Aus Sicherheitsgründen können wir keine unbekannte E-Mail-Adresse ermitteln. Wenn du sie auf diesem Gerät zuvor gespeichert hast, kann sie lokal wieder angezeigt werden; ansonsten prüfe deine eigene E-Mail-Postfachhistorie. Keine Offenlegung fremder Konten.</p>
+<button class="btn outline" type="button" id="nb-show-remembered-email">Meine zuletzt verwendete E-Mail anzeigen</button>
+</details>
+<label class="checkrow"><input type="checkbox" id="nb-remember-email"> E-Mail-Adresse auf diesem Gerät für die Wiederfindung merken</label>
+</div>
+<div id="nb-auth-logged-in" hidden><p>Angemeldet als <strong id="nb-auth-current-email"></strong>.</p><button class="btn outline" type="button" id="nb-logout">Abmelden</button><p class="note">Der lokale Familienplaner ist nicht mit diesem Konto synchronisiert. Vor einem Gerätewechsel bitte eine JSON-Sicherung erstellen.</p></div>
+<p id="nb-auth-status" class="nb-auth-status" role="status" aria-live="polite">Keine Anmeldung erforderlich, um Nadia’s Bloom zu nutzen. E-Mail-Bestätigungen hängen vom vorhandenen Anbieter und dessen Versandlimits ab.</p>
+<p class="note">Authentifizierung über den bestehenden Supabase-E-Mail-Dienst. Kein Passwort wird an Nadia’s Bloom selbst oder an Happy gesendet; es wird ausschließlich per HTTPS an den Authentifizierungsdienst übermittelt. E-Mail-Code-Versand und Reset müssen mit einer tatsächlich empfangenen E-Mail separat abgenommen werden.</p>
+</div><div class="card"><h2>Deine Daten & Privatsphäre</h2><p>Alle Planungsdaten werden ausschließlich im Browser dieses Geräts gespeichert. Keine automatische Cloud-Synchronisation und kein gemeinsamer Account. Sichere daher regelmäßig eine Sicherungsdatei.</p><div class="actions"><button class="btn primary" id="backup">Sicherung (JSON) speichern</button><button class="btn outline" id="restore">Sicherung wiederherstellen</button><input class="hidden" type="file" accept=".json,application/json" id="restoreFile"></div><button class="btn soft" id="downloadOffline">Offline-Version dieser App speichern</button><p class="note"><a href="https://pigapocket.com/nadias-bloom/legacy" rel="noopener noreferrer">Bisherige Nadia’s-Bloom-Version inkl. alter Galerie und Feiern öffnen ↗</a>. Die alten Browserdaten bleiben erhalten.</p><p class="note">Eine gespeicherte HTML-Datei funktioniert lokal ohne Cloud. Online-Happy, externe Links und Geräte-Sprache hängen von Internet bzw. Browserfunktionen ab.</p></div><div class="card"><h2>Gebetszeiten · einmal einstellen</h2>
 <p class="note">Entweder täglich dieselben manuellen Zeiten verwenden oder einmal einen Ort wählen: Dann passt die App die Sonnenzeiten jeden Tag rechnerisch an. Standort nur auf deinen ausdrücklichen Klick; keine Standortübermittlung.</p>
 <div class="nb-prayer-options">
 <label class="field">Modus<select id="nb-prayer-mode"><option value="manual">Manuell (unverändert)</option><option value="auto">Automatisch nach Sonne und Ort</option></select></label>
@@ -397,6 +426,102 @@ $('happyForm').onsubmit=e=>{e.preventDefault();void submitHappy($('happyInput').
 $('happyOnline').onchange=async()=>{if(!$('happyOnline').checked){stopOnline();happyStatus('Lokal bereit · kein externer KI-Aufruf');return}happyStatus('Prüfe die separate Happy-Live-Verbindung …');try{await happyPreflight();if($('happyOnline').checked)happyStatus('Happy Live bereit · erst Senden startet ein Gespräch · externe Nutzung kann Kosten erzeugen')}catch(e){$('happyOnline').checked=false;stopOnline();happyStatus('Happy Live DELAY · '+(e?.message||'nicht erreichbar')+' · lokale Hilfe bleibt aktiv')}};
 $('happyMic').onclick=()=>{if(speechRec){speechRec.stop();speechRec=null;happyStatus('Mikrofon gestoppt');return}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){happyStatus('Spracheingabe hier nicht verfügbar. Bitte tippen.');return}speechRec=new SR();speechRec.lang='de-DE';speechRec.interimResults=false;speechRec.maxAlternatives=1;speechRec.onresult=e=>{const t=e.results?.[0]?.[0]?.transcript||'';speechRec=null;void submitHappy(t)};speechRec.onerror=e=>{happyStatus('Spracheingabe: '+String(e.error||'nicht verfügbar'));speechRec=null};speechRec.onend=()=>{speechRec=null};speechRec.start();happyStatus('Happy hört einmalig zu …')};
 $('happyStop').onclick=()=>{speechRec?.stop();speechRec=null;stopOnline();try{speechSynthesis.cancel()}catch{}happyStatus('Mikrofon und Sprachausgabe gestoppt')};
+
+const NB_SUPABASE_URL='https://qjvopzschqukitvudgfz.supabase.co';
+const NB_SUPABASE_KEY='sb_publishable_fDsruYO5WHEqKVRjNEl9Rg_dYpSMrYg';
+const NB_AUTH_SESSION_KEY='nadias-bloom-auth-session-v1';
+let nbSession=null;
+try{nbSession=JSON.parse(sessionStorage.getItem(NB_AUTH_SESSION_KEY)||'null')}catch{}
+function nbAuthStatus(message){$('nb-auth-status').textContent=String(message||'')}
+function nbAuthEmail(){const v=$('nb-auth-email').value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v))throw Error('Bitte eine gültige E-Mail-Adresse eingeben.');return v}
+async function nbAuthCall(endpoint,method,body,token){
+if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')throw Error('Konto-Anmeldung ist nur über die sichere Website möglich; die Offline-Datei bleibt lokal nutzbar.');
+const ctrl=new AbortController(),tid=setTimeout(()=>ctrl.abort(),12000);
+try{const response=await fetch(NB_SUPABASE_URL+'/auth/v1/'+endpoint,{method,mode:'cors',credentials:'omit',headers:{'apikey':NB_SUPABASE_KEY,'Content-Type':'application/json',...(token?{'Authorization':'Bearer '+token}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:ctrl.signal});
+let data={};try{data=await response.json()}catch{}
+if(!response.ok)throw Error(String(data.msg||data.error_description||data.error||data.message||'Fehler')+' (HTTP '+response.status+')');
+return data
+}finally{clearTimeout(tid)}
+}
+function nbStoreAuth(data){
+if(!data?.access_token||!data?.refresh_token)throw Error('Eine bestätigte Sitzung wurde nicht bereitgestellt.');
+nbSession={access_token:data.access_token,refresh_token:data.refresh_token,email:data.user?.email||$('nb-auth-email').value.trim()||'',expires_at:Math.floor(Date.now()/1000)+(Number(data.expires_in)||3600)};
+sessionStorage.setItem(NB_AUTH_SESSION_KEY,JSON.stringify(nbSession));
+if($('nb-remember-email').checked&&nbSession.email)localStorage.setItem('nadia-auth-remembered-email',nbSession.email);
+nbAuthRender()
+}
+function nbAuthRender(){
+const active=!!nbSession?.access_token;
+$('nb-auth-logged-out').hidden=active;$('nb-auth-logged-in').hidden=!active;
+$('nb-auth-current-email').textContent=active?(nbSession.email||'bestätigtes Konto'):'';
+if(active)nbAuthStatus('Angemeldet. Familienplaner-Daten bleiben lokal; keine automatische Cloud-Synchronisation.');
+}
+async function nbAuthAction(action){
+const button=$(action),buttons=['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password'];
+for(const id of buttons)$(id).disabled=true;
+try{
+const email=action==='nb-update-password'?'':nbAuthEmail();
+const password=$('nb-auth-password').value;
+const redirect=encodeURIComponent('https://pigapocket.com/nadias-bloom/');
+if(action==='nb-login'){
+const data=await nbAuthCall('token?grant_type=password','POST',{email,password});nbStoreAuth(data);return
+}
+if(action==='nb-register'){
+if(password.length<8)throw Error('Bitte mindestens acht Zeichen als Passwort verwenden.');
+const data=await nbAuthCall('signup?redirect_to='+redirect,'POST',{email,password, data:{app:'nadias-bloom'}});
+if(data.access_token)nbStoreAuth(data);else nbAuthStatus('Falls ein Konto erstellt werden konnte, prüfe dein E-Mail-Postfach und bestätige die Anmeldung. Keine E-Mail erhalten? Prüfe Spam oder das Anbieterlimit.');return
+}
+if(action==='nb-email-code'){
+await nbAuthCall('otp?redirect_to='+redirect,'POST',{email,create_user:true});
+if($('nb-remember-email').checked)localStorage.setItem('nadia-auth-remembered-email',email);
+nbAuthStatus('Falls die Anfrage angenommen wurde, prüfe dein E-Mail-Postfach. Je nach Vorlage kommt ein Einmalcode ODER ein Anmeldelink.');return
+}
+if(action==='nb-verify-code'){
+const token=$('nb-auth-otp').value.replace(/\s+/g,'');
+if(!/^[A-Za-z0-9-]{4,12}$/.test(token))throw Error('Bitte den bestätigten Einmalcode aus deiner E-Mail eingeben.');
+const data=await nbAuthCall('verify','POST',{email,token,type:'email'});nbStoreAuth(data);return
+}
+if(action==='nb-recover-password'){
+await nbAuthCall('recover?redirect_to='+redirect,'POST',{email});
+nbAuthStatus('Falls ein Konto mit dieser E-Mail existiert, erhältst du einen Passwort-Link. Aus Datenschutzgründen bestätigen wir nicht, ob ein Konto existiert.');return
+}
+if(action==='nb-update-password'){
+if(!nbSession?.access_token)throw Error('Bitte zuerst den Wiederherstellungslink öffnen und bestätigen.');
+const next=$('nb-new-password').value;
+if(next.length<8)throw Error('Das neue Passwort muss mindestens acht Zeichen haben.');
+await nbAuthCall('user','PUT',{password:next},nbSession.access_token);
+$('nb-new-password').value='';nbAuthStatus('Passwort im bestehenden Kontodienst geändert.');return
+}
+}catch(e){nbAuthStatus('Anmeldung DELAY: '+String(e.message||'nicht erreichbar').slice(0,230))}
+finally{for(const id of buttons)$(id).disabled=false}
+}
+for(const id of ['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password'])$(id).addEventListener('click',()=>void nbAuthAction(id));
+$('nb-logout').onclick=async()=>{
+const token=nbSession?.access_token;
+nbSession=null;sessionStorage.removeItem(NB_AUTH_SESSION_KEY);nbAuthRender();
+if(token)try{await nbAuthCall('logout','POST',{},token)}catch{}
+nbAuthStatus('Abgemeldet. Deine lokalen Daten bleiben auf diesem Gerät.')
+};
+$('nb-show-remembered-email').onclick=()=>{
+const previous=localStorage.getItem('nadia-auth-remembered-email');
+nbAuthStatus(previous?'Auf diesem Gerät zuletzt gespeichert: '+previous:'Auf diesem Gerät wurde bisher keine E-Mail-Adresse für die Wiederfindung gespeichert.')
+};
+$('nb-auth-open').addEventListener('click',()=>setTimeout(()=>$('nb-auth-card').scrollIntoView({behavior:'smooth',block:'start'}),50));
+(function nbAuthCallback(){
+const hash=location.hash;
+if(hash.includes('access_token=')&&hash.includes('refresh_token=')){
+try{const u=new URLSearchParams(hash.slice(1)),access_token=u.get('access_token'),refresh_token=u.get('refresh_token'),type=u.get('type');
+if(access_token&&refresh_token){
+nbStoreAuth({access_token,refresh_token,expires_in:Number(u.get('expires_in')||3600),user:{email:''}});
+history.replaceState({},'',location.pathname+location.search+'#buch');
+if(type==='recovery')nbAuthStatus('Wiederherstellungslink bestätigt. Im Bereich „Passwort vergessen“ kannst du jetzt dein Passwort ändern.');
+}
+}catch(e){nbAuthStatus('E-Mail-Link konnte nicht verarbeitet werden. Öffne ihn bitte auf dieser sicheren Seite.')}
+}
+})();
+nbAuthRender();
+window.NADIA_AUTH_QA={configured:!!NB_SUPABASE_KEY,provider:'supabase-goTrue',app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true};
+
 window.NADIAS_BLOOM_QA={version:'v27-portrait-avatar-calendar-prayer',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',happyProvider:'happy-live-token',read:()=>structuredClone(state),setView:openView};
 const today=date();$('eventForm').querySelector('[name=date]').value=today;$('mealForm').querySelector('[name=date]').value=today;$('moneyForm').querySelector('[name=date]').value=today;$('monthChoose').value=today.slice(0,7);
 if(location.hash){const h=location.hash.slice(1);if($('view-'+h))openView(h)}render();
