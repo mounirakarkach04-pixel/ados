@@ -3,10 +3,10 @@
 const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict"),crypto=require("node:crypto");
 const root=path.resolve(process.argv[2]||".");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
-const paths=["index.html","studio.html","datenschutz.html","nutzungsbedingungen.html","downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html"];
+const paths=["index.html","studio.html","datenschutz.html","nutzungsbedingungen.html","offline-downloads.html","downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html"];
 for(const p of paths)assert(fs.existsSync(path.join(root,p)),"Missing ADOS file "+p);
 let html=read("studio.html"),scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
-assert.equal(scripts.length,2);
+assert.equal(scripts.length,3,"Studio main, Android navigation and PWA registration scripts expected");
 scripts.forEach(x=>new vm.Script(x));
 const nodes=new Map(),downloads=[];
 const make=id=>({id,value:"",innerHTML:"",textContent:"",style:{},dataset:{},className:"",classList:{add(){},remove(){},toggle(){}},listeners:{},addEventListener(event,handler){this.listeners[event]=handler},click(){return this.listeners.click?.()},setAttribute(){},appendChild(){},remove(){}});
@@ -35,10 +35,14 @@ assert(downloads[0].name.endsWith(".json")&&downloads[1].name.endsWith(".csv"));
 assert(app.csv().includes("gate2")&&app.getState().gate2==="BLOCK");
 get("reset").click();assert.equal(app.getState().evidence.length,3);
 let canonical=read("index.html");assert(canonical.includes("MOUNIR AKARKACH")&&canonical.includes("studio.html")&&canonical.includes("Akarkach Diagnostic Operating System"));
+assert(html.includes('id="ados-studio-book-return"')&&html.includes("https://pigapocket.com/ados/"),"Studio return to book unavailable");
+assert(html.includes("Buchüberblick ohne Internet"),"Studio local book summary unavailable");
+const hub=read("offline-downloads.html");
+assert(hub.includes('id="ados-download"')&&hub.includes("ados-offline-book-return"),"Android offline hub missing book-linked ADOS application");
 let old=read("downloads/ADOS_Governance_Lite_v0_6_OFFLINE.html");
-assert(old.includes("ados-quickstart")&&old.includes("MOUNIR AKARKACH")&&old.includes("Evidence Studio"));
+assert(old.includes("ados-quickstart")&&old.includes("MOUNIR AKARKACH")&&old.includes("Evidence Studio")&&old.includes('id="ados-offline-book-return"'));
 for(const [name,source] of paths.map(p=>[p,read(p)])){for(const m of source.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))new vm.Script(m[1],{filename:name})}
-const linkErrors=[],files=new Set(["index.html","studio.html","datenschutz.html","nutzungsbedingungen.html"]);
+const linkErrors=[],files=new Set(["index.html","studio.html","datenschutz.html","nutzungsbedingungen.html","offline-downloads.html"]);
 for(const [name,source] of paths.filter(x=>!x.includes("downloads/")).map(p=>[p,read(p)])){
 for(const m of source.matchAll(/href=["']([^"']+)["']/g)){
  let target=m[1];if(target.startsWith("#")&&!source.includes('id="'+target.slice(1)+'"'))linkErrors.push(name+" -> "+target);
