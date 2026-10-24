@@ -60,6 +60,16 @@
 @media(max-width:680px){.loop-stage{grid-template-columns:1fr}.loop-stage>strong{padding-top:4px}}
 @media print{.loop-supervisor button{display:none}}
 
+
+/* ADOS editorial 2026 / usable premium workspace, original inference scripts preserved */
+:root{--dark:#081f2a;--accent:#d5ad79;--paper:#fcfaf5;--canvas:#eef2ed;--ink:#193741;--line:#d7e4dd;--shadow:0 9px 30px #06212a0b}
+body{font-size:15px}.sidebar{background:linear-gradient(165deg,#081e2a,#123943);border-right:1px solid #a0aaa633}.brand-title{font-size:25px}.brand-caption{color:#e4c18d;letter-spacing:.15em}.brand-block{align-items:flex-start}.brand-identity{font-size:11px;color:#eed0a1;letter-spacing:.07em;line-height:1.65;padding:8px 9px 0;font-weight:850}
+.scope-tag{border-color:#72958a6b;border-radius:10px}.topbar{background:#fffdf9}.top-title strong{letter-spacing:.035em}.top-author{display:inline-block;color:#a27747;font-size:10px;font-weight:850;letter-spacing:.12em;margin-left:9px}
+.page h1,.page h2{font-family:Georgia,"Times New Roman",serif}.hero-card,.form-card,.result-card{border-radius:15px!important;box-shadow:0 4px 16px #082e2a0b}.hero-card{transition:transform .15s,border-color .15s}
+.hero-card:hover{transform:translateY(-2px);border-color:#bfd5c6}.nav-item,.btn{min-height:44px;border-radius:10px}.nav-item:focus-visible,.btn:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #e6bd7c;outline-offset:3px}
+.ados-quickstart{margin:16px 0 23px;background:#0c3540;color:#fff;padding:19px;border-radius:17px;border:1px solid #527d79;box-shadow:0 11px 30px #082d3040}.ados-quickstart h3{font:500 24px Georgia,serif;margin:0 0 8px;color:#f2d2a5}.ados-quickstart p{font-size:12px;color:#d0e0dc}.ados-start-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ados-start-step{background:#ffffff10;border:1px solid #ffffff26;border-radius:10px;padding:11px}.ados-start-step strong{display:block;color:#f2d39c;font-size:12px}.ados-start-step small{color:#d5e6e1;font-size:10px;line-height:1.5}.ados-new-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:#eac48c;border:1px solid #e5b875;color:#193741;font-weight:850;padding:11px 16px;border-radius:10px;text-decoration:none;font-size:12px}.ados-new-link:hover{background:#f8d9a7}.ados-online-label{color:#dce4de;font-size:11px}.ados-feature{margin:13px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media(max-width:740px){.ados-start-grid{grid-template-columns:1fr}.ados-quickstart{padding:16px}.brand-identity{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-card:hover{transform:none}.page{animation:none!important}}
 </style>
 </head>
 <body>
@@ -68,9 +78,9 @@
   <aside class="sidebar" aria-label="Navigation">
     <div class="brand-block">
       <div class="brand-mark" aria-hidden="true">A<span>·</span></div>
-      <div><div class="brand-title">ADOS</div><div class="brand-caption">GOVERNANCE LITE</div></div>
+      <div><div class="brand-title">ADOS</div><div class="brand-caption">AKARKACH DIAGNOSTIC OPERATING SYSTEM</div></div>
     </div>
-    <div class="scope-tag"><span class="scope-dot"></span> Forschungsprototyp · v0.6</div>
+    <div class="brand-identity">MOUNIR AKARKACH<br><span style="font-weight:500;letter-spacing:0">Die Architektur des Selbst</span></div><div class="scope-tag"><span class="scope-dot"></span> Forschungsprototyp · v0.6</div>
     <p class="sidebar-copy">Begründungen und Gegengründe nachvollziehbar prüfen – keine Diagnosen automatisieren.</p>
     <nav aria-label="Prüfschritte" id="desktop-nav" class="nav-list">
       <button type="button" class="nav-item active" data-page="intro"><span class="nav-num">○</span><span>Übersicht</span></button>
@@ -87,7 +97,7 @@
   </aside>
   <div class="work-area">
     <header class="topbar">
-      <div class="top-title"><strong>ADOS</strong><span> / Governance Lite</span></div>
+      <div class="top-title"><strong>ADOS</strong><span> / Governance Lite v0.6</span><span class="top-author">MOUNIR AKARKACH</span></div>
       <div class="header-right"><span class="demo-label">NUR FIKTIVE FÄLLE</span><button id="print-top" class="icon-button" type="button" title="Prüfprotokoll drucken" aria-label="Prüfprotokoll drucken">↗</button></div>
     </header>
     <main id="main" class="main-content">
@@ -96,7 +106,9 @@
         <div class="overline">PRÜFEN, BEVOR MAN SCHLUSSFOLGERT</div>
         <h1 id="intro-title">Klarheit vor<br><em>Diagnose.</em></h1>
         <p class="hero-sub">Ein geführter Dokumentations- und Governance-Prüfweg nach ADOS. Für fiktive Lehrfälle. Präzise, nachvollziehbar und ohne Cloud-KI.</p>
-        <div class="hero-grid">
+        <section class="ados-quickstart" aria-label="Willkommen und Gebrauchsanleitung"><h3>Willkommen in deiner ADOS-Prüfwerkstatt.</h3><p>Wähle einen vollständig erfundenen Lehrfall, trenne Beobachtung von Deutung und dokumentiere Belege und Gegenbelege. Danach kannst du den Gate-Status nachvollziehen. Neu hinzugekommen ist die eigenständige Evidence-Studio-Übungsumgebung.</p>
+<div class="ados-start-grid"><div class="ados-start-step"><strong>01 · Fiktiven Fall laden</strong><small>Begrenzte Beispieldaten, keine echten Personen.</small></div><div class="ados-start-step"><strong>02 · Prüfung durchlaufen</strong><small>Sechs Schritte und A7SEM Reverse begründen.</small></div><div class="ados-start-step"><strong>03 · Belege gegentesten</strong><small>Neue hypothetische Nachweise im Evidence Studio.</small></div></div>
+<div class="ados-feature"><a class="ados-new-link" href="https://pigapocket.com/ados/studio.html" target="_blank" rel="noopener noreferrer">ADOS Evidence Studio öffnen ↗</a><small class="ados-online-label">Online-Link. Für vollständig lokale Nutzung Studio separat herunterladen.</small></div></section><div class="hero-grid">
           <div class="hero-card"><div class="kicker">01 · PRÜFPFAD</div><strong>Sechs Schritte</strong><span>Vom Originalbefund bis zur dokumentierten Wiedervorlage.</span></div>
           <div class="hero-card"><div class="kicker">02 · ZWEI GATES</div><strong>Inferenz ≠ Handlung</strong><span>ALLOW gilt ausschließlich für eng begrenzte, nichtklinische Dokumentation.</span></div>
           <div class="hero-card"><div class="kicker">03 · GLASSBOX</div><strong>Begründung sichtbar</strong><span>Belege, offene Fragen, Regeln und Ergebnis sind einsehbar.</span></div>
