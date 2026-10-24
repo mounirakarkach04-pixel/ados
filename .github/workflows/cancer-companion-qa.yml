@@ -1,0 +1,33 @@
+name: Cancer System State Research Companion QA (Free)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'cancer-system-state/**'
+      - 'scripts/test_cancer_companion.js'
+      - '.github/workflows/cancer-companion-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: cancer-companion-free-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Chromium test browser
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Complete offline research companion browser QA
+        run: |
+          node scripts/test_cancer_companion.js
+          node scripts/test_cancer_companion.js
+          node scripts/test_cancer_companion.js
