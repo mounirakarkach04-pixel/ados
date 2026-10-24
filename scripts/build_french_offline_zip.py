@@ -51,9 +51,12 @@ class LinkParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids: set[str] = set()
         self.refs: list[tuple[str, str, str]] = []
+        self.unwanted_downloads: list[str] = []
 
     def handle_starttag(self, tag, attrs):
         d = dict(attrs)
+        if tag == "a" and "download" in d and (d.get("href") or "").split("#")[0] in HTML:
+            self.unwanted_downloads.append(d.get("href") or "(empty)")
         if "id" in d and d["id"]:
             self.ids.add(d["id"])
         for attr in ("href", "src", "action"):
@@ -104,6 +107,8 @@ def audit(items: dict[str, str]) -> tuple[int, list[str]]:
     for name in HTML:
         tree = LinkParser()
         tree.feed(items[name])
+        for href in tree.unwanted_downloads:
+            problems.append(f"{name}: local page wrongly still has download attribute: {href}")
         if BUNDLE not in items[name]:
             problems.append(f"{name}: local-bundle marker missing")
         for tag, prop, raw in tree.refs:
