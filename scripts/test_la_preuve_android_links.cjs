@@ -65,7 +65,7 @@ vm.runInNewContext(downloader,{document:doc,Blob:TestBlob,URL:uri,fetch:fetcher,
 (async()=>{
  await control("lab-download").click.call(control("lab-download"));
  assert.equal(fetchCalls,1);
- assert(links.includes("LA_PREUVE_LAB_ANDROID_FIX_20261024.html"),"No new uniquely named Android HTML downloaded");
+ assert(links.includes("LA_PREUVE_LAB_ANDROID_REPARATUR_V2_20261024.html"),"No new uniquely named Android HTML downloaded");
  assert(blob?.size>40000);
  assert(control("lab-status").textContent.includes("Erfolgreich"),"Android download failed validation");
  assert.equal(control("lab-download").disabled,false,"download button remains disabled");
