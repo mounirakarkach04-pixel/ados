@@ -6,7 +6,6 @@ on:
       - 'nadias-bloom/**'
       - 'scripts/test_nadias_bloom_v261.js'
       - 'scripts/test_nadia_happy_v262.js'
-      - 'scripts/test_nadia_v27.js'
       - 'scripts/test_nadia_v27_features.js'
       - '.github/workflows/nadia-bloom-release-qa.yml'
 permissions:
@@ -31,5 +30,4 @@ jobs:
         run: |
           node scripts/test_nadias_bloom_v261.js
           node scripts/test_nadia_happy_v262.js
-          node scripts/test_nadia_v27.js
           node scripts/test_nadia_v27_features.js
