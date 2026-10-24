@@ -166,6 +166,23 @@ async function checkZip(context,cycle){
    await zipIndex.waitForURL(/studio\.html/);
    check(zipIndex.url().startsWith("file:"),"Offline link wrongly redirected online");
    check(await zipIndex.locator(".dot").count()===1000,"Offline Studio did not bootstrap");
+   // A previously broken ZIP link had download="..." and saved app.html rather than navigating.
+   await zipIndex.goto("file://"+path.join(dir,"index.html"),{waitUntil:"load"});
+   const openLab=zipIndex.locator('a[href="app.html"]').filter({hasText:"Ouvrir LA PREUVE LAB locale"}).first();
+   check(await openLab.count()>=1,"ZIP local app CTA missing");
+   check(await openLab.getAttribute("download")===null,"ZIP link erroneously triggers HTML download instead of opening app");
+   await openLab.click();
+   await zipIndex.waitForURL(/app\.html/);
+   check(zipIndex.url().startsWith("file:"),"ZIP app CTA wrongly leaves offline origin");
+   check(await zipIndex.locator("#lot-demo").count()===1,"ZIP local app failed to load");
+   await zipIndex.goto("file://"+path.join(dir,"index.html"),{waitUntil:"load"});
+   const wb=zipIndex.locator('a[href="workbench.html"]').filter({hasText:"Ouvrir QM Workbench locale"}).first();
+   check(await wb.count()>=1,"ZIP local Workbench CTA missing");
+   check(await wb.getAttribute("download")===null,"ZIP Workbench CTA erroneously downloads rather than navigates");
+   await wb.click();
+   await zipIndex.waitForURL(/workbench\.html/);
+   check(zipIndex.url().startsWith("file:"),"ZIP Workbench CTA leaves offline origin");
+   check(await zipIndex.locator("#rounds").count()===1,"ZIP Workbench did not load");
   }finally{await zipIndex.close()}
   check(errors.length===0,"Offline generator browser errors "+JSON.stringify(errors));
   log.push({cycle,module:"offline-zip",outcome:"PASS",unzip:"PASS",navigation:"file:// Studio",bytes:fs.statSync(filename).size});
