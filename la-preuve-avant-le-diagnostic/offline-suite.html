@@ -80,6 +80,9 @@ function offlineHtml(raw){
  pages.forEach(function(f){raw=raw.split(ROOT+f).join(f)});
  raw=raw.split(ROOT+"workbench-download").join("workbench.html");
  raw=raw.split(ROOT+"download").join("app.html");
+ // The full ZIP is already unpacked: do not leave a download-only network link.
+ raw=raw.split('href="https://mounirakarkach04-pixel.github.io/ados/la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip"').join('href="app.html"');
+ raw=raw.replace(/Télécharger directement la suite complète \(\.ZIP\) ↓/g,"Suite installée · ouvrir LA PREUVE LAB →").replace(/Télécharger directement le ZIP complet ↓/g,"Suite installée · ouvrir LA PREUVE LAB →");
  // In the already-installed ZIP, the generator CTA must not point to a file that is not included.
  raw=raw.replace(/(<a\b[^>]*href="offline-suite\.html"[^>]*>)[\s\S]*?(<\/a>)/gi,function(_all,opening,closing){
   return opening.replace('href="offline-suite.html"','href="app.html"')+"Suite déjà installée · ouvrir LA PREUVE LAB →"+closing;
