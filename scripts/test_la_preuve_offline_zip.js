@@ -25,12 +25,12 @@ for(const f of pages){
  };
  const ctx={location:{protocol:"file:"},document:baseDoc,window:{}};
  vm.runInNewContext(script,ctx,{timeout:2000});
- const count=anchors.filter(x=>/^https:\/\/pigapocket\.com\/la-preuve-avant-le-diagnostic\/(?:index|app|workbench|evaluation|licence|confidentialite|offline-suite)\.html/.test(x.url)).length;
+ const count=anchors.filter(x=>/^https:\/\/pigapocket\.com\/la-preuve-avant-le-diagnostic\/(?:index|app|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html/.test(x.url)).length;
  assert(count>0,"expected local navigational links: "+f);
  assert.equal(count,ctx.window.AK_OFFLINE_LINK_AUDIT.rewritten);
  assert.equal(banner.length,1,"offline notice missing: "+f);
  standaloneCount++;standaloneLinks+=count;
- const bound=anchors.filter(x=>/^((index|app|workbench|evaluation|licence|confidentialite|offline-suite)\.html)/.test(x.url));
+ const bound=anchors.filter(x=>/^((index|app|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html)/.test(x.url));
  assert.equal(bound.length,0,"broken relative file navigation "+f);
  const before=[...src.matchAll(/\bhref=["']([^"']+)["']/g)].map(x=>x[1]);
  const onlineAnchors=before.map(url=>({url,getAttribute(){return this.url},setAttribute(k,v){this.url=v}}));
