@@ -70,16 +70,29 @@ def check_local():
     return True
 
 def canonical_readback():
-    urls = ["https://pigapocket.com/ados/","https://pigapocket.com/ados/studio.html",
-            "https://pigapocket.com/ados/offline-downloads.html",
-            "https://pigapocket.com/la-preuve-avant-le-diagnostic/",
-            "https://pigapocket.com/la-preuve-avant-le-diagnostic/app.html"]
-    for url in urls:
+    testcases = [
+        ("https://pigapocket.com/ados/", ["Die Architektur des Selbst", "offline-downloads.html"]),
+        ("https://pigapocket.com/ados/studio.html", ["ados-studio-book-return", "https://pigapocket.com/ados/"]),
+        ("https://pigapocket.com/ados/offline-downloads.html", ['id="ados-download"', 'id="lab-download"']),
+        ("https://pigapocket.com/la-preuve-avant-le-diagnostic/", ["LA PREUVE LAB", "app.html"]),
+        ("https://pigapocket.com/la-preuve-avant-le-diagnostic/app.html", ["lapreuve-offline-book-return"]),
+    ]
+    errors = []
+    for url, markers in testcases:
         try:
-            status,mime,raw=get(url)
-            REPORT["canonical"].append({"url":url,"status":status,"bytes":len(raw),"book_return":("ados-" in url and b"ados-studio-book-return" in raw) or ("app.html" in url and b"lapreuve-offline-book-return" in raw)})
+            status, mime, raw = get(url)
+            txt=raw.decode("utf-8","replace")
+            missing=[marker for marker in markers if marker not in txt]
+            info={"url":url,"status":status,"bytes":len(raw),"missing":missing}
+            REPORT["canonical"].append(info)
+            if status!=200 or missing:
+                errors.append(info)
         except Exception as e:
-            REPORT["canonical"].append({"url":url,"error":str(e)[:180]})
+            info={"url":url,"error":str(e)[:180]}
+            REPORT["canonical"].append(info)
+            errors.append(info)
+    REPORT["canonical_status"]="PASS" if not errors else "FAIL"
+    return errors
 
 def main():
     check_local()
@@ -92,7 +105,7 @@ def main():
             break
         print("BOUNDED_READBACK",step,"of",RETRIES,"unmet",len(problems),flush=True)
         if step!=RETRIES: time.sleep(PAUSE_SECONDS)
-    canonical_readback()
+    canonical_issues=canonical_readback()
     REPORT["fallback_status"]="PASS" if not problems else "FAIL"
     REPORT["unmet"]=problems
     Path("qa-reports").mkdir(exist_ok=True)
@@ -100,5 +113,7 @@ def main():
     print("DUAL_APPS_READBACK",json.dumps(REPORT,ensure_ascii=False),flush=True)
     if problems:
         raise SystemExit("BLOCK: public GitHub Pages failed dual-app readback")
+    if canonical_issues:
+        raise SystemExit("DELAY: canonical domain content has outdated or broken navigation")
 if __name__=="__main__":
     main()
