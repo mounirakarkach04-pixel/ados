@@ -80,9 +80,20 @@ function offlineHtml(raw){
  raw=raw.split(ROOT+"workbench-download").join("workbench.html");
  raw=raw.split(ROOT+"download").join("app.html");
  // In the already-installed ZIP, the generator CTA must not point to a file that is not included.
- raw=raw.split('href="offline-suite.html"').join('href="app.html"');
- raw=raw.split("Créer et télécharger le ZIP complet →").join("Suite installée · Ouvrir LA PREUVE LAB →");
- // Full site route links within content, but not external links (e.g. WHO, Amazon).
+ raw=raw.replace(/(<a\b[^>]*href="offline-suite\.html"[^>]*>)[\s\S]*?(<\/a>)/gi,function(_all,opening,closing){
+  return opening.replace('href="offline-suite.html"','href="app.html"')+"Suite déjà installée · ouvrir LA PREUVE LAB →"+closing;
+ });
+ // In the installed bundle, internal navigation must OPEN a page, never trigger a second HTML download.
+ raw=raw.replace(/<a\b[^>]*>/gi,function(tag){
+   var m=tag.match(/\bhref=["']([^"']+)["']/i);
+   if(m&&/^(?:index|app|workbench|studio|evaluation|licence|confidentialite)\.html(?:[#?].*)?$/.test(m[1]))
+     return tag.replace(/\sdownload(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi,"");
+   return tag;
+ });
+ raw=raw.split("App seule (.HTML) · autres liens en ligne").join("Ouvrir LA PREUVE LAB locale →");
+ raw=raw.split("Télécharger la seule app (.HTML)").join("Ouvrir LA PREUVE LAB locale →");
+ raw=raw.split("Workbench seule (.HTML)").join("Ouvrir QM Workbench locale →");
+ // External links (WHO/Amazon/PIGA domains) intentionally remain online-only.
  return raw;
 }
 async function build(){
