@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// PIGA bounded Happy credential check: one token mint only, no Gemini inference.
+// PIGA bounded Happy credential check: one bounded ephemeral token mint only, no Gemini inference.
 // Never print / persist token, API secrets, user data or response bodies.
 const https = require('node:https');
 const base = 'https://qjvopzschqukitvudgfz.supabase.co/functions/v1/happy-live-token';
