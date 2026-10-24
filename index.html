@@ -61,4 +61,14 @@ html{scroll-padding-top:90px}.top{background:#071e2aef;backdrop-filter:blur(14px
 <article class="card"><span class="pill">Research</span><h3>A7SEM & weitere Frameworks</h3><p>Reverse, ASOSE, ASiSO, JAQ, NSF-325, AVM und ergänzende Forschungsprodukte.</p><a href="https://pigapocket.com/">Gesamtes PIGA-Portfolio ↗</a></article>
 </div><div class="statement"><div class="kicker">Buch → Methode → Software → kontrollierte Nutzung</div><h3>Das Entscheidende ist nicht, schneller zu behaupten.<br>Sondern präziser begründen zu können.</h3><p>Das Buch vermittelt die Theorie. Die Demo macht den begrenzten Prüfablauf nachvollziehbar. Eine professionelle Lizenz regelt den zulässigen kommerziellen Umfang.</p><div class="buttons"><a class="btn gold" href="#demo">ADOS testen ↗</a><a class="btn ghost" href="https://pigapocket.com/">PIGA Portfolio besuchen ↗</a></div></div></div></section>
 </main><footer class="footer"><div class="wrap"><div><strong>ADOS · Die Architektur des Selbst</strong><div class="note">© 2026 Mounir Akarkach · Nichtklinische Forschungsdemo.</div></div><div><a href="nutzungsbedingungen.html">Lizenzbedingungen</a><a href="https://pigapocket.com/impressum">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="mailto:moakarkach@hotmail.de">Schriftlicher Kontakt</a></div></div><div class="wrap"><p class="note">Bezeichnungsabgrenzung: ADOS steht hier für „Akarkach Diagnostic Operating System“ und ist nicht identisch mit „Autism Diagnostic Observation Schedule (ADOS-2)“; keine Verbindung oder Empfehlung durch dessen Rechteinhaber.</p></div></footer>
-</body></html>
+<script id="ados-android-link-fix">(function(){if(location.protocol!=="file:"&&location.protocol!=="content:")return;
+var root="https://pigapocket.com/ados/";
+document.querySelectorAll("a[href]").forEach(function(a){
+var h=a.getAttribute("href"),p=h||"";
+if(/^(?:\.\/|index\.html|studio\.html|datenschutz\.html|nutzungsbedingungen\.html)(?:[?#].*)?$/.test(p)||/^downloads\/[A-Za-z0-9_.-]+$/.test(p)){
+a.setAttribute("href",root+(p==="./"?"":p));a.setAttribute("data-online-link","true");
+}});
+var box=document.createElement("div");box.setAttribute("role","status");box.style.cssText="padding:12px 18px;background:#fff0d7;color:#193840;text-align:center;font:13px/1.5 system-ui";
+box.innerHTML="Offline-Dateiansicht: Verweise zu anderen ADOS-Seiten oder Downloads öffnen die Webseite und benötigen Internet. Interne Sprungmarken bleiben lokal verfügbar.";
+(document.querySelector("header")||document.body.firstElementChild)?.insertAdjacentElement("afterend",box);
+})();</script></body></html>
