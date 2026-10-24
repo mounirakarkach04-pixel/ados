@@ -20,6 +20,7 @@ const {page,errors}=await open(context,"studio.html");try{
  await page.locator("#scenario").selectOption("0");assert.equal((await page.locator("#gate1").innerText()).trim(),"DELAY");
  const count=await page.locator(".entry").count();
  await page.locator("#counterfactual").click();assert((await page.locator("#sim-result").innerText()).includes("Gate 2 bleibt BLOCK"));assert.equal(await page.locator(".entry").count(),count);
+ await page.locator(".new-entry summary").click();
  await page.locator("#claim").fill("Eine neue synthetische Beobachtung für den Übungsbericht");
  await page.locator("#provenance").fill("PAT-REAL-123");await page.locator("#add-evidence").click();
  assert.equal(await page.locator(".entry").count(),count,"Rejected source accepted");
