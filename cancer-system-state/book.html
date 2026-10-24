@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#0b2531">
-<meta name="description" content="Cancer as a Legitimate System State by Mounir Akarkach: a theoretical systems research book with two free, offline-capable PIGA/A7SEM research companions. Not medical advice.">
+<meta name="description" content="Cancer as a Legitimate System State by Mounir Akarkach: a systems-theoretical cancer research book with three free PIGA/A7SEM companion apps and Amazon book search. Research only; not medical advice.">
 <title>Cancer as a Legitimate System State | Book & Research Apps</title>
 <style>
 :root{--navy:#0a2330;--sea:#204f55;--gold:#e9c18b;--cream:#f6f3ed;--white:#fff;--ink:#203a42;--muted:#596d72;--line:#d8e2df}
@@ -54,18 +54,31 @@ footer{background:#0a2330;color:#d2e1db;padding:29px 0;font-size:12px}footer a{c
 @media(max-width:730px){.grid,.steps{grid-template-columns:1fr}header .wrap{flex-wrap:wrap;justify-content:start;padding:12px 0}nav{width:100%;gap:14px}.hero{padding:41px 0}.section{padding:31px 0}dl{grid-template-columns:1fr;gap:3px}dd{margin-bottom:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media print{header,.actions{display:none}.hero{color:#142f36;background:#fff}.hero .lead{color:#142f36}.section{padding:20px 0}.card{box-shadow:none}}
+
+/* Book-led layout inspired by the project's ADOS and La Preuve landing pages. */
+.hero-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,.75fr);gap:42px;align-items:center}.hero-copy{min-width:0}
+.book-scene{min-height:340px;display:grid;place-items:center;position:relative;isolation:isolate}.book-scene:before{content:"";position:absolute;inset:0;background:radial-gradient(circle,#e5c38b36,transparent 63%);filter:blur(7px);z-index:-1}
+.book-display{width:min(252px,100%);min-height:330px;padding:30px 22px 20px;border:1px solid #c59b66;border-left:13px solid #061924;border-radius:4px 10px 10px 3px;background:radial-gradient(circle at 60% 82%,#1d707861,transparent 38%),linear-gradient(140deg,#071b28 5%,#164656 55%,#061926);box-shadow:18px 19px 0 -12px #e5e7e340,29px 32px 40px #0006;display:flex;flex-direction:column;gap:16px;transform:rotate(-3deg)}
+.book-author{font-size:12px;letter-spacing:.08em;text-align:center;color:#edd0a1}.book-title{font:500 27px/1.11 Georgia,serif;text-align:center;letter-spacing:-.02em;color:#f9f5ec}.book-title em{font-style:normal;color:var(--gold)}.book-network{height:95px;display:grid;place-items:center;color:var(--gold);font-size:63px;text-shadow:0 0 20px #8fe2eb}.book-foot{font:700 9px/1.5 system-ui,sans-serif;color:#d0e2dc;text-align:center;text-transform:uppercase;letter-spacing:.11em}
+.purchase-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:20px;align-items:stretch;margin-top:18px}.purchase-feature{border-radius:18px;background:linear-gradient(135deg,#0a2934,#19505a);color:#f1f6f3;padding:26px;box-shadow:0 14px 26px #103c4219}.purchase-feature h3{font:500 27px Georgia,serif;margin:2px 0 12px}.purchase-feature p{font-size:13px;color:#d8e8e2;margin:0 0 16px}.purchase-feature .button{color:#15323a}
+.purchase-details{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}.purchase-details h3{font:500 24px Georgia,serif;margin:0 0 7px}.purchase-details p{font-size:13px;color:var(--muted);margin:0 0 13px}.micro{font-size:11px;color:var(--muted);line-height:1.6}.purchase-feature .micro{color:#cbded8}.mini-list{padding-left:18px;margin:7px 0 13px;font-size:13px}.mini-list li{margin-bottom:5px}
+#apps .grid{grid-template-columns:repeat(3,minmax(0,1fr))}#apps .card{display:flex;flex-direction:column}#apps .card h3{font-size:23px}#apps .card .button{margin-top:auto;align-self:stretch;text-align:center}#apps .card .research-backup{font-size:12px}
+@media(max-width:930px){.hero-layout{grid-template-columns:minmax(0,1fr) 215px;gap:24px}.book-display{min-height:290px;padding:20px 15px}.book-title{font-size:23px}#apps .grid{grid-template-columns:1fr 1fr}#apps .card:last-child{grid-column:1/-1}}
+@media(max-width:730px){.hero-layout,.purchase-grid{grid-template-columns:1fr}.hero-layout{gap:22px}.book-scene{min-height:225px}.book-display{width:175px;min-height:225px;gap:8px}.book-title{font-size:18px}.book-network{height:51px;font-size:40px}.book-foot{font-size:8px}#apps .grid{grid-template-columns:1fr}#apps .card:last-child{grid-column:auto}.purchase-feature,.purchase-details{padding:20px}}
+@media print{.book-display{transform:none;box-shadow:none}.book-scene{min-height:100px}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header><div class="wrap"><a class="brand" href="#top">CANCER <span>RESEARCH</span></a><nav aria-label="Page navigation"><a href="#book">The book</a><a href="#apps">Research apps</a><a href="#method">Method</a><a href="#sources">Sources &amp; scope</a></nav></div></header>
-<section class="hero" id="top"><div class="wrap">
+<header><div class="wrap"><a class="brand" href="#top">CANCER <span>RESEARCH</span></a><nav aria-label="Page navigation"><a href="#book">The book</a><a href="#buy">Amazon</a><a href="#apps">Three apps</a><a href="#method">Method</a><a href="#sources">Sources &amp; scope</a></nav></div></header>
+<section class="hero" id="top"><div class="wrap"><div class="hero-layout"><div class="hero-copy">
 <div class="eyebrow">Mounir Akarkach · Independent research · 2026</div>
 <h1>Cancer as a<br><em>Legitimate System State.</em></h1>
-<p class="lead">A research monograph about cancer as a possible state of complex biological systems—paired with two transparent, offline-capable applications for exploring evidence, uncertainty and the limits of inference.</p>
-<div class="meta"><span>50 conceptual research profiles</span><span>PIGA · A7SEM · A7SEM Reverse</span><span>Two free research apps</span><span>Nonclinical education</span></div>
-<div class="actions"><a class="button primary" href="#apps">Explore the research apps ↓</a><a class="button dark" href="https://drive.google.com/file/d/1t5Vg0HF8FwmYypUGTgnUeEgtr3MfyfFy/view" target="_blank" rel="noopener noreferrer">View research book edition ↗</a></div>
-<p style="font-size:12px;color:#bed4cd">Book link opens Google Drive; access is subject to the owner's sharing permissions. No verified retail listing or purchase claim is made.</p>
+<p class="lead">A research monograph about cancer as a possible state of complex biological systems—paired with three transparent research applications for exploring systems hypotheses, public data, uncertainty and the limits of inference.</p>
+<div class="meta"><span>50 conceptual research profiles</span><span>PIGA · A7SEM · A7SEM Reverse</span><span>Three free research apps</span><span>Nonclinical education</span></div>
+<div class="actions"><a class="button primary" href="#buy">Find the book on Amazon ↓</a><a class="button dark" href="#apps">Try all three research apps ↓</a></div>
+<p style="font-size:12px;color:#bed4cd">Amazon links on this page are title-and-author searches, as on the ADOS and French book pages. The precise product ASIN has not been independently verified.</p>
+</div><div class="book-scene" aria-label="Decorative book illustration, not a verified Amazon cover"><div class="book-display" aria-hidden="true"><span class="book-author">Mounir Akarkach</span><div class="book-title"><em>CANCER</em><br>AS A LEGITIMATE<br>SYSTEM STATE</div><div class="book-network">◌✧◌</div><div class="book-foot">Systems · Evidence · Inference · Governance</div></div></div></div>
 </div></section>
 <main id="main">
 <section class="section" id="book"><div class="wrap">
@@ -74,29 +87,48 @@ footer{background:#0a2330;color:#d2e1db;padding:29px 0;font-size:12px}footer a{c
 <p>Its publicly archived specialist research edition develops this distinction across 50 disease-specific conceptual profiles, together with a framework for questioning assumptions, provenance, contradictory evidence and the temptation to extrapolate from elegant mathematics to actual patients.</p>
 <div class="provenance"><strong>What the reader gains:</strong> a disciplined way to distinguish system-model hypotheses from established biomedical facts, reconstruct the evidence behind a research claim, challenge alternative explanations and record what remains unproven. These are research-literacy tools, not diagnostic pathways.</div>
 </div></section>
+<section class="section alt" id="buy"><div class="wrap">
+<div class="cap" style="color:#86643d">The publication · Read · Discover · Explore</div><h2>The book on Amazon — and the research edition</h2>
+<p class="intro">One scientific question connects the book and its three free browser-based companions: when can a model justify an inference, and when must it defer to missing evidence or uncertainty?</p>
+<div class="purchase-grid">
+<article class="purchase-feature"><div class="cap" style="color:var(--gold)">The book · Mounir Akarkach · 2026</div><h3>Cancer as a Legitimate System State</h3>
+<p>A systems-theoretical exploration of malignant states, emergence, stabilization and therapy resistance, with PIGA, A7SEM and A7SEM Reverse as research lenses. A research contribution, not a clinical treatment manual.</p>
+<div class="actions"><a class="button primary" id="amazon-de-link" href="https://www.amazon.de/s?k=Cancer+as+a+Legitimate+System+State+Mounir+Akarkach" target="_blank" rel="noopener noreferrer" aria-label="Search Amazon Germany for Cancer as a Legitimate System State by Mounir Akarkach">Find the book on Amazon.de ↗</a><a class="button dark" id="amazon-us-link" href="https://www.amazon.com/s?k=Cancer+as+a+Legitimate+System+State+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Amazon.com search ↗</a></div>
+<p class="micro">These are Amazon title-and-author <b>search results</b>, not direct verified product listings. Verify title, author, format and availability on Amazon before purchasing. No ASIN, retail price or stock claim is made.</p>
+</article>
+<article class="purchase-details"><div class="cap">Read before you test</div><h3>The research edition and what you gain</h3>
+<p>Explore 50 conceptual research profiles, investigate how assumptions shape conclusions and trace how claims must be challenged by alternative explanations.</p>
+<ul class="mini-list"><li>Theoretical systems account of malignant states</li><li>Pre-inference and action-admission boundaries</li><li>Glassbox evidence checks and A7SEM Reverse</li><li>Three hands-on research companions</li></ul>
+<a class="button" href="https://drive.google.com/file/d/1t5Vg0HF8FwmYypUGTgnUeEgtr3MfyfFy/view" target="_blank" rel="noopener noreferrer">View archived research edition ↗</a>
+<p class="micro" style="margin-top:12px">The archived Google Drive research edition is separate from any KDP retail edition. Access depends on Drive sharing permissions. Edition correspondence is not independently verified.</p>
+</article></div></div></section>
 <section class="section alt" id="apps"><div class="wrap">
-<div class="cap" style="color:#86643d">Explore · Test · Export</div><h2>Two complementary applications. One governance architecture.</h2>
-<p class="intro">Both tools run locally in the browser and offer their own complete, self-contained HTML download. Open either application, select its Download Offline option and save the file for subsequent use without a connection. External source links require Internet.</p>
+<div class="cap" style="color:#86643d">Explore · Test · Export</div><h2>Three research applications. One governance architecture.</h2>
+<p class="intro">The two systems simulators and the expanded evidence workbench are accessible without registration. Each offers a self-contained HTML download for offline research use; live public catalogue requests require an Internet connection.</p>
 <div class="grid">
 <article class="card"><div class="cap">Application 01 · Reader atlas</div><h3>Cancer Research Companion</h3>
 <p>Start with the book's chapter framework, explore its 50 conceptual research profiles and run a transparent 24-step <em>fictional</em> systems model.</p>
 <ul><li>Searchable atlas of 50 research-profile labels</li><li>Seven interacting A7SEM dimensions</li><li>PIGA Gate 1 / clinical Gate 2 BLOCK</li><li>A7SEM Reverse and counterhypotheses</li><li>Research Passport JSON and toy-trajectory CSV</li></ul>
 <a class="button" href="https://pigapocket.com/cancer-system-state/">Open Reader Atlas &amp; offline download ↗</a><p><a class="research-backup" href="https://mounirakarkach04-pixel.github.io/ados/cancer-system-state/index.html">GitHub Pages backup ↗</a></p>
 </article>
-<article class="card"><div class="cap">Application 02 · Research workbench</div><h3>Cancer Systems Lab</h3>
+<article class="card"><div class="cap">Application 02 · Systems simulator</div><h3>Cancer Systems Lab</h3>
 <p>Investigate fictional dynamics, simulated network connectivity and whether available evidence can support even a limited documentary claim.</p>
 <ul><li>Abstract systems and network toy models</li><li>Six-axis evidence-integrity teaching checklist</li><li>Strict separation of geometry and biology</li><li>Seven A7SEM dimensions with reverse review</li><li>Research Passport JSON and audit CSV</li></ul>
 <a class="button" href="https://pigapocket.com/cancer-system-state/systems-lab">Open Systems Lab &amp; offline download ↗</a><p><a class="research-backup" href="https://mounirakarkach04-pixel.github.io/ados/cancer/index.html">GitHub Pages backup ↗</a></p>
 </article>
-</div>
-<div class="provenance" style="margin-top:20px"><strong>New · Empirical Evidence Workbench</strong><p>Explore actual public GDC/TCGA and cBioPortal catalogue metadata, reconcile five public aggregate omics modalities, document baseline comparisons, and prepare falsifiable resistance, organoid, cell-line, prospective clinical and regulatory evidence plans. No real patient files or clinical decisions.</p><a class="button primary" href="https://pigapocket.com/cancer-system-state/evidence">Open evidence and validation workbench ↗</a><p class="micro">The new workbench supplements, but does not replace, the two stand-alone book apps. Clinical Gate 2 remains BLOCK.</p></div>
-<p style="font-size:12px;margin-top:18px;color:#5c6f73"><strong>Privacy by design:</strong> both demonstration apps are standalone HTML/JavaScript programs without a patient-data backend. Do not enter real personal or patient data. The websites' hosting providers can still maintain normal access logs.</p>
+<article class="card"><div class="cap">Application 03 · Empirical research pathway</div><h3>Cancer Evidence Workbench</h3>
+<p>Explore public oncology catalogue metadata, document aggregate multi-omics research and specify the evidence needed for future independent clinical evaluation.</p>
+<ul><li>NCI GDC and cBioPortal public catalogue metadata</li><li>Five public aggregate omics modalities</li><li>Prespecified comparator and falsification benchmarks</li><li>ctDNA, synthetic-lethality and wet-lab research plans</li><li>Five clinical-translation workstreams and stages A–E</li><li>Glassbox JSON exports; clinical Gate 2 BLOCK</li></ul>
+<a class="button" href="https://pigapocket.com/cancer-system-state/evidence">Open Evidence Workbench &amp; offline download ↗</a><p><a class="research-backup" href="https://mounirakarkach04-pixel.github.io/ados/cancer-system-state/evidence-workbench.html">GitHub Pages backup ↗</a></p>
+</article>
+</div><div class="provenance" style="margin-top:20px"><strong>Research use only · Clinical Gate 2: BLOCK.</strong><p style="margin:7px 0 0">Technical browser checks and public catalogue connectivity are not clinical validation. The evidence workbench provides study-planning tools, not real patient predictions, laboratory findings, therapy choices or regulatory authorization.</p></div>
+<p style="font-size:12px;margin-top:18px;color:#5c6f73"><strong>Privacy by design:</strong> all three applications are standalone HTML/JavaScript programs without a patient-data backend. Do not enter real personal or patient data. The websites' hosting providers can still maintain normal access logs.</p>
 </div></section>
 <section class="section" id="method"><div class="wrap">
 <div class="cap" style="color:#86643d">The reading-to-research pathway</div><h2>A three-step approach to evidence-governed exploration</h2>
 <div class="steps">
-<div class="step"><span class="num">01</span><strong>Read and specify the claim</strong><p>Choose a conceptual profile and distinguish what the book actually states from a new hypothesis.</p></div>
-<div class="step"><span class="num">02</span><strong>Experiment with a fictional model</strong><p>Change toy-model parameters, inspect uncertainty and compare competing explanations—without patient inputs.</p></div>
+<div class="step"><span class="num">01</span><strong>Read and specify the claim</strong><p>Begin with the research book, define the exact scientific claim and distinguish evidence from an unverified hypothesis.</p></div>
+<div class="step"><span class="num">02</span><strong>Experiment with a fictional model</strong><p>Explore fictional systems models or public aggregate research metadata, inspect uncertainty and compare the evidence required.</p></div>
 <div class="step"><span class="num">03</span><strong>Reverse-audit the inference</strong><p>Check provenance and counterevidence; export a local research passport. Gate 2 remains BLOCK.</p></div>
 </div>
 <p>PIGA separates admission of a research inference (<strong>Gate 1</strong>) from authorization of a real-world action (<strong>Gate 2</strong>). A7SEM treats seven dimensions as interacting, not a mandatory clinical sequence. A7SEM Reverse checks claims backwards against their evidence and possible counterexamples. A finite QA loop means repeatable, bounded checks—not unsupervised endless computation.</p>
@@ -107,12 +139,13 @@ footer{background:#0a2330;color:#d2e1db;padding:29px 0;font-size:12px}footer a{c
 <dl>
 <dt>Author</dt><dd>Mounir Akarkach</dd>
 <dt>Book</dt><dd><em>Cancer as a Legitimate System State</em> · Public Specialist Edition V119 (2026)</dd>
+<dt>Amazon book search</dt><dd><a href="https://www.amazon.de/s?k=Cancer+as+a+Legitimate+System+State+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Search Amazon.de by title and author ↗</a> · <a href="https://www.amazon.com/s?k=Cancer+as+a+Legitimate+System+State+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Amazon.com ↗</a> (no verified ASIN)</dd>
 <dt>Book manuscript</dt><dd><a href="https://drive.google.com/file/d/1t5Vg0HF8FwmYypUGTgnUeEgtr3MfyfFy/view" target="_blank" rel="noopener noreferrer">Research edition on Google Drive (sharing dependent) ↗</a></dd>
 <dt>Research register</dt><dd><a href="https://docs.google.com/document/d/1vgLNpTi7bbqaBeZdz06wZOuH5BxJIwyys0N1mNcfeBQ/edit" target="_blank" rel="noopener noreferrer">Master Protocol &amp; Evidence Register (sharing dependent) ↗</a></dd>
 <dt>Independent context</dt><dd><a href="https://www.cancer.gov/about-cancer/understanding/what-is-cancer" target="_blank" rel="noopener noreferrer">US National Cancer Institute — What is cancer? ↗</a></dd>
 <dt>Licensing</dt><dd>Free access for the supplied research demonstrations. Commercial, institutional or clinical adaptations require a separate written agreement and any applicable independent professional/regulatory review.</dd>
 </dl>
-<p>The apps' research passports and downloaded HTML files do not constitute independently signed audit certificates. Book editions are separate from the software. This page intentionally avoids unverified Amazon purchase links, ISBNs and clinical-performance claims.</p>
+<p>The apps' research passports and downloaded HTML files do not constitute independently signed audit certificates. Book editions are separate from the software. Amazon links are clearly labeled search links, not verified book detail pages. No ISBN, ASIN, retail availability or clinical-performance claim is asserted.</p>
 </div></section>
 </main>
 <footer><div class="wrap">© 2026 Mounir Akarkach · Cancer as a Legitimate System State · PIGA / A7SEM / A7SEM Reverse · Nonclinical research demonstrators.</div></footer>
