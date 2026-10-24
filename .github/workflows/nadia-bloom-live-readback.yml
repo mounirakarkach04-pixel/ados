@@ -1,0 +1,24 @@
+name: Nadia Bloom Live Links and Separate Happy API (Free)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/verify_nadias_bloom_live.js'
+      - '.github/workflows/nadia-bloom-live-readback.yml'
+permissions:
+  contents: read
+concurrency:
+  group: nadia-live-readback
+  cancel-in-progress: true
+jobs:
+  live-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Canonical and Happy public non-secret health checks
+        run: node scripts/verify_nadias_bloom_live.js
