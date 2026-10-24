@@ -2,6 +2,17 @@
 "use strict";
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
 const {chromium}=require('playwright');
+
+const {deflateRawSync}=require('node:zlib');
+function crc32(buffer){let crc=0xffffffff;for(const b of buffer){crc^=b;for(let j=0;j<8;j++)crc=crc>>>1^(0xedb88320&-(crc&1))}return (crc^0xffffffff)>>>0}
+function zipOne(name,text){
+const fname=Buffer.from(name),data=Buffer.from(text),packed=deflateRawSync(data);
+const local=Buffer.alloc(30);local.writeUInt32LE(0x04034b50,0);local.writeUInt16LE(20,4);local.writeUInt16LE(8,8);local.writeUInt32LE(crc32(data),14);local.writeUInt32LE(packed.length,18);local.writeUInt32LE(data.length,22);local.writeUInt16LE(fname.length,26);
+const central=Buffer.alloc(46);central.writeUInt32LE(0x02014b50,0);central.writeUInt16LE(20,4);central.writeUInt16LE(20,6);central.writeUInt16LE(8,10);central.writeUInt32LE(crc32(data),16);central.writeUInt32LE(packed.length,20);central.writeUInt32LE(data.length,24);central.writeUInt16LE(fname.length,28);
+const end=Buffer.alloc(22);end.writeUInt32LE(0x06054b50,0);end.writeUInt16LE(1,8);end.writeUInt16LE(1,10);end.writeUInt32LE(central.length+fname.length,12);end.writeUInt32LE(local.length+fname.length+packed.length,16);
+return Buffer.concat([local,fname,packed,central,fname,end])
+}
+
 const checks=[];
 function ck(v,message){assert(v,message);checks.push(message)}
 async function wait(page,selector,needle){await page.waitForFunction(([sel,value])=>(document.querySelector(sel)?.textContent||'').includes(value),[selector,needle],{timeout:10000})}
@@ -60,6 +71,19 @@ ck((await page.locator('#values').inputValue()).length>15,variant+' file data pa
 const r2=await page.evaluate(()=>window.PIGA_SHARED_INTAKE_QA.report());
 ck(r2.rawDocumentExported===false,variant+' no source content exported');
 }
+
+const documentFixtures=[
+  {name:'teaching-notes.docx',kind:'DOCX',mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',inner:'word/document.xml',xml:'<?xml version="1.0"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>SYNTHETIC WORD DOCX SOURCE CONTENT</w:t></w:r></w:p></w:body></w:document>'},
+  {name:'teaching-numbers.xlsx',kind:'XLSX',mime:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',inner:'xl/worksheets/sheet1.xml',xml:'<?xml version="1.0"?><worksheet><sheetData><row r="1"><c r="A1" t="inlineStr"><is><t>SYNTHETIC EXCEL XLSX</t></is></c></row></sheetData></worksheet>'}
+];
+for(const sample of documentFixtures){
+  await page.locator('#values').fill('');
+  await page.locator('#file').setInputFiles({name:sample.name,mimeType:sample.mime,buffer:zipOne(sample.inner,sample.xml)});
+  await wait(page,'#fileStatus',isCancer?'File read locally':variant==='ados'?'Datei lokal eingelesen':'Fichier lu localement');
+  const preview=await page.locator('#filePreview').innerText();
+  ck(preview.includes('SYNTHETIC'),variant+' extracts compressed '+sample.kind+' locally');
+}
+
 ck(errors.length===0,variant+' no uncaught JS exceptions: '+errors.join(';'));
 ck(await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=3,variant+' no horizontal overflow');
 }
