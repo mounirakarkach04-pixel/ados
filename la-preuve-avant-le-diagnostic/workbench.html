@@ -314,7 +314,7 @@ if(typeof document!=="undefined"&&document.addEventListener){document.addEventLi
 "use strict";
 var androidContent=location.protocol==="content:";var localFile=location.protocol==="file:";if((!androidContent&&!localFile)||(localFile&&document.querySelector('meta[name="ak-suite-bundle"][content="local"]')))return;
 var root="https://pigapocket.com/la-preuve-avant-le-diagnostic/";
-var pages=/^(?:index|app|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html(?:[?#].*)?$/i;
+var pages=/^(?:index|app|intake|workbench|studio|evaluation|licence|confidentialite|offline-suite)\.html(?:[?#].*)?$/i;
 var rewritten=0;
 document.querySelectorAll("a[href]").forEach(function(a){
  var href=a.getAttribute("href");
