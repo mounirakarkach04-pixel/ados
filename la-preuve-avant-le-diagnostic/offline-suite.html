@@ -80,6 +80,10 @@ function offlineHtml(raw){
  pages.forEach(function(f){raw=raw.split(ROOT+f).join(f)});
  raw=raw.split(ROOT+"workbench-download").join("workbench.html");
  raw=raw.split(ROOT+"download").join("app.html");
+ // Download-only Android monolith is not a member of the modular bundle.
+ // Both its links resolve to the local app, never a missing content:// sibling.
+ raw=raw.split("LA_PREUVE_LAB_ANDROID_TOUT_EN_UN_OFFLINE.html").join("app.html");
+ raw=raw.split("Tester la version complète dans le navigateur →").join("Ouvrir LA PREUVE LAB locale →");
  // The full ZIP is already unpacked: do not leave a download-only network link.
  raw=raw.split('href="https://mounirakarkach04-pixel.github.io/ados/la-preuve-avant-le-diagnostic/LA_PREUVE_LAB_SUITE_OFFLINE_COMPLETE.zip"').join('href="app.html"');
  raw=raw.replace(/Télécharger directement la suite complète \(\.ZIP\) ↓/g,"Suite installée · ouvrir LA PREUVE LAB →").replace(/Télécharger directement le ZIP complet ↓/g,"Suite installée · ouvrir LA PREUVE LAB →");
