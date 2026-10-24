@@ -7,7 +7,7 @@ Book: Mounir Akarkach, La preuve avant le diagnostic, ISBN 979-8-16097-121-6. Ar
 
 ## What v2 adds
 - Easy guided three-stage synthetic document check (new default) delegates Gate1 to the original v1 function, cross-checking against v2 classification and failing closed on any mismatch.
-- Batch CSV review of up to 300 fictional records with 13-column schema, semicolon/comma delimiters, escaped CSV, validated SYN- reference prefixes, per-record explanations, Gate1 states and downloadable CSV.
+- Batch CSV review of up to 300 fictional records with 13-column schema, semicolon/comma delimiters, escaped CSV, validated SYN- reference prefixes, per-record explanations, Gate1 states and downloadable CSV. A direct local .csv file chooser and Ctrl+Enter shortcut are available; files are parsed inside the browser only.
 - 40 interactive educational prerequisite exercises associated with the 40 infectious-disease book index headings; these are documentary simulations, NOT 40 disease-specific clinical algorithms or a full digital edition.
 - In-memory v2 audit dashboard, JSON export (optional SHA-256 digest of payload via WebCrypto, NOT an authenticated signature), CSV export and printable document.
 - Original advanced lab form, PIGA / A7SEM Reverse, original atlas, Bayes calculator and original journal remain.
