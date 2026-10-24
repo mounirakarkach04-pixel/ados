@@ -20,7 +20,7 @@ if(JSON.stringify(body).includes('members')||JSON.stringify(body).includes('even
 const result=u.pathname.endsWith('/token')||u.pathname.endsWith('/verify')?
 {access_token:'SYNTHETIC_ACCESS_TOKEN',refresh_token:'SYNTHETIC_REFRESH_TOKEN',expires_in:3600,user:{email:body.email||'synthetic@example.com'}}:
 u.pathname.endsWith('/user')?{email:'synthetic@example.com'}:{};
-await route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify(result)})
+await route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'POST, OPTIONS, PUT, GET'},body:JSON.stringify(result)})
 });
 await page.goto('http://127.0.0.1:'+port+'/nadias-bloom/');
 check((await page.title()).includes("Nadia"),"loaded");
