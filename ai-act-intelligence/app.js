@@ -2,6 +2,7 @@ import {createClient} from "https://esm.sh/@supabase/supabase-js@2.78.0?bundle";
 import {evaluate,articleCatalog,TERMS,PRODUCTS,LAW_URL,LAW_VERSION} from "./engine.js";
 import {architectureCatalog,portfolioSummary,ARCHITECTURE_FAMILIES} from "./portfolio.js";
 import {publicationCatalog,publicationCategories,publicationSummary} from "./publications.js";
+import {priceLabel,offersForReport,actionPlan,executiveFinding} from "./journey.js";
 
 const HOSTED_APP="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/";
 const isNativeShell=location.protocol==="capacitor:"||location.protocol==="ionic:"||((location.hostname==="localhost"||location.hostname==="127.0.0.1")&&location.protocol==="https:")||window.Capacitor?.isNativePlatform?.()===true;
@@ -13,7 +14,11 @@ const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;"
 const small=(text,cls="")=>'<span class="pill '+cls+'">'+escapeHTML(text)+'</span>';
 const gateBadge=x=>small(x,x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
 const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",publications:"Zenodo-Forschungsbibliothek",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
-let user=null,activeReport=null,activeInput=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer,recoveryMode=false;
+let user=null,activeReport=null,activeInput=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer,recoveryMode=false,wizardStep=1,selectedSku=null;
+const PAYMENT_INTENT_KEY="piga-aiact-pending-offer";
+function pendingOffer(){try{const sku=localStorage.getItem(PAYMENT_INTENT_KEY);return PRODUCTS.some(p=>p.sku===sku)?sku:null;}catch{return null;}}
+function rememberOffer(sku){if(!PRODUCTS.some(p=>p.sku===sku))return;selectedSku=sku;try{localStorage.setItem(PAYMENT_INTENT_KEY,sku);}catch{}}
+function clearOffer(){selectedSku=null;try{localStorage.removeItem(PAYMENT_INTENT_KEY);}catch{}}
 function toast(message){const el=$("toast");el.textContent=String(message);el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),4700);}
 function show(view){
  if(!titles[view])view="home";
@@ -22,6 +27,8 @@ function show(view){
  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("hidden",e.id!=="view-"+view));
  document.querySelectorAll(".nav-item").forEach(e=>e.classList.toggle("active",e.dataset.view===view));
  $("current-title").textContent=titles[view];
+ const stage={"home":0,"assessment":0,"results":1,"licensing":2,"account":3}[view]??0;
+ document.querySelectorAll("#journey-strip .journey-step").forEach((el,i)=>el.classList.toggle("on",i<=stage));
  if(view==="articles")renderArticles();
  if(view==="portfolio")renderPortfolio();
  if(view==="publications")renderPublications();
@@ -35,6 +42,26 @@ document.querySelectorAll("[data-go]").forEach(e=>e.addEventListener("click",()=
 $("nav-more").addEventListener("click",()=>{const open=$("more-sheet").classList.toggle("hidden")===false;$("nav-more").setAttribute("aria-expanded",String(open));});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("more-sheet").classList.add("hidden");$("nav-more").setAttribute("aria-expanded","false");}});
 document.addEventListener("pointerdown",e=>{if(!e.target.closest("#more-sheet, #nav-more")){$("more-sheet").classList.add("hidden");$("nav-more").setAttribute("aria-expanded","false");}});
+function setWizardStep(n){
+ wizardStep=Math.min(4,Math.max(1,n));
+ document.querySelectorAll("[data-assessment-step]").forEach(el=>el.classList.toggle("hidden",Number(el.dataset.assessmentStep)!==wizardStep));
+ document.querySelectorAll("[data-step-jump]").forEach(el=>{const i=Number(el.dataset.stepJump);el.classList.toggle("active",i===wizardStep);el.classList.toggle("completed",i<wizardStep);});
+ $("wizard-back").hidden=wizardStep===1;
+ $("wizard-next").hidden=wizardStep===4;
+ $("analyze").hidden=wizardStep!==4;
+}
+function wizardCurrentValid(){
+ const panel=document.querySelector('[data-assessment-step="'+wizardStep+'"]');
+ for(const field of panel?.querySelectorAll("[required]")||[]){
+  if(!field.checkValidity()){field.reportValidity();field.focus();return false;}
+ }
+ return true;
+}
+$("wizard-next").addEventListener("click",()=>{if(wizardCurrentValid())setWizardStep(wizardStep+1);});
+$("wizard-back").addEventListener("click",()=>setWizardStep(wizardStep-1));
+document.querySelectorAll("[data-step-jump]").forEach(el=>el.addEventListener("click",()=>{if(Number(el.dataset.stepJump)<=wizardStep)setWizardStep(Number(el.dataset.stepJump));}));
+setWizardStep(1);
+
 $("sign-header").addEventListener("click",()=>show(user?"account":"account"));
 window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);if(titles[v])show(v);});
 const keys=["literacy","risk","data","technical","logs","transparency","oversight","robustness","quality","retention","corrective","cooperation","deployer","fr","conformity","declaration","registration","marking","gpai","monitoring","incident"];
@@ -87,6 +114,7 @@ async function uploadEvidence(assessmentId){
 }
 $("assessment-form").addEventListener("submit",async e=>{
  e.preventDefault();
+ if(wizardStep!==4){setWizardStep(Math.min(wizardStep+1,4));return;}
  const btn=$("analyze");btn.disabled=true;btn.textContent="Prüfung läuft …";
  try{
   const input=gather();activeInput=structuredClone(input);activeId=crypto.randomUUID();
@@ -96,6 +124,7 @@ $("assessment-form").addEventListener("submit",async e=>{
   activeReport.input_sha256=await sha256(new TextEncoder().encode(JSON.stringify(input)));
   activeReport.governance="A7SEM → Assessment → Evidence → A7SEM Reverse → Gate 1 → Gate 2 → Result; finite bounded iteration, re-entry on material change";
   activeReport.self_assessment_only=true;
+  activeReport.is_demo=false;
   renderReport();
   toast("Vorprüfung erstellt. Nicht als behördliche Konformitätserklärung verwendbar.");
   show("results");
@@ -134,6 +163,7 @@ $("download-csv").addEventListener("click",()=>{
 $("print-report").addEventListener("click",()=>activeReport&&window.print());
 async function saveReport(){
  if(!activeReport){toast("Erst einen Bericht erstellen.");return;}
+ if(activeReport.is_demo){toast("Dies ist ein Beispiel. Bitte eine eigene Analyse erstellen.");return;}
  if(!user){toast("Zum Speichern bitte anmelden.");show("account");return;}
  const f=activeInput;
  if(!f){toast("Eingaben für diesen Bericht fehlen. Bitte neue Analyse durchführen.");return;}
