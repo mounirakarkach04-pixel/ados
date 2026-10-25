@@ -27,10 +27,10 @@ try{
  assert.equal(gate1,"DELAY");assert.equal(gate2,"BLOCK");
  assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
  await page.screenshot({path:"qa-artifacts/02-report.png",fullPage:true});
- await page.locator("[data-view='articles']").click();
+ await page.locator("#nav > [data-view='articles']").click();
  await page.fill("#article-search","50");
  assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
- await page.locator("[data-view='portfolio']").click();
+ await page.locator("#nav > [data-view='portfolio']").click();
  await page.locator("#view-portfolio").waitFor({state:"visible",timeout:10000});
  assert.equal((await page.locator("#stat-portfolio-canonical").innerText()).trim(),"13");
  assert.equal((await page.locator("#stat-portfolio-all").innerText()).trim(),"73");
@@ -40,7 +40,7 @@ try{
  assert.match(await page.locator("#portfolio-list").innerText(),/AUEF/);
  await page.locator("#portfolio-search").fill("");
  await page.screenshot({path:"qa-artifacts/03-architecture-portfolio.png",fullPage:true});
- await page.locator("[data-view='publications']").click();
+ await page.locator("#nav > [data-view='publications']").click();
  await page.locator("#view-publications").waitFor({state:"visible",timeout:12000});
  assert.equal((await page.locator("#pub-total").innerText()).trim(),"96");
  assert.equal((await page.locator("#pub-inspected").innerText()).trim(),"43");
@@ -53,11 +53,11 @@ try{
  assert.match(await page.locator("#publication-list").innerText(),/Divine Source Model/);
  await page.locator("#publication-category").selectOption("all");
  await page.screenshot({path:"qa-artifacts/04-zenodo-doi-library.png",fullPage:true});
- await page.locator("[data-view='licensing']").click();
+ await page.locator("#nav > [data-view='licensing']").click();
  assert.equal(await page.locator(".license-card").count(),8);
  await page.screenshot({path:"qa-artifacts/05-licensing.png",fullPage:true});
  // Downloaded result must remain machine-readable and retain provenance boundaries.
- await page.locator("[data-view='results']").click();
+ await page.locator("#nav > [data-view='results']").click();
  const [jsonDownload]=await Promise.all([page.waitForEvent("download"),page.locator("#download-json").click()]);
  const jsonPath=await jsonDownload.path();
  const exported=JSON.parse(fs.readFileSync(jsonPath,"utf8"));
