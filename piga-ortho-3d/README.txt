@@ -53,3 +53,7 @@ praxis.html contains Supabase-backed registration/login, recovery request, emplo
 PIGA ORTHO v0.6 — EMPLOYEE TRACEABILITY
 ----------------------------------------
 Each account now has a unique, immutable, server-issued staff_code (e.g., KFO-001001), not an access password. New work events are server-generated START/END records tied to authenticated account, pseudonymous case reference and task. Each shift time is overwritten by Postgres server clocks, and employees cannot write events or modify start times. The owner-only handover timeline is RLS-restricted in the database, supports filtering by pseudonymous case and CSV export. Users must never enter real patient names or insurance identifiers. This task log does NOT substitute a complete statutory daily working-time system with breaks, corrections and legally compliant employee access. Version 0.6 remains technical evaluation. Owner activation, independent access test, real printer, clinical compliance remain pending.
+
+V0.7 UNIFIED UX
+---------------
+dashboard.html is a new feature hub with responsive modules, safe local STL metadata/hash validation, a session-scoped print-readiness checklist, and drilldown into every existing tab. navigation.js and navigation.css provide one consistent adaptive rail/bottom navigation and Ctrl+K feature search across studio, office and workflow. No clinical patient data or automatic printer actions in dashboard. Readiness checklist is NOT a Gate-2 authorization. Offline service-worker cache includes all 19 web assets.

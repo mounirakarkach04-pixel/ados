@@ -65,5 +65,13 @@
   $('loopStop').onclick=()=>{state.stop=true;show('Stoppsignal gesetzt.');};
   addEventListener('offline',()=>{$('offlineState').textContent='Gerät offline · lokale App nutzbar';});addEventListener('online',()=>{$('offlineState').textContent='Lokale Verarbeitung aktiv';});
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
+  function activateRequestedSection(){
+    const name=location.hash.slice(1);
+    if(!['studio','printer','governance','evidence','loop','about'].includes(name))return;
+    const btn=document.querySelector('.tabs button[data-tab="'+name+'"]');
+    if(btn)btn.click();
+  }
+  window.addEventListener('hashchange',activateRequestedSection);
+  activateRequestedSection();
   labels();draw();log('SESSION_INITIALIZED','OBSERVED',{version:'0.2.0',mode:'technical-evaluation',clinicalApproved:false});
 })();

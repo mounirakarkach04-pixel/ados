@@ -1,0 +1,51 @@
+/* PIGA ORTHO 3D shared adaptive navigation — v0.7 */
+:root{--piga-ink:#0c1b2a;--piga-accent:#1a9aa6;--piga-gold:#b9914a;--piga-mist:#eef8f8}
+.piga-skip{position:absolute;top:-100px;left:10px;z-index:1000;background:white;padding:10px}.piga-skip:focus{top:10px}
+.piga-rail{position:fixed;inset:0 auto 0 0;width:212px;z-index:90;background:#102837;border-right:1px solid #32505e;color:#e9f5f5;display:flex;flex-direction:column;padding:22px 12px 16px;box-shadow:8px 0 30px #04162415}
+.piga-rail *,.piga-bottom *,.piga-command *{box-sizing:border-box}
+.piga-mark{padding:8px 10px 24px;display:flex;gap:11px;align-items:center;text-decoration:none!important;color:white!important}
+.piga-mark-icon{font-size:28px;line-height:1;border:1px solid #39b0b6;color:#f3fcfd;padding:3px 8px}
+.piga-mark b{display:block;font-size:16px;letter-spacing:.14em}
+.piga-mark small{display:block;color:#91b3c0;font-size:9px;letter-spacing:.08em;margin-top:4px}
+.piga-caption{display:block;font-size:9px;color:#799ba8;letter-spacing:.17em;font-weight:800;margin:16px 13px 8px}
+.piga-links{display:grid;gap:5px}
+.piga-links a,.piga-search-btn{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:9px;color:#b9d1da!important;text-decoration:none!important;font-size:12px;font-weight:700;letter-spacing:0;border:1px solid transparent;background:transparent;min-height:43px;text-align:left;cursor:pointer}
+.piga-links a:hover,.piga-search-btn:hover,.piga-links a:focus-visible,.piga-search-btn:focus-visible{background:#204452;outline:2px solid #6cc2c7;outline-offset:1px}
+.piga-links a[aria-current="page"]{background:#1d5260;color:#fff!important;border-color:#2d8390}
+.piga-links svg,.piga-search-btn svg{width:18px;height:18px;flex-shrink:0;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.piga-rail-foot{margin-top:auto;display:grid;gap:8px;padding:10px}
+.piga-rail-foot .piga-label{color:#8eabb6;font-size:10px;line-height:1.5}
+.piga-rail-foot .piga-safety{display:flex;align-items:center;gap:7px;font-size:9px;color:#d1b784;letter-spacing:.06em}
+.piga-safety-dot{width:7px;height:7px;border-radius:50%;background:#b9914a;display:inline-block}
+.piga-bottom{display:none}
+.piga-command[hidden]{display:none!important}
+.piga-command{position:fixed;inset:0;z-index:300;background:rgba(5,19,29,.7);display:flex;align-items:flex-start;justify-content:center;padding:13vh 18px 25px}
+.piga-command-panel{width:min(620px,100%);background:#f8fbfc;color:#183847;border-radius:15px;box-shadow:0 25px 90px #071c2e90;overflow:hidden;border:1px solid #d3e5e8}
+.piga-command-head{display:flex;align-items:center;gap:10px;padding:16px;border-bottom:1px solid #e1ecee}
+.piga-command-head input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;color:#133b48;padding:5px}
+.piga-command-close{border:1px solid #cadfe3;background:white;border-radius:6px;padding:8px 11px;color:#54717b;cursor:pointer}
+.piga-results{padding:9px;max-height:54vh;overflow:auto}
+.piga-results a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:#1f424f;border-radius:8px;padding:13px 15px}
+.piga-results a:hover,.piga-results a:focus-visible{background:#e5f4f4;outline:2px solid #238c96}
+.piga-results b{font-size:13px}.piga-results small{font-size:11px;color:#76909c}
+.piga-command-footer{padding:12px 16px;color:#8aa0a9;font-size:11px;border-top:1px solid #e6eeee}
+body.piga-has-nav{padding-left:212px!important}
+body.piga-has-nav>header:not(.piga-rail){position:relative}
+body.piga-has-nav>main{max-width:1600px}
+@media(min-width:761px) and (max-width:1160px){
+ body.piga-has-nav{padding-left:74px!important}
+ .piga-rail{width:74px;align-items:center;padding:16px 6px}
+ .piga-mark{padding:8px 3px 20px}.piga-mark>span:last-child,.piga-caption,.piga-rail-foot .piga-label,.piga-links a>span,.piga-search-btn>span{display:none}
+ .piga-links a,.piga-search-btn{justify-content:center;width:54px;padding:14px}
+ .piga-rail-foot{padding:0}
+}
+@media(max-width:760px){
+ body.piga-has-nav{padding-left:0!important;padding-bottom:79px!important}
+ .piga-rail{display:none}
+ .piga-bottom{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));left:0;right:0;bottom:0;z-index:190;min-height:68px;padding:7px max(6px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom));background:#102837;border-top:1px solid #396571;box-shadow:0 -8px 25px #04192427}
+ .piga-bottom a,.piga-bottom button{border:0;background:transparent;color:#c0d4db;text-decoration:none;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:4px;padding:5px 1px;border-radius:8px;font-size:10px;font-weight:700;min-width:0;cursor:pointer}
+ .piga-bottom svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+ .piga-bottom [aria-current="page"]{background:#265b67;color:white}
+ .piga-command{padding-top:9vh}
+}
+@media(prefers-reduced-motion:reduce){.piga-rail,.piga-bottom,.piga-command{transition:none!important}}
