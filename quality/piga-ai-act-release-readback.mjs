@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+/**
+ * PIGA AI Act Intelligence — bounded public-production readback worker.
+ * READ-ONLY: no accounts, purchases, private data, mutation or unbounded retry.
+ * Lifecycle: SOURCE -> LIVE READBACK -> REVERSE -> GATE 1 -> GATE 2 -> RESULT.
+ */
+import fs from "node:fs";
+import crypto from "node:crypto";
+const root="ai-act-intelligence";
+const origin="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/";
+const results=[];
+const sha256=bytes=>crypto.createHash("sha256").update(bytes).digest("hex");
+const record=(name,state,evidence)=>results.push({name,state,...evidence});
+const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","styles.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
+async function remote(path,{method="GET",headers={},body}={}){
+ const response=await fetch(path,{method,headers,body,signal:AbortSignal.timeout(12000),redirect:"follow",cache:"no-store"});
+ return response;
+}
+for(const name of STATIC){
+ const file=root+"/"+name;
+ if(!fs.existsSync(file)){record(name,"BLOCK",{reason:"local_source_missing"});continue;}
+ try{
+  const local=fs.readFileSync(file),res=await remote(new URL(name,origin));
+  if(res.status!==200){record(name,"BLOCK",{http_status:res.status,reason:"live_source_unavailable"});continue;}
+  const remoteBytes=Buffer.from(await res.arrayBuffer());
+  const expected=sha256(local),actual=sha256(remoteBytes);
+  record(name,expected===actual?"ALLOW":"DELAY",{http_status:res.status,bytes:remoteBytes.byteLength,hash_match:expected===actual,local_sha256:expected,remote_sha256:actual,...(expected===actual?{}:{reason:"deployment_not_equal_to_checked_commit"})});
+ }catch(error){record(name,"UNKNOWN",{reason:"network_or_transport_error",message:String(error.message||error).slice(0,180)});}
+}
+try{
+ const manifest=JSON.parse(fs.readFileSync(root+"/manifest.webmanifest","utf8"));
+ const required=["name","id","start_url","scope","display","icons"];
+ const missing=required.filter(x=>!manifest[x]);
+ record("manifest_structure",missing.length?"BLOCK":"ALLOW",{missing});
+}catch(error){record("manifest_structure","BLOCK",{reason:String(error.message||error).slice(0,160)});}
+const sensitive=fs.readFileSync(root+"/app.bundle.js","utf8");
+record("client_secret_boundary",/(?:sk_live_|whsec_|SUPABASE_SERVICE_ROLE_KEY\s*[=:]\s*['"])/.test(sensitive)?"BLOCK":"ALLOW",{checked:"no Stripe live secret / no public service-role assignment"});
+try{
+ const url="https://sanrkcovmkkhgdqydxfk.supabase.co/functions/v1/aiact-payment";
+ const response=await remote(url,{method:"POST",headers:{"content-type":"application/json","origin":"https://mounirakarkach04-pixel.github.io"},body:'{"operation":"checkout","sku":"INVALID_NO_AUTH"}'});
+ const denied=response.status===401||response.status===403;
+ record("negative_checkout_no_auth",denied?"ALLOW":"BLOCK",{http_status:response.status,reason:denied?"unauthenticated_checkout_rejected":"unexpected_server_status",payment_created:false});
+}catch(error){record("negative_checkout_no_auth","UNKNOWN",{reason:"edge_transport_unverified",message:String(error.message||error).slice(0,150),payment_created:false});}
+try{
+ const response=await remote("https://sanrkcovmkkhgdqydxfk.supabase.co/functions/v1/aiact-license",{method:"POST",headers:{"content-type":"application/json","origin":"https://mounirakarkach04-pixel.github.io"},body:'{"sku":"PIGA-PROD-001"}'});
+ const denied=response.status===401||response.status===403;
+ record("negative_proprietary_license_no_auth",denied?"ALLOW":"BLOCK",{http_status:response.status,reason:denied?"unauthenticated_private_playbook_rejected":"unexpected_server_status"});
+}catch(error){record("negative_proprietary_license_no_auth","UNKNOWN",{reason:"edge_transport_unverified",message:String(error.message||error).slice(0,150)});}
+const reverse=[
+ "A SHA256 match proves bytes published, not accessibility or UX quality on physical phones",
+ "Rejected unauthenticated checkout is not evidence that a real payment and refund lifecycle works",
+ "Historical CI tests are not real-world customer onboarding or Apple/Google signed release",
+ "Operator identity, privacy, customer support, legal contracts and incident response need separate readback",
+ "The 119 legal article identifiers contain a bounded subset of contextual analysis, not a certified legal opinion",
+ "No unknown, BLOCK or missing independent evidence can be promoted to a positive Gate 2"
+];
+const failures=results.filter(x=>x.state==="BLOCK"),unknowns=results.filter(x=>x.state==="UNKNOWN"),delayed=results.filter(x=>x.state==="DELAY");
+const report={
+ schema:"piga-aiact-release-readback-v1",generated_at:new Date().toISOString(),
+ target:origin,
+ bounded:true,iterations:1,cost_class:"existing_public_github_actions",
+ gate1:failures.length?"BLOCK":unknowns.length||delayed.length?"DELAY":"ALLOW",
+ gate2:"BLOCK",
+ launch_readiness:"NOT_CERTIFIED_FOR_FULL_COMMERCIAL_MARKET_RELEASE",
+ reason_gate2:"No independently witnessed production paid checkout, complete account lifecycle, signed iOS release and finalized provider/legal identity in this worker.",
+ claims:{web_source_readback:failures.length===0&&unknowns.length===0&&delayed.length===0,android_signed_store_release:false,ios_signed_store_release:false,live_payment_integration:false,legal_complete:false},
+ summary:{checked:results.length,pass:results.filter(x=>x.state==="ALLOW").length,block:failures.length,unknown:unknowns.length,delay:delayed.length},
+ results,reverse,
+ next_action:"Remediate exact BLOCK/DELAY receipts; independent production onboarding/payment/identity/device tests require authorized operator."
+};
+fs.mkdirSync("qa-artifacts",{recursive:true});
+fs.writeFileSync("qa-artifacts/piga-release-readback.json",JSON.stringify(report,null,2)+"\n");
+console.log(JSON.stringify({schema:report.schema,summary:report.summary,gate1:report.gate1,gate2:report.gate2,launch_readiness:report.launch_readiness,issues:results.filter(x=>x.state!=="ALLOW").map(x=>({name:x.name,state:x.state,reason:x.reason}))},null,2));
+if(failures.length||unknowns.length||delayed.length)process.exitCode=2;
