@@ -46,6 +46,12 @@ const RECORDS=[
   "source": "index"
  },
  {
+  "id": "17554846",
+  "title": "The Rarity of Cultural Self-Institution — Case Study",
+  "category": "faith",
+  "source": "index"
+ },
+ {
   "id": "17555396",
   "title": "Beauty as the Fourth Dimension of Knowledge — Goethean Paradigm (Part VIII)",
   "category": "faith",
@@ -130,18 +136,6 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "17554846",
-  "title": "The Rarity of Cultural Self-Institution — Case Study",
-  "category": "faith",
-  "source": "index"
- },
- {
-  "id": "17771420",
-  "title": "A7SEM — Meaning Maturity & Pre-Inference Routing",
-  "category": "emergence",
-  "source": "index"
- },
- {
   "id": "17623157",
   "title": "The Akarkach 7-Stage Emergence Model (A7SEM) — foundational version",
   "category": "emergence",
@@ -154,14 +148,14 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "17715661",
-  "title": "A7SEM and the Ontology of Emergence",
+  "id": "17715420",
+  "title": "Computational Metaphysics — A7SEM as Universal Emergence Architecture",
   "category": "emergence",
   "source": "index"
  },
  {
-  "id": "17715420",
-  "title": "Computational Metaphysics — A7SEM as Universal Emergence Architecture",
+  "id": "17715661",
+  "title": "A7SEM and the Ontology of Emergence",
   "category": "emergence",
   "source": "index"
  },
@@ -178,22 +172,22 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "17823180",
-  "title": "The Akarkach 7-Stage Emergence Model — public Zenodo edition",
-  "category": "emergence",
-  "source": "zenodo"
- },
- {
   "id": "17770879",
   "title": "A7SEM in AI-Driven Knowledge Ecosystems",
   "category": "emergence",
   "source": "zenodo"
  },
  {
-  "id": "17865478",
-  "title": "A7SEM as a Pre-Compliance Framework for Societal AI",
+  "id": "17771420",
+  "title": "A7SEM — Meaning Maturity & Pre-Inference Routing",
   "category": "emergence",
   "source": "index"
+ },
+ {
+  "id": "17823180",
+  "title": "The Akarkach 7-Stage Emergence Model — public Zenodo edition",
+  "category": "emergence",
+  "source": "zenodo"
  },
  {
   "id": "17864916",
@@ -202,9 +196,21 @@ const RECORDS=[
   "source": "index"
  },
  {
+  "id": "17865478",
+  "title": "A7SEM as a Pre-Compliance Framework for Societal AI",
+  "category": "emergence",
+  "source": "index"
+ },
+ {
   "id": "17887574",
   "title": "Algorithmic-First Emergence of a School of Thought",
   "category": "emergence",
+  "source": "index"
+ },
+ {
+  "id": "17903976",
+  "title": "ASOSE 3.0 — Governance Edition",
+  "category": "governance",
   "source": "index"
  },
  {
@@ -226,24 +232,6 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "17903976",
-  "title": "ASOSE 3.0 — Governance Edition",
-  "category": "governance",
-  "source": "index"
- },
- {
-  "id": "18404508",
-  "title": "ASOSE — Semantic Emergence Field Specification v1.0",
-  "category": "governance",
-  "source": "zenodo"
- },
- {
-  "id": "18404921",
-  "title": "JAQ — Joint Action Quality Specification v1.0",
-  "category": "governance",
-  "source": "zenodo"
- },
- {
   "id": "17978701",
   "title": "ASiSO — Action-Specific Oversight EU AI Act / Semantic Readiness",
   "category": "governance",
@@ -262,6 +250,12 @@ const RECORDS=[
   "source": "zenodo"
  },
  {
+  "id": "17979659",
+  "title": "ASiSO ↔ ASOSE — Consolidated Semantic Governance",
+  "category": "governance",
+  "source": "index"
+ },
+ {
   "id": "17979833",
   "title": "ASiSO-Light / ASOSE-Light — SME Adoption",
   "category": "sector",
@@ -274,21 +268,15 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "17980364",
-  "title": "ASiSO in Healthcare — Clinical AI",
-  "category": "sector",
-  "source": "index"
- },
- {
   "id": "17980220",
   "title": "ASiSO in Public Administration / GovTech",
   "category": "sector",
   "source": "index"
  },
  {
-  "id": "17979659",
-  "title": "ASiSO ↔ ASOSE — Consolidated Semantic Governance",
-  "category": "governance",
+  "id": "17980364",
+  "title": "ASiSO in Healthcare — Clinical AI",
+  "category": "sector",
   "source": "index"
  },
  {
@@ -300,12 +288,6 @@ const RECORDS=[
  {
   "id": "17980955",
   "title": "ASiSO–ASOSE Series — Official Closing Statement",
-  "category": "governance",
-  "source": "index"
- },
- {
-  "id": "18064975",
-  "title": "Canonical Reference Notice — A7SEM–ASOSE–ASiSO",
   "category": "governance",
   "source": "index"
  },
@@ -332,6 +314,12 @@ const RECORDS=[
   "title": "Licensing as Emergence-Stabilisation Mechanism (A7SEM/ASiSO)",
   "category": "insurance",
   "source": "zenodo"
+ },
+ {
+  "id": "18064975",
+  "title": "Canonical Reference Notice — A7SEM–ASOSE–ASiSO",
+  "category": "governance",
+  "source": "index"
  },
  {
   "id": "18116400",
@@ -376,18 +364,6 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "18262252",
-  "title": "The Pre-Inference Governance Stack — Universal Architecture",
-  "category": "governance",
-  "source": "index"
- },
- {
-  "id": "18261402",
-  "title": "Insurable Medical AI — Liability Transfer",
-  "category": "medical",
-  "source": "zenodo"
- },
- {
   "id": "18260139",
   "title": "Pre-Inference Responsibility in Medical AI",
   "category": "medical",
@@ -406,6 +382,12 @@ const RECORDS=[
   "source": "zenodo"
  },
  {
+  "id": "18261402",
+  "title": "Insurable Medical AI — Liability Transfer",
+  "category": "medical",
+  "source": "zenodo"
+ },
+ {
   "id": "18261708",
   "title": "Pre-Inference Governance Beyond Medicine",
   "category": "sector",
@@ -418,20 +400,38 @@ const RECORDS=[
   "source": "index"
  },
  {
-  "id": "18262182",
-  "title": "Pre-Inference Governance in Financial Systems and Markets",
-  "category": "sector",
-  "source": "index"
- },
- {
   "id": "18262032",
   "title": "Pre-Inference Governance for Military and Lethal Autonomous Systems",
   "category": "sector",
   "source": "index"
  },
  {
+  "id": "18262182",
+  "title": "Pre-Inference Governance in Financial Systems and Markets",
+  "category": "sector",
+  "source": "index"
+ },
+ {
+  "id": "18262252",
+  "title": "The Pre-Inference Governance Stack — Universal Architecture",
+  "category": "governance",
+  "source": "index"
+ },
+ {
   "id": "18401330",
   "title": "Pre-Inference Governance — Canonical Definition v1.1",
+  "category": "governance",
+  "source": "zenodo"
+ },
+ {
+  "id": "18404508",
+  "title": "ASOSE — Semantic Emergence Field Specification v1.0",
+  "category": "governance",
+  "source": "zenodo"
+ },
+ {
+  "id": "18404921",
+  "title": "JAQ — Joint Action Quality Specification v1.0",
   "category": "governance",
   "source": "zenodo"
  },
@@ -456,6 +456,18 @@ const RECORDS=[
  {
   "id": "18594480",
   "title": "Pre-Inference Governance — Structural Non-Existence without Prior Authorization",
+  "category": "governance",
+  "source": "zenodo"
+ },
+ {
+  "id": "18699580",
+  "title": "Formal Evaluation & Valuation Report of a Non-Operational AI Governance Architecture",
+  "category": "insurance",
+  "source": "zenodo"
+ },
+ {
+  "id": "18792042",
+  "title": "Pre-Inference Governance — Comprehensive Institutional Authorization Architecture for High-Risk AI",
   "category": "governance",
   "source": "zenodo"
  },
@@ -493,6 +505,18 @@ const RECORDS=[
   "id": "18825634",
   "title": "Universal Constitutional Charter v1.1",
   "category": "emergence",
+  "source": "zenodo"
+ },
+ {
+  "id": "18826473",
+  "title": "Emergence Governance — Biological & Disease Systems Domain Translation",
+  "category": "medical",
+  "source": "zenodo"
+ },
+ {
+  "id": "18826744",
+  "title": "Emergence Governance — Oncology and Artificial Intelligence as Coupled Emergent Systems",
+  "category": "medical",
   "source": "zenodo"
  },
  {
