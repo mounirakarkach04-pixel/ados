@@ -25,7 +25,8 @@ try{
  assert.match(await page.locator("#report-ref").innerText(),/MUSTERBERICHT/);
  assert.match(await page.locator("#recommended-buy").innerText(),/Eigene Analyse starten/);
  // Public example is informative only: every sample-case CTA must lead to own assessment.
- await page.locator("#ladder [data-ladder-offer]").first().click();
+ await page.locator("#ladder .ladder-item").first().locator("summary").click();
+ await page.locator("#ladder .ladder-item").first().locator("[data-ladder-offer]").click();
  await page.locator("#view-assessment").waitFor({state:"visible"});
  await page.locator("#nav > [data-view='results']").click();
  await page.locator("#view-results [data-go='solutions']").first().click();
