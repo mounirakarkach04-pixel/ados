@@ -80,3 +80,5 @@ RELEASE V0.9 — DEVICE CENTER / FIXED ANDROID AUTH STORAGE
 3. Local binary STL geometric evaluation with SHA-256, triangle count, degenerates and bounding box in unverified STL units. Synthetic 14-tooth-shaped binary STL test can be generated without real patient data. Technical reports list Gate 1 DELAY and Gate 2 BLOCK.
 4. OctoPrint Wi-Fi: preexisting restricted readback and operator-authorized job bridge remains separate. Any real resin 3D printer driver, scanners and manufacturing slicer adapter need per-device manufacturer validation.
 5. Android WebView DOM Storage enabled (required by v0.8 browser Auth) and no true persistent session guarantee. All authentication and permission flows must be tested against signed-in role identities, independently and on real Android devices.
+
+V1.0: 5-step swipeable clinician-review assistant, three synthetic typodonts, 36-entry offline BEMA catalogue. No patient data or autonomous medical diagnosis.
