@@ -67,6 +67,9 @@ try{
  });
  assert.deepEqual(printedGates.map(x=>x.value),["DELAY","BLOCK"]);
  assert.ok(printedGates.every(x=>x.withinPage&&x.notClipped),"A4 Gate-card clipping: "+JSON.stringify(printedGates));
+ assert.match(await page.locator("#appendix-context").innerText(),/Artikelkennungen/);
+ assert.match(await page.locator("#appendix-open").innerText(),/gesonderte Einzelfallprüfung/);
+ assert.match(await page.locator("#appendix-evidence").innerText(),/Keine Dokumente übermittelt/);
  await page.emulateMedia({media:"screen"});
  // Genuine buyer journey: result -> tailored solution -> transparent order -> informed consent -> account.
  await page.locator("#view-results [data-go='solutions']").first().click();
