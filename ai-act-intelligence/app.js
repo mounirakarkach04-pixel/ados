@@ -13,7 +13,7 @@ const $=id=>document.getElementById(id);
 const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const small=(text,cls="")=>'<span class="pill '+cls+'">'+escapeHTML(text)+'</span>';
 const gateBadge=x=>small(x,x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
-const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",publications:"Zenodo-Forschungsbibliothek",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
+const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",publications:"Zenodo-Forschungsbibliothek",licensing:"Angebote & Lizenzen",solutions:"Lösungen",account:"Konto & Nachweise"};
 let user=null,activeReport=null,activeInput=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer,recoveryMode=false,wizardStep=1,selectedSku=null;
 const PAYMENT_INTENT_KEY="piga-aiact-pending-offer";
 function pendingOffer(){try{const sku=localStorage.getItem(PAYMENT_INTENT_KEY);return PRODUCTS.some(p=>p.sku===sku)?sku:null;}catch{return null;}}
@@ -27,8 +27,9 @@ function show(view){
  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("hidden",e.id!=="view-"+view));
  document.querySelectorAll(".nav-item").forEach(e=>e.classList.toggle("active",e.dataset.view===view));
  $("current-title").textContent=titles[view];
- const stage={"home":0,"assessment":0,"results":1,"licensing":2,"account":3}[view]??0;
+ const stage={"home":0,"assessment":1,"results":2,"solutions":3,"licensing":5,"account":4}[view]??0;
  document.querySelectorAll("#journey-strip .journey-step").forEach((el,i)=>el.classList.toggle("on",i<=stage));
+ if(view==="solutions")renderSolutions();
  if(view==="articles")renderArticles();
  if(view==="portfolio")renderPortfolio();
  if(view==="publications")renderPublications();
@@ -164,8 +165,30 @@ function renderReport(){
  $("recommended-buy").dataset.offer=featured?.sku||"";
  $("suggestions").innerHTML=other.map(p=>'<div class="result-offer"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.why)+'</small></div><button type="button" data-suggest="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>').join("");
  $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>selectOffer(b.dataset.suggest)));
+ if(!$("view-solutions").classList.contains("hidden"))renderSolutions();
  $("save-report").disabled=!!r.is_demo;
  $("save-report").title=r.is_demo?"Musterbericht: erst eigene Voranalyse durchführen":"Im persönlichen Konto speichern";
+}
+function renderSolutions(){
+ const r=activeReport;
+ $("solutions-empty").classList.toggle("hidden",!!r);
+ $("solutions-content").classList.toggle("hidden",!r);
+ if(!r)return;
+ const plan=actionPlan(r),offers=offersForReport(r);
+ $("solutions-subject").textContent=r.subject?.title||"Ihr persönlicher Maßnahmenplan";
+ $("solutions-intro").textContent=(r.findings?.length||0)+" fallbezogene Prüfpositionen. "+(r.coverage?.remaining_manual_review||0)+" weitere Normen sind gesondert zu prüfen. Sie entscheiden über die nächsten Schritte.";
+ $("solutions-open").textContent=String(plan.filter(x=>x.requiresWork).length);
+ $("solutions-plan").innerHTML=plan.map((step,index)=>{
+  const offer=PRODUCTS.find(p=>p.sku===step.sku);
+  return '<article class="solution-step"><div class="solution-top"><span class="solution-num">'+String(index+1).padStart(2,"0")+'</span><div class="solution-title">'+escapeHTML(step.label.replace(/^\d+\s*[·.-]\s*/,""))+'</div><span class="solution-state">'+escapeHTML(step.state)+'</span></div>'+
+   '<h3>'+escapeHTML(step.question)+'</h3><p>'+escapeHTML(step.measure)+'</p>'+
+   '<div class="solution-proof"><b>Benötigter Nachweis:</b> '+escapeHTML(step.proof)+'</div>'+
+   (offer?'<button type="button" data-solution="'+escapeHTML(offer.sku)+'">Passende Fachleistung: '+escapeHTML(offer.title)+' →</button>':'')+'</article>';
+ }).join("");
+ $("solutions-offers").innerHTML=offers.slice(0,3).map((p,i)=>
+  '<div class="solution-offer"><div><b>'+(i===0?"Empfohlen · ":"")+escapeHTML(p.title)+'</b><span>'+escapeHTML(p.why)+'</span></div><button type="button" data-solution="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>'
+ ).join("");
+ document.querySelectorAll("#view-solutions [data-solution]").forEach(button=>button.addEventListener("click",()=>selectOffer(button.dataset.solution)));
 }
 $("recommended-buy").addEventListener("click",()=>selectOffer($("recommended-buy").dataset.offer));
 $("sample-analysis").addEventListener("click",async()=>{
@@ -187,6 +210,11 @@ $("download-csv").addEventListener("click",()=>{
  const lines=[["Artikel","Titel","Screening-Status","Erläuterung"],...activeReport.articles.map(a=>[a.article,a.title,a.status,a.note])];
  download("piga-ai-act-articles.csv","\ufeff"+lines.map(row=>row.map(csvSafe).join(";")).join("\r\n"),"text/csv;charset=utf-8");
 });
+const printOpenStates=new Map();
+window.addEventListener("beforeprint",()=>{
+ document.querySelectorAll(".ladder-item").forEach(el=>{printOpenStates.set(el,el.open);el.open=true;});
+});
+window.addEventListener("afterprint",()=>{for(const [el,open] of printOpenStates)el.open=open;printOpenStates.clear();});
 $("print-report").addEventListener("click",()=>activeReport&&window.print());
 async function saveReport(){
  if(!activeReport){toast("Erst einen Bericht erstellen.");return;}
@@ -287,7 +315,7 @@ function renderPurchaseIntent(){
  $("purchase-intent-title").textContent=p.title+" · "+priceLabel(p.sku);
  btn.classList.toggle("hidden",!user);
 }
-$("continue-purchase").addEventListener("click",()=>{if(user&&pendingOffer())selectOffer(pendingOffer());});
+$("continue-purchase").addEventListener("click",()=>{if(user&&pendingOffer())beginOrder(pendingOffer());});
 function renderLicenses(){
  const sorted=offersForReport(activeReport);
  const featured=PRODUCTS.find(p=>p.sku===(selectedSku||pendingOffer()))||sorted[0];
@@ -297,10 +325,31 @@ function renderLicenses(){
  $("licence-cards").innerHTML=sorted.map(p=>
   '<article class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p class="license-explain">'+escapeHTML(p.why)+'</p><div class="license-card-bottom"><strong>'+escapeHTML(p.price)+'</strong><button type="button" class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'">Leistung auswählen ↗</button></div></article>'
  ).join("");
- document.querySelectorAll("[data-buy]").forEach(button=>button.addEventListener("click",()=>purchase(button.dataset.buy,button)));
+ document.querySelectorAll("[data-buy]").forEach(button=>button.addEventListener("click",()=>beginOrder(button.dataset.buy)));
 }
+function beginOrder(sku){
+ const product=PRODUCTS.find(p=>p.sku===sku);
+ if(!product)return;
+ rememberOffer(sku);renderLicenses();show("licensing");
+ $("order-title").textContent=product.title;
+ $("order-price").textContent=priceLabel(sku);
+ $("order-deliverable").textContent="Ausgewählter Leistungsumfang: "+product.type+". Inhalt und Zugang sind an eine bestätigte, produktspezifische Lizenz gebunden.";
+ $("order-terms").checked=false;
+ $("order-review").classList.remove("hidden");
+ $("order-status").textContent="Bitte bestätigen Sie die Informationen. Es wurde noch keine Zahlung ausgelöst.";
+ $("order-review").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("order-close").addEventListener("click",()=>{$("order-review").classList.add("hidden");$("order-terms").checked=false;});
+$("order-continue").addEventListener("click",async()=>{
+ if(!$("order-terms").checked){$("order-status").textContent="Bitte lesen und bestätigen Sie zuerst die Leistungsbedingungen und Datenschutzhinweise.";return;}
+ const sku=pendingOffer();
+ if(!sku){$("order-status").textContent="Bitte wählen Sie zuerst eine Leistung.";return;}
+ if(!user){$("order-status").textContent="Ihre Auswahl bleibt gespeichert. Bitte kostenlos anmelden oder registrieren.";show("account");return;}
+ await purchase(sku,$("order-continue"));
+});
 async function purchase(sku,button){
  if(!PRODUCTS.some(p=>p.sku===sku))return;
+ if(!$("order-terms").checked){$("order-status").textContent="Bitte zunächst die Bestellübersicht bestätigen.";return;}
  rememberOffer(sku);renderPurchaseIntent();
  if(!isVerifiedCheckoutReturnHost){toast("Checkout ist aus dieser App-Adresse noch nicht sicher rückführbar. Bitte die verlinkte HTTPS-Webversion öffnen und dort nach Anmeldung kaufen. Es wurde keine Zahlung ausgelöst.");return;}
  if(!user){toast("Anmeldung ist erst für die Bestellung notwendig. Ihre Auswahl bleibt erhalten.");show("account");return;}
@@ -334,9 +383,12 @@ async function confirmPaymentIfNeeded(){
   if(error||!data?.ok)throw Error(data?.error||error?.message||"Keine bestätigte Zahlung");
   confirmationCompleted=true;
   history.replaceState(null,"",location.pathname+"#licensing");
+  showCommerceStatus("active","Zahlung serverseitig bestätigt. Ihre Lizenz steht in Ihrem Konto bereit.");
+  $("order-review").classList.add("hidden");
   toast("Zahlung bestätigt. Deine Lizenz ist freigeschaltet.");
   await loadEntitlements();
  }catch(err){
+  showCommerceStatus("error","Zahlung oder Freischaltung noch nicht bestätigt. Bitte prüfen Sie Ihren Kontostatus, bevor Sie eine neue Bestellung starten.");
   toast("Freigabe noch nicht bestätigt. Es wird keine Lizenz ohne Zahlungsnachweis ausgegeben. "+(err?.message||""));
  }finally{confirmationRunning=false;}
 }
