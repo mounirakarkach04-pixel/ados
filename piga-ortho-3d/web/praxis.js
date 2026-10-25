@@ -183,6 +183,29 @@ async function loadTrail(){
   const items=await req(query);
   if(!Array.isArray(items))throw Error('invalid_event_response');
   caseEvents=items;
+  // Pair backend-generated START/END events using their immutable shift IDs.
+  const pairs=new Map();
+  for(const entry of items){
+    let item=pairs.get(entry.shift_id);
+    if(!item){item={shift_id:entry.shift_id,staff_code:entry.staff_code,task_type:entry.task_type,start:null,end:null};pairs.set(entry.shift_id,item);}
+    if(entry.event_type==='START')item.start=entry.occurred_at;
+    if(entry.event_type==='END')item.end=entry.occurred_at;
+  }
+  const grouped=[...pairs.values()].sort((a,b)=>new Date(a.start||0)-new Date(b.start||0));
+  const board=$('traceIntervals');board.textContent='';
+  if(grouped.length){
+    const head=document.createElement('div');head.className='interval-header';
+    head.textContent='Bearbeitungsabschnitte · '+grouped.length+' Abschnitte';board.append(head);
+  }
+  grouped.forEach((part,i)=>{
+    const row=document.createElement('div');row.className='interval-row';
+    const left=document.createElement('div');const title=document.createElement('b');title.textContent=part.staff_code+' · '+part.task_type;
+    const period=document.createElement('small');period.textContent=part.start?date(part.start)+' – '+(part.end?date(part.end):'noch aktiv'):'Startzeit nicht im aktuellen Ausschnitt';
+    left.append(title,period);
+    const mins=document.createElement('strong');
+    mins.textContent=part.start&&part.end?Math.round(minBetween(part.start,part.end))+' min':part.end?'unvollständig':'aktiv';
+    row.append(left,mins);board.append(row);
+  });
   const root=$('traceList');root.textContent='';
   if(!items.length){root.textContent='Für diesen Testauftrag wurden noch keine START-/ENDE-Ereignisse erfasst.';}
   items.forEach((ev,i)=>{
@@ -197,7 +220,7 @@ async function loadTrail(){
   });
   $('traceSummary').textContent=items.length+' serverseitig protokollierte Ereignisse · '+new Set(items.map(x=>x.staff_code)).size+' Mitarbeiterkennung(en)'+(items.length===1000?' · weitere Einträge möglich':'');
   $('traceCsv').disabled=!items.length;
- }catch(err){caseEvents=[];$('traceCsv').disabled=true;fail('traceSummary','Der nachvollziehbare Verlauf konnte nicht geladen werden. Bitte Berechtigung und Verbindung prüfen.');}
+ }catch(err){caseEvents=[];$('traceIntervals').textContent='';$('traceCsv').disabled=true;fail('traceSummary','Der nachvollziehbare Verlauf konnte nicht geladen werden. Bitte Berechtigung und Verbindung prüfen.');}
 }
 $('traceLoad').addEventListener('click',()=>{if(isOwner())loadTrail();});
 $('traceCase').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(isOwner())loadTrail();}});
