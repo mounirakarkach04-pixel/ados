@@ -122,3 +122,15 @@ test("post-purchase account progress uses verified owner session and server enti
  assert.ok(app.includes('originalPrintTitle'));
  assert.ok(html.includes('id="report-document-id"'));
 });
+
+test("PIGA legal-to-technical presentation never certifies a customer's runtime",()=>{
+ const html=read("ai-act-intelligence/index.html");
+ const bridge=read("ai-act-intelligence/piga-act-bridge.js");
+ const app=read("ai-act-intelligence/app.js");
+ assert.ok(html.includes('id="report-legal-map"'));
+ assert.ok(html.includes('class="piga-law-bridge"'));
+ assert.ok(app.includes('evidenceBridgeForReport(r,activeInput||{})'));
+ assert.match(bridge,/nicht als produktive Sperre nachgewiesen/);
+ assert.match(bridge,/keine Kunden-Inferenz/);
+ assert.doesNotMatch(html,/garantiert.{0,35}(?:EU-AI-Act|Konformität)/i);
+});
