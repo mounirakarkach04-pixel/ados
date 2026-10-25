@@ -4,7 +4,7 @@
 const fs = require('node:fs');
 const crypto = require('node:crypto');
 const path = require('node:path');
-const files = ['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png'];
+const files = ['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png','barakah-home-2027-original-cover.png'];
 const sites = [
   {name:'GitHub Pages',base:'https://mounirakarkach04-pixel.github.io/ados/nadias-bloom/'},
   {name:'Cloudflare canonical',base:'https://pigapocket.com/nadias-bloom/'}
