@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#442f47"><meta name="description" content="Nadia’s Bloom – liebevoller Familien- und Alltagsplaner nach BARAKAH HOME 2027 mit Kalender, Familie, Gebetszeiten, Duʿā, Mahlzeiten und Finanzen.">
+<meta name="theme-color" content="#f8eef4"><meta name="description" content="Nadia’s Bloom – stilvoller Familien- und Alltagsplaner nach BARAKAH HOME 2027 mit Kalender, Familie, Gebetszeiten, Duʿā, Mahlzeiten und Finanzen.">
 <meta name="color-scheme" content="light"><title>Nadia’s Bloom · Barakah Home Family Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{font-family:Inter,"Segoe UI Variable",system-ui,-apple-system,Arial,sans-serif;color:#382d35;background:#f9f5f2;--berry:#793d5c;--deep:#442d47;--rose:#bd7790;--rosep:#f4e5e9;--sage:#567764;--sagep:#e4eee6;--gold:#d4ad6e;--ink:#382d35;--muted:#80737a;--line:#eee4e5;--paper:#fffefd;--shadow:0 22px 58px #56334714}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 92% 0%,#f3d9e44c,transparent 35%),radial-gradient(ellipse at 6% 35%,#e0eadd7d,transparent 40%),#faf7f4}button,input,select,textarea{font:inherit}a{color:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}:focus-visible{outline:3px solid #9b6287;outline-offset:3px}::-webkit-scrollbar{width:9px}::-webkit-scrollbar-thumb{background:#d7c5cf;border-radius:8px}.skip{position:absolute;top:-60px;left:1rem;padding:10px;background:#fff;z-index:40}.skip:focus{top:8px}
@@ -123,20 +123,225 @@ button,.btn,select,input[type=button],input[type=submit]{min-height:44px}button:
 .nb-auth-reset{border:1px solid #d9a9b8;background:linear-gradient(125deg,#fff1f6,#fffdf9);border-radius:18px;padding:20px;margin:18px 0}.nb-auth-reset[hidden]{display:none!important}.nb-auth-reset h3{font:500 24px Georgia,serif;color:#654355}.nb-auth-reset .btn{margin-top:13px}
 @media(max-width:800px){.mobilebar{padding-bottom:max(12px,env(safe-area-inset-bottom));min-height:67px}.mobilebar button{min-height:48px;min-width:62px}.topbar{align-items:flex-start}.topbar-actions{flex-wrap:wrap;justify-content:flex-end}.topbar .crumb{font-size:10px}.card .actions{row-gap:8px}.form{row-gap:12px}}
 @media(max-width:440px){.content{padding:13px 12px calc(90px + env(safe-area-inset-bottom))}.title{font-size:clamp(28px,8vw,36px)}.topbar-actions .btn{padding-inline:8px;font-size:10px}.nb-lang-top select{max-width:97px}.cards3{gap:8px}.cards3 .stat{min-height:95px}.nb-locale-grid{gap:9px}.nb-step-grid{gap:8px}}
+
+/* Mobile-first standalone touch and accessibility */
+button,select,input,textarea{font:inherit}button,.btn,[data-view]{touch-action:manipulation}button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #b86b93;outline-offset:3px}.card{border-radius:22px}.field input,.field select,.field textarea{min-height:44px}.btn{min-height:44px}.view h1.title{letter-spacing:-.025em}@media(max-width:700px){.content{padding-bottom:calc(95px + env(safe-area-inset-bottom,0px))}.mobilebar{padding-bottom:env(safe-area-inset-bottom,0px)}.view{max-width:100%}.card{box-shadow:0 6px 24px #5f3d4c0a}}
+
+/* NADIA BLOOM / BARAKAH HOME 2027 : original-cover-inspired wisteria couture / v28 */
+:root{
+ --berry:#865c7a;--deep:#5e475e;--rose:#be8ca9;--rosep:#faeaf1;
+ --sage:#748d79;--sagep:#edf4e9;--gold:#b18a56;
+ --ink:#534352;--muted:#857782;--line:#ecdee7;--paper:#fffdf9;
+ --shadow:0 17px 43px rgba(116,83,111,.10);
+ font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+ color:var(--ink);background:#fffaf9;
+}
+html{scrollbar-color:#dfc5da #fffaf9}
+body{
+ background:
+  radial-gradient(ellipse 34% 24% at 100% 4%,rgba(199,161,209,.31),transparent 90%),
+  radial-gradient(ellipse 38% 31% at 0% 48%,rgba(244,209,222,.34),transparent 90%),
+  linear-gradient(180deg,#fffaf6 0%,#fffcfb 39%,#f9f4fa 100%);
+}
+.sidebar{
+ color:#66506b!important;
+ background:linear-gradient(178deg,#fffdf9 0%,#f9eff5 48%,#f2e8f3 100%)!important;
+ border-right:1px solid #e9d7e4;
+ box-shadow:13px 0 35px rgba(127,85,119,.07)!important;
+}
+.logo{margin-bottom:32px}
+.logo strong{color:#67506a;font-family:Georgia,"Times New Roman",serif;letter-spacing:-.05em;font-size:27px}
+.logo small{color:#9b7f98!important;font-weight:700}
+.logo .flower{width:51px;height:51px;border:1px solid #f1dce6;background:#fff6f5;border-radius:18px;box-shadow:0 8px 20px #a5779420;overflow:hidden}
+.logo .flower img{width:100%;height:100%;object-fit:cover}
+.side-title{color:#a7819d!important;letter-spacing:.19em;font-size:9px}
+.sidebar .side-btn{
+ color:#745f72!important;border:1px solid transparent;
+ border-radius:15px;padding:13px 14px;
+ font-size:12px;font-weight:650;
+}
+.sidebar .side-btn .sym{color:#a27d9c}
+.sidebar .side-btn:hover,.sidebar .side-btn.active{
+ color:#6a4366!important;background:#f6e5ee!important;
+ border-color:#eacadd!important;box-shadow:0 5px 13px #b27b9b14;
+}
+.sidebar .side-btn.active .sym{color:#a35887}
+.side-bottom{border-top:1px solid #e5d2df;color:#907e90!important}
+.side-bottom a{color:#805677}
+.content{max-width:1500px;padding-top:30px}
+.topbar{background:#ffffff80;border:1px solid #f0e4ea;border-radius:20px;padding:11px 16px;box-shadow:0 9px 30px #957e8e0b}
+.topbar .crumb{color:#8e6988}
+.topbar .date-line{color:#987d91}
+.nb-top-flower{display:grid;place-items:center;width:38px;height:38px;border-radius:14px;background:#fbebf3;color:#a278a3;border:1px solid #eed9e6;font-size:22px}
+.topbar .pill{background:#fff8f5;color:#826981}
+.nb-lang-top{color:#805d7e}
+.nb-lang-top select{background:#fffbf8;border-color:#e8d3e5}
+.hero{
+ color:#5a4358!important;
+ background:
+  radial-gradient(circle at 83% 32%,#ffffffdc 0%,transparent 28%),
+  radial-gradient(circle at 75% 100%,#e3cde6d8 0%,transparent 40%),
+  linear-gradient(115deg,#fffaf3 0%,#f8edf5 49%,#e8d8ee 100%)!important;
+ border:1px solid #ead7e7!important;
+ box-shadow:0 22px 61px rgba(145,105,145,.16)!important;
+ border-radius:33px;
+ min-height:288px;
+}
+.hero:after{
+ width:400px;height:400px;right:-165px;bottom:-190px;
+ border:1px solid #b69ac96b;
+ box-shadow:0 0 0 32px #fffcfb60,0 0 0 66px #e5cde440;
+}
+.hero .eyebrow{color:#a48091!important;letter-spacing:.17em;font-weight:850}
+.hero h1{color:#624763;font-weight:500;letter-spacing:-.052em;font-size:clamp(37px,4.5vw,67px)}
+.hero h1 em{color:#a475a3!important;font-style:italic}
+.hero p{color:#78677a!important;max-width:530px;font-size:14px}
+.hero .btn.primary{color:#fff!important;background:#875d81!important;border:1px solid #875d81;box-shadow:0 8px 20px #9d75a12b}
+.hero .btn.light{color:#6d5275;background:#fffaf9;border:1px solid #e8d6e9}
+.hero-bloom{width:180px;height:180px;display:grid;place-items:center;position:relative;transform:none;font:normal 120px Georgia,serif}
+.nb-hero-flower{display:block;color:#ba8bba;text-shadow:0 14px 26px #c5a4c32b;transform:rotate(-14deg)}
+.nb-hero-moon{position:absolute;color:#b69362;font-size:29px;top:14px;right:12px}
+.card,.nb-promo-book,.nb-promo-install,.nb-quickstart,.nbx-section,.nb-locale-card{
+ background:linear-gradient(145deg,rgba(255,255,253,.98),rgba(255,249,252,.99))!important;
+ border:1px solid #eddfeb!important;border-radius:24px!important;
+ box-shadow:0 11px 34px #8c6f890f!important;
+}
+.card:hover{border-color:#e3d1e4}
+.card h2,.card h3,.section-name{color:#69506b}
+.card p,.nb-promo p,.nb-quickstart p,.sub{color:#786b7c}
+.eyebrow,.nb-promo-kicker{color:#9a728c!important}
+.btn{border-radius:13px;letter-spacing:.008em}
+.btn.primary{background:#866080!important;border-color:#866080!important;color:#fff!important}
+.btn.primary:hover{background:#704e6c!important}
+.btn.soft{background:#f6eaf4!important;color:#805777!important;border:1px solid #ead9e9!important}
+.btn.outline{border:1px solid #e8d6e4!important;background:#fffafc!important;color:#805a80!important}
+.btn.sage{background:#e5eee4!important;color:#516b55!important}
+.btn:focus-visible{outline:3px solid #b778a1;outline-offset:3px}
+.nb-promo{grid-template-columns:minmax(0,1.16fr) minmax(0,.86fr);gap:18px}
+.nb-promo-book{background:linear-gradient(135deg,#fffdf8,#f8edf5)!important;position:relative;overflow:hidden}
+.nb-promo-book:before{content:"";position:absolute;right:-65px;top:-75px;width:220px;height:220px;background:radial-gradient(circle,#e9d3e8 0%,transparent 70%);pointer-events:none}
+.nb-promo-install{background:linear-gradient(140deg,#eef5e9,#fffcf7 64%,#faedf4)!important}
+.nb-promo-copy{align-items:center;gap:20px;position:relative}
+.nb-promo-copy>div{min-width:0}
+.nb-book-cover{
+ margin:0;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:9px;
+}
+.nb-book-cover img{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:right center;
+ border-radius:6px 15px 15px 6px;
+ background:#f9eaf2;border:1px solid #ead6df;
+ box-shadow:8px 13px 24px #70526b27,2px 3px 0 #fffdfac0;
+}
+.nb-book-cover figcaption{font-size:10px;font-weight:700;color:#9a7891;letter-spacing:.04em}
+.nb-book-cover--mini{width:135px}
+.nb-book-cover--mini img{width:135px;aspect-ratio:2/3;height:auto}
+.nb-book-showcase{
+ display:grid;grid-template-columns:minmax(150px,240px) minmax(0,1fr);
+ align-items:center;gap:clamp(18px,5vw,65px);
+ padding:clamp(22px,4vw,45px);
+ margin:26px 0 24px;
+ background:linear-gradient(118deg,#faf0f4,#fdfbf9 48%,#f6e9f3);
+ border:1px solid #e9d9e7;border-radius:29px;
+ box-shadow:0 15px 43px #9e7b9821;
+ overflow:hidden;position:relative;
+}
+.nb-book-showcase:after{content:"✿";position:absolute;right:-29px;top:-87px;font:normal 230px Georgia,serif;color:#debdd92b;pointer-events:none}
+.nb-book-cover--large{width:100%;max-width:240px;position:relative;z-index:1}
+.nb-book-cover--large img{width:100%;height:auto;aspect-ratio:2/3}
+.nb-book-showcase-copy{position:relative;z-index:1}
+.nb-book-showcase-copy h2{font:500 clamp(32px,4.2vw,59px)/1.13 Georgia,serif;color:#6d5171;letter-spacing:-.045em;margin:13px 0}
+.nb-book-showcase-copy h2 em{color:#ac83af}
+.nb-book-showcase-copy p{color:#756777;font-size:14px;line-height:1.8;max-width:620px}
+.nb-book-signature{font:italic 18px Georgia,serif;color:#ab855c;margin:13px 0 19px}
+.nb-promo .btn,.nb-book-showcase .btn{min-height:42px}
+.nb-quickstart{background:linear-gradient(135deg,#fffdfb,#f8eff7 65%,#ecf2e8)!important}
+.nb-step-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.nb-step{
+ background:#fffefd!important;border:1px solid #e9dbe8!important;border-radius:20px!important;
+ box-shadow:0 7px 20px #996f9220!important;min-height:125px
+}
+.nb-step:nth-child(1) .nb-icon{background:#f7e9f1;color:#875d84}
+.nb-step:nth-child(2) .nb-icon{background:#f9eced;color:#a66b81}
+.nb-step:nth-child(3) .nb-icon{background:#ecf1e8;color:#668273}
+.nb-step:hover{border-color:#d9bed7!important;box-shadow:0 13px 25px #9b789228!important}
+.stat{background:linear-gradient(137deg,#fffefb,#f9f0f8)!important}
+.stat .num{color:#8d6889}
+.dua{background:linear-gradient(145deg,#f0edf7,#fff8ec)!important;border:1px solid #e2dce8;color:#604d64}
+.dua h3,.dua p{color:#675369!important}
+.dua:before{color:#cbb4ca;opacity:.35}
+.nb-excerpts{background:#fffaf5;border-color:#e9d9e6}
+.nb-excerpts blockquote{color:#835f80;border-left-color:#c8a070}
+.nb-locale-card{background:linear-gradient(130deg,#fffaf9,#f6edf6)!important}
+.nb-prayer-options{background:linear-gradient(140deg,#f0f5ed,#fff9f3)!important}
+.monthday.today{background:#efe2ef!important;border-color:#d3b1d4!important}
+.nb-key.islam,.nb-date-islam{background:#f4e9fa!important;color:#735384!important}
+.nb-key.birthday,.nb-date-birthday{background:#fff1dc!important;color:#8e6b41!important}
+.mobilebar{
+ background:rgba(255,251,250,.96)!important;
+ border-top:1px solid #ecdce8!important;box-shadow:0 -9px 28px #73526c15;
+}
+.mobilebar button.active{color:#90658f!important}
+.mobilebar .sym{color:#ac7da0}
+input:not([type=checkbox]):not([type=radio]),select,textarea{
+ background:#fffefd!important;border:1px solid #e7d6e4!important;
+ color:#594858;border-radius:12px!important
+}
+input:focus,textarea:focus,select:focus{outline:2px solid #b98bb0!important}
+.nb-auth-status{background:#f9eef5;border-color:#e6d4e5;color:#785a78}
+@media(max-width:1030px){
+ .nb-promo{grid-template-columns:1fr}
+ .nb-book-showcase{grid-template-columns:210px 1fr}
+}
+@media(max-width:800px){
+ .topbar{padding:10px 13px}
+ .content{padding-top:13px}
+ .hero{padding:26px 23px;min-height:255px}
+ .hero h1{font-size:clamp(36px,8vw,51px)}
+ .hero-bloom{width:115px;height:115px;font-size:86px;right:0}
+}
+@media(max-width:600px){
+ .topbar .crumb{font-size:10px;letter-spacing:.06em}
+ .topbar .date-line{font-size:11px}
+ .nb-top-flower{display:none}
+ .hero{padding:26px 22px!important;border-radius:25px!important}
+ .hero .eyebrow{font-size:10px;max-width:230px}
+ .hero p{font-size:12px;max-width:300px}
+ .hero-bloom{font-size:85px;opacity:.33}
+ .nb-book-showcase{grid-template-columns:1fr;justify-items:center;text-align:center;padding:26px 20px;gap:15px}
+ .nb-book-showcase-copy .actions{justify-content:center}
+ .nb-book-cover--large{max-width:220px}
+ .nb-promo-copy{align-items:flex-start}
+ .nb-book-cover--mini{width:104px}
+ .nb-book-cover--mini img{width:104px}
+ .nb-quickstart{padding:18px!important}
+ .nb-step-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .nb-step{padding:13px 10px!important;min-height:135px}
+ .nb-step b{font-size:12px}
+ .nb-step small{font-size:10px}
+ .nb-step .nb-icon{width:34px;height:34px;font-size:20px}
+ .card,.nb-promo-book,.nb-promo-install{border-radius:20px!important}
+}
+@media(max-width:385px){
+ .nb-step-grid{grid-template-columns:1fr 1fr}
+ .nb-step:last-child{grid-column:span 2}
+ .nb-book-cover--mini{width:88px}.nb-book-cover--mini img{width:88px}
+}
+@media(prefers-reduced-motion:reduce){.nb-step,.side-btn,.btn{transition:none!important}}
+
 </style></head><body><a class="skip" href="#main">Zum Inhalt springen</a>
-<div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><span class="flower" aria-hidden="true">❀</span><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
+<div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><span class="flower" aria-hidden="true"><img src="icon.svg" width="43" height="43" alt="" decoding="async"></span><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
 <div class="side-title">MIT LIEBE ORGANISIERT</div><button class="side-btn" data-view="haushalt"><span class="sym">✧</span>Home & Haushalt</button><button class="side-btn" data-view="geld"><span class="sym">€</span>Home & Money</button><button class="side-btn" data-view="iman"><span class="sym">☾</span>Iman & Barakah</button><button class="side-btn" data-view="journal"><span class="sym">❀</span>Dankbarkeit & Shura</button><button class="side-btn" data-view="buch"><span class="sym">▤</span>Buch & Einstellungen</button>
 <div class="side-bottom">Ein liebevoller Raum für deinen Familienalltag.<br>Deine Notizen bleiben auf diesem Gerät.<br><a href="https://pigapocket.com/datenschutz" target="_blank" rel="noopener">Datenschutz ↗</a> · <a href="https://pigapocket.com/impressum" target="_blank" rel="noopener">Impressum ↗</a></div></aside>
-<main id="main" class="content"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Konto & Anmeldung">♙ Konto</button><label class="nb-lang-top"><span id="nb-lang-top-label">Sprache</span><select id="nb-lang-quick" aria-label="Language / Sprache"></select></label><span class="pill">✿ Lokal & privat</span><div class="avatar" aria-hidden="true">N</div></div></div>
-<section id="view-start" class="view active"><div class="hero"><div><div class="eyebrow">DEIN ALLTAG. DEIN RHYTHMUS.</div><h1>Weniger im Kopf.<br><em>Mehr im Herzen.</em></h1><p>Ein Ort für eure Termine, Kinder, Mahlzeiten, Gebete und kleinen Glücksmomente – liebevoll inspiriert vom Buch BARAKAH HOME 2027.</p><div class="actions"><button class="btn primary" data-view="aufgaben">+ Den Tag planen</button><button class="btn light" data-view="iman">Duʿā des Tages ↗</button></div></div><div class="hero-bloom" aria-hidden="true">❀</div></div>
+<main id="main" class="content"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Konto & Anmeldung">♙ Konto</button><label class="nb-lang-top"><span id="nb-lang-top-label">Sprache</span><select id="nb-lang-quick" aria-label="Language / Sprache"></select></label><span class="pill">✿ Lokal & privat</span><span class="nb-top-flower" aria-hidden="true">✿</span></div></div>
+<section id="view-start" class="view active"><div class="hero"><div><div class="eyebrow">DEIN ALLTAG. DEIN RHYTHMUS.</div><h1>Weniger im Kopf.<br><em>Mehr im Herzen.</em></h1><p>Ein Ort für eure Termine, Kinder, Mahlzeiten, Gebete und kleinen Glücksmomente – liebevoll inspiriert vom Buch BARAKAH HOME 2027.</p><div class="actions"><button class="btn primary" data-view="aufgaben">+ Den Tag planen</button><button class="btn light" data-view="iman">Duʿā des Tages ↗</button></div></div><div class="hero-bloom" aria-hidden="true"><span class="nb-hero-flower">✿</span><span class="nb-hero-moon">✦</span></div></div>
 <section class="nb-promo" aria-label="Buch und Installation">
- <div class="nb-promo-book"><span class="nb-promo-kicker">DAS BUCH HINTER NADIA’S BLOOM</span><div class="nb-promo-copy"><div aria-hidden="true" class="nb-mini-cover"><span>BARAKAH</span><strong>HOME<br>2027</strong><small>FAMILIE · GLAUBE · ALLTAG</small></div><div><h2>BARAKAH HOME 2027</h2><p>Ein ruhiger Familienplaner für Tagesziele, Kinder-Kompass, Mahlzeiten, Haushalt, Iman und 365 Duʿā.</p><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch auf Amazon finden ↗</a><button class="btn soft" type="button" data-view="buch">Kostenlose Leseprobe ansehen</button></div><small>Amazon-Titelsuche; die genaue Produkt-ASIN ist nicht verifiziert. Keine vollständige Buch-PDF öffentlich.</small></div></div></div>
+ <div class="nb-promo-book"><span class="nb-promo-kicker">DAS BUCH HINTER NADIA’S BLOOM</span><div class="nb-promo-copy"><figure class="nb-book-cover nb-book-cover--mini"><img src="barakah-home-2027-original-cover.png" alt="Originalcover BARAKAH HOME 2027 – lila Blauregenblüten, goldener Titel und cremefarbener Torbogen" loading="lazy" decoding="async" width="672" height="1024"><figcaption>Originalcover</figcaption></figure><div><h2>BARAKAH HOME 2027</h2><p>Ein ruhiger Familienplaner für Tagesziele, Kinder-Kompass, Mahlzeiten, Haushalt, Iman und 365 Duʿā.</p><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch auf Amazon finden ↗</a><button class="btn soft" type="button" data-view="buch">Kostenlose Leseprobe ansehen</button></div><small>Amazon-Titelsuche; die genaue Produkt-ASIN ist nicht verifiziert. Keine vollständige Buch-PDF öffentlich.</small></div></div></div>
  <div class="nb-promo-install"><span class="nb-promo-kicker">FÜR ANDROID &amp; IPHONE</span><h2>Dein Zuhause. Immer dabei.</h2><p>Als Web-App auf dem Startbildschirm installieren und den lokalen Familienplaner auch offline öffnen.</p><button type="button" class="btn primary" id="nb-install">Als App installieren <span aria-hidden="true">↓</span></button><p class="note" id="nb-install-state" role="status">Nach Installation startet Nadia’s Bloom über das App-Symbol ohne sichtbare Browserleiste.</p><details id="nb-install-help"><summary>Android / iPhone: Installationsanleitung</summary><div class="nb-install-steps"><b>Android:</b> In Chrome öffnen · Browsermenü · „App installieren“ oder „Zum Startbildschirm hinzufügen“.<br><b>iPhone:</b> In Safari öffnen · Teilen · „Zum Home-Bildschirm hinzufügen“ · „Als Web-App öffnen“ aktivieren.</div></details><a class="nb-offline-link" href="/nadias-bloom/download" download>Eigenständige Offline-HTML herunterladen ↗</a><small>Web-App/PWA, keine native APK oder App-Store-Datei. Externe Kontofunktionen benötigen eine Verbindung zum Anmeldedienst.</small></div>
 </section>
 <section class="nb-quickstart" aria-labelledby="nb-quickstart-title">
 <div class="eyebrow" style="color:#9c6580">DEIN LEICHTER EINSTIEG · BARAKAH HOME 2027</div>
-<h2 id="nb-quickstart-title">Vier kleine Schritte. Ein leichterer Tag.</h2>
+<h2 id="nb-quickstart-title">Drei kleine Schritte. Ein leichterer Tag.</h2>
 <p>Du musst nicht alles planen. Wähle einfach einen Bereich und beginne dort, wo du heute Entlastung brauchst.</p>
 <div class="nb-step-grid">
 <button class="nb-step" type="button" data-view="aufgaben"><span class="nb-icon" aria-hidden="true">✓</span><b>Heute ordnen</b><small>Deine drei wichtigsten Dinge und alles, was warten darf.</small></button>
@@ -159,7 +364,8 @@ button,.btn,select,input[type=button],input[type=submit]{min-height:44px}button:
 <section id="view-iman" class="view"><div class="eyebrow">IMAN & BARAKAH</div><h1 class="title">Ein stiller Moment für dich</h1><p class="sub">Niyyah, Dankbarkeit, Gebete und 365 Tages-Duʿā aus dem veröffentlichten Buch, sorgfältig als Quellenzitat oder persönliche Bitte gekennzeichnet.</p><div class="dua"><div class="eyebrow">BUCHJAHR 2027 · DUʿĀ DES TAGES</div><h3>Deine tägliche Duʿā</h3><label class="field" style="max-width:230px">Buchdatum 2027<input type="date" id="duaDate" min="2027-01-01" max="2027-12-31"></label><p id="duaText"></p><span class="flag" id="duaKind"></span><p class="note">Die Unterscheidung folgt der Buchkennzeichnung. Schriftzitate und Quellen bitte im Buch nachschlagen; persönliche Duʿā sind frei formuliert.</p></div>
 <div class="grid" style="margin-top:19px"><div class="card"><h2>Die fünf Gebete</h2><p id="nb-prayer-source">Zeiten zunächst manuell. Auf Wunsch berechnet Nadia’s Bloom sie offline aus Datum, Ort und deiner Berechnungsmethode. Gemeindezeiten können abweichen.</p><div id="prayerRows" class="stack"></div><button class="btn soft" data-view="buch">Zeiten bearbeiten ↗</button></div><div class="card"><h2>Gemeinsame Shura</h2><p>Welche Entscheidung brauchen wir als Familie? Was darf warten? Wie können wir einander unterstützen?</p><form id="shuraForm" class="form one"><label class="field">Familien-Shura / Gedanken<textarea required maxlength="1500" name="text" placeholder="Worüber möchten wir liebevoll sprechen?"></textarea></label><button class="btn primary">Gedanken festhalten</button></form><div id="shuraNotes" class="stack"></div></div></div></section>
 <section id="view-journal" class="view"><div class="eyebrow">ALHAMDULILLAH</div><h1 class="title">Dankbarkeit & Gedanken</h1><p class="sub">Nicht alles muss dokumentiert werden. Nur das, was du gerne festhalten möchtest.</p><div class="grid"><div class="card"><h2>Ein schöner Moment</h2><form id="journalForm" class="form one"><label class="field">Wofür bin ich heute dankbar?<textarea required maxlength="2000" name="text" placeholder="Heute war schön, dass …"></textarea></label><button class="btn primary">In mein Journal</button></form></div><div class="card"><h2>Meine Einträge</h2><div id="journalList" class="stack"></div></div></div></section>
-<section id="view-buch" class="view"><div class="eyebrow">DIE QUELLE DIESER APP</div><h1 class="title">BARAKAH HOME 2027</h1><p class="sub">Der islamische Familien- & Alltagsplaner · Deutschland Edition, von Mounir Akarkach. Das Buch inspiriert die digitale Alltagsgestaltung.</p><div class="card nb-locale-card" id="nb-locale-card"><div class="eyebrow">GLOBAL · PRIVAT · EINSTELLBAR</div><h2 id="nb-locale-heading">Region & Sprache</h2><p class="note" id="nb-locale-intro">Das Gerät schlägt die Sprache vor. Du kannst sie jederzeit ändern.</p><div class="nb-locale-grid"><label class="field"><span id="nb-lang-label">Sprache / Language</span><select id="nb-lang-setting" aria-label="Sprache auswählen"></select></label><label class="field"><span id="nb-country-label">Land / Country</span><select id="nb-country-setting" aria-label="Land auswählen"></select></label></div><p id="nb-country-summary" class="note">Deutschland: nur nationale Feiertage und hessische Schulferien. Alle anderen Länder: nur islamische Festtage.</p><p id="nb-moon-note" class="note">Islamische Kalenderdaten sind Näherungen und können lokal um einen Tag abweichen. Für 2026–2027 sind Vorlagen hinterlegt; andere Jahre nutzt eine unverbindliche Umm-al-Qura-Berechnung.</p></div><div class="card mobile-directory" id="mobileModules"><h2>Alle Bereiche auf einen Blick</h2><p>Wähle, was dir gerade hilft. Alles ist direkt erreichbar – auch auf dem Handy.</p><div class="mobile-directory-grid"><button class="btn soft" data-view="start">⌂ Mein Zuhause</button><button class="btn soft" data-view="kalender">▣ Kalender</button><button class="btn soft" data-view="aufgaben">✓ Aufgaben</button><button class="btn soft" data-view="kinder">♡ Kinder-Kompass</button><button class="btn soft" data-view="essen">♨ Essensplan</button><button class="btn soft" data-view="einkauf">☷ Einkauf</button><button class="btn soft" data-view="haushalt">✧ Haushalt</button><button class="btn soft" data-view="geld">€ Home & Money</button><button class="btn soft" data-view="iman">☾ Iman & Barakah</button><button class="btn soft" data-view="journal">❀ Dankbarkeit</button><button class="btn soft" data-view="buch">▤ Buch & Sicherheit</button></div></div><div class="grid"><div class="card"><h2>Das Buch entdecken</h2><p><b>Weniger im Kopf. Mehr im Blick.</b> Ein liebevoller Begleiter für die Balance zwischen Familie, Haushalt, Essen, Terminen, Niyyah, Gebet und Dankbarkeit. Die App enthält 365 aus der Buchfassung übernommene Tages-Duʿā für 2027.</p><div class="nb-excerpts"><div class="eyebrow">AUSZÜGE AUS DEM BUCH · KEINE GESAMTAUSGABE</div><blockquote>„Ein Planer, der dir dienen soll – nicht umgekehrt.“</blockquote><p>Der Kinder-Kompass hilft, Schule, Kita, Termine und die Bedürfnisse jedes Kindes im Blick zu behalten. <em>Home &amp; Money</em> bringt Klarheit in Haushalt, Einkauf und Geld.</p><blockquote>„Du musst nicht jede Zeile ausfüllen und du musst auch nicht jeden Tag perfekt planen.“</blockquote><p>Der Tagesrhythmus verbindet <b>Niyyah</b>, drei machbare Prioritäten, Gebete und <b>Mental Load</b>: Was darf heute delegiert, verschoben oder weggelassen werden?</p><p class="note">Kurze redaktionelle Leseprobe auf Basis der Ausgabe BARAKAH HOME 2027. Weitere Buchinhalte und die vollständige PDF sind hier bewusst nicht öffentlich verlinkt.</p></div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">BARAKAH HOME 2027 auf Amazon suchen ↗</a><button class="btn soft" type="button" data-view="start">Zurück zu Nadia’s Bloom</button></div></div><div class="card nb-account" id="nb-auth-card">
+<section id="view-buch" class="view"><div class="eyebrow">DIE QUELLE DIESER APP</div><h1 class="title">BARAKAH HOME 2027</h1><p class="sub">Der islamische Familien- &amp; Alltagsplaner · Deutschland Edition, von Mounir Akarkach. Das Buch inspiriert die digitale Alltagsgestaltung.</p>
+<div class="nb-book-showcase" aria-label="Das originale Cover von BARAKAH HOME 2027"><figure class="nb-book-cover nb-book-cover--large"><img src="barakah-home-2027-original-cover.png" alt="Originales Buchcover: BARAKAH HOME 2027, dein muslimischer Familienplaner, 365 Tage und 365 Duʿā, von Mounir Akarkach" loading="lazy" decoding="async" width="672" height="1024"><figcaption>Das originale Buchcover</figcaption></figure><div class="nb-book-showcase-copy"><div class="eyebrow">EIN BUCH · EIN ZUHAUSE · DEIN RHYTHMUS</div><h2>Mehr Achtsamkeit.<br><em>Mehr Barakah.</em></h2><p>Dieses Originalcover mit seinem zarten Blauregen bildet die gestalterische Grundlage von Nadia’s Bloom. Hinter der App steht der Familienplaner mit Monatsübersichten, Wochenplanung und 365 Duʿā für das Jahr 2027.</p><div class="nb-book-signature">Mit Liebe organisiert. Mit Ruhe gelebt.</div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch bei Amazon suchen ↗</a><button type="button" class="btn soft" data-view="iman">Duʿā entdecken</button></div><p class="note">Originalcover aus dem Buchprojekt · keine nachgezeichnete oder KI-erfundene Abbildung.</p></div></div><div class="card nb-locale-card" id="nb-locale-card"><div class="eyebrow">GLOBAL · PRIVAT · EINSTELLBAR</div><h2 id="nb-locale-heading">Region & Sprache</h2><p class="note" id="nb-locale-intro">Das Gerät schlägt die Sprache vor. Du kannst sie jederzeit ändern.</p><div class="nb-locale-grid"><label class="field"><span id="nb-lang-label">Sprache / Language</span><select id="nb-lang-setting" aria-label="Sprache auswählen"></select></label><label class="field"><span id="nb-country-label">Land / Country</span><select id="nb-country-setting" aria-label="Land auswählen"></select></label></div><p id="nb-country-summary" class="note">Deutschland: nur nationale Feiertage und hessische Schulferien. Alle anderen Länder: nur islamische Festtage.</p><p id="nb-moon-note" class="note">Islamische Kalenderdaten sind Näherungen und können lokal um einen Tag abweichen. Für 2026–2027 sind Vorlagen hinterlegt; andere Jahre nutzt eine unverbindliche Umm-al-Qura-Berechnung.</p></div><div class="card mobile-directory" id="mobileModules"><h2>Alle Bereiche auf einen Blick</h2><p>Wähle, was dir gerade hilft. Alles ist direkt erreichbar – auch auf dem Handy.</p><div class="mobile-directory-grid"><button class="btn soft" data-view="start">⌂ Mein Zuhause</button><button class="btn soft" data-view="kalender">▣ Kalender</button><button class="btn soft" data-view="aufgaben">✓ Aufgaben</button><button class="btn soft" data-view="kinder">♡ Kinder-Kompass</button><button class="btn soft" data-view="essen">♨ Essensplan</button><button class="btn soft" data-view="einkauf">☷ Einkauf</button><button class="btn soft" data-view="haushalt">✧ Haushalt</button><button class="btn soft" data-view="geld">€ Home & Money</button><button class="btn soft" data-view="iman">☾ Iman & Barakah</button><button class="btn soft" data-view="journal">❀ Dankbarkeit</button><button class="btn soft" data-view="buch">▤ Buch & Sicherheit</button></div></div><div class="grid"><div class="card"><h2>Das Buch entdecken</h2><p><b>Weniger im Kopf. Mehr im Blick.</b> Ein liebevoller Begleiter für die Balance zwischen Familie, Haushalt, Essen, Terminen, Niyyah, Gebet und Dankbarkeit. Die App enthält 365 aus der Buchfassung übernommene Tages-Duʿā für 2027.</p><div class="nb-excerpts"><div class="eyebrow">AUSZÜGE AUS DEM BUCH · KEINE GESAMTAUSGABE</div><blockquote>„Ein Planer, der dir dienen soll – nicht umgekehrt.“</blockquote><p>Der Kinder-Kompass hilft, Schule, Kita, Termine und die Bedürfnisse jedes Kindes im Blick zu behalten. <em>Home &amp; Money</em> bringt Klarheit in Haushalt, Einkauf und Geld.</p><blockquote>„Du musst nicht jede Zeile ausfüllen und du musst auch nicht jeden Tag perfekt planen.“</blockquote><p>Der Tagesrhythmus verbindet <b>Niyyah</b>, drei machbare Prioritäten, Gebete und <b>Mental Load</b>: Was darf heute delegiert, verschoben oder weggelassen werden?</p><p class="note">Kurze redaktionelle Leseprobe auf Basis der Ausgabe BARAKAH HOME 2027. Weitere Buchinhalte und die vollständige PDF sind hier bewusst nicht öffentlich verlinkt.</p></div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">BARAKAH HOME 2027 auf Amazon suchen ↗</a><button class="btn soft" type="button" data-view="start">Zurück zu Nadia’s Bloom</button></div></div><div class="card nb-account" id="nb-auth-card">
 <div class="eyebrow">DEIN PERSÖNLICHER ZUGANG · FREIWILLIG</div><h2 id="nb-auth-translation-title">Anmelden &amp; Zugang sichern</h2>
 <p>Optionales Konto mit E-Mail und Passwort oder einmaligem E-Mail-Code. Du kannst den Familienplaner weiterhin ohne Anmeldung verwenden. <b>Wichtig:</b> Kalender-, Kinder- und Finanzdaten bleiben vorerst ausschließlich auf diesem Gerät und werden auch nach Anmeldung <b>nicht</b> automatisch synchronisiert.</p>
 <div id="nb-auth-logged-out">
