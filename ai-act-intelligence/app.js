@@ -108,7 +108,8 @@ function renderReport(){
  $("ladder").innerHTML=r.ladder.map(x=>'<div class="ladder-step"><b>'+escapeHTML(x.label)+'</b>'+gateBadge(x.state)+'</div>').join("");
  $("priorities").innerHTML='<ol class="numbered">'+r.priorities.map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ol>';
  $("reverse").innerHTML=r.reverse.questions.map(x=>'<div class="reverse-item">◇ '+escapeHTML(x)+'</div>').join("")+'<p class="subtle">Reverse: '+escapeHTML(r.reverse.status)+'; unabhängiger Wirkungsnachweis: nicht erbracht.</p>';
- if($("architecture"))$("architecture").innerHTML=architectureMarkup(r.architecture||architectureCatalog,"");
+ if($("architecture-details")?.open)$("architecture").innerHTML=architectureMarkup(r.architecture||architectureCatalog,"");
+ else $("architecture").replaceChildren();
  if($("case-architecture-count"))$("case-architecture-count").textContent=String((r.architecture||architectureCatalog).length);
  if($("suggestions")){
   $("suggestions").innerHTML=r.suggestions.map(p=>'<div class="result-row"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.type)+' · '+escapeHTML(PRICE_EUR[p.sku]||"Preis auf Anfrage")+'</small></div><button type="button" class="btn ghost smaller" data-suggest="'+escapeHTML(p.sku)+'">Lösung prüfen</button></div>').join("");
@@ -138,6 +139,7 @@ async function saveReport(){
  else {toast("Prüfung geschützt im Konto gespeichert.");loadSaved();}
 }
 $("save-report").addEventListener("click",saveReport);
+$("architecture-details").addEventListener("toggle",()=>{const panel=$("architecture-details");if(panel.open&&activeReport)$("architecture").innerHTML=architectureMarkup(activeReport.architecture||architectureCatalog,"");else $("architecture").replaceChildren();});
 function architectureMarkup(items,search){
  const term=String(search||"").toLocaleLowerCase("de").trim();
  const hits=items.filter(x=>[x.name,x.id,x.purpose,x.notes,x.source,x.family].some(v=>String(v||"").toLocaleLowerCase("de").includes(term)));
@@ -356,7 +358,7 @@ client.auth.onAuthStateChange((event,session)=>{
  queueMicrotask(()=>{
   user=session?.user||null;
   if(event==="PASSWORD_RECOVERY"){recoveryMode=true;show("account");}
-  if(event==="SIGNED_OUT")recoveryMode=false;
+  if(event==="SIGNED_OUT"){recoveryMode=false;activeReport=null;activeInput=null;activeId=null;selectedFiles=[];docRecords=[];$("evidence-files").value="";$("empty-results").classList.remove("hidden");$("result-content").classList.add("hidden");}
   renderAuth();
  });
 });
