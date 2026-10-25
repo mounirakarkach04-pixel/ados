@@ -166,3 +166,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
 .postpurchase-path p{font-size:11px;color:#6a829c;line-height:1.65;margin:7px 0 0}
 @media(max-width:780px){.postpurchase-path{grid-template-columns:1fr}.postpurchase-path>div{display:grid;grid-template-columns:32px 1fr;gap:3px 12px}.postpurchase-path span{grid-row:1/3}.postpurchase-path b{margin:1px 0}.postpurchase-path p{margin:0}}
 @media print{.postpurchase-path{display:none!important}}
+
+.account-progress{padding:21px 25px;background:#f8fbff}
+.account-progress-title h2{margin:5px 0 15px;font-size:17px}
+.account-journey{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.account-milestone{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #e0eaf6;border-radius:11px;padding:10px;min-width:0}
+.account-milestone>span{display:grid;place-items:center;width:25px;height:25px;flex-shrink:0;border-radius:50%;font-size:10px;background:#edf1f8;color:#788ba1;font-weight:850}
+.account-milestone b{font-size:10px;color:#8191a5;line-height:1.3}
+.account-milestone.complete>span{background:#dcf4e6;color:#087843}
+.account-milestone.complete b{color:#285b47}
+@media(max-width:1070px){.account-journey{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.account-journey{grid-template-columns:repeat(2,minmax(0,1fr))}.account-progress{padding:18px}}
