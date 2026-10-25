@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light"><meta name="theme-color" content="#0c1b2a">
+<meta name="description" content="PIGA ORTHO 3D — visueller Prozessnavigator von digitalem Eingang bis zur qualitätsgesicherten 3D-Druckausgabe. Technische Evaluation.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./workflow.css">
+<title>PIGA ORTHO 3D · Prozessnavigator</title>
+</head>
+<body>
+<a class="skip" href="#workbench">Zum Prozess springen</a>
+<header class="topbar">
+  <a class="brand" href="./index.html" aria-label="Zur PIGA ORTHO 3D Hauptapp">
+    <span class="threshold" aria-hidden="true">⊓</span>
+    <span><strong>PIGA</strong><small>ORTHO 3D / GLASSBOX STUDIO</small></span>
+  </a>
+  <div class="top-actions"><span class="version">RESEARCH & DESIGN · V0.3</span><a href="./index.html" class="toplink">3D-Studio öffnen <span aria-hidden="true">↗</span></a></div>
+</header>
+<main>
+  <section class="intro" aria-label="Prozessübersicht">
+    <div class="intro-text">
+      <p class="eyebrow">SYSTEM DESIGN / END-TO-END JOURNEY</p>
+      <h1>Ein klarer Weg.<br><em>Von Scan bis Ausgabe.</em></h1>
+      <p class="lede">Die visuelle Produktionsarchitektur für eine moderne Kieferorthopädie. Jeder Schritt hat klare Voraussetzungen, eine fachliche Verantwortung und nachprüfbare Ergebnisse.</p>
+      <div class="signature"><span class="markline"></span> Speziell entwickelt von <strong>Mounir Akarkach</strong> für <strong>Dr. med. dent. Ibrahim Akarkach</strong></div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-label"><span class="dot"></span> LOCAL-FIRST / GLASSBOX</div>
+      <svg viewBox="0 0 420 245" role="presentation">
+      <defs><linearGradient id="arch" x1="0" x2="1"><stop offset="0" stop-color="#a5c6cd"/><stop offset=".55" stop-color="#f5fbfd"/><stop offset="1" stop-color="#c7dadf"/></linearGradient></defs>
+      <path d="M75 83 C125 180 293 180 345 83" fill="none" stroke="#274457" stroke-width="42" stroke-linecap="round"/>
+      <path d="M90 82 C131 155 288 155 330 82" fill="none" stroke="#f5fbfd" stroke-width="29" stroke-linecap="round" stroke-dasharray="19 5"/>
+      <path d="M98 79 C138 140 280 140 320 79" fill="none" stroke="#d8e7ea" stroke-width="1.7"/>
+      <path d="M80 81 C129 184 294 185 341 80" fill="none" stroke="#1a9aa6" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="4 6"/>
+      <circle cx="210" cy="166" r="56" stroke="#1a9aa6" fill="none" stroke-opacity=".35"/>
+      <circle cx="210" cy="166" r="4" fill="#b9914a"/>
+      <path d="M210 105v122M149 166h122" stroke="#b9914a" stroke-opacity=".5" stroke-dasharray="3 5"/>
+      <circle cx="102" cy="92" r="5" fill="#1a9aa6"/><circle cx="322" cy="93" r="5" fill="#b9914a"/>
+      </svg>
+      <div class="hero-foot"><span>3D MODEL · TECHNICAL PREVIEW</span><span>02 GATES · 01 EVIDENCE CHAIN</span></div>
+    </div>
+  </section>
+  <section class="overview" aria-label="Fertigungsübersicht">
+    <div><small>PROZESSARCHITEKTUR</small><b>12 Schritte</b></div>
+    <div><small>VERANTWORTUNG</small><b>Arzt + Labor</b></div>
+    <div><small>FREIGABEN</small><b>Gate 1 / Gate 2</b></div>
+    <div><small>ERGEBNIS</small><b>Glassbox-Nachweis</b></div>
+  </section>
+  <section class="workbench" id="workbench">
+    <aside class="rail" aria-label="Prozessschritte">
+      <div class="rail-title"><span class="eyebrow">PRODUCTION JOURNEY</span><h2>Prozessschritte</h2><p>Wähle einen Schritt, um Eingaben, Prüfung und nächste Aktion zu sehen.</p></div>
+      <div id="stageList" class="stage-list"></div>
+      <div class="rail-foot">Kein Patientenimport in dieser Forschungsansicht. Alle Stufen dienen zunächst der technischen Prozessdarstellung.</div>
+    </aside>
+    <section class="workspace" aria-label="Aktueller Arbeitsschritt">
+      <div class="workspace-top"><span class="eyebrow">ACTIVE WORKSPACE <span id="stepCounter">01 / 12</span></span><span id="stageStatus" class="status">—</span></div>
+      <div class="workspace-heading"><span id="stageGlyph" class="glyph" aria-hidden="true">01</span><div><h2 id="stageTitle">—</h2><p id="stageSubtitle">—</p></div></div>
+      <div class="canvas-region">
+        <div class="canvas-label"><span>WORKFLOW MAP</span><span>INTERACTIVE BLUEPRINT</span></div>
+        <div class="step-schematic" aria-label="Drei-Stufen-Schema"><div class="step-node"><span>INPUT</span><strong id="schematicInput">—</strong></div><span class="connector" aria-hidden="true">→</span><div class="step-node focus"><span>CONTROL</span><strong id="schematicControl">—</strong></div><span class="connector" aria-hidden="true">→</span><div class="step-node"><span>OUTPUT</span><strong id="schematicOutput">—</strong></div></div>
+        <div class="screen-label"><span class="status-led"></span> <span id="screenDescription">Datenfluss dieser Stufe</span></div>
+      </div>
+      <div class="stage-description" id="stageDescription">—</div>
+      <div class="two-cols">
+        <article class="info"><h3><span class="section-num">A</span> Voraussetzungen</h3><ul id="inputs"></ul></article>
+        <article class="info"><h3><span class="section-num">B</span> Prüfpunkte & Ergebnisse</h3><ul id="outputs"></ul></article>
+      </div>
+      <div class="navigator">
+        <button id="back" class="subtle" type="button">← Zurück</button>
+        <div class="progress"><div id="progressFill"></div></div>
+        <button id="next" class="solid" type="button">Nächster Schritt →</button>
+      </div>
+    </section>
+    <aside class="inspector" aria-label="PIGA Status und Projektgrenzen">
+      <div class="inspector-header"><span class="eyebrow">PIGA ADMISSION</span><h2>Kontrollzentrum</h2></div>
+      <div class="gate"><span>GATE 1 · INFERENCE</span><strong id="gate1">—</strong><small>Evidenz und Zulässigkeit vor Analyse</small></div>
+      <div class="gate"><span>GATE 2 · ACTION</span><strong id="gate2">—</strong><small>Gesonderte Freigabe vor Druckwirkung</small></div>
+      <div class="gate"><span>A7SEM REVERSE</span><strong id="reverse">—</strong><small>Vergleich von Absicht, Ausführung und Readback</small></div>
+      <div class="inspector-divider"></div>
+      <label for="mode">Anwendungsweg</label>
+      <select id="mode"><option value="aligner">Aligner-Modell</option><option value="retainer">Retainer-Modell</option><option value="study">Studienmodell</option></select>
+      <p id="modeText" class="mode-text"></p>
+      <div class="scope-note"><b>SICHERHEITSGRENZE</b><p id="scope">Die geplante klinische Funktion wird nicht simuliert oder als freigegeben ausgegeben.</p></div>
+      <div class="quick-links">
+        <a id="openModule" href="./index.html">Passendes Modul öffnen ↗</a>
+        <button id="exportSpec" type="button">Spezifikation exportieren ↓</button>
+        <button id="printPlan" type="button">Prozessplan drucken ↗</button>
+      </div>
+      <p class="legal">Keine medizinische Diagnose, automatische Therapieplanung oder reale Patientenverarbeitung in dieser Designansicht. Druckeraktionen bleiben in der Hauptapp separat freigabepflichtig.</p>
+    </aside>
+  </section>
+  <section class="principles">
+    <div><span class="eyebrow">DESIGN SYSTEM</span><h2>Gestaltung, die Arbeit erleichtert</h2></div>
+    <div class="principle-grid">
+      <article><b>01 / MODEL-FIRST</b><p>Der 3D-Arbeitsraum ist der Mittelpunkt – Werkzeuge erscheinen dort, wo sie gebraucht werden.</p></article>
+      <article><b>02 / CONTEXTUAL</b><p>Nur relevante Aktionen je Prozessphase. Keine unübersichtlichen Schaltflächenfelder.</p></article>
+      <article><b>03 / EVIDENCE-BY-DESIGN</b><p>Jede wichtige Entscheidung trennt Quelle, Prüfung, Freigabe, Effekt und Nachweis.</p></article>
+    </div>
+  </section>
+  <footer><span>PIGA ORTHO 3D · MASTER WORKFLOW · ENTWICKLUNGSENTWURF</span><span>AUTHORITY BEFORE INFERENCE. EVIDENCE BEFORE EFFECT.</span></footer>
+</main>
+<script src="./workflow.js" defer></script>
+</body></html>
