@@ -49,3 +49,7 @@ User Route und Ergebnis-/Glassbox-Route als interaktive, barrierearme Prozessbah
 PIGA ORTHO v0.5 — PRAXIS WORKSPACE
 --------------------------------
 praxis.html contains Supabase-backed registration/login, recovery request, employee approval, work-time records and server-RLS-protected owner costing. New staff signups are pending; the owner receives a single-use invitation out of band. Clinical patient data and eGK/KIM interfaces are blocked. See piga-ortho-3d/ORTHO_V05_AUTH_RLS.md for backend policies, testing and deployment limits. A web UI is not a CE-certified clinical product.
+
+PIGA ORTHO v0.6 — EMPLOYEE TRACEABILITY
+----------------------------------------
+Each account now has a unique, immutable, server-issued staff_code (e.g., KFO-001001), not an access password. New work events are server-generated START/END records tied to authenticated account, pseudonymous case reference and task. Each shift time is overwritten by Postgres server clocks, and employees cannot write events or modify start times. The owner-only handover timeline is RLS-restricted in the database, supports filtering by pseudonymous case and CSV export. Users must never enter real patient names or insurance identifiers. This task log does NOT substitute a complete statutory daily working-time system with breaks, corrections and legally compliant employee access. Version 0.6 remains technical evaluation. Owner activation, independent access test, real printer, clinical compliance remain pending.

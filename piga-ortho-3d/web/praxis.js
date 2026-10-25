@@ -3,7 +3,7 @@
 const API='https://sanrkcovmkkhgdqydxfk.supabase.co';
 const KEY='sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ'; // public publishable key; no private role key embedded
 const $=id=>document.getElementById(id);
-let authMode='login',session=null,profile=null,shift=null,cost=null,workRecords=[];
+let authMode='login',session=null,profile=null,shift=null,cost=null,workRecords=[],caseEvents=[];
 const fmtEuro=n=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(n)||0);
 const date=ts=>new Date(ts).toLocaleString('de-DE');
 const isOwner=()=>profile?.role==='owner'&&profile?.status==='active';
@@ -53,7 +53,7 @@ $('authForm').addEventListener('submit',async e=>{
 });
 async function launch(){
  const user=session.user;
- const existing=await req('/rest/v1/ortho_staff?select=user_id,email,full_name,role,status,approved_at&user_id=eq.'+encodeURIComponent(user.id));
+ const existing=await req('/rest/v1/ortho_staff?select=user_id,email,full_name,staff_code,role,status,approved_at&user_id=eq.'+encodeURIComponent(user.id));
  if(!Array.isArray(existing))throw Error('Unerwartete Datenantwort.');
  if(existing.length)profile=existing[0];
  else{
@@ -64,8 +64,10 @@ async function launch(){
  }
  $('authShell').hidden=true;$('dashboard').hidden=false;
  $('accountLabel').textContent=profile.full_name+' · '+profile.email;
+ $('staffCodeBadge').textContent=profile.staff_code||'KENNUNG NOCH NICHT ZUGEWIESEN';
+ $('kpiStaff').textContent=profile.staff_code||'—';$('workStaffCode').textContent=profile.staff_code||'—';
  $('roleBadge').textContent=isOwner()?'INHABER / ADMIN':profile.status==='active'?'MITARBEITER · AKTIV':'WARTET AUF FREIGABE';
- $('pending').hidden=profile.status==='active';$('activeTools').hidden=profile.status!=='active';$('ownerArea').hidden=!isOwner();
+ $('pending').hidden=profile.status==='active';$('activeTools').hidden=profile.status!=='active';$('kpiStrip').hidden=profile.status!=='active';$('ownerArea').hidden=!isOwner();
  if(profile.status==='active')await loadWork();
  if(isOwner())await loadOwner();
  if(profile.status!=='active'&&profile.email.toLowerCase()==='dr.akarkach@gmx.de')showOwnerClaim();
@@ -81,7 +83,7 @@ function showOwnerClaim(){
  const msg=document.createElement('p');msg.className='message';form.append(label,inp,btn,msg);box.append(h,p,form);$('pending').after(box);
  form.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;try{await req('/rest/v1/rpc/ortho_claim_owner','POST',{invite_code:inp.value});inp.value='';notice(msg.id||'authMessage','');box.remove();await launch();}catch(err){msg.textContent='Aktivierung fehlgeschlagen. Bitte Code, E-Mail-Bestätigung und Ablauf prüfen.';}finally{btn.disabled=false;}});
 }
-$('logout').addEventListener('click',async()=>{try{if(session)await req('/auth/v1/logout','POST',{},true);}catch{}session=null;profile=null;shift=null;cost=null;workRecords=[];$('dashboard').hidden=true;$('authShell').hidden=false;$('ownerArea').hidden=true;$('activeTools').hidden=true;$('password').value='';notice('authMessage','Abgemeldet.');});
+$('logout').addEventListener('click',async()=>{try{if(session)await req('/auth/v1/logout','POST',{},true);}catch{}session=null;profile=null;shift=null;cost=null;workRecords=[];$('dashboard').hidden=true;$('authShell').hidden=false;$('ownerArea').hidden=true;$('activeTools').hidden=true;$('kpiStrip').hidden=true;$('password').value='';notice('authMessage','Abgemeldet.');});
 function minBetween(start,end){return Math.max(0,(new Date(end).getTime()-new Date(start).getTime())/60000);}
 function runClock(){
  if(!shift){$('elapsed').textContent='00:00:00';return;}
@@ -95,7 +97,7 @@ function drawShifts(){
  workRecords.slice(0,12).forEach(item=>{
   const row=document.createElement('div');row.className='entry';
   const div=document.createElement('div');const b=document.createElement('b');b.textContent=item.case_ref+' · '+item.task_type;
-  const small=document.createElement('small');small.textContent=date(item.started_at)+' · '+(item.ended_at?Math.round(minBetween(item.started_at,item.ended_at))+' Minuten':'LÄUFT');
+  const small=document.createElement('small');small.textContent=(profile?.staff_code||'KFO-UNBEKANNT')+' · '+date(item.started_at)+' bis '+(item.ended_at?date(item.ended_at)+' · '+Math.round(minBetween(item.started_at,item.ended_at))+' Min.':'JETZT');
   div.append(b,small);row.append(div);$('myShifts').append(row);
  });
 }
@@ -105,6 +107,9 @@ async function loadWork(){
  shift=workRecords.find(x=>!x.ended_at)||null;$('startShift').disabled=!!shift;$('stopShift').disabled=!shift;
  $('shiftStatus').textContent=shift?'Aktiver Auftrag '+shift.case_ref:'Keine laufende Tätigkeit';
  drawShifts();runClock();
+ $('kpiTotal').textContent=String(workRecords.length);$('kpiState').textContent=shift?'In Arbeit':'Bereit';
+ const today=new Date().toLocaleDateString('sv-SE');const todayMinutes=workRecords.filter(x=>x.ended_at&&new Date(x.started_at).toLocaleDateString('sv-SE')===today).reduce((n,x)=>n+minBetween(x.started_at,x.ended_at),0);
+ $('kpiToday').textContent=Math.round(todayMinutes)+' min';
 }
 $('startShift').addEventListener('click',async()=>{
  const ref=$('workCase').value.trim(),kind=$('workType').value;
@@ -119,13 +124,13 @@ $('stopShift').addEventListener('click',async()=>{
  try{await req('/rest/v1/ortho_shifts?id=eq.'+encodeURIComponent(shift.id),'PATCH',{ended_at:new Date().toISOString()},true,{'Prefer':'return=minimal'});await loadWork();notice('shiftMsg','Endzeit registriert.');if(isOwner())await loadCosts();}
  catch(err){$('stopShift').disabled=false;fail('shiftMsg',String(err.message));}
 });
-async function loadOwner(){await Promise.all([loadStaff(),loadCosts()]);}
+async function loadOwner(){await Promise.all([loadStaff(),loadCosts(),loadTrail()]);}
 async function loadStaff(){
- const users=await req('/rest/v1/ortho_staff?select=user_id,full_name,email,role,status,created_at&order=created_at.desc&limit=100');
+ const users=await req('/rest/v1/ortho_staff?select=user_id,full_name,email,staff_code,role,status,created_at&order=created_at.desc&limit=100');
  const root=$('staffList');root.textContent='';
  users.forEach(user=>{const row=document.createElement('div');row.className='entry';const d=document.createElement('div');
  const b=document.createElement('b');b.textContent=user.full_name;
- const small=document.createElement('small');small.textContent=user.email+' · '+user.status+' · '+user.role;
+ const small=document.createElement('small');small.textContent=(user.staff_code||'KENNUNG OFFEN')+' · '+user.email+' · '+user.status+' · '+user.role;
  d.append(b,small);row.append(d);
  if(user.role!=='owner'){
   const btn=document.createElement('button');btn.textContent=user.status==='active'?'Deaktivieren':'Freigeben';btn.type='button';
@@ -167,6 +172,45 @@ async function computeCosts(){
  lines.forEach(([label,value],i)=>{const div=document.createElement('div');div.className='line'+(i===6?' total':'');
  const a=document.createElement('span');a.textContent=label;const b=document.createElement('b');b.textContent=value;div.append(a,b);root.append(div);});
 }
+// Owner-only traceability: server RLS restricts history to the named owner; the UI is not the authority.
+async function loadTrail(){
+ if(!isOwner())return;
+ const ref=$('traceCase').value.trim();
+ if(!/^[A-Za-z0-9_-]{3,48}$/.test(ref)){fail('traceSummary','Ungültige pseudonyme Auftragskennung.');return;}
+ $('traceSummary').textContent='Ereignisse werden aus der Datenbank geladen …';
+ try{
+  const query='/rest/v1/ortho_work_events?select=id,staff_code,case_ref,task_type,event_type,occurred_at,shift_id&case_ref=eq.'+encodeURIComponent(ref)+'&order=occurred_at.asc&limit=1000';
+  const items=await req(query);
+  if(!Array.isArray(items))throw Error('invalid_event_response');
+  caseEvents=items;
+  const root=$('traceList');root.textContent='';
+  if(!items.length){root.textContent='Für diesen Testauftrag wurden noch keine START-/ENDE-Ereignisse erfasst.';}
+  items.forEach((ev,i)=>{
+    const row=document.createElement('div');row.className='trace-entry '+(ev.event_type==='START'?'trace-start':'trace-end');
+    const marker=document.createElement('span');marker.className='trace-marker';marker.textContent=ev.event_type==='START'?'▶':'■';
+    const wrap=document.createElement('div');wrap.className='trace-entry-main';
+    const headline=document.createElement('b');headline.textContent=ev.staff_code+' · '+(ev.event_type==='START'?'Bearbeitung gestartet':'Bearbeitung beendet');
+    const sub=document.createElement('small');sub.textContent=ev.task_type+' · '+ev.case_ref+' · Ereignis '+String(i+1).padStart(2,'0');
+    wrap.append(headline,sub);
+    const when=document.createElement('time');when.dateTime=ev.occurred_at;when.textContent=date(ev.occurred_at);
+    row.append(marker,wrap,when);root.append(row);
+  });
+  $('traceSummary').textContent=items.length+' serverseitig protokollierte Ereignisse · '+new Set(items.map(x=>x.staff_code)).size+' Mitarbeiterkennung(en)'+(items.length===1000?' · weitere Einträge möglich':'');
+  $('traceCsv').disabled=!items.length;
+ }catch(err){caseEvents=[];$('traceCsv').disabled=true;fail('traceSummary','Der nachvollziehbare Verlauf konnte nicht geladen werden. Bitte Berechtigung und Verbindung prüfen.');}
+}
+$('traceLoad').addEventListener('click',()=>{if(isOwner())loadTrail();});
+$('traceCase').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(isOwner())loadTrail();}});
+$('traceCsv').addEventListener('click',()=>{
+ if(!isOwner()||!caseEvents.length)return;
+ const columns=['Personalnummer','Auftrag','Tätigkeit','Ereignis','Serverzeit','Schicht-ID'];
+ const csv=[columns,...caseEvents.map(e=>[e.staff_code,e.case_ref,e.task_type,e.event_type,e.occurred_at,e.shift_id])]
+  .map(row=>row.map(value=>'"'+String(value??'').replaceAll('"','""')+'"').join(';')).join('\r\n');
+ const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');
+ a.href=url;a.download='PIGA_ORTHO_3D_Auftragsverlauf_'+$('traceCase').value.trim()+'.csv';
+ a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
 $('costForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!isOwner()||!cost)return;
  const update={updated_at:new Date().toISOString()};
