@@ -45,10 +45,20 @@ const PRODUCTS = [
   {sku:"PIGA-BUNDLE-07",title:"Insurability Evidence Pack",type:"Risiko- und Versicherungsnachweis",url:"https://buy.stripe.com/14AfZafLOdNX4Ft4VYaAw0h"}
 ];
 export { PRODUCTS };
+// The 2026 Digital Omnibus inserted six additional article identifiers beyond the 113 original numbered articles.
+// Newly inserted provisions are indexed, but are never silently marked as assessed.
+export const INSERTED_2026_ARTICLES=[
+ {after:4,number:"4a",title:"Besondere Kategorien personenbezogener Daten zur Erkennung und Korrektur von Verzerrungen"},
+ {after:60,number:"60a",title:"Realtests bestimmter Hochrisiko-KI-Systeme außerhalb regulatorischer Reallabore"},
+ {after:75,number:"75a",title:"Aufsichts- und Durchsetzungsbefugnisse des KI-Büros"},
+ {after:75,number:"75b",title:"Verpflichtungszusagen"},
+ {after:75,number:"75c",title:"Nichteinhaltung, Geldbußen und Zwangsgelder"},
+ {after:75,number:"75d",title:"Verfahrensgarantien und weitere Konkretisierung"}
+];
 export const articleCatalog = Array.from({length:113},(_,i)=>{
-  const n=String(i+1), item=Object.values(TERMS).find(x=>x.article===n);
-  return {number:i+1,title:item?.label||"Artikel "+n,screened:Boolean(item)};
-});
+ const n=String(i+1),item=Object.values(TERMS).find(x=>x.article===n);
+ return {number:i+1,title:item?.label||"Artikel "+n,screened:Boolean(item),amended:false};
+}).flatMap(article=>[article,...INSERTED_2026_ARTICLES.filter(x=>x.after===article.number).map(x=>({number:x.number,title:x.title,screened:false,amended:true}))]);
 const d=(x)=>String(x||"").trim();
 export function evaluate(raw,documents=[]) {
   const f={...raw};
@@ -143,7 +153,7 @@ export function evaluate(raw,documents=[]) {
     ]},
     liability:{status:"SEPARATE_ASSESSMENT_REQUIRED",areas:["EU-AI-Act-Pflichten","DSGVO","EU-Produkthaftung 2024/2853, falls einschlägig","Vertrags- und Deliktshaftung","Schadensszenarien","Versicherbarkeit und Deckungsausschlüsse"]},
     priorities,dates,suggestions,
-    coverage:{indexed:113,contextual_findings:findings.length,remaining_manual_review:articles.filter(a=>a.status==="NOT_ASSESSED").length,submitted_documents:evidence.length},
+    coverage:{indexed:articleCatalog.length,inserted_2026:INSERTED_2026_ARTICLES.length,contextual_findings:findings.length,remaining_manual_review:articles.filter(a=>a.status==="NOT_ASSESSED").length,submitted_documents:evidence.length},
     caveat:"Vorprüfung, keine Rechtsberatung, Konformitätsbescheinigung, Zertifizierung, Versicherungs- oder Handlungsgarantie. Kein ALLOW ohne unabhängige Belege und Gate-2-Autorität."
   };
 }
