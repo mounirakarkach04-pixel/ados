@@ -3,6 +3,10 @@ import {evaluate,articleCatalog,TERMS,PRODUCTS,LAW_URL,LAW_VERSION} from "./engi
 import {architectureCatalog,portfolioSummary,ARCHITECTURE_FAMILIES} from "./portfolio.js";
 import {publicationCatalog,publicationCategories,publicationSummary} from "./publications.js";
 
+const HOSTED_APP="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/";
+const isNativeShell=location.protocol==="capacitor:"||location.protocol==="ionic:";
+const accountEmailRedirect=isNativeShell?HOSTED_APP+"#account":location.origin+location.pathname+"#account";
+const isVerifiedCheckoutReturnHost=location.origin==="https://mounirakarkach04-pixel.github.io"&&location.pathname.startsWith("/ados/ai-act-intelligence/");
 const client=createClient("https://sanrkcovmkkhgdqydxfk.supabase.co","sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);
 const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -223,6 +227,7 @@ function renderLicenses(){
  $("licence-cards").querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",()=>purchase(b.dataset.buy,b)));
 }
 async function purchase(sku,button){
+ if(!isVerifiedCheckoutReturnHost){toast("Checkout ist aus dieser App-Adresse noch nicht sicher rückführbar. Bitte die verlinkte HTTPS-Webversion öffnen und dort nach Anmeldung kaufen. Es wurde keine Zahlung ausgelöst.");return;}
  if(!user){toast("Für einen lizenzierten Kauf bitte zuerst anmelden.");show("account");return;}
  button.disabled=true;const label=button.textContent;button.textContent="Prüfe sicheren Checkout …";
  try{
@@ -305,13 +310,13 @@ async function withAuth(fn){
  try{
   const {data,error}=await fn(email,password);
   if(error)throw error;
-  $("auth-message").textContent=data?.user&&!data?.session?"Registrierung angelegt. Bitte den Bestätigungslink per E-Mail öffnen.":"Aktion erfolgreich.";
+  $("auth-message").textContent=data?.user&&!data?.session?("Registrierung angelegt. Bitte den Bestätigungslink per E-Mail öffnen."+(isNativeShell?" Der Link öffnet die sichere Webversion; danach mit E-Mail und Passwort in der App anmelden.":"")):"Aktion erfolgreich.";
   if(data?.user&&data?.session){user=data.user;renderAuth();toast("Angemeldet.");}
  }catch(e){$("auth-message").textContent=e?.message||"Authentifizierung fehlgeschlagen.";}
 }
 $("register").addEventListener("click",()=>withAuth((email,password)=>{
  if(password.length<8)throw Error("Bitte mindestens acht Zeichen für das Passwort wählen.");
- return client.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname+"#account"}});
+ return client.auth.signUp({email,password,options:{emailRedirectTo:accountEmailRedirect}});
 }));
 $("login").addEventListener("click",()=>withAuth((email,password)=>client.auth.signInWithPassword({email,password})));
 $("reset").addEventListener("click",async()=>{
@@ -319,7 +324,7 @@ $("reset").addEventListener("click",async()=>{
  if(!email){$("auth-message").textContent="Bitte zuerst die E-Mail-Adresse deines Kontos eintragen.";return;}
  const button=$("reset");button.disabled=true;
  try{
-  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname+"#account"});
+  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:accountEmailRedirect});
   if(error)throw error;
   $("auth-message").textContent="Falls zu dieser E-Mail ein Konto existiert, wird ein Wiederherstellungslink versendet. Anschließend kannst du hier ein neues Passwort wählen.";
  }catch(e){$("auth-message").textContent="Wiederherstellung nicht abgeschlossen: "+(e?.message||"Server nicht erreichbar");}
