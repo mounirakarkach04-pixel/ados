@@ -24,6 +24,17 @@ try{
  await page.locator("#view-results").waitFor({state:"visible"});
  assert.match(await page.locator("#report-ref").innerText(),/MUSTERBERICHT/);
  assert.match(await page.locator("#recommended-buy").innerText(),/Eigene Analyse starten/);
+ // Public example is informative only: every sample-case CTA must lead to own assessment.
+ await page.locator("#ladder [data-ladder-offer]").first().click();
+ await page.locator("#view-assessment").waitFor({state:"visible"});
+ await page.locator("#nav > [data-view='results']").click();
+ await page.locator("#view-results [data-go='solutions']").first().click();
+ await page.locator("#view-solutions").waitFor({state:"visible"});
+ assert.match(await page.locator("#solutions-intro").innerText(),/Musterfalls/);
+ assert.match(await page.locator("#solutions-offers [data-solution]").first().innerText(),/Eigene Analyse starten/);
+ await page.locator("#solutions-offers [data-solution]").first().click();
+ await page.locator("#view-assessment").waitFor({state:"visible"});
+ await page.locator("#nav > [data-view='results']").click();
  await page.locator("#recommended-buy").click();
  await page.locator("#view-assessment").waitFor({state:"visible"});
  assert.equal(await page.locator("#order-review").isVisible(),false);
