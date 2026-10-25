@@ -2,6 +2,10 @@ name: PIGA AI Act iOS Simulator Build
 # Manual only: simulator build; distributable iOS IPA requires Apple signing.
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/piga-ai-act-ios.yml'
 permissions:
   contents: read
 jobs:
