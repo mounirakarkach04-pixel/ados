@@ -28,6 +28,7 @@ try{
  assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
  assert.equal(await page.locator("#architecture-details").getAttribute("open"),null);
  await page.locator("#architecture-details summary").click();
+ await page.locator("#architecture .portfolio-entry").first().waitFor({state:"visible",timeout:10000});
  assert.match(await page.locator("#architecture").innerText(),/Gate|PIGA|A7SEM/);
  await page.locator("#architecture-details summary").click();
  await page.screenshot({path:"qa-artifacts/02-report.png",fullPage:true});
