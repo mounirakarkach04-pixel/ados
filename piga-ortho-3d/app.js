@@ -59,6 +59,21 @@
       await log('ACTION_SUBMITTED','OBSERVED',{op,nonce,jobFile});const after=await getJob();let verified=(op==='start'&&after.state==='Printing'&&after.job?.file?.name===jobFile)||(op==='pause'&&after.state==='Paused')||(op==='cancel'&&!['Printing','Paused'].includes(after.state));state.readback=verified?'OBSERVED':'UNKNOWN';await log('A7SEM_REVERSE',state.readback,{op,nonce,before:pre.state,after:after.state,fileMatches:after.job?.file?.name===jobFile});show(verified?'Aktion durch Gerätestatus bestätigt.':'Keine eindeutige Wirkung bestätigt. Bitte manuell prüfen.');
     }catch(e){state.readback='UNKNOWN';await log('ACTION_OR_RECHECK','UNKNOWN',{op,nonce,error:String(e.message).slice(0,150)});show('BLOCK/UNKNOWN: '+e.message+' · Kein automatischer Retry.');}finally{state.gate2='BLOCK';$('operatorCheck').checked=false;labels();}}
   $('printStart').onclick=()=>command('start');$('printPause').onclick=()=>command('pause');$('printCancel').onclick=()=>command('cancel');
+  $('printEvidence').onclick=async()=>{
+    if(!state.auditHealthy){show('Prüfakte gesperrt: Auditfehler.');return;}
+    await log('REPORT_PREPARED','OBSERVED',{printable:true,clinicalApproved:false,automaticPrinterAction:false});
+    await auditQueue;
+    if(!state.auditHealthy){show('Prüfakte gesperrt: fehlende Evidenz.');return;}
+    const m=state.model;
+    const report={schema:'piga-ortho-report-input.v1',exportedAt:iso(),caseId:state.caseId||null,
+      gate1:state.gate1,gate2:'BLOCK',readback:state.readback,unitVerified:false,
+      clinicalApproved:false,autonomousPhysicalActions:false,
+      model:m?{name:m.name,sha256:m.sha,triangles:m.triangles,bounds:m.bounds,
+        invalid:m.invalid,degenerateSample:m.degenerate,synthetic:!!m.synthetic}:null,
+      events:state.events,terminalSha256:state.chain};
+    try{sessionStorage.setItem('piga-ortho-report-once',JSON.stringify(report));location.assign('./report.html');}
+    catch(e){show('Übergabe fehlgeschlagen: JSON exportieren und in der Prüfakte laden.');}
+  };
   $('exportAudit').onclick=async()=>{await log('AUDIT_EXPORT','OBSERVED',{eventCountBeforeExport:state.events.length});await auditQueue;const exportFile={schema:'piga-ortho-glassbox-export.v1',exportedAt:iso(),integrity:'untrusted-local-sha256-chain-not-a-digital-signature',gate1:state.gate1,gate2:'BLOCK',readback:state.readback,events:state.events,terminalSha256:state.chain};if(window.PigaNative && typeof window.PigaNative.exportJson==='function'){window.PigaNative.exportJson(JSON.stringify(exportFile,null,2));show('Android-Dateiauswahl für Glassbox-Journal geöffnet.');return;}const blob=new Blob([JSON.stringify(exportFile,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='PIGA_ORTHO_GLASSBOX_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),30000);show('Glassbox-Journal exportiert.');};
   $('clearAudit').onclick=async()=>{if(!confirm('Sitzungsprotokoll zurücksetzen? Vorher exportieren, falls gewünscht.'))return;await auditQueue;state.events=[];state.chain='GENESIS';state.auditHealthy=true;await log('SESSION_RESET','OBSERVED',{newSession:true});show('Neue lokale Sitzung.');};
   $('loopStart').onclick=async()=>{if(state.cycle)return;state.cycle=true;state.stop=false;const max=Number($('maxCycles').value);$('loopState').textContent='RUNNING';await log('FINITE_INFINITE_START','OBSERVED',{maxCycles:max,automaticActions:false});for(let i=1;i<=max&&!state.stop;i++){const decision=state.model?.ok?'OBSERVED':'UNKNOWN';await log('FINITE_WORKER_CYCLE',decision,{cycle:i,geometryObserved:!!state.model?.ok,printerEffect:'NONE',authorisedActions:0,reverse:'NO_EXTERNAL_EFFECT'});$('loopProgress').textContent=`${i} / ${max}`;await new Promise(r=>setTimeout(r,130));}const result=state.stop?'STOPPED':'COMPLETED';$('loopState').textContent=result;await log('FINITE_INFINITE_RESULT','OBSERVED',{status:result,externalEffects:0});state.cycle=false;show(result+' – keine externe Aktion ausgeführt.');};
