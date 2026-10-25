@@ -196,7 +196,6 @@ function setupPublications(){
  $("publication-search").addEventListener("input",renderPublications);
  $("home-architecture-count").textContent=String(portfolioSummary.indexed);
  $("home-publications-count").textContent=String(publicationSummary.indexed);
- renderPublications();
 }
 function renderArticles(){
  const filter=$("article-search").value.toLowerCase().trim();
@@ -216,7 +215,7 @@ const PRICE_EUR={
 };
 function renderLicenses(){
  $("licence-cards").innerHTML=PRODUCTS.map(p=>{
-  const label=user?"Sicher zu Stripe ↗":"Anmelden und Angebot ansehen";
+  const label=user?"Sicheren Checkout prüfen":"Anmelden und Angebot ansehen";
   return '<div class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p>'+escapeHTML(p.sku)+' · <strong>'+escapeHTML(PRICE_EUR[p.sku]||"Auf Anfrage")+'</strong></p><small>Auswahl, Anmeldung und Zahlung erfolgen getrennt; lizenzierte Implementierung wird nach erfolgreicher serverseitiger Stripe-Prüfung freigegeben.</small><button type="button" class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'">'+label+'</button></div>';
  }).join("");
  $("licence-cards").querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",()=>purchase(b.dataset.buy,b)));
@@ -259,7 +258,7 @@ async function confirmPaymentIfNeeded(){
  }finally{confirmationRunning=false;}
 }
 renderLicenses();
-renderPortfolio();
+// Lists are rendered on first visit to keep mobile startup fast.
 setupPublications();
 async function loadEntitlements(){
  if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";return;}
@@ -342,7 +341,7 @@ $("recovery-submit").addEventListener("click",async()=>{
 $("logout").addEventListener("click",async()=>{const {error}=await client.auth.signOut();if(error)toast(error.message);else{user=null;recoveryMode=false;activeReport=null;activeInput=null;activeId=null;docRecords=[];selectedFiles=[];$("evidence-files").value="";$("empty-results").classList.remove("hidden");$("result-content").classList.add("hidden");renderAuth();toast("Abgemeldet. Lokale Berichtsansicht zurückgesetzt.");}});
 async function loadSaved(){
  if(!user)return;
- const {data,error}=await client.from("aiact_assessments").select("id,title,created_at,status,report").eq("owner_id",user.id).order("created_at",{ascending:false}).limit(50);
+ const {data,error}=await client.from("aiact_assessments").select("id,title,created_at,status,report,case_data").eq("owner_id",user.id).order("created_at",{ascending:false}).limit(50);
  if(error){$("saved-assessments").textContent="Laden fehlgeschlagen: "+error.message;return;}
  $("saved-assessments").innerHTML=data?.length?data.map(x=>'<div class="saved-row"><div><b>'+escapeHTML(x.title)+'</b><small>'+new Date(x.created_at).toLocaleString("de-DE")+' · Gate 1: '+escapeHTML(x.status)+'</small></div><button data-open="'+escapeHTML(x.id)+'" type="button">Öffnen</button></div>').join(""):"Noch keine gespeicherten Prüfungen.";
  $("saved-assessments").querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{
