@@ -88,5 +88,19 @@
   }
   window.addEventListener('hashchange',activateRequestedSection);
   activateRequestedSection();
+  // Controlled, one-time scanner test handoff. Synthetic STL only; never persists patient data.
+  async function consumeDeviceDemo(){
+    let raw=null;
+    try{raw=sessionStorage.getItem('piga-ortho-demo-stl-once');sessionStorage.removeItem('piga-ortho-demo-stl-once');}
+    catch{return;}
+    if(!raw||raw.length>28000||!/^[A-Za-z0-9+/=]+$/.test(raw))return;
+    try{
+      const bin=atob(raw);if(bin.length>20000||bin.length<84)return;
+      const bytes=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)bytes[k]=bin.charCodeAt(k);
+      await loadFile(new File([bytes],'PIGA_DEMO_ZAHNBOGEN_SYNTHETISCH.stl',{type:'model/stl'}));
+      show('Synthetisches Scanner-Testmodell übernommen. Keine klinische Nutzung.');
+    }catch{show('Demoimport aus Geräte-Center fehlgeschlagen.');}
+  }
+  consumeDeviceDemo();
   labels();draw();log('SESSION_INITIALIZED','OBSERVED',{version:'0.2.0',mode:'technical-evaluation',clinicalApproved:false});
 })();

@@ -125,6 +125,20 @@
    }catch(err){log('Druckakte nicht erstellt: '+String(err.message).slice(0,120)+' · Sie können den Prüfbeleg getrennt exportieren.','error');}
  }
  $('openReport').onclick=report;
+ $('downloadDemo').onclick=()=>{
+   const file=makeDemo(),url=URL.createObjectURL(file),a=document.createElement('a');
+   a.href=url;a.download='PIGA_DEMO_ZAHNBOGEN_SYNTHETISCH.stl';a.click();
+   setTimeout(()=>URL.revokeObjectURL(url),2500);
+ };
+ $('demoStudio').onclick=async()=>{
+   try{
+     const file=makeDemo(),bytes=new Uint8Array(await file.arrayBuffer());
+     if(bytes.length>20000)throw Error('Demo exceeds handoff size');
+     let binary='';for(let k=0;k<bytes.length;k++)binary+=String.fromCharCode(bytes[k]);
+     sessionStorage.setItem('piga-ortho-demo-stl-once',btoa(binary));
+     location.assign('./index.html#studio');
+   }catch(e){log('Modellübergabe nicht möglich. Bitte Test-STL herunterladen und im Viewer manuell öffnen.','error');}
+ };
  $('demoJourney').onclick=async()=>{
    const file=makeDemo(),checked=await process(file);
    if(checked)await report();
