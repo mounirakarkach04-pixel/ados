@@ -19,7 +19,12 @@ try{
  await page.fill("#f-version","v1.0");
  await page.selectOption("#f-role","provider");
  await page.fill("#f-purpose","AI ranks applicants for employment decisions");
+ await page.locator("#wizard-next").click();
  await page.selectOption("#f-sector","employment");
+ await page.locator("#wizard-next").click();
+ assert.equal(await page.locator("[data-assessment-step='3']").isVisible(),true);
+ await page.locator("#wizard-next").click();
+ assert.equal(await page.locator("#analyze").isVisible(),true);
  await page.locator("#analyze").click();
  await page.locator("#result-content").waitFor({state:"visible",timeout:30000});
  const gate1=await page.locator("#gate1").innerText();
