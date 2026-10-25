@@ -68,8 +68,8 @@ try{
  assert.ok(exported.input_sha256&&/^[a-f0-9]{64}$/.test(exported.input_sha256));
  const [csvDownload]=await Promise.all([page.waitForEvent("download"),page.locator("#download-csv").click()]);
  const csvText=fs.readFileSync(await csvDownload.path(),"utf8");
- assert.match(csvText,/Artikel;Titel;Screening-Status;Erläuterung/);
- assert.match(csvText,/Art\.? 9|^"9";/m);
+ assert.match(csvText,/"Artikel";"Titel";"Screening-Status";"Erläuterung"/);
+ assert.match(csvText,/\r\n"9";/);
  // Guest account protection: never claim report persistence without an actual session.
  await page.locator("#save-report").click();
  await page.locator("#view-account").waitFor({state:"visible"});
