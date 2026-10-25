@@ -1,0 +1,38 @@
+name: PIGA AI Act Reproducible Source Snapshot
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/piga-ai-act-source-snapshot.yml'
+permissions:
+  contents: read
+concurrency:
+  group: piga-ai-act-source-snapshot
+  cancel-in-progress: true
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Assemble reproducible public app source
+        run: |
+          set -euo pipefail
+          mkdir -p qa-artifacts/source-snapshot
+          cp -a ai-act-intelligence qa-artifacts/source-snapshot/
+          mkdir -p qa-artifacts/source-snapshot/quality qa-artifacts/source-snapshot/workflows
+          cp quality/piga-ai-act-*.mjs qa-artifacts/source-snapshot/quality/
+          cp .github/workflows/piga-ai-act-*.yml qa-artifacts/source-snapshot/workflows/
+          printf 'SOURCE_COMMIT=%s\nREPOSITORY=%s\nORIGIN=%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/" > qa-artifacts/source-snapshot/manifest.txt
+          find qa-artifacts/source-snapshot -type f -print0 | sort -z | xargs -0 sha256sum > qa-artifacts/source-snapshot/SHA256SUMS.txt
+          (cd qa-artifacts && zip -q -r piga-ai-act-source-snapshot.zip source-snapshot)
+          test -s qa-artifacts/piga-ai-act-source-snapshot.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: piga-ai-act-reproducible-source
+          path: qa-artifacts/piga-ai-act-source-snapshot.zip
+          retention-days: 14
+          if-no-files-found: error
