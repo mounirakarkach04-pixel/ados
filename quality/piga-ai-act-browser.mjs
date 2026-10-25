@@ -1,0 +1,34 @@
+import {chromium} from "playwright";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+fs.mkdirSync("qa-artifacts",{recursive:true});
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1365,height:850},acceptDownloads:true});
+const failures=[];
+page.on("pageerror",e=>failures.push(e.message));
+try{
+ await page.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:45000});
+ await page.locator("#view-home .hero h1").waitFor({state:"visible",timeout:30000});
+ await page.screenshot({path:"qa-artifacts/01-dashboard.png",fullPage:true});
+ await page.locator("#view-home [data-go='assessment']").click();
+ await page.fill("#f-title","Recruiting Engine 1.0");
+ await page.fill("#f-version","v1.0");
+ await page.selectOption("#f-role","provider");
+ await page.fill("#f-purpose","AI ranks applicants for employment decisions");
+ await page.selectOption("#f-sector","employment");
+ await page.locator("#analyze").click();
+ await page.locator("#result-content").waitFor({state:"visible",timeout:30000});
+ const gate1=await page.locator("#gate1").innerText();
+ const gate2=await page.locator("#gate2").innerText();
+ assert.equal(gate1,"DELAY");assert.equal(gate2,"BLOCK");
+ assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
+ await page.screenshot({path:"qa-artifacts/02-report.png",fullPage:true});
+ await page.locator("[data-view='articles']").click();
+ await page.fill("#article-search","50");
+ assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
+ await page.locator("[data-view='licensing']").click();
+ assert.equal(await page.locator(".license-card").count(),8);
+ await page.screenshot({path:"qa-artifacts/03-licensing.png",fullPage:true});
+ if(failures.length)throw new Error("Browser errors: "+failures.join(" | "));
+ console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,article_explorer:true,licensing_cards:8,browser_errors:0},null,2));
+}finally{await browser.close();}
