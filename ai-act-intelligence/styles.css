@@ -53,3 +53,16 @@ input:not([type=checkbox]):not([type=file]),textarea,select{width:100%;backgroun
 .portfolio-source a{color:#286f9f;text-decoration:underline;text-underline-offset:3px}
 .portfolio-stats article{min-width:0}
 @media(max-width:680px){.portfolio-group summary{font-size:.89rem;padding:16px 12px}.portfolio-entry{margin:0 10px;padding:13px 1px}.portfolio-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Zenodo DOI bibliography: accessible responsive list and filters */
+.library-controls{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(190px,1fr);gap:14px;align-items:end;margin-bottom:18px}
+.library-controls label{min-width:0}
+.library-controls input,.library-controls select{max-width:100%;width:100%}
+.publication-item{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 18px;border-bottom:1px solid #eaf0f6}
+.publication-item:last-child{border-bottom:none}
+.publication-item>div{flex:1;min-width:0}
+.publication-item b{display:block;overflow-wrap:break-word;font-weight:700;font-size:.92rem;line-height:1.5;color:#243b55}
+.publication-item small{display:block;font-size:.76rem;color:#72869b;line-height:1.5;margin-top:4px;overflow-wrap:anywhere}
+.publication-item a{display:inline-block;flex-shrink:0;color:#216b9e;border:1px solid #d6e7f5;background:#f5fafe;border-radius:12px;padding:10px 13px;text-decoration:none;font-weight:700;font-size:.8rem}
+.publication-item a:hover,.publication-item a:focus-visible{background:#e8f4fd;border-color:#83bddc;outline-offset:2px}
+@media(max-width:680px){.library-controls{grid-template-columns:1fr}.publication-item{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 12px}.publication-item a{width:auto;padding:9px 12px}}
