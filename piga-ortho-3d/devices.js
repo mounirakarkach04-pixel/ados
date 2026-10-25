@@ -87,7 +87,14 @@
  $('scanFile').onchange=e=>{process(e.target.files?.[0]);e.target.value='';};
  $('scanFile2').onchange=e=>{process(e.target.files?.[0]);e.target.value='';};
  // 14 simple, intentionally artificial tooth-shaped solids; not anatomical or clinically usable.
- function makeDemo(){
+ // Three purely synthetic, non-clinical typodont examples; no real scans or PHI.
+ let selectedDemo='standard';
+ const demos={
+  standard:{title:'Regulärer Zahnbogen – schematisch',code:'REGULAER'},
+  crowding:{title:'Engstand – schematisch',code:'ENGSTAND'},
+  spacing:{title:'Lückenstand – schematisch',code:'LUECKEN'}
+ };
+ function makeDemo(kind=selectedDemo){
    const triangles=[];
    const face=(a,b,c)=>{triangles.push([a,b,c]);};
    const box=(cx,cy,cz,w,d,h)=>{
@@ -98,16 +105,29 @@
    };
    for(let i=0;i<14;i++){
      const angle=(Math.PI*0.12)+(i/13)*Math.PI*.76;
-     const cx=26*Math.cos(angle),cy=18*Math.sin(angle);
-     box(cx,cy,3,3.3,4.1,6);
+     const crowd=kind==='crowding';
+     const space=kind==='spacing';
+     const zig=crowd?(i%2===0?1.35:-1.35):0;
+     const cx=(space?30:crowd?22:26)*Math.cos(angle)+zig;
+     const cy=(space?20:crowd?16:18)*Math.sin(angle)+(crowd?(i%3-1)*1.2:0);
+     box(cx,cy,3,space?2.65:3.3,4.1,6);
    }
    const buffer=new ArrayBuffer(84+triangles.length*50),view=new DataView(buffer);
    const name=new TextEncoder().encode('PIGA SYNTHETIC DEMO – NOT CLINICAL');new Uint8Array(buffer).set(name.slice(0,80));
    view.setUint32(80,triangles.length,true);
    triangles.forEach((tr,i)=>{for(let v=0;v<3;v++)for(let a=0;a<3;a++)view.setFloat32(84+i*50+12+v*12+a*4,tr[v][a],true);});
-   const file=new File([buffer],'PIGA_DEMO_ZAHNBOGEN_SYNTHETISCH.stl',{type:'model/stl'});
-   Object.defineProperty(file,'synthetic',{value:true});return file;
+   const file=new File([buffer],'PIGA_DEMO_'+demos[kind].code+'_SYNTHETISCH.stl',{type:'model/stl'});
+   Object.defineProperty(file,'synthetic',{value:true});Object.defineProperty(file,'demoType',{value:kind});return file;
  }
+ const picks=[...document.querySelectorAll('[data-model]')];
+ function choose(kind){
+  if(!demos[kind])return;
+  selectedDemo=kind;
+  picks.forEach(p=>{const selected=p.dataset.model===kind;p.setAttribute('aria-pressed',String(selected));p.classList.toggle('selected',selected);});
+  $('modelChoice').textContent=demos[kind].title+' · ausschließlich künstliche Form';
+ }
+ picks.forEach(p=>p.addEventListener('click',()=>choose(p.dataset.model)));
+ choose('standard');
  $('demoModel').onclick=()=>process(makeDemo());
  async function report(){
    if(!evidence)return log('Keine zulässige technische Evidenz für einen Bericht.','error');

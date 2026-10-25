@@ -2,3 +2,13 @@
 /* v0.9 one-click technical E2E review */
 .dropzone .button.accent{border-color:#1a9aa6}.dropzone #demoJourney{background:#1a9aa6;color:#fff;border-color:#1a9aa6}
 button:disabled{opacity:.48;cursor:not-allowed}
+
+/* Three transparent synthetic typodont selection cards */
+.model-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:24px 0 5px}
+.model-choice{border:1px solid #d8e7e8;background:#fbfefe;border-radius:11px;padding:14px 7px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;color:#345767}
+.model-choice.selected{border:2px solid #139ca8;background:#eaf8f7;padding:13px 6px;box-shadow:0 6px 18px #14778215}
+.model-choice b{font-size:12px}.model-choice small{font-size:10px;line-height:1.35;color:#6a8791}
+.mini-arch{display:grid;place-items:center;width:64px;height:54px;font-size:45px;line-height:1;color:#0b818c;background:#f0f8f8;border-radius:50%}
+.arch-crowded{font-size:49px;letter-spacing:-.1em}.arch-spaced{font-size:42px;letter-spacing:.2em}
+.model-caption{font-size:11px;color:#668690;margin:0 0 16px;line-height:1.5}
+@media(max-width:570px){.model-gallery{gap:6px}.model-choice{padding:11px 4px}.model-choice.selected{padding:10px 3px}.mini-arch{width:44px;height:44px;font-size:34px}.model-choice small{font-size:9px}}
