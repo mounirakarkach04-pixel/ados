@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root='piga-ortho-3d';
-const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js'];
+const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js'];
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 for(const name of names){
   assert(fs.existsSync(path.join(root,name)),'Missing web asset: '+name);
@@ -15,7 +15,7 @@ const css=read('workflow.css');
 const js=read('workflow.js');
 const sw=read('sw.js');
 assert(main.includes('href="./workflow.html"'),'Main entry to navigator missing');
-for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
+for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
 for(const name of ['workflow.css','workflow.js'])assert(html.includes('./'+name),'Workflow asset link missing '+name);
 assert(!/https?:\/\//i.test(html),'External URLs forbidden in local UI');
 assert(read('praxis.css').includes('@media(max-width:600px)'),'Mobile staff UI missing');
@@ -56,10 +56,10 @@ for(const id of ['staffCodeBadge','kpiStaff','kpiToday','kpiTotal','kpiState','w
 for(const required of ['staff_code','ortho_work_events','function loadTrail()','event_type','occurred_at','caseEvents','toLocaleString']){
  assert(workspace.includes(required),'Missing v0.6 employee-trace logic '+required);
 }
-assert(read('sw.js').includes('piga-ortho-v080-static'),'Offline service worker version not bumped');
+assert(read('sw.js').includes('piga-ortho-v090-static'),'Offline service worker version not bumped');
 assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
 assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
-process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 22 parity assets, offline cache, controls, gate boundaries, attribution.\n');
+process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 25 parity assets, offline cache, controls, gate boundaries, attribution.\n');
 
 const cockpit=read('dashboard.html');const navScript=read('navigation.js');const cockpitCode=read('dashboard.js');
 for(const name of ['index.html','praxis.html','workflow.html','dashboard.html']){
@@ -74,7 +74,7 @@ assert(cockpitCode.includes('crypto.subtle.digest'),'Local STL integrity hash mi
 assert(cockpitCode.includes('n===boxes.length'),'Checklist completeness missing');
 assert(cockpitCode.includes('Eine Druckfreigabe ist damit nicht erteilt'),'Checklist must not misrepresent authorization');
 assert(read('app.js').includes('activateRequestedSection'),'Deep-linked studio tabs not connected');
-assert(read('sw.js').includes('piga-ortho-v080-static'),'Outdated service-worker cache version');
+assert(read('sw.js').includes('piga-ortho-v090-static'),'Outdated service-worker cache version');
 assert(read('manifest.webmanifest').includes('"start_url":"./dashboard.html"'),'PWA should launch cockpit first');
 
 // v0.8 personal display and print-ready evidence report checks
@@ -91,3 +91,21 @@ for(const x of ['id="importAudit"','id="print"','id="export"','id="seven"','id="
 for(const x of ['crypto.subtle.digest','e.previousSha256!==previous','payload.sha256','terminal!==previous','function synthetic()','window.PigaNative.printReport'])assert(read('report.js').includes(x),'Missing report verification '+x);
 assert(read('report.css').includes('@page{size:A4'),'Report lacks A4 print layout');
 assert(read('navigation.js').includes("'./report.html'"),'Report not accessible through navigation');
+
+// v0.9 functional controls and hardware access boundaries
+for(const id of ['probe','wifiStatus','btStatus','btGrant','btSettings','pairedList','scanFile','scanFile2','scanResult','demoModel','saveEvidence','stepMeasure']){
+ assert(read('devices.html').includes('id="'+id+'"'),'Device function missing '+id);
+}
+for(const fn of ['deviceSnapshot','requestBluetoothPermission','openWirelessSettings','makeDemo','function inspect(buffer)','crypto.subtle.digest','gate1:','gate2:']){
+ const hay=fn==='deviceSnapshot'||fn==='requestBluetoothPermission'||fn==='openWirelessSettings'?read('devices.js'):read('devices.js');
+ assert(hay.includes(fn),'Device safety function missing '+fn);
+}
+const android=fs.readFileSync('piga-ortho-3d/android/app/src/main/java/com/piga/ortho/MainActivity.java','utf8');
+const manifest=fs.readFileSync('piga-ortho-3d/android/app/src/main/AndroidManifest.xml','utf8');
+assert(android.includes('settings.setDomStorageEnabled(true)'), 'Android login blocked: WebView sessionStorage disabled');
+assert(android.includes('deviceSnapshot()')&&android.includes('requestBluetoothPermission()'),'Missing native connectivity bridge');
+assert(android.includes('web.getSettings()')&&android.includes('privateIPv4'), 'Native network restrictions missing');
+assert(manifest.includes('BLUETOOTH_CONNECT')&&manifest.includes('ACCESS_NETWORK_STATE'),'Android connectivity permissions missing');
+assert(read('dashboard.html').includes('href="./devices.html"'),'Device center missing from dashboard');
+assert(read('navigation.js').includes("'./devices.html'"),'Device center missing from command palette');
+assert(read('devices.js').includes('deviceTransmissions:0'),'Device evaluation must have zero physical effects');
