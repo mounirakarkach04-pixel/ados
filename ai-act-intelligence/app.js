@@ -270,23 +270,42 @@ function renderArticles(){
  }).join("")||'<p>Keine passenden Artikel.</p>';
 }
 $("article-search").addEventListener("input",renderArticles);
-const PRICE_EUR={
- "PIGA-PROD-001":"7.900 €","PIGA-PROD-002":"7.900 €",
- "PIGA-PROD-005":"12.900 €","PIGA-PROD-011":"24.900 €",
- "PIGA-PROD-022":"24.900 €","PIGA-PROD-043":"1.490 €",
- "PIGA-BUNDLE-01":"13.900 €","PIGA-BUNDLE-07":"44.900 €"
-};
+function selectOffer(sku){
+ if(!PRODUCTS.some(p=>p.sku===sku))return;
+ rememberOffer(sku);
+ renderLicenses();
+ show("licensing");
+ $("featured-license").scrollIntoView({block:"start",behavior:"smooth"});
+}
+function showCommerceStatus(state,message){
+ const node=$("commerce-status");node.className="commerce-status state-"+String(state||"info");node.textContent=message;node.classList.remove("hidden");
+}
+function renderPurchaseIntent(){
+ const sku=pendingOffer(),p=PRODUCTS.find(x=>x.sku===sku),box=$("purchase-intent"),btn=$("continue-purchase");
+ box.classList.toggle("hidden",!p);
+ if(!p)return;
+ $("purchase-intent-title").textContent=p.title+" · "+priceLabel(p.sku);
+ btn.classList.toggle("hidden",!user);
+}
+$("continue-purchase").addEventListener("click",()=>{if(user&&pendingOffer())selectOffer(pendingOffer());});
 function renderLicenses(){
- $("licence-cards").innerHTML=PRODUCTS.map(p=>{
-  const label=user?"Sicheren Checkout prüfen":"Anmelden und Angebot ansehen";
-  return '<div class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p>'+escapeHTML(p.sku)+' · <strong>'+escapeHTML(PRICE_EUR[p.sku]||"Auf Anfrage")+'</strong></p><small>Auswahl, Anmeldung und Zahlung erfolgen getrennt; lizenzierte Implementierung wird nach erfolgreicher serverseitiger Stripe-Prüfung freigegeben.</small><button type="button" class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'">'+label+'</button></div>';
- }).join("");
- $("licence-cards").querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",()=>purchase(b.dataset.buy,b)));
+ const sorted=offersForReport(activeReport);
+ const featured=PRODUCTS.find(p=>p.sku===(selectedSku||pendingOffer()))||sorted[0];
+ const recommend=sorted.find(p=>p.sku===featured?.sku);
+ $("featured-license").innerHTML=featured?
+  '<div class="featured-license"><div><span class="kicker">PASSEND ZU IHREM VORHABEN</span><h2>'+escapeHTML(featured.title)+'</h2><p>'+escapeHTML(recommend?.why||"Gezielte PIGA Admission- und Evidenzarchitektur")+'</p><ul><li>Klare Leistung und definierter Geltungsbereich</li><li>Nachvollziehbare Nachweise und Kontrollpunkte</li><li>Lizenzzugriff nur nach bestätigter Berechtigung</li></ul></div><aside><span>PREIS DER AUSGEWÄHLTEN LEISTUNG</span><strong>'+escapeHTML(priceLabel(featured.sku))+'</strong><small>Steuer- und Rechnungsbehandlung wird im Checkout ausgewiesen beziehungsweise separat geklärt.</small><button type="button" class="btn primary" data-buy="'+escapeHTML(featured.sku)+'">'+(user?"Weiter zum sicheren Checkout":"Lösung auswählen & anmelden")+' ↗</button><small>Verbindlich zahlungspflichtig wird erst der ausdrücklich bestätigte Stripe-Checkout.</small></aside></div>':"";
+ $("licence-cards").innerHTML=sorted.map(p=>
+  '<article class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p class="license-explain">'+escapeHTML(p.why)+'</p><div class="license-card-bottom"><strong>'+escapeHTML(p.price)+'</strong><button type="button" class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'">Leistung auswählen ↗</button></div></article>'
+ ).join("");
+ document.querySelectorAll("[data-buy]").forEach(button=>button.addEventListener("click",()=>purchase(button.dataset.buy,button)));
 }
 async function purchase(sku,button){
+ if(!PRODUCTS.some(p=>p.sku===sku))return;
+ rememberOffer(sku);renderPurchaseIntent();
  if(!isVerifiedCheckoutReturnHost){toast("Checkout ist aus dieser App-Adresse noch nicht sicher rückführbar. Bitte die verlinkte HTTPS-Webversion öffnen und dort nach Anmeldung kaufen. Es wurde keine Zahlung ausgelöst.");return;}
- if(!user){toast("Für einen lizenzierten Kauf bitte zuerst anmelden.");show("account");return;}
- button.disabled=true;const label=button.textContent;button.textContent="Prüfe sicheren Checkout …";
+ if(!user){toast("Anmeldung ist erst für die Bestellung notwendig. Ihre Auswahl bleibt erhalten.");show("account");return;}
+ button.disabled=true;const label=button.textContent;button.textContent="Checkout wird sicher vorbereitet …";
+ showCommerceStatus("verifying","Serverseitige Produkt-, Preis- und Berechtigungsprüfung …");
  try{
   const {data,error}=await client.functions.invoke("aiact-payment",{body:{operation:"checkout",sku}});
   if(error||!data?.url)throw Error(data?.error||error?.message||"Checkout nicht verfügbar");
@@ -354,6 +373,7 @@ async function loadLicensed(sku){
 }
 async function renderAuth(){
  renderLicenses();
+ renderPurchaseIntent();
  $("auth-pane").classList.toggle("hidden",Boolean(user));
  $("user-pane").classList.toggle("hidden",!user);
  $("sign-header").textContent=user?"Mein Konto":"Anmelden";
