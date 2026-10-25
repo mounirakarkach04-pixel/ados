@@ -46,5 +46,10 @@ for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-5
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
 check('PWA launch scope',manifest.display==='standalone'&&manifest.start_url==='./'&&manifest.scope==='./');
 check('Happy and portraits safely withdrawn',!html.includes('id="view-happy"')&&!html.includes('happy-live-token')&&!html.includes('happy-avatar-rose.png'));
-check('New botanical design without face',html.includes('v28-bloom-editorial-no-happy'));check('No admin credential in browser source',!html.includes('service_role')&&!html.includes('sb_secret_'));
+check('New botanical design without face',html.includes('v28-i18n-15-lang-no-happy'));check('Fifteen language labels included',html.includes('NB_LANGS=')&&html.includes('"nl":"Nederlands"')&&html.includes('"ar":"العربية"'));
+check('Civil holidays require Germany',html.includes('if(nbInGermany())for(const [date,title] of nbHolidayDates(y))'));
+check('Birthdays remain country-independent',html.includes('member.birthday.slice(5,7)===mon.slice(5,7)'));
+check('PWA standalone install mode',manifest.display==='standalone');
+check('No credential-consuming voice integration',!html.includes('happy-live-token')&&!html.includes('LIVE_URL'));
+check('No admin credential in browser source',!html.includes('service_role')&&!html.includes('sb_secret_'));
 console.log(JSON.stringify({verdict:'PASS_LOCAL_SOURCE_INVARIANTS',checks:checks.length,failures:0,aiCalls:0,emailsSent:0,details:checks},null,2));
