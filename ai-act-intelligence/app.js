@@ -417,6 +417,7 @@ async function loadEntitlements(){
  if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";return;}
  const {data,error}=await client.from("aiact_entitlements").select("sku,status,granted_at,expires_at").eq("owner_id",user.id);
  if(error){$("entitlement-list").textContent="Berechtigungsprüfung nicht möglich: "+error.message;return;}
+ renderAccountJourney(data||[]);
  const valid=e=>e.status==="ACTIVE"&&(!e.expires_at||Date.parse(e.expires_at)>Date.now());
  $("entitlement-list").innerHTML=(!data||!data.length)?"Keine bestätigten, automatisch zugeordneten Lizenzberechtigungen.":data.map(e=>'<div class="saved-row"><div><b>'+escapeHTML(e.sku)+'</b><small>Status: '+escapeHTML(e.status)+'</small></div>'+(valid(e)?'<button type="button" data-licence="'+escapeHTML(e.sku)+'">Lizenzanleitung abrufen</button>':small(e.status,"warn"))+'</div>').join("")+'<div id="licensed-output" class="licensed-output"></div>';
  $("entitlement-list").querySelectorAll("[data-licence]").forEach(b=>b.addEventListener("click",()=>loadLicensed(b.dataset.licence)));
@@ -441,9 +442,22 @@ async function loadLicensed(sku){
   out.appendChild(btn);
  }catch(error){if(out)out.textContent="Lizenz konnte nicht abgerufen werden. Die serverseitige Prüfung hat keine gültige Berechtigung bestätigt oder der Dienst ist nicht verfügbar.";toast(error?.message||"Lizenzprüfung fehlgeschlagen.");}
 }
+function renderAccountJourney(entitlements=[]){
+ const entitled=Array.isArray(entitlements)&&entitlements.some(e=>e.status==="ACTIVE"&&(!e.expires_at||Date.parse(e.expires_at)>Date.now()));
+ const selected=!!pendingOffer()||entitled;
+ const steps=[
+  ["Konto",!!user],
+  ["E-Mail bestätigt",!!user&&(!!user.email_confirmed_at||!!user.confirmed_at)],
+  ["Leistung gewählt",selected],
+  ["Zahlung bestätigt",entitled],
+  ["Lizenz aktiv",entitled]
+ ];
+ $("account-journey").innerHTML=steps.map(([label,done],i)=>'<div class="account-milestone '+(done?"complete":"pending")+'"><span>'+((done)?"✓":String(i+1).padStart(2,"0"))+'</span><b>'+escapeHTML(label)+'</b></div>').join("");
+}
 async function renderAuth(){
  renderLicenses();
  renderPurchaseIntent();
+ renderAccountJourney();
  $("auth-pane").classList.toggle("hidden",Boolean(user));
  $("user-pane").classList.toggle("hidden",!user);
  $("sign-header").textContent=user?"Mein Konto":"Anmelden";
