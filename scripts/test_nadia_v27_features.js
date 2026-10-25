@@ -79,7 +79,7 @@ check((await page.locator('#nb-prayer-source').innerText()).includes('Automatisc
 check(await page.locator('#view-happy').count()===0,'unverified Happy entirely withdrawn');
 check(await page.locator('img[src*="happy-avatar"]').count()===0,'no face image');
 check(await page.locator('[data-view="happy"]').count()===0,'no Happy navigation');
-check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v28'),'feminine v28 design loaded');
+check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v29'),'feminine v29 design loaded');
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
 check(await page.locator('#nb-auth-card').isVisible(),'optional auth card present');
 check(!(await page.locator('#nb-auth-logged-out').isHidden()),'no forced login');
@@ -119,5 +119,5 @@ runs.push({label,checks:n,overflow});
 await context.close();
 }
 }finally{await browser.close();await new Promise(ok=>server.close(ok))}
-console.log(JSON.stringify({status:'PASS_NADIA_V28_CALENDAR_PRAYER_NO_FACE_AUTH_MOCK',checks:runs.reduce((n,r)=>n+r.checks,0),runs,actualEmailsSent:0,actualGeminiTurns:0,localFamilyRecordsSentToAuth:0},null,2));
+console.log(JSON.stringify({status:'PASS_NADIA_V29_CALENDAR_PRAYER_NO_FACE_AUTH_MOCK',checks:runs.reduce((n,r)=>n+r.checks,0),runs,actualEmailsSent:0,actualGeminiTurns:0,localFamilyRecordsSentToAuth:0},null,2));
 })().catch(e=>{console.error(e);process.exitCode=1});
