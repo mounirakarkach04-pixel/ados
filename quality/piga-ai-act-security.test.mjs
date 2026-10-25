@@ -68,3 +68,17 @@ test("user-controlled assessment and attached evidence deletion is ownership-bou
  }
  assert.match(read("ai-act-intelligence/privacy.html"),/einzelne gespeicherte Vorprüfungen/);
 });
+
+test("commercial experience uses exact EU prices and deterministic insight-to-action stages",()=>{
+ const src=read("ai-act-intelligence/journey.js");
+ const app=read("ai-act-intelligence/app.js");
+ const html=read("ai-act-intelligence/index.html");
+ assert.match(src,/PIGA-BUNDLE-01.*13900/);
+ assert.match(src,/PIGA-PROD-043.*1490/);
+ for(const fragment of ["actionPlan","offersForReport","executiveFinding","LICENSE_PRICES_EUR"])assert.ok(src.includes(fragment));
+ for(const fragment of ["setWizardStep(1)","selectOffer(","rememberOffer(","confirmationRunning","purchase-intent","commerce-status"])assert.ok((src+app+html).includes(fragment),fragment);
+ assert.ok(html.includes("id=\\"recommended-buy\\""));
+ assert.ok(html.includes("class=\\"report-cover\\""));
+ assert.ok(html.includes("data-assessment-step=\\"4\\""));
+ assert.ok(app.includes('if(activeReport.is_demo)'));
+});
