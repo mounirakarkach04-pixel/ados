@@ -30,6 +30,16 @@ try{
  await page.locator("[data-view='articles']").click();
  await page.fill("#article-search","50");
  assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
+ await page.locator("[data-view='portfolio']").click();
+ await page.locator("#view-portfolio").waitFor({state:"visible",timeout:10000});
+ assert.equal((await page.locator("#stat-portfolio-canonical").innerText()).trim(),"13");
+ assert.equal((await page.locator("#stat-portfolio-all").innerText()).trim(),"48");
+ await page.locator("#portfolio-search").fill("AHASM");
+ assert.match(await page.locator("#portfolio-list").innerText(),/AHASM/);
+ await page.locator("#portfolio-search").fill("AUEF");
+ assert.match(await page.locator("#portfolio-list").innerText(),/AUEF/);
+ await page.locator("#portfolio-search").fill("");
+ await page.screenshot({path:"qa-artifacts/03-architecture-portfolio.png",fullPage:true});
  await page.locator("[data-view='licensing']").click();
  assert.equal(await page.locator(".license-card").count(),8);
  await page.screenshot({path:"qa-artifacts/03-licensing.png",fullPage:true});
