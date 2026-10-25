@@ -1,0 +1,44 @@
+name: PIGA AI Act Self-hosted Bundle
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/piga-ai-act-bundle.yml'
+permissions:
+  contents: write
+jobs:
+  bundle:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned browser dependencies
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund @supabase/supabase-js@2.78.0 esbuild@0.25.10
+      - name: Bundle client and verify output
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const source=fs.readFileSync('ai-act-intelligence/app.js','utf8');
+          const old='https://esm.sh/@supabase/supabase-js@2.78.0?bundle';
+          if(!source.includes(old))throw new Error('Expected reviewed dependency source not found');
+          fs.writeFileSync('ai-act-intelligence/app.entry.tmp.js',source.replace(old,'@supabase/supabase-js'));
+          NODE
+          ./node_modules/.bin/esbuild ai-act-intelligence/app.entry.tmp.js --bundle --format=esm --platform=browser --target=es2022 --minify --outfile=ai-act-intelligence/app.bundle.js
+          node --check ai-act-intelligence/app.bundle.js
+          test -s ai-act-intelligence/app.bundle.js
+          rm ai-act-intelligence/app.entry.tmp.js
+          sha256sum ai-act-intelligence/app.bundle.js
+      - name: Commit reviewed self-hosted client
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add ai-act-intelligence/app.bundle.js
+          if git diff --cached --quiet; then echo "Bundle unchanged"; exit 0; fi
+          git commit -m "build(ai-act): self-host pinned Supabase client bundle"
+          git push origin HEAD:main
