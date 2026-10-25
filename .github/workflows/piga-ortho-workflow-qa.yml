@@ -30,5 +30,7 @@ jobs:
           node --check piga-ortho-3d/devices.js
       - name: Verify interactive workflow, gates and APK asset source parity
         run: node scripts/piga-ortho-workflow-qa.mjs
+      - name: Execute synthetic scan-to-PDF engine with SHA-256 readback
+        run: node scripts/piga-ortho-device-engine-qa.cjs
       - name: Parse responsive pages and reject malformed HTML nesting
         run: python3 scripts/piga-ortho-html-qa.py
