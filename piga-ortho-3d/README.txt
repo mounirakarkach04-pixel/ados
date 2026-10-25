@@ -57,3 +57,13 @@ Each account now has a unique, immutable, server-issued staff_code (e.g., KFO-00
 V0.7 UNIFIED UX
 ---------------
 dashboard.html is a new feature hub with responsive modules, safe local STL metadata/hash validation, a session-scoped print-readiness checklist, and drilldown into every existing tab. navigation.js and navigation.css provide one consistent adaptive rail/bottom navigation and Ctrl+K feature search across studio, office and workflow. No clinical patient data or automatic printer actions in dashboard. Readiness checklist is NOT a Gate-2 authorization. Offline service-worker cache includes all 19 web assets.
+
+
+PIGA ORTHO v0.8 — VERIFIED GREETING AND PRINTABLE GLASSBOX PASSPORT
+------------------------------------------------------------------
+1. Dashboard greeting is generic until a previously signed-in same-tab authenticated session is validated by Supabase Auth /auth/v1/user and staff-row RLS. Only the verified recipient's unique email shows Guten Tag, Dr. Akarkach. Other verified accounts use their saved full name. Never infer owner privileges from the displayed greeting.
+2. Praxis Workspace greeting is populated after successful logged-in profile retrieval. JWT token is held in sessionStorage for same-tab navigation with bounded expiry (maximum 1 hour); sessionStorage is cleared on sign-out. It is not a durable login solution. Subsequent production work should use HttpOnly cookie or another formally audited identity flow.
+3. PIGA ORTHO 3D report.html accepts an optional one-time same-tab evidence snapshot from Studio or a user-selected local Glassbox JSON. It checks event sequence, previous hashes, terminal hash and SHA256 each event. Printing goes through browser print/PDF or explicit native Android PrintManager. The app NEVER automatically prints a physical dental workpiece.
+4. Contents: model source and technical STL sizes in unverified STL units, user decisions, Gate 1 and Gate 2, operational A7SEM seven-stage evidence mapping, A7SEM Reverse observed effect, bounded Finite–Infinite monitoring cycles, event table and known unknowns. No medical measurements or authorization are fabricated. Demo journal is synthetic only.
+5. SHA256 chain is not a digital signature, validated audit archive, or proof of actor identity. Synthetic evaluation only; PHI/eGK, real patient data, unbounded execution and unsupported clinical inference remain blocked.
+6. Email correspondence preference: when sending to Dr. med. dent. Ibrahim Akarkach through the authorized Outlook account, end with exactly: Mit freundlichen Grüßen / PIGA / im Auftrag von Mounir Akarkach. Do not send Gmail attachments.
