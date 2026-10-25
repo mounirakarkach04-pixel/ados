@@ -12,6 +12,8 @@ try{
  await page.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:45000});
  await page.locator("#view-home .hero h1").waitFor({state:"visible",timeout:30000});
  await page.waitForURL(/#home$/, {timeout:25000}).catch(()=>{throw new Error("App module not initialised: "+failures.join(" | "));});
+ assert.equal(await page.locator(".piga-bridge-principles > div").count(),4);
+ assert.match(await page.locator("#piga-law-heading").innerText(),/Technische Entscheidung/);
  await page.screenshot({path:"qa-artifacts/01-dashboard.png",fullPage:true});
  // Editorial polish: the headline must not overlap the visual preview at enterprise desktop widths.
  const heroCheck=await page.evaluate(()=>{
@@ -24,6 +26,11 @@ try{
  await page.locator("#view-results").waitFor({state:"visible"});
  assert.match(await page.locator("#report-ref").innerText(),/MUSTERBERICHT/);
  assert.match(await page.locator("#recommended-buy").innerText(),/Eigene Analyse starten/);
+ assert.equal(await page.locator("#report-legal-map .legal-map-card").count(),4);
+ await page.locator("#report-legal-map [data-bridge-sku]").first().click();
+ await page.locator("#view-assessment").waitFor({state:"visible"});
+ assert.equal(await page.locator("#order-review").isVisible(),false);
+ await page.locator("#nav > [data-view='results']").click();
  // Public example is informative only: every sample-case CTA must lead to own assessment.
  await page.locator("#ladder .ladder-item").first().locator("summary").click();
  await page.locator("#ladder .ladder-item").first().locator("[data-ladder-offer]").click();
@@ -57,7 +64,12 @@ try{
  const gate1=await page.locator("#gate1").innerText();
  const gate2=await page.locator("#gate2").innerText();
  assert.equal(gate1,"DELAY");assert.equal(gate2,"BLOCK");
- assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
+ assert.match(await page.locator("#findings").innerText(),/Art\\. 9/);
+ assert.equal(await page.locator("#report-legal-map .legal-map-card").count(),4);
+ assert.equal(await page.locator("#report-legal-map .legal-map-footer a").count(),5);
+ assert.match(await page.locator("#report-legal-map").innerText(),/Nachweis nicht vorgelegt/);
+ assert.match(await page.locator("#report-legal-map").innerText(),/Menschliche Aufsicht|Veto-Rechte/);
+ assert.equal(await page.locator("#report-legal-map .legal-map-state").first().innerText(),"Zulässigkeit noch zu prüfen");
  assert.equal(await page.locator("#architecture-details").getAttribute("open"),null);
  await page.locator("#architecture-details > summary").click();
  await page.locator("#architecture .portfolio-entry").first().waitFor({state:"visible",timeout:10000});
