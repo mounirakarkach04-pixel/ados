@@ -45,3 +45,7 @@ Eine interaktive 12-Phasen-Prozessdarstellung mit farblich gekennzeichnetem Impl
 
 V0.4 — DUAL-TRACK NAVIGATION
 User Route und Ergebnis-/Glassbox-Route als interaktive, barrierearme Prozessbahnen in workflow.html. Kein Patienten- oder Druckereingriff im Navigator; jede Stufe zeigt den tatsächlichen Implementierungsstatus. Im Audit-Blueprint Export sind beide Routen ausdrücklich enthalten.
+
+PIGA ORTHO v0.5 — PRAXIS WORKSPACE
+--------------------------------
+praxis.html contains Supabase-backed registration/login, recovery request, employee approval, work-time records and server-RLS-protected owner costing. New staff signups are pending; the owner receives a single-use invitation out of band. Clinical patient data and eGK/KIM interfaces are blocked. See piga-ortho-3d/ORTHO_V05_AUTH_RLS.md for backend policies, testing and deployment limits. A web UI is not a CE-certified clinical product.
