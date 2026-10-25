@@ -108,4 +108,8 @@ assert(android.includes('web.getSettings()')&&android.includes('privateIPv4'), '
 assert(manifest.includes('BLUETOOTH_CONNECT')&&manifest.includes('ACCESS_NETWORK_STATE'),'Android connectivity permissions missing');
 assert(read('dashboard.html').includes('href="./devices.html"'),'Device center missing from dashboard');
 assert(read('navigation.js').includes("'./devices.html'"),'Device center missing from command palette');
+assert(read('devices.html').includes('id="demoStudio"'),'No studio handoff control');
+assert(read('devices.html').includes('id="downloadDemo"'),'No synthetic STL export');
+assert(read('devices.js').includes('piga-ortho-demo-stl-once'),'No STL one-time session handoff');
+assert(read('app.js').includes("sessionStorage.removeItem('piga-ortho-demo-stl-once')"),'One-time demo must be cleared');
 assert(read('devices.js').includes('deviceTransmissions:0'),'Device evaluation must have zero physical effects');

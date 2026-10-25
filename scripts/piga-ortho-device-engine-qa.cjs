@@ -9,7 +9,7 @@ const $=k=>els.has(k)?els.get(k):(els.set(k,make()),els.get(k));
 const loc={assign:x=>{loc.target=x}};
 const sessionStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k)};
 const scope={crypto,TextEncoder,TextDecoder,Uint8Array,ArrayBuffer,DataView,File,Blob,URL,location:loc,sessionStorage,navigator:{onLine:true},document:{getElementById:$,createElement:()=>make()},window:{addEventListener(){}},setTimeout};
-scope.globalThis=scope;vm.createContext(scope);
+scope.globalThis=scope;scope.btoa=str=>Buffer.from(str,'binary').toString('base64');vm.createContext(scope);
 vm.runInContext(fs.readFileSync('piga-ortho-3d/devices.js','utf8'),scope);
 (async()=>{
   assert.equal(typeof $('demoJourney').onclick,'function');
@@ -34,5 +34,13 @@ vm.runInContext(fs.readFileSync('piga-ortho-3d/devices.js','utf8'),scope);
   assert.equal($('gate1').textContent,'DELAY');assert.equal($('gate2').textContent,'BLOCK');
   assert.match($('docStatus').textContent,/KONSISTENT/);
   assert.equal(sessionStorage.getItem('piga-ortho-report-once'),null);
+  await $('demoStudio').onclick();
+  assert.equal(loc.target,'./index.html#studio');
+  const transfer=sessionStorage.getItem('piga-ortho-demo-stl-once');
+  assert.ok(transfer&&transfer.length<28000);
+  const binary=Buffer.from(transfer,'base64');
+  assert.equal(binary.readUInt32LE(80),168);
+  assert.equal(binary.length,84+168*50);
+
   console.log('PIGA ORTHO E2E PASS: synthetic STL -> 168 triangles -> bounds/sha256 -> 9 events -> bounded two cycles -> PIGA DELAY/BLOCK -> printable report');
 })().catch(e=>{console.error(e);process.exitCode=1;});
