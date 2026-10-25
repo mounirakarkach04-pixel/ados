@@ -47,8 +47,30 @@
  function dismiss(){overlay.hidden=true;if(lastFocus?.focus)lastFocus.focus();}
  trigger.addEventListener('click',open);more.addEventListener('click',open);close.addEventListener('click',dismiss);search.addEventListener('input',render);
  overlay.addEventListener('click',e=>{if(e.target===overlay)dismiss();});
- document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();overlay.hidden?open():dismiss();}if(e.key==='Escape'&&!overlay.hidden)dismiss();if(e.key==='Enter'&&document.activeElement===search){const first=results.querySelector('a');if(first)location.href=first.href;}});
+ document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();overlay.hidden?open():dismiss();}
+  if(e.key==='Escape'&&!overlay.hidden){e.preventDefault();dismiss();}
+  if(e.key==='Enter'&&document.activeElement===search){const first=results.querySelector('a');if(first)location.href=first.href;}
+  if(e.key==='Tab'&&!overlay.hidden){
+    const focusable=[...overlay.querySelectorAll('input,button,a[href]')].filter(x=>x.getClientRects().length);
+    if(focusable.length){const first=focusable[0],last=focusable[focusable.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  }
+ });
  document.body.classList.add('piga-has-nav');document.body.prepend(rail);document.body.append(bottom,overlay);
  const update=()=>{if(filename!=='index.html')return;let next='studio';if(location.hash==='#printer')next='printer';if(location.hash==='#evidence'||location.hash==='#governance')next='quality';[...rail.querySelectorAll('.piga-links a'),...bottom.querySelectorAll('a')].forEach(el=>{const dest=paths.find(p=>p.href===el.getAttribute('href'));if(dest?.id===next)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});};
  window.addEventListener('hashchange',update);update();
+ if(filename==='index.html'){
+   // Keep the global active nav synchronized with in-page studio tabs.
+   document.querySelectorAll('.tabs button[data-tab]').forEach(button=>button.addEventListener('click',()=>{
+     const tab=button.dataset.tab;
+     const current=tab==='printer'?'printer':(['evidence','governance','loop'].includes(tab)?'quality':'studio');
+     [...rail.querySelectorAll('.piga-links a'),...bottom.querySelectorAll('a')].forEach(link=>{
+       const dest=paths.find(p=>p.href===link.getAttribute('href'));
+       if(dest?.id===current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+     });
+   }));
+ }
 })();

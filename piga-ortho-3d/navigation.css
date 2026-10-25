@@ -49,3 +49,6 @@ body.piga-has-nav>main{max-width:1600px}
  .piga-command{padding-top:9vh}
 }
 @media(prefers-reduced-motion:reduce){.piga-rail,.piga-bottom,.piga-command{transition:none!important}}
+
+/* Safe-area and overlay readability during mobile tool feedback */
+@media(max-width:760px){body.piga-has-nav #toast{bottom:calc(85px + env(safe-area-inset-bottom))!important;z-index:220!important}body.piga-has-nav .message[role="status"]{scroll-margin-bottom:90px}}
