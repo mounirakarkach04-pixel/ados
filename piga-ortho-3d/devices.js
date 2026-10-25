@@ -28,27 +28,45 @@
  $('btGrant').onclick=()=>{if(native?.requestBluetoothPermission)native.requestBluetoothPermission();else log('Bluetooth-Geräteberechtigung ist nur im Android-Build verfügbar.','error')};
  async function sha(bytes){if(!crypto?.subtle)return null;const result=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(result),b=>b.toString(16).padStart(2,'0')).join('');}
  function inspect(buffer){
-  if(buffer.byteLength<84)throw Error('Datei für den technischen STL-Check zu klein');
-  const view=new DataView(buffer),count=view.getUint32(80,true);
-  if(count<=0||84+count*50!==buffer.byteLength)throw Error('Nur gültige binäre STL-Dateien für die Messansicht unterstützt.');
-  const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
-  let triangles=0,degenerate=0;
-  const tri=(a,b,c)=>{const u=a.map((v,i)=>b[i]-v),v=a.map((w,i)=>c[i]-w);
-   const cross=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];
-   return Math.hypot(...cross)<1e-9;};
-  for(let t=0;t<count;t++){
-   const vertices=[];
-   for(let k=0;k<3;k++){
-    const coord=[];
-    for(let j=0;j<3;j++){
-      const x=view.getFloat32(84+t*50+12+k*12+j*4,true);
-      if(!Number.isFinite(x))throw Error('Nicht-endliche STL-Koordinate erkannt.');
-      min[j]=Math.min(min[j],x);max[j]=Math.max(max[j],x);coord.push(x);
-    }vertices.push(coord);
+   if(buffer.byteLength<30)throw Error('STL-Datei zu klein.');
+   const view=new DataView(buffer);
+   const bounds=(tris,degenerate,min,max,format)=>({triangles:tris,degenerate,bounds:min.map((x,i)=>max[i]-x),min,max,format});
+   const areaZero=(a,b,c)=>{
+     const u=a.map((v,i)=>b[i]-v),v=a.map((x,i)=>c[i]-x);
+     return Math.hypot(u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0])<1e-9;
+   };
+   const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+   function add(coord){for(let j=0;j<3;j++){const n=coord[j];if(!Number.isFinite(n))throw Error('Ungültige STL-Koordinate.');min[j]=Math.min(min[j],n);max[j]=Math.max(max[j],n);}}
+   const count=buffer.byteLength>=84?view.getUint32(80,true):0;
+   if(count>0&&84+count*50===buffer.byteLength){
+     if(count>500000)throw Error('Zu viele Dreiecke.');
+     let degenerate=0;
+     for(let t=0;t<count;t++){
+       const verts=[];
+       for(let v=0;v<3;v++){
+         const xyz=[];
+         for(let axis=0;axis<3;axis++)xyz.push(view.getFloat32(84+t*50+12+v*12+axis*4,true));
+         add(xyz);verts.push(xyz);
+       }
+       if(areaZero(...verts))degenerate++;
+     }
+     return bounds(count,degenerate,min,max,'Binary STL');
    }
-   if(tri(...vertices))degenerate++;triangles++;
-  }
-  return {triangles,degenerate,bounds:min.map((v,i)=>max[i]-v),min,max};
+   const txt=new TextDecoder('utf-8',{fatal:false}).decode(buffer);
+   if(!/^\\s*solid\\b/i.test(txt)||!/\\bendsolid\\s*$/i.test(txt))throw Error('Ungültiger ASCII-STL-Header oder Abschluss.');
+   const lines=(txt.match(/\\bfacet\\s+normal\\b/gi)||[]).length;
+   const ends=(txt.match(/\\bendfacet\\b/gi)||[]).length;
+   if(!lines||lines!==ends||lines>500000)throw Error('Ungültige Facettenzahl.');
+   const regex=/\\bvertex\\s+([^\\s]+)\\s+([^\\s]+)\\s+([^\\s]+)/gi;
+   let match,tris=0,degenerate=0,vertices=[];
+   while((match=regex.exec(txt))!==null){
+     const xyz=[Number(match[1]),Number(match[2]),Number(match[3])];add(xyz);
+     vertices.push(xyz);
+     if(vertices.length===3){if(areaZero(...vertices))degenerate++;tris++;vertices=[];}
+     if(tris>500000)throw Error('Zu viele Dreiecke.');
+   }
+   if(vertices.length||tris!==lines)throw Error('ASCII STL: unvollständige Facetten.');
+   return bounds(tris,degenerate,min,max,'ASCII STL');
  }
  function reset(){set('stepScan','OFFEN');set('stepFile','OFFEN');set('stepMeasure','OFFEN');$('saveEvidence').disabled=true;$('openReport').disabled=true;evidence=null;}
  async function process(file){
@@ -61,7 +79,7 @@
    if(!hash)throw Error('SHA-256 fehlt im Browser-Sicherheitskontext.');
    set('stepScan','LOKAL');set('stepFile',m.degenerate?'HINWEIS':'GEPRÜFT');set('stepMeasure','EINHEIT OFFEN');
    evidence={schema:'piga-ortho-technical-device-evaluation.v1',time:new Date().toISOString(),sourceFile:file.name.slice(0,120),synthetic:Boolean(file.synthetic),sha256:hash,sizeBytes:file.size,triangles:m.triangles,degenerate:m.degenerate,stlUnits:'UNKNOWN',boundsSTL:m.bounds.map(x=>Number(x.toFixed(4))),piga:{gate1:'DELAY',reason:'Einheit, fachliche Eingangsprüfung und Mesh-Manifoldness nicht bestätigt',gate2:'BLOCK'},a7semReverse:{effect:'NO_DEVICE_ACTION',readback:'NOT_APPLICABLE'},medicalMeasurements:'NOT_COMPUTED',deviceTransmissions:0,clinicalApproved:false};
-   log('Format: Binary STL · '+m.triangles+' Dreiecke · '+m.degenerate+' geometrisch degeneriert\nGrenzmaße X/Y/Z (STL-Einheiten): '+m.bounds.map(x=>x.toFixed(3)).join(' / ')+'\nSHA-256: '+hash+'\nPIGA Gate 1: DELAY (Maßstab unbekannt). Gate 2: BLOCK.');
+   log('Format: '+m.format+' · '+m.triangles+' Dreiecke · '+m.degenerate+' geometrisch degeneriert\nGrenzmaße X/Y/Z (STL-Einheiten): '+m.bounds.map(x=>x.toFixed(3)).join(' / ')+'\nSHA-256: '+hash+'\nPIGA Gate 1: DELAY (Maßstab unbekannt). Gate 2: BLOCK.');
    $('saveEvidence').disabled=false;$('openReport').disabled=false;
    return evidence;
   }catch(err){reset();log('BLOCK / Fehler: '+String(err.message).slice(0,220),true);return null;}
