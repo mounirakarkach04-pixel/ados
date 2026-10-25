@@ -139,10 +139,27 @@ export function evaluate(raw,documents=[]) {
   if(f.agents===true)suggestions.unshift(PRODUCTS[2]);
   if(highRisk)suggestions.unshift(PRODUCTS[6]);
   if(f.critical===true)suggestions.push(PRODUCTS[7]);
+  const lensRegistry=[
+    ["PIGA Gate 1","Inference Admission","Evidenz, Zweckbindung und rechtliche Zulassung vor Inferenz"],
+    ["A7SEM","Emergence Dynamics","Siebenstufige Systemanalyse mit Versions- und Kontextbindung"],
+    ["ASOSE","Semantic Evidence","Begriffe, Bedeutungsverschiebungen und Kontextwidersprüche"],
+    ["ASiSO / Gate 2","Action Admission","Handlungsmandat und Wirkung strikt von Inferenz getrennt"],
+    ["JAQ","Joint Action Quality","Verantwortliche Akteure, Delegationskette und Human Reservation"],
+    ["Glassbox Evidence","Proof Chain","Provenienz, Hashes, Readback und prüfbare Ereigniskette"],
+    ["VBR","Verified Blocked Risk","Belegbare Sperrwirkung inklusive indirekter Nebenpfade"],
+    ["ARSAL","Authority Lifecycle","Widerruf, Ablauf, Scope, Nonce und Re-Entry"],
+    ["AVM","Asset Value Maturity","Reifegrad- und Werterhalt ohne ungestützte Marktwertzusage"],
+    ["Prior Insurability","Risk / Liability","Underwriting-Dossier und getrennte Deckungsprüfung"],
+    ["NSF 325","Systemic Completeness","Umfang, Kontroll- und Negativtestabdeckung"],
+    ["CNF","Canonical Semantics","Terminologie, Versionsbindung und Normkonflikte"],
+    ["Defensible Intelligence","Accountable AI","Begründbare Entscheidung, Anfechtbarkeit und Evidenz"],
+    ["A7SEM Reverse","Counterfactual Verification","Gegenhypothesen, alternative Ursache und Effekt-Readback"],
+    ["ARGUS-7","Proof Audit","Ableitung, Unsicherheiten und Gegenmodelle explizit prüfen"]
+  ].map(([name,domain,purpose])=>({name,domain,purpose,status:"CONTROLLED_EVALUATION_PROFILE",subject_pass:false,needs_specific_evidence:true}));
   return {
     schema:"PIGA-AIACT-PREASSESSMENT-1.0",created_at:now,law_version:LAW_VERSION,law_url:LAW_URL,
     subject:{title,purpose,role,sector,version,developer:d(f.developer),productSafety:f.productSafety===true,highRisk,prohibited,gpai,bot},
-    classification:risk,gate1,gate2, findings,articles,ladder,evidence,
+    classification:risk,gate1,gate2, findings,articles,ladder,evidence,architecture:lensRegistry,
     evidence_status:"USER_DECLARED_NOT_INDEPENDENTLY_VERIFIED",
     a7sem:{status:"CONCEPTUAL_LENS_ONLY",note:"Kanonische sieben Stufen sind ohne verifizierte Implementierung nicht automatisch als PASS attestierbar."},
     reverse:{status:contradiction?"CONTRADICTION":"REVIEW_REQUIRED",questions:[
