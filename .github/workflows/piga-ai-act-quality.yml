@@ -1,0 +1,28 @@
+name: PIGA AI Act QA
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ai-act-intelligence/**'
+      - 'quality/piga-ai-act-engine.test.mjs'
+      - '.github/workflows/piga-ai-act-quality.yml'
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse ESM module syntax
+        run: |
+          node --check ai-act-intelligence/engine.js
+          node --check ai-act-intelligence/app.js
+          node --check ai-act-intelligence/sw.js
+      - name: Verify PIGA gates and EU AI Act evidence semantics
+        run: node --test quality/piga-ai-act-engine.test.mjs
