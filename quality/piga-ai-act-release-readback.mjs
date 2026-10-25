@@ -11,7 +11,7 @@ const origin="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/
 const results=[];
 const sha256=bytes=>crypto.createHash("sha256").update(bytes).digest("hex");
 const record=(name,state,evidence)=>results.push({name,state,...evidence});
-const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","styles.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
+const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","piga-act-bridge.js","styles.css","design-v3.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
 async function remote(path,{method="GET",headers={},body}={}){
  const response=await fetch(path,{method,headers,body,signal:AbortSignal.timeout(12000),redirect:"follow",cache:"no-store"});
  return response;
