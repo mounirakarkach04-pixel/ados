@@ -1,0 +1,21 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.piga.ortho'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.piga.ortho'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '0.1.0-evaluation'
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies { implementation 'androidx.webkit:webkit:1.11.0' }
+def assetSource = file('../../web')
+tasks.register('syncPigaAssets', Copy) {
+    from(assetSource)
+    into(file('src/main/assets'))
+    include('index.html','app.js','style.css','icon.svg','manifest.webmanifest','sw.js','privacy.html','README.txt')
+}
+tasks.named('preBuild').configure { dependsOn 'syncPigaAssets' }
