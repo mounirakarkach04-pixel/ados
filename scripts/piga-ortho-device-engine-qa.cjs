@@ -8,7 +8,7 @@ const make=()=>({textContent:'',disabled:false,value:'',files:[],classList:{add(
 const $=k=>els.has(k)?els.get(k):(els.set(k,make()),els.get(k));
 const loc={assign:x=>{loc.target=x}};
 const sessionStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k)};
-const scope={crypto,TextEncoder,TextDecoder,Uint8Array,ArrayBuffer,DataView,File,Blob,URL,location:loc,sessionStorage,navigator:{onLine:true},document:{getElementById:$,createElement:()=>make()},window:{addEventListener(){}},setTimeout};
+const scope={crypto,TextEncoder,TextDecoder,Uint8Array,ArrayBuffer,DataView,File,Blob,URL,location:loc,sessionStorage,navigator:{onLine:true},document:{getElementById:$,createElement:()=>make(),querySelectorAll:()=>[]},window:{addEventListener(){}},setTimeout};
 scope.globalThis=scope;scope.btoa=str=>Buffer.from(str,'binary').toString('base64');vm.createContext(scope);
 vm.runInContext(fs.readFileSync('piga-ortho-3d/devices.js','utf8'),scope);
 (async()=>{
