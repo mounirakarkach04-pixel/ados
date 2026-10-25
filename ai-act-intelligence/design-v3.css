@@ -199,3 +199,19 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
  .architecture-explainer{display:none!important}
  .report-provenance{margin-top:4mm!important}
 }
+
+/* Executive A4 appendix: evidentiary scope and sensible re-entry instead of an orphaned provenance footer. */
+.report-audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:17px 0}
+.report-audit-grid article{background:#f7fbff;border:1px solid #e1eafa;border-radius:11px;padding:16px 17px}
+.report-audit-appendix h3{color:#25537e;font-size:13px;font-weight:800;margin:0 0 7px}
+.report-audit-appendix p{color:#627c97;font-size:12px;line-height:1.7;margin:0}
+.report-evidence-register,.report-reentry{background:#fff;border-top:1px solid #e2ebf6;padding:14px 3px}
+@media(max-width:700px){.report-audit-grid{grid-template-columns:1fr}}
+@media print{
+ .report-audit-appendix{break-inside:avoid!important;margin-top:3mm!important}
+ .report-audit-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:3mm!important;margin:3mm 0!important}
+ .report-audit-grid article{padding:3mm!important}
+ .report-audit-appendix h3{font-size:9pt!important}
+ .report-audit-appendix p{font-size:8pt!important}
+ .report-evidence-register,.report-reentry{padding:3mm 0!important}
+}
