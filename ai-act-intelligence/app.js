@@ -123,7 +123,12 @@ function renderArticles(){
 }
 $("article-search").addEventListener("input",renderArticles);
 function renderLicenses(){
- $("licence-cards").innerHTML=PRODUCTS.map(p=>'<div class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p>'+escapeHTML(p.sku)+'</p><small>Kommerzielles Angebot · Leistungsumfang gemäß Stripe-Produktbeschreibung</small><a class="btn ghost smaller" href="'+p.url+'" target="_blank" rel="noopener noreferrer">Stripe-Angebot ansehen ↗</a></div>').join("");
+ $("licence-cards").innerHTML=PRODUCTS.map(p=>{
+  const href=user?p.url+"?client_reference_id="+encodeURIComponent(user.id):"#account";
+  const label=user?"Stripe-Angebot ansehen ↗":"Zum Kauf anmelden ↗";
+  return '<div class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p>'+escapeHTML(p.sku)+'</p><small>Kommerzielles Angebot · Leistungsumfang gemäß Stripe-Produktbeschreibung</small><a class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'" href="'+href+'" '+(user?'target="_blank" rel="noopener noreferrer"':'')+'>'+label+'</a></div>';
+ }).join("");
+ $("licence-cards").querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",e=>{if(!user){e.preventDefault();toast("Bitte zuerst anmelden; Stripe-Zahlungen müssen einem bestätigten Konto zugeordnet werden.");show("account");}}));
 }
 renderLicenses();
 async function loadEntitlements(){
@@ -155,6 +160,7 @@ async function loadLicensed(sku){
  }catch(error){if(out)out.textContent="Lizenz konnte nicht abgerufen werden. Die serverseitige Prüfung hat keine gültige Berechtigung bestätigt oder der Dienst ist nicht verfügbar.";toast(error?.message||"Lizenzprüfung fehlgeschlagen.");}
 }
 async function renderAuth(){
+ renderLicenses();
  $("auth-pane").classList.toggle("hidden",Boolean(user));
  $("user-pane").classList.toggle("hidden",!user);
  $("sign-header").textContent=user?"Mein Konto":"Anmelden";
