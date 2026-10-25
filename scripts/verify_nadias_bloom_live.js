@@ -20,7 +20,7 @@ async function get(name,url){const response=await fetch(url,{redirect:"follow",s
  results.push(note);
  }catch(e){results.push({name,error:String(e)})}
 }
-const failures=results.filter(x=>x.error||x.status!==200||(["book_home","book_index","offline_download","pages_backup"].includes(x.name)&&(!x.match||(x.name!=="pages_backup"&&x.header!=="v28-bloom-editorial")||(x.name==="offline_download"&&!x.attachment)))||(x.name==="happy_api_health"&&!x.configured||x.keyReturned));
+const failures=results.filter(x=>x.error||x.status!==200||(["book_home","book_index","offline_download","pages_backup"].includes(x.name)&&(!x.match||(x.name!=="pages_backup"&&x.header!=="v29-botanical-mobile")||(x.name==="offline_download"&&!x.attachment)))||(x.name==="happy_api_health"&&!x.configured||x.keyReturned));
 console.log(JSON.stringify({status:failures.length?"CANONICAL_DELAY":"CANONICAL_PASS",attempt,scope:"Nadia only; PIGA root unchanged by code",htmlSourceSha256:sha,failed:failures.map(x=>x.name),results},null,2));
 if(!failures.length)return;
 if(attempt<7)await new Promise(resolve=>setTimeout(resolve,9000));
