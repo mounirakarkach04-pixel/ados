@@ -5,12 +5,16 @@ fs.mkdirSync("qa-artifacts",{recursive:true});
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1365,height:850},acceptDownloads:true});
 const failures=[];
-page.on("pageerror",e=>failures.push(e.message));
+page.on("pageerror",e=>failures.push("PAGEERROR: "+e.message));
+page.on("console",m=>{if(m.type()==="error")failures.push("CONSOLE: "+m.text());});
+page.on("requestfailed",r=>{if(r.url().includes("esm.sh"))failures.push("ESM REQUEST: "+r.url()+" "+r.failure()?.errorText);});
 try{
  await page.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:45000});
  await page.locator("#view-home .hero h1").waitFor({state:"visible",timeout:30000});
+ await page.waitForURL(/#home$/, {timeout:25000}).catch(()=>{throw new Error("App module not initialised: "+failures.join(" | "));});
  await page.screenshot({path:"qa-artifacts/01-dashboard.png",fullPage:true});
  await page.locator("#view-home [data-go='assessment']").click();
+ await page.locator("#view-assessment").waitFor({state:"visible",timeout:10000});
  await page.fill("#f-title","Recruiting Engine 1.0");
  await page.fill("#f-version","v1.0");
  await page.selectOption("#f-role","provider");
