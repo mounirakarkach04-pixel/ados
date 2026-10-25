@@ -48,3 +48,13 @@ test("secondary navigation is reachable without duplicating protected implementa
  assert.ok(page.includes('id="more-sheet"'));
  for(const view of ['articles','portfolio','publications','licensing'])assert.ok(page.includes('id="more-sheet"')&&page.includes('data-view="'+view+'"'));
 });
+
+test("native or unverified website cannot start payment lacking a secure return route",()=>{
+ const source=read("ai-act-intelligence/app.js");
+ assert.ok(source.includes('const isNativeShell=location.protocol==="capacitor:"'));
+ assert.ok(source.includes('const isVerifiedCheckoutReturnHost='));
+ assert.ok(source.includes('if(!isVerifiedCheckoutReturnHost){toast('));
+ assert.ok(source.includes('emailRedirectTo:accountEmailRedirect'));
+ assert.ok(source.includes('redirectTo:accountEmailRedirect'));
+ assert.ok(source.includes('const HOSTED_APP="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/"'));
+});
