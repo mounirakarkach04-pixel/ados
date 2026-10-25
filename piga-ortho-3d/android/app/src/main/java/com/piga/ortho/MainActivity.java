@@ -1,6 +1,9 @@
 package com.piga.ortho;
 
 import android.app.Activity;
+import android.content.Context;
+import android.print.PrintAttributes;
+import android.print.PrintManager;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -106,6 +109,17 @@ public final class MainActivity extends Activity {
           .setOnCancelListener(d->deliver(id,false,null,"BLOCK: user cancelled"))
           .show());
       }else jobs.execute(()->execute(snap,id,method,path,body));
+    }
+    /** Explicit user-initiated Android PrintManager dialog; never a 3D printer operation. */
+    @JavascriptInterface public void printReport(){
+      ui.post(()->{
+        if(web==null || !"https://appassets.androidplatform.net/assets/report.html".equals(web.getUrl()))return;
+        PrintManager pm=(PrintManager)getSystemService(Context.PRINT_SERVICE);
+        if(pm==null)return;
+        pm.print("PIGA_ORTHO_3D_PRUEFAKTE",
+          web.createPrintDocumentAdapter("PIGA_ORTHO_3D_PRUEFAKTE"),
+          new PrintAttributes.Builder().build());
+      });
     }
     @JavascriptInterface public void exportJson(String json){
       if(json==null||json.length()>4_000_000)return;
