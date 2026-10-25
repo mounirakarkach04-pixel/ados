@@ -1,9 +1,10 @@
-name: Nadia Supabase Auth Safe Provider Check
+name: Nadia v28 Supabase Auth Read-only Provider QA
 on:
   workflow_dispatch:
   push:
     paths:
       - 'scripts/probe_nadia_auth_provider.js'
+      - 'nadias-bloom/index.html'
       - '.github/workflows/nadia-auth-provider-qa.yml'
 permissions:
   contents: read
