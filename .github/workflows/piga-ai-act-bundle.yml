@@ -36,11 +36,27 @@ jobs:
           test -s ai-act-intelligence/app.bundle.js
           rm ai-act-intelligence/app.entry.tmp.js
           sha256sum ai-act-intelligence/app.bundle.js
-      - name: Commit reviewed self-hosted client
+      - name: Commit canonical bundle with bounded concurrent-write recovery
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add ai-act-intelligence/app.bundle.js
-          if git diff --cached --quiet; then echo "Bundle unchanged"; exit 0; fi
-          git commit -m "build(ai-act): self-host pinned Supabase client bundle"
-          git push origin HEAD:main
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            node <<'NODE'
+          const fs=require('fs');
+          const source=fs.readFileSync('ai-act-intelligence/app.js','utf8');
+          const old='https://esm.sh/@supabase/supabase-js@2.78.0?bundle';
+          if(!source.includes(old))throw new Error('Expected reviewed dependency source not found');
+          fs.writeFileSync('ai-act-intelligence/app.entry.tmp.js',source.replace(old,'@supabase/supabase-js'));
+          NODE
+            ./node_modules/.bin/esbuild ai-act-intelligence/app.entry.tmp.js --bundle --format=esm --platform=browser --target=es2022 --minify --outfile=ai-act-intelligence/app.bundle.js
+            node --check ai-act-intelligence/app.bundle.js
+            rm ai-act-intelligence/app.entry.tmp.js
+            git add ai-act-intelligence/app.bundle.js
+            if git diff --cached --quiet; then echo "Canonical bundle is current"; exit 0; fi
+            git commit -m "build(ai-act): pin canonical latest-source Supabase client bundle"
+            if git push origin HEAD:main; then echo "Bundle published"; exit 0; fi
+            echo "Repository advanced during publish; rebuilding from fresh main (attempt $attempt)"
+          done
+          echo "Bundle publish blocked after three bounded attempts"; exit 1
