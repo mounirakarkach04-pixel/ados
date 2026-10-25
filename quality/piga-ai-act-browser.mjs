@@ -42,8 +42,8 @@ try{
  await page.screenshot({path:"qa-artifacts/03-architecture-portfolio.png",fullPage:true});
  await page.locator("[data-view='publications']").click();
  await page.locator("#view-publications").waitFor({state:"visible",timeout:12000});
- assert.equal((await page.locator("#pub-total").innerText()).trim(),"92");
- assert.equal((await page.locator("#pub-inspected").innerText()).trim(),"39");
+ assert.equal((await page.locator("#pub-total").innerText()).trim(),"96");
+ assert.equal((await page.locator("#pub-inspected").innerText()).trim(),"43");
  await page.locator("#publication-search").fill("PEKI");
  assert.match(await page.locator("#publication-list").innerText(),/Performative Epistemology/);
  await page.locator("#publication-search").fill("zenodo.21393619");
