@@ -12,7 +12,18 @@ const client=createClient("https://sanrkcovmkkhgdqydxfk.supabase.co","sb_publish
 const $=id=>document.getElementById(id);
 const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const small=(text,cls="")=>'<span class="pill '+cls+'">'+escapeHTML(text)+'</span>';
-const gateBadge=x=>small(x,x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
+const readableStatus=code=>({
+ EVIDENCE_REQUIRED:"Nachweis fehlt",
+ SELF_DECLARED_UNVERIFIED:"Angabe nicht geprüft",
+ POTENTIAL_PROHIBITION:"Verbotsrisiko prüfen",
+ NOT_ASSESSED:"Gesondert prüfen",
+ UNKNOWN:"Unklar",DELAY:"Zurückgestellt",BLOCK:"Nicht freigegeben",
+ GAPS:"Lücke offen",REVIEW_REQUIRED:"Prüfung offen",
+ MISSING_EVIDENCE:"Beleg fehlt",UNVERIFIED_UPLOAD:"Noch nicht geprüft",
+ NOT_VERIFIED:"Nachweis offen",UNDERWRITING_REQUIRED:"Fachprüfung offen",
+ DOCUMENTED:"Erfasst",SELF_REPORTED:"Selbstauskunft"
+})[String(code)]||String(code);
+const gateBadge=x=>small(readableStatus(x),x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
 const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",publications:"Zenodo-Forschungsbibliothek",licensing:"Angebote & Lizenzen",solutions:"Lösungen",account:"Konto & Nachweise"};
 let user=null,activeReport=null,activeInput=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer,recoveryMode=false,wizardStep=1,selectedSku=null;
 const PAYMENT_INTENT_KEY="piga-aiact-pending-offer";
@@ -149,7 +160,11 @@ function renderReport(){
  $("metric-evidence").textContent=String((r.evidence||[]).length);
  $("metric-manual").textContent=String(r.coverage?.remaining_manual_review||0);
  $("metric-proof").textContent=(r.evidence||[]).some(x=>x.uploaded)?"Eingereicht · noch ungeprüft":"Noch nicht unabhängig belegt";
- $("findings").innerHTML=(r.findings||[]).slice(0,12).map(x=>'<div class="result-row"><div><b>Art. '+escapeHTML(x.article)+' · '+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.issue)+'</small></div>'+small(x.status,x.status==="POTENTIAL_PROHIBITION"?"danger":"warn")+'</div>').join("")||"<p>Weitere Einordnung und Nachweise erforderlich.</p>";
+ $("report-document-id").textContent=(r.assessment_id||"PREASSESSMENT").slice(0,21).toUpperCase();
+ $("report-system-version").textContent=r.subject?.version||"Nicht angegeben";
+ $("report-law-version").textContent=r.law_version||"Quellenabgleich erforderlich";
+ $("report-evidence-state").textContent=(r.evidence||[]).some(x=>x.uploaded)?"Dokumente eingereicht · ungeprüft":"Selbstauskunft · ungeprüft";
+ $("findings").innerHTML=(r.findings||[]).slice(0,12).map(x=>'<div class="result-row"><div><b>Art. '+escapeHTML(x.article)+' · '+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.issue)+'</small></div>'+small(readableStatus(x.status),x.status==="POTENTIAL_PROHIBITION"?"danger":"warn")+'</div>').join("")||"<p>Weitere Einordnung und Nachweise erforderlich.</p>";
  $("ladder").innerHTML=plan.map((x,i)=>'<details class="ladder-item" '+(i===1||i===4?"open":"")+'><summary><span class="ladder-ordinal">'+String(i+1).padStart(2,"0")+'</span><div><b>'+escapeHTML(x.label.replace(/^\d+\s*[·.-]\s*/,""))+'</b><small>'+escapeHTML(x.kind)+'</small></div>'+gateBadge(x.state)+'</summary><div class="ladder-action"><strong>'+escapeHTML(x.question)+'</strong><p>'+escapeHTML(x.measure)+'</p><small><b>Erwarteter Nachweis:</b> '+escapeHTML(x.proof)+'</small><button type="button" data-ladder-offer="'+escapeHTML(x.sku)+'">Passende Lösung ansehen →</button></div></details>').join("");
  $("ladder").querySelectorAll("[data-ladder-offer]").forEach(button=>button.addEventListener("click",()=>selectOffer(button.dataset.ladderOffer)));
  const priorities=(r.priorities||[]).slice(0,6);
