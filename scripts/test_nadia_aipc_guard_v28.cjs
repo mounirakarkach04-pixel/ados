@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+'use strict';
+/* PIGA Nadia safety checks: no live model, email, external actions, or network. */
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const html=fs.readFileSync('nadias-bloom/index.html','utf8');
+const prefix='/* NADIA_PIGA_AIPC_START',suffix='/* NADIA_PIGA_AIPC_END */';
+const start=html.indexOf(prefix),end=html.indexOf(suffix,start);
+assert(start>=0&&end>start,'AIPC guard must be included in offline app');
+const sandbox={window:{},Date,Number,Object,String,Array,Math};
+vm.runInNewContext(html.slice(start,end+suffix.length),sandbox,{timeout:2000});
+const policy=sandbox.window.NADIA_PIGA_GUARD;
+assert(policy,'registered policy');
+assert.equal(policy.registry.length,150);
+assert.equal(new Set(policy.registry.map(x=>x.id)).size,150);
+assert(policy.registry.some(x=>x.id==='II/CSP-001')&&policy.registry.some(x=>x.id==='III/CSP-001'));
+assert.equal(policy.status().happyState,'BLOCK_UNVERIFIED');
+assert.equal(policy.status().activeModel,false);
+const result=policy.selfTest();
+assert.equal(result.passed,18,JSON.stringify(result.tests.filter(x=>!x.pass)));
+assert.equal(result.total,18);
+assert.equal(result.modelCalls,0);
+assert.equal(result.emailsSent,0);
+assert.equal(policy.act({type:'payment'}).status,'BLOCK');
+assert.equal(policy.examine('unsupported').classification,'CANDIDATES_ONLY');
+assert.equal(policy.examine('unexpected').confidence,'DC0_UNKNOWN');
+assert(html.includes('let nbRenderBusy=false;')&&html.includes('NB_PIGA_GUARD.renderReentry()'));
+assert(!html.includes('id="view-happy"')&&!html.includes('happy-live-token'));
+assert(!html.includes('id="nb-avatar-photo"'));
+assert(html.includes('barakah-home-2027-original-cover.png'));
+assert(fs.statSync('nadias-bloom/barakah-home-2027-original-cover.png').size>100000);
+const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
+assert(scripts.length>=1);
+for(const code of scripts)new vm.Script(code[1]);
+console.log(JSON.stringify({verdict:'PASS_NADIA_AIPC_GOVERNANCE_SYNTHETIC',passed:result.passed,total:result.total,catalog:policy.registry.length,liveModelCalls:0,emailsSent:0,checks:'locale/design/local-admission/render-boundary'}));

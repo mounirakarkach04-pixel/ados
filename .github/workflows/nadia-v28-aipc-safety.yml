@@ -1,0 +1,18 @@
+name: Nadia v28 AIPC 150 Offline Safety Gate
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadia_aipc_guard_v28.cjs'
+      - '.github/workflows/nadia-v28-aipc-safety.yml'
+permissions:
+  contents: read
+jobs:
+  safety:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify standalone offline PIGA AI pathology governance
+        run: node scripts/test_nadia_aipc_guard_v28.cjs

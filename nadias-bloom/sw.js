@@ -1,4 +1,4 @@
-const CACHE='nadias-bloom-v28-20261025',CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'],OPTIONAL=['./icon-192.png','./icon-512.png'];
+const CACHE='nadias-bloom-v28-20261025',CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'],OPTIONAL=['./icon-192.png','./icon-512.png','./barakah-home-2027-original-cover.png'];
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(CORE);await Promise.allSettled(OPTIONAL.map(url=>cache.add(url)));await self.skipWaiting()})())});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{for(const k of await caches.keys())if(k.startsWith('nadias-bloom-')&&k!==CACHE)await caches.delete(k);await self.clients.claim()})())});
 self.addEventListener('fetch',event=>{
