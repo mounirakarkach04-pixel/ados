@@ -74,7 +74,7 @@ assert(cockpitCode.includes('crypto.subtle.digest'),'Local STL integrity hash mi
 assert(cockpitCode.includes('n===boxes.length'),'Checklist completeness missing');
 assert(cockpitCode.includes('Eine Druckfreigabe ist damit nicht erteilt'),'Checklist must not misrepresent authorization');
 assert(read('app.js').includes('activateRequestedSection'),'Deep-linked studio tabs not connected');
-assert(read('sw.js').includes('piga-ortho-v070-static'),'Outdated service-worker cache version');
+assert(read('sw.js').includes('piga-ortho-v080-static'),'Outdated service-worker cache version');
 assert(read('manifest.webmanifest').includes('"start_url":"./dashboard.html"'),'PWA should launch cockpit first');
 
 // v0.8 personal display and print-ready evidence report checks
