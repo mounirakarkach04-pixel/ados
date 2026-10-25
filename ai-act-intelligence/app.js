@@ -4,7 +4,7 @@ import {architectureCatalog,portfolioSummary,ARCHITECTURE_FAMILIES} from "./port
 import {publicationCatalog,publicationCategories,publicationSummary} from "./publications.js";
 
 const HOSTED_APP="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/";
-const isNativeShell=location.protocol==="capacitor:"||location.protocol==="ionic:";
+const isNativeShell=location.protocol==="capacitor:"||location.protocol==="ionic:"||((location.hostname==="localhost"||location.hostname==="127.0.0.1")&&location.protocol==="https:")||window.Capacitor?.isNativePlatform?.()===true;
 const accountEmailRedirect=isNativeShell?HOSTED_APP+"#account":location.origin+location.pathname+"#account";
 const isVerifiedCheckoutReturnHost=location.origin==="https://mounirakarkach04-pixel.github.io"&&location.pathname.startsWith("/ados/ai-act-intelligence/");
 const client=createClient("https://sanrkcovmkkhgdqydxfk.supabase.co","sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
