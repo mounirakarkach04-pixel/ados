@@ -23,5 +23,6 @@ jobs:
           node --check piga-ortho-3d/workflow.js
           node --check piga-ortho-3d/app.js
           node --check piga-ortho-3d/sw.js
+          node --check piga-ortho-3d/praxis.js
       - name: Verify interactive workflow, gates and APK asset source parity
         run: node scripts/piga-ortho-workflow-qa.mjs

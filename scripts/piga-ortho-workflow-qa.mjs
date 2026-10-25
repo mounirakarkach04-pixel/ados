@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root='piga-ortho-3d';
-const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js'];
+const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js'];
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 for(const name of names){
   assert(fs.existsSync(path.join(root,name)),'Missing web asset: '+name);
@@ -15,9 +15,10 @@ const css=read('workflow.css');
 const js=read('workflow.js');
 const sw=read('sw.js');
 assert(main.includes('href="./workflow.html"'),'Main entry to navigator missing');
-for(const name of ['workflow.html','workflow.css','workflow.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
+for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
 for(const name of ['workflow.css','workflow.js'])assert(html.includes('./'+name),'Workflow asset link missing '+name);
 assert(!/https?:\/\//i.test(html),'External URLs forbidden in local UI');
+assert(read('praxis.css').includes('@media(max-width:600px)'),'Mobile staff UI missing');
 assert(css.includes('@media(max-width:770px)'),'Mobile responsive rules missing');
 const match=js.match(/const STAGES=(\[[\s\S]*?\]);\s*const \$/);
 assert(match,'Expected static stage manifest missing');
@@ -37,5 +38,13 @@ for(const s of stages){
 for(const id of ['stageList','workbench','stageTitle','stageDescription','stageStatus','stageGlyph','stepCounter','schematicInput','schematicControl','schematicOutput','inputs','outputs','mode','openModule','gate1','gate2','reverse','back','next','exportSpec','printPlan','progressFill','scope'])
   assert(html.includes('id="'+id+'"'),'Missing required element '+id);
 assert(html.includes('Mounir Akarkach')&&html.includes('Ibrahim Akarkach'),'Dedication missing');
+assert(read('praxis.html').includes('id="authForm"'),'Auth form missing');
+assert(read('praxis.html').includes('id="ownerArea"'),'Owner region missing');
+assert(read('praxis.html').includes('id="startShift"'),'Work time clock missing');
+assert(read('praxis.html').includes('id="costForm"'),'Private costing form missing');
+assert(read('praxis.js').includes('/auth/v1/recover'),'Password recovery endpoint missing');
+assert(read('praxis.js').includes('/rest/v1/rpc/ortho_claim_owner'),'Owner one-time claim missing');
+assert(read('praxis.js').includes("profile?.role==='owner'"),'Owner guard absent');
+assert(read('praxis.html').includes('Die Eingabe echter Patientendaten ist hier derzeit deaktiviert.'),'Health-data exclusion missing');
 assert(js.includes('application/json')&&js.includes('clinicalApproved:false'),'Export and nonclinical flag required');
-process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 11 parity assets, offline cache, controls, gate boundaries, attribution.\n');
+process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 14 parity assets, offline cache, controls, gate boundaries, attribution.\n');
