@@ -13,6 +13,13 @@ try{
  await page.locator("#view-home .hero h1").waitFor({state:"visible",timeout:30000});
  await page.waitForURL(/#home$/, {timeout:25000}).catch(()=>{throw new Error("App module not initialised: "+failures.join(" | "));});
  await page.screenshot({path:"qa-artifacts/01-dashboard.png",fullPage:true});
+ // Editorial polish: the headline must not overlap the visual preview at enterprise desktop widths.
+ const heroCheck=await page.evaluate(()=>{
+  const title=document.querySelector("#view-home .hero h1").getBoundingClientRect();
+  const preview=document.querySelector("#view-home .hero .preview-surface").getBoundingClientRect();
+  return {titleRight:title.right,previewLeft:preview.left,intersects:title.right>preview.left&&title.top<preview.bottom&&title.bottom>preview.top};
+ });
+ assert.equal(heroCheck.intersects,false,"hero title overlaps interactive product preview: "+JSON.stringify(heroCheck));
  await page.locator("#view-home [data-go='assessment']").click();
  await page.locator("#view-assessment").waitFor({state:"visible",timeout:10000});
  await page.fill("#f-title","Recruiting Engine 1.0");
