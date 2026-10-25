@@ -26,6 +26,10 @@ try{
  const gate2=await page.locator("#gate2").innerText();
  assert.equal(gate1,"DELAY");assert.equal(gate2,"BLOCK");
  assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
+ assert.equal(await page.locator("#architecture-details").getAttribute("open"),null);
+ await page.locator("#architecture-details summary").click();
+ assert.match(await page.locator("#architecture").innerText(),/Gate|PIGA|A7SEM/);
+ await page.locator("#architecture-details summary").click();
  await page.screenshot({path:"qa-artifacts/02-report.png",fullPage:true});
  await page.locator("#nav > [data-view='articles']").click();
  await page.fill("#article-search","50");
