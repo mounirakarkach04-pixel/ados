@@ -1,0 +1,20 @@
+{
+  "name": "piga-ai-act-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Native wrappers for PIGA AI Act Intelligence",
+  "scripts": {
+    "android:init": "cap add android",
+    "ios:init": "cap add ios",
+    "sync": "cap sync",
+    "android:build": "cd android && ./gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.5.3",
+    "@capacitor/android": "8.5.3",
+    "@capacitor/ios": "8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3"
+  }
+}
