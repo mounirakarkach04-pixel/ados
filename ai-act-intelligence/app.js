@@ -89,6 +89,10 @@ function renderReport(){
  $("ladder").innerHTML=r.ladder.map(x=>'<div class="ladder-step"><b>'+escapeHTML(x.label)+'</b>'+gateBadge(x.state)+'</div>').join("");
  $("priorities").innerHTML='<ol class="numbered">'+r.priorities.map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ol>';
  $("reverse").innerHTML=r.reverse.questions.map(x=>'<div class="reverse-item">◇ '+escapeHTML(x)+'</div>').join("")+'<p class="subtle">Reverse: '+escapeHTML(r.reverse.status)+'; unabhängiger Wirkungsnachweis: nicht erbracht.</p>';
+ if($("suggestions")){
+  $("suggestions").innerHTML=r.suggestions.map(p=>'<div class="result-row"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.type)+' · '+escapeHTML(PRICE_EUR[p.sku]||"Preis auf Anfrage")+'</small></div><button type="button" class="btn ghost smaller" data-suggest="'+escapeHTML(p.sku)+'">Lösung prüfen</button></div>').join("");
+  $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>show("licensing")));
+ }
 }
 function download(filename,content,type){
  const obj=new Blob([content],{type});const url=URL.createObjectURL(obj);
@@ -122,13 +126,55 @@ function renderArticles(){
  }).join("")||'<p>Keine passenden Artikel.</p>';
 }
 $("article-search").addEventListener("input",renderArticles);
+const PRICE_EUR={
+ "PIGA-PROD-001":"7.900 €","PIGA-PROD-002":"7.900 €",
+ "PIGA-PROD-005":"12.900 €","PIGA-PROD-011":"24.900 €",
+ "PIGA-PROD-022":"24.900 €","PIGA-PROD-043":"1.490 €",
+ "PIGA-BUNDLE-01":"13.900 €","PIGA-BUNDLE-07":"44.900 €"
+};
 function renderLicenses(){
  $("licence-cards").innerHTML=PRODUCTS.map(p=>{
-  const href=user?p.url+"?client_reference_id="+encodeURIComponent(user.id):"#account";
-  const label=user?"Stripe-Angebot ansehen ↗":"Zum Kauf anmelden ↗";
-  return '<div class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p>'+escapeHTML(p.sku)+'</p><small>Kommerzielles Angebot · Leistungsumfang gemäß Stripe-Produktbeschreibung</small><a class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'" href="'+href+'" '+(user?'target="_blank" rel="noopener noreferrer"':'')+'>'+label+'</a></div>';
+  const label=user?"Sicher zu Stripe ↗":"Anmelden und Angebot ansehen";
+  return '<div class="license-card"><span class="type">'+escapeHTML(p.type)+'</span><h3>'+escapeHTML(p.title)+'</h3><p>'+escapeHTML(p.sku)+' · <strong>'+escapeHTML(PRICE_EUR[p.sku]||"Auf Anfrage")+'</strong></p><small>Auswahl, Anmeldung und Zahlung erfolgen getrennt; lizenzierte Implementierung wird nach erfolgreicher serverseitiger Stripe-Prüfung freigegeben.</small><button type="button" class="btn ghost smaller" data-buy="'+escapeHTML(p.sku)+'">'+label+'</button></div>';
  }).join("");
- $("licence-cards").querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",e=>{if(!user){e.preventDefault();toast("Bitte zuerst anmelden; Stripe-Zahlungen müssen einem bestätigten Konto zugeordnet werden.");show("account");}}));
+ $("licence-cards").querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",()=>purchase(b.dataset.buy,b)));
+}
+async function purchase(sku,button){
+ if(!user){toast("Für einen lizenzierten Kauf bitte zuerst anmelden.");show("account");return;}
+ button.disabled=true;const label=button.textContent;button.textContent="Prüfe sicheren Checkout …";
+ try{
+  const {data,error}=await client.functions.invoke("aiact-payment",{body:{operation:"checkout",sku}});
+  if(error||!data?.url)throw Error(data?.error||error?.message||"Checkout nicht verfügbar");
+  const to=new URL(data.url);
+  if(to.protocol!=="https:"||!to.hostname.endsWith(".stripe.com"))throw Error("Ungültiges Checkout-Ziel");
+  location.assign(data.url);
+ }catch(e){
+  toast("Zahlung ist noch nicht freigegeben: "+(e.message||"Serverprüfung fehlgeschlagen")+". Es wurde keine Zahlung ausgelöst.");
+  button.disabled=false;button.textContent=label;
+ }
+}
+let confirmationRunning=false,confirmationCompleted=false;
+async function confirmPaymentIfNeeded(){
+ if(!user||confirmationRunning||confirmationCompleted)return;
+ const params=new URLSearchParams(location.search);
+ const session=params.get("session_id");
+ if(params.get("payment")==="cancel"){
+  history.replaceState(null,"",location.pathname+"#licensing");
+  toast("Checkout abgebrochen. Es wurde keine Lizenz freigeschaltet.");return;
+ }
+ if(params.get("payment")!=="success"||!session)return;
+ confirmationRunning=true;
+ show("licensing");toast("Überprüfe Zahlung und Lizenzberechtigung beim Server …");
+ try{
+  const {data,error}=await client.functions.invoke("aiact-payment",{body:{operation:"confirm",session_id:session}});
+  if(error||!data?.ok)throw Error(data?.error||error?.message||"Keine bestätigte Zahlung");
+  confirmationCompleted=true;
+  history.replaceState(null,"",location.pathname+"#licensing");
+  toast("Zahlung bestätigt. Deine Lizenz ist freigeschaltet.");
+  await loadEntitlements();
+ }catch(err){
+  toast("Freigabe noch nicht bestätigt. Es wird keine Lizenz ohne Zahlungsnachweis ausgegeben. "+(err?.message||""));
+ }finally{confirmationRunning=false;}
 }
 renderLicenses();
 async function loadEntitlements(){
@@ -164,7 +210,7 @@ async function renderAuth(){
  $("auth-pane").classList.toggle("hidden",Boolean(user));
  $("user-pane").classList.toggle("hidden",!user);
  $("sign-header").textContent=user?"Mein Konto":"Anmelden";
- if(user){$("user-email").textContent=user.email||"Authentifiziert";loadSaved();}
+ if(user){$("user-email").textContent=user.email||"Authentifiziert";loadSaved();confirmPaymentIfNeeded();}
 }
 async function withAuth(fn){
  const email=$("auth-email").value.trim();
