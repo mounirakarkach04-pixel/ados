@@ -178,11 +178,11 @@ function renderReport(){
  $("case-architecture-count").textContent=String((r.architecture||architectureCatalog).length);
  const featured=offers[0],other=offers.slice(1,4);
  $("recommended-title").textContent=featured?.title||"Governance-Assessment";
- $("recommended-price").textContent=featured?.price||"Preis auf Anfrage";
+ $("recommended-price").textContent=r.is_demo?"Nach Ihrer eigenen Analyse":(featured?.price||"Preis auf Anfrage");
  $("recommended-why").textContent=featured?.why||"Passende Maßnahmen und nachvollziehbare Nachweise.";
  $("recommended-buy").dataset.offer=r.is_demo?"":(featured?.sku||"");
  $("recommended-buy").textContent=r.is_demo?"Eigene Analyse starten →":"Empfohlene Lösung ansehen →";
- $("suggestions").innerHTML=other.map(p=>'<div class="result-offer"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.why)+'</small></div><button type="button" data-suggest="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>').join("");
+ $("suggestions").innerHTML=r.is_demo?'<p class="subtle">Die passende Leistung wird erst aus Ihren eigenen Angaben abgeleitet. Dieses Beispiel dient ausschließlich der Orientierung.</p>':other.map(p=>'<div class="result-offer"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.why)+'</small></div><button type="button" data-suggest="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>').join("");
  $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>r.is_demo?show("assessment"):selectOffer(b.dataset.suggest)));
  if(!$("view-solutions").classList.contains("hidden"))renderSolutions();
  $("save-report").disabled=!!r.is_demo;
@@ -204,7 +204,7 @@ function renderSolutions(){
    '<div class="solution-proof"><b>Benötigter Nachweis:</b> '+escapeHTML(step.proof)+'</div>'+
    (offer?'<button type="button" data-solution="'+escapeHTML(offer.sku)+'">Passende Fachleistung: '+escapeHTML(offer.title)+' →</button>':'')+'</article>';
  }).join("");
- $("solutions-offers").innerHTML=offers.slice(0,3).map((p,i)=>
+ $("solutions-offers").innerHTML=r.is_demo?'<div class="solution-offer"><div><b>Ihr persönlicher Maßnahmenplan</b><span>Starten Sie eine eigene Analyse, bevor wir Leistungen vergleichen.</span></div><button type="button" data-solution="PIGA-PROD-001">Eigene Analyse starten →</button></div>':offers.slice(0,3).map((p,i)=>
   '<div class="solution-offer"><div><b>'+(i===0?"Empfohlen · ":"")+escapeHTML(p.title)+'</b><span>'+escapeHTML(p.why)+'</span></div><button type="button" data-solution="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>'
  ).join("");
  document.querySelectorAll("#view-solutions [data-solution]").forEach(button=>{if(r.is_demo)button.textContent="Eigene Analyse starten →";button.addEventListener("click",()=>r.is_demo?show("assessment"):selectOffer(button.dataset.solution));});
