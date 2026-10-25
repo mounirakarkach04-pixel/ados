@@ -13,6 +13,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import androidx.webkit.WebViewAssetLoader;
 import org.json.JSONObject;
@@ -30,10 +31,12 @@ import java.util.concurrent.Executors;
 public final class MainActivity extends Activity {
   private static final String HOME = "https://appassets.androidplatform.net/assets/index.html";
   private static final int CREATE_JSON=501;
+  private static final int PICK_STL=502;
   private WebView web;
   private final ExecutorService jobs=Executors.newSingleThreadExecutor();
   private final Handler ui=new Handler(Looper.getMainLooper());
   private String pendingExport="";
+  private ValueCallback<Uri[]> pendingStlSelection;
   private final PrinterBridge bridge=new PrinterBridge();
 
   @Override public void onCreate(Bundle savedInstanceState){
@@ -41,7 +44,7 @@ public final class MainActivity extends Activity {
     web=new WebView(this);
     WebSettings settings=web.getSettings();
     settings.setJavaScriptEnabled(true);
-    settings.setAllowFileAccess(false);settings.setAllowContentAccess(false);
+    settings.setAllowFileAccess(false);settings.setAllowContentAccess(true); // SAF-selected content:// only, not file://
     settings.setJavaScriptCanOpenWindowsAutomatically(false);
     settings.setDomStorageEnabled(false);
     settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
@@ -57,6 +60,15 @@ public final class MainActivity extends Activity {
           .setPositiveButton("Bestätigen",(d,w)->result.confirm())
           .setNegativeButton("Abbrechen",(d,w)->result.cancel()).setOnCancelListener(d->result.cancel()).show();
         return true;
+      }
+      @Override public boolean onShowFileChooser(WebView view,ValueCallback<Uri[]> callback,WebChromeClient.FileChooserParams params){
+        if(pendingStlSelection!=null)pendingStlSelection.onReceiveValue(null);
+        pendingStlSelection=callback;
+        Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        i.setType("*/*");i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try{startActivityForResult(i,PICK_STL);return true;}
+        catch(Exception e){pendingStlSelection=null;callback.onReceiveValue(null);return false;}
       }
     });
     web.addJavascriptInterface(bridge,"PigaNative");
@@ -127,8 +139,13 @@ public final class MainActivity extends Activity {
   }
   @Override protected void onActivityResult(int request,int resultCode,Intent data){
     super.onActivityResult(request,resultCode,data);
+    if(request==PICK_STL){
+      ValueCallback<Uri[]> callback=pendingStlSelection;pendingStlSelection=null;
+      if(callback!=null)callback.onReceiveValue(resultCode==RESULT_OK&&data!=null&&data.getData()!=null?new Uri[]{data.getData()}:null);
+      return;
+    }
     if(request==CREATE_JSON){try{if(resultCode==RESULT_OK&&data!=null&&data.getData()!=null){try(OutputStreamWriter out=new OutputStreamWriter(getContentResolver().openOutputStream(data.getData()),StandardCharsets.UTF_8)){out.write(pendingExport);}}}catch(Exception ignored){}finally{pendingExport="";}}
   }
   @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
-  @Override protected void onDestroy(){session=null;jobs.shutdownNow();if(web!=null)web.destroy();super.onDestroy();}
+  @Override protected void onDestroy(){if(pendingStlSelection!=null){pendingStlSelection.onReceiveValue(null);pendingStlSelection=null;}session=null;jobs.shutdownNow();if(web!=null)web.destroy();super.onDestroy();}
 }
