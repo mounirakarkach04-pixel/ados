@@ -7,6 +7,7 @@ on:
       - 'scripts/test_nadias_bloom_v261.js'
       - 'scripts/test_nadia_happy_v262.js'
       - 'scripts/test_nadia_v27_features.js'
+      - 'scripts/test_nadia_v27_pure.cjs'
       - '.github/workflows/nadia-bloom-release-qa.yml'
 permissions:
   contents: read
@@ -26,6 +27,8 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Offline source regression and international calendar gates
+        run: node scripts/test_nadia_v27_pure.cjs
       - name: Verify calendar, prayer times, no portrait, and synthetic Auth
         run: |
           node scripts/test_nadia_v27_features.js

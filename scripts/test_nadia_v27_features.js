@@ -19,11 +19,15 @@ let body={};try{body=req.postDataJSON()||{}}catch{}
 if(JSON.stringify(body).includes('members')||JSON.stringify(body).includes('events'))throw Error('Local family data leaked to auth endpoint');
 const result=u.pathname.endsWith('/token')||u.pathname.endsWith('/verify')?
 {access_token:'SYNTHETIC_ACCESS_TOKEN',refresh_token:'SYNTHETIC_REFRESH_TOKEN',expires_in:3600,user:{email:body.email||'synthetic@example.com'}}:
-u.pathname.endsWith('/user')?{email:'synthetic@example.com'}:{};
+u.pathname.endsWith('/user')?{id:'qa-user-id',email:'synthetic@example.com'}:{};
 await route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'POST, OPTIONS, PUT, GET'},body:JSON.stringify(result)})
 });
 await page.goto('http://127.0.0.1:'+port+'/nadias-bloom/');
 check((await page.title()).includes("Nadia"),"loaded");
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
+check(await page.locator('#nb-lang-quick option').count()===15,'15 supported languages');
+check(await page.locator('#nb-country-setting option').count()>=20,'independent country picker');
+check(await page.locator('#nb-install').isVisible(),'standalone install help always available');
 check(await page.locator('link[rel="apple-touch-icon"]').count()===1,'iPhone icon linked');
 check(await page.locator('link[rel="manifest"]').count()===1,'Android PWA manifest linked');
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
@@ -48,6 +52,16 @@ await page.locator('#monthChoose').fill('2031-05');
 await page.locator('#monthChoose').dispatchEvent('change');
 check((await page.locator('#nb-month-label').innerText()).includes('2031'),'future years supported');
 check((await page.locator('#monthGrid').innerText()).includes('Tag der Arbeit'),'2031 statutory holiday computed');
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('nl','NL'));
+await page.locator('#monthChoose').fill('2026-10');
+await page.locator('#monthChoose').dispatchEvent('change');
+check(!(await page.locator('#bookDates').innerText()).includes('Herbstferien Hessen'),'Hessen holidays disabled outside Germany');
+check(!(await page.locator('#monthGrid').innerText()).includes('Tag der Deutschen Einheit'),'German holidays disabled outside Germany');
+check(await page.locator('#nb-lang-quick').inputValue()==='nl','Dutch chosen manually');
+await page.locator('#monthChoose').fill('2027-03');
+await page.locator('#monthChoose').dispatchEvent('change');
+check((await page.locator('#bookDates').innerText()).includes('Eid al-Fitr'),'Islamic holiday still shown abroad');
+await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
 await page.locator('#nb-this-month').click();
 const activeMonth=await page.locator('#monthChoose').inputValue();
 check(/^\d{4}-\d{2}$/.test(activeMonth),'today shortcut');
@@ -83,10 +97,21 @@ check(!(await page.locator('#nb-auth-logged-in').isHidden()),'mock email/passwor
 check((await page.locator('#nb-auth-current-email').innerText()).includes('synthetic'),'signed in identity visible');
 await page.locator('#nb-logout').click();
 check(await page.locator('#nb-auth-logged-in').isHidden(),'mock logout');
+await page.goto('http://127.0.0.1:'+port+'/nadias-bloom/?token_hash=SYNTHETIC_HASH&type=recovery');
+await page.waitForFunction(()=>!document.querySelector('#nb-auth-reset-panel').hidden||document.querySelector('#nb-auth-status').textContent.includes('konnte nicht'));
+check(!(await page.locator('#nb-auth-reset-panel').isHidden()),'recovery form appears after verified link even while logged in');
+await page.locator('#nb-new-password').fill('NewSynthetic#987');
+await page.locator('#nb-confirm-password').fill('NewSynthetic#987');
+await page.locator('#nb-update-password').click();
+await page.waitForFunction(()=>document.querySelector('#nb-auth-status').textContent.includes('erfolgreich')||document.querySelector('#nb-auth-status').textContent.includes('DELAY'));
+check((await page.locator('#nb-auth-status').innerText()).includes('erfolgreich'),'synthetic password reset');
+check(await page.locator('#nb-auth-reset-panel').isHidden(),'reset authorization is one-time');
 const j=await page.evaluate(()=>window.NADIA_AUTH_QA);
 check(j.configured&&j.noFamilyDataSync,'separate auth provider no unverified sync');
 check(requests.some(r=>r.path.endsWith('/otp')),'OTP request routed only to Supabase Auth');
 check(requests.some(r=>r.path.endsWith('/token')),'password login request routed only to Supabase Auth');
+check(requests.some(r=>r.path.endsWith('/verify')),'recovery link checked by Supabase Auth');
+check(requests.some(r=>r.path.endsWith('/user')&&r.method==='PUT'),'new password forwarded to Supabase Auth only');
 check(errors.length===0,'no uncaught UI errors: '+errors.join(' | '));
 const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
 check(overflow<4,'no horizontal viewport overflow '+overflow);
