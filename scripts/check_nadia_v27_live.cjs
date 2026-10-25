@@ -13,7 +13,7 @@ const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const report = [];
 async function probe(url) {
   try {
-    const resp = await fetch(url,{redirect:'follow',cache:'no-store',signal:AbortSignal.timeout(12000),headers:{'user-agent':'Nadia-V28-Parity-ReadOnly/1.0'}});
+    const resp = await fetch(url,{redirect:'follow',cache:'no-store',signal:AbortSignal.timeout(12000),headers:{'user-agent':'Nadia-V29-Parity-ReadOnly/1.0'}});
     const bytes = Buffer.from(await resp.arrayBuffer());
     return {status:resp.status,contentType:resp.headers.get('content-type')||'',hash:hash(bytes),bytes:bytes.length,url:resp.url};
   } catch (e) { return {status:0,error:String(e?.message||e).slice(0,160)}; }
@@ -39,12 +39,12 @@ async function main(){
   if(health.status===200){
     try{const r=await fetch('https://pigapocket.com/nadias-bloom/health',{signal:AbortSignal.timeout(12000)});const data=await r.json();release=String(data.release||'')}catch(e){release='invalid-json'}
   }
-  const healthOK=health.status===200&&release==='v28-bloom-editorial';
+  const healthOK=health.status===200&&release==='v29-botanical-mobile';
   report.push({site:'Cloudflare canonical',file:'health metadata',status:health.status,release,healthOK,error:health.error||''});
   healthOK?passed++:failed++;
   const happy={status:'WITHDRAWN',healthOK:false}; // no AI requests, no tokens
   console.log(JSON.stringify({verdict:failed===0?'STATIC_PARITY_PASS':'DELAY_STATIC_PARITY',passed,failed,aiCalls:0,emailsSent:0,probes:report},null,2));
-  const md=['# Nadia v28 — read-only live parity','',`**Result:** ${failed===0?'PASS':'DELAY'} · ${passed} passed / ${failed} failed`,'','| Source | File | HTTP | SHA256 identical | MIME valid |','|---|---|---:|:---:|:---:|',...report.filter(x=>x.sha256Match!==undefined).map(x=>`| ${x.site} | ${x.file} | ${x.status} | ${x.sha256Match?'yes':'no'} | ${x.typeOK?'yes':'no'} |`),'',`Health release: ${release||'unavailable'}; Happy health HTTP: ${happy.status}; no AI model call or email sent.`,''];
+  const md=['# Nadia v29 — read-only live parity','',`**Result:** ${failed===0?'PASS':'DELAY'} · ${passed} passed / ${failed} failed`,'','| Source | File | HTTP | SHA256 identical | MIME valid |','|---|---|---:|:---:|:---:|',...report.filter(x=>x.sha256Match!==undefined).map(x=>`| ${x.site} | ${x.file} | ${x.status} | ${x.sha256Match?'yes':'no'} | ${x.typeOK?'yes':'no'} |`),'',`Health release: ${release||'unavailable'}; Happy health HTTP: ${happy.status}; no AI model call or email sent.`,''];
   if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,md.join('\n'));
   if(failed>0)process.exitCode=1;
 }
