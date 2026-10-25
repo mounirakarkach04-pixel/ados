@@ -130,7 +130,29 @@ async function loadEntitlements(){
  if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";return;}
  const {data,error}=await client.from("aiact_entitlements").select("sku,status,granted_at,expires_at").eq("owner_id",user.id);
  if(error){$("entitlement-list").textContent="Berechtigungsprüfung nicht möglich: "+error.message;return;}
- $("entitlement-list").innerHTML=(!data||!data.length)?"Keine bestätigten, automatisch zugeordneten Lizenzberechtigungen.":data.map(e=>'<div class="saved-row"><b>'+escapeHTML(e.sku)+'</b>'+small(e.status,e.status!=="ACTIVE"?"warn":"")+'</div>').join("");
+ const valid=e=>e.status==="ACTIVE"&&(!e.expires_at||Date.parse(e.expires_at)>Date.now());
+ $("entitlement-list").innerHTML=(!data||!data.length)?"Keine bestätigten, automatisch zugeordneten Lizenzberechtigungen.":data.map(e=>'<div class="saved-row"><div><b>'+escapeHTML(e.sku)+'</b><small>Status: '+escapeHTML(e.status)+'</small></div>'+(valid(e)?'<button type="button" data-licence="'+escapeHTML(e.sku)+'">Lizenzanleitung abrufen</button>':small(e.status,"warn"))+'</div>').join("")+'<div id="licensed-output" class="licensed-output"></div>';
+ $("entitlement-list").querySelectorAll("[data-licence]").forEach(b=>b.addEventListener("click",()=>loadLicensed(b.dataset.licence)));
+}
+async function loadLicensed(sku){
+ if(!user)return;
+ const out=$("licensed-output");if(out)out.textContent="Prüfe Lizenz und lade geschützte Anleitung …";
+ try{
+  const {data,error}=await client.functions.invoke("aiact-license",{body:{sku}});
+  if(error)throw error;
+  if(!data?.playbook)throw new Error("Keine Implementierungsanleitung verfügbar.");
+  const p=data.playbook;out.innerHTML="";
+  const h=document.createElement("h3");h.textContent=p.title;out.appendChild(h);
+  const note=document.createElement("p");note.textContent="Lizenzgebundener Scope: "+p.scope;out.appendChild(note);
+  const list=document.createElement("ol");list.className="numbered";
+  for(const phase of p.phases){const li=document.createElement("li");li.textContent=phase;list.appendChild(li);}
+  out.appendChild(list);
+  const artifacts=document.createElement("p");artifacts.textContent="Lieferartefakte: "+p.artifacts.join(", ");out.appendChild(artifacts);
+  const boundary=document.createElement("p");boundary.textContent="Admission: "+p.admission;out.appendChild(boundary);
+  const btn=document.createElement("button");btn.type="button";btn.className="btn primary smaller";btn.textContent="Lizenzanleitung als JSON";
+  btn.addEventListener("click",()=>download("piga-license-"+sku+".json",JSON.stringify(data,null,2),"application/json"));
+  out.appendChild(btn);
+ }catch(error){if(out)out.textContent="Lizenz konnte nicht abgerufen werden. Die serverseitige Prüfung hat keine gültige Berechtigung bestätigt oder der Dienst ist nicht verfügbar.";toast(error?.message||"Lizenzprüfung fehlgeschlagen.");}
 }
 async function renderAuth(){
  $("auth-pane").classList.toggle("hidden",Boolean(user));
