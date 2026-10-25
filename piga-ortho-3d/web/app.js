@@ -49,7 +49,7 @@
   async function getJob(){const data=await api('GET','/api/job');state.printerStatus=data;updateJob(data);return data;}
   $('refreshPrinter').onclick=async()=>{try{const s=await getJob();await log('PRINTER_READBACK','OBSERVED',{state:s.state,file:s.job?.file?.name||null});show('Gerätestatus gelesen.');}catch(e){state.readback='UNKNOWN';await log('PRINTER_READBACK','UNKNOWN',{error:e.message});show('Status unklar: '+e.message);}labels();};
   async function command(op){let nonce=crypto.randomUUID(),pre,jobFile=null;state.gate2='BLOCK';state.readback='UNKNOWN';labels();try{
-      if(!state.auditHealthy)throw Error('Auditintegrität nicht verfügbar – Aktion gesperrt.');if(!state.connected||!state.key||!state.host)throw Error('Keine bestätigte Sitzung.');if(!$('authorityCheck').checked||!$('operatorCheck').checked)throw Error('Autorität / konkrete Aktion nicht bestätigt.');if(op==='start'&&!$('qualityCheck').checked)throw Error('Material-, Slicer-, Datei- und Zuordnungscheck fehlt.');
+      if(!state.auditHealthy)throw Error('Auditintegrität nicht verfügbar – Aktion gesperrt.');if(!state.connected||(!state.key&&!state.nativeReady)||!state.host)throw Error('Keine bestätigte Sitzung.');if(!$('authorityCheck').checked||!$('operatorCheck').checked)throw Error('Autorität / konkrete Aktion nicht bestätigt.');if(op==='start'&&!$('qualityCheck').checked)throw Error('Material-, Slicer-, Datei- und Zuordnungscheck fehlt.');
       pre=await getJob();jobFile=pre?.job?.file?.name||'';if(op==='start'&&(!/\.g(co|code)$/i.test(jobFile)||!['Operational','Ready'].includes(pre.state)))throw Error('Kein freigegebenes ausgewähltes G-Code-Programm im Bereit-Zustand.');if(op==='pause'&&pre.state!=='Printing')throw Error('Pausieren nur während Printing.');if(op==='cancel'&&!['Printing','Paused'].includes(pre.state))throw Error('Abbruch nur bei aktivem Druck.');
       if(!confirm(`PIGA Gate 2: ${op.toUpperCase()} am Gerät ${state.host}?\nJob: ${jobFile||'n/a'}\nDiese Aktion wird genau einmal gesendet.`)){await log('ACTION_WITHDRAWN','BLOCK',{op});return;}
       state.gate2='ALLOW';labels();await log('GATE_2','ALLOW',{op,nonce,host:state.host,jobFile,preState:pre.state,operatorConfirmed:true});
@@ -65,5 +65,5 @@
   $('loopStop').onclick=()=>{state.stop=true;show('Stoppsignal gesetzt.');};
   addEventListener('offline',()=>{$('offlineState').textContent='Gerät offline · lokale App nutzbar';});addEventListener('online',()=>{$('offlineState').textContent='Lokale Verarbeitung aktiv';});
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
-  labels();draw();log('SESSION_INITIALIZED','OBSERVED',{version:'0.1.0',mode:'technical-evaluation',clinicalApproved:false});
+  labels();draw();log('SESSION_INITIALIZED','OBSERVED',{version:'0.2.0',mode:'technical-evaluation',clinicalApproved:false});
 })();

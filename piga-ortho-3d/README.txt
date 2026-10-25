@@ -1,4 +1,4 @@
-PIGA ORTHO 3D — GLASSBOX STUDIO v0.1 | 25.10.2026
+PIGA ORTHO 3D — GLASSBOX STUDIO v0.2 | 25.10.2026
 Kostenlose technische Evaluationsausgabe — NICHT FÜR KLINISCHEN PRODUKTIVBETRIEB.
 
 START:
@@ -20,7 +20,7 @@ DRUCKER:
 - Keine STL-direkt-an-Drucker-Funktion; vorher per geeignetem Slicer erzeugtes G-Code, in OctoPrint ausgewählt.
 - Jede Wirkung benötigt Bedienerbestätigung, PIGA Gate 2 und Readback; keine automatischen Wiederholungen.
 - Der öffentliche HTTPS-Browser kann HTTP-LAN-Aufrufe aufgrund Mixed Content / Private Network Access blockieren.
-- Noch keine Hardwaretests und kein APK-Artefakt in dieser Version. Hersteller-Resindrucker mit anderem API-Protokoll benötigen einen Adapter.
+- Android-Debug-APK per reproduzierbarem GitHub Actions Build verfügbar; HTML/CSS/JS-Assets in der APK bytegenau geprüft. Hardwaretests stehen aus. Hersteller-Resindrucker mit anderem API-Protokoll benötigen einen Adapter.
 
 GOVERNANCE:
 - Gate1: technisch plausibles STL (ALLOW/DELAY/UNKNOWN), KEINE Behandlungsfreigabe.
