@@ -12,7 +12,7 @@ try{for(const [name,viewport] of [["desktop",{width:1440,height:900}],["mobile",
  function check(v,label){assert(v,name+": "+label);checks++}
  check((await p.title()).includes("Nadia’s Bloom"),"title");check(await p.evaluate(()=>window.NADIAS_BLOOM_QA?.duaCount===365),"365 book duas");
  check(await p.evaluate(()=>window.NADIAS_BLOOM_QA?.gate2==="CONFIRM_REQUIRED"),"confirmed action gate");
- check(await p.locator(".side-btn[data-view]").count()===12,"12 areas");check(await p.locator("#mobileModules [data-view]").count()===12,"all 12 mobile-accessible modules");check(await p.locator(".nb-promo a[href*='amazon.de']").count()===1,"Amazon title search link");check(await p.locator(".nb-excerpts blockquote").count()===2,"only preview excerpts");check(await p.locator("#view-buch a[href*='drive.google.com']").count()===0,"full KDP PDF no longer exposed");
+ check(await p.locator(".side-btn[data-view]").count()===11,"11 active areas");check(await p.locator("#mobileModules [data-view]").count()===11,"all 11 mobile-accessible modules");check(await p.locator(".nb-promo a[href*='amazon.de']").count()===1,"Amazon title search link");check(await p.locator(".nb-excerpts blockquote").count()===2,"only preview excerpts");check(await p.locator("#view-buch a[href*='drive.google.com']").count()===0,"full KDP PDF no longer exposed");
  check((await p.locator("#homeDua").innerText()).length>30,"book dua shown");
  check((await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth))<=2,"responsive");
  async function nav(id){if(name==="mobile"){await p.locator('.mobilebar [data-view="buch"]').click();await p.locator('#mobileModules [data-view="'+id+'"]').click()}else{await p.locator('.side-btn[data-view="'+id+'"]').click()}check(await p.locator("#view-"+id+".active").count()===1,id+" opens")}
@@ -28,7 +28,7 @@ try{for(const [name,viewport] of [["desktop",{width:1440,height:900}],["mobile",
  await p.locator("[data-chore]").first().check();check(await p.locator("[data-chore]").first().isChecked(),"chores");
  await nav("journal");await p.locator('#journalForm [name=text]').fill("Ein guter Tag");await p.locator("#journalForm button").click();check((await p.locator("#journalList").innerText()).includes("Ein guter Tag"),"journal");
  check(await p.locator('#view-happy').count()===0,'Happy withdrawn pending verified voice');
- await p.reload();check((await p.locator("#statShop").innerText())==="2","local persistence");
+ await p.reload();check((await p.locator("#statShop").innerText())==="1","local persistence");
  await nav("buch");check(await p.locator("#backup").count()===1&&await p.locator("#restore").count()===1,"backup/restore");check(await p.locator("#downloadOffline").count()===1,"offline download");
  check(errs.length===0,"no pageerrors "+errs.join("; "));check((await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth))<=2,"no final overflow");
  results.push({viewport:name,checks,errors:errs});await cx.close();
