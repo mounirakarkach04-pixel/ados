@@ -60,7 +60,7 @@ async function launch(){
    const fullName=String(user.user_metadata?.full_name||'Neue Mitarbeiterin / Neuer Mitarbeiter').slice(0,100);
    const name=fullName.length>2?fullName:'Neuer Mitarbeiter';
    await req('/rest/v1/ortho_staff','POST',{user_id:user.id,email:user.email,full_name:name,role:'pending',status:'pending'},true,{'Prefer':'return=minimal'});
-   profile=(await req('/rest/v1/ortho_staff?select=user_id,email,full_name,role,status,approved_at&user_id=eq.'+encodeURIComponent(user.id)))[0];
+   profile=(await req('/rest/v1/ortho_staff?select=user_id,email,full_name,staff_code,role,status,approved_at&user_id=eq.'+encodeURIComponent(user.id)))[0];
  }
  $('authShell').hidden=true;$('dashboard').hidden=false;
  $('accountLabel').textContent=profile.full_name+' · '+profile.email;
