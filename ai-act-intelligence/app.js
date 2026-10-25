@@ -138,7 +138,6 @@ $("assessment-form").addEventListener("submit",async e=>{
   activeReport.self_assessment_only=true;
   activeReport.is_demo=false;
   renderReport();
-  toast("Vorprüfung erstellt. Nicht als behördliche Konformitätserklärung verwendbar.");
   show("results");
  }catch(err){toast("Analyse nicht abgeschlossen: "+(err?.message||err));}
  finally{btn.disabled=false;btn.innerHTML='Vorprüfung erstellen <span>↗</span>';}
@@ -177,7 +176,8 @@ function renderReport(){
  $("recommended-title").textContent=featured?.title||"Governance-Assessment";
  $("recommended-price").textContent=featured?.price||"Preis auf Anfrage";
  $("recommended-why").textContent=featured?.why||"Passende Maßnahmen und nachvollziehbare Nachweise.";
- $("recommended-buy").dataset.offer=featured?.sku||"";
+ $("recommended-buy").dataset.offer=r.is_demo?"":(featured?.sku||"");
+ $("recommended-buy").textContent=r.is_demo?"Eigene Analyse starten →":"Empfohlene Lösung ansehen →";
  $("suggestions").innerHTML=other.map(p=>'<div class="result-offer"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.why)+'</small></div><button type="button" data-suggest="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>').join("");
  $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>selectOffer(b.dataset.suggest)));
  if(!$("view-solutions").classList.contains("hidden"))renderSolutions();
@@ -205,7 +205,7 @@ function renderSolutions(){
  ).join("");
  document.querySelectorAll("#view-solutions [data-solution]").forEach(button=>button.addEventListener("click",()=>selectOffer(button.dataset.solution)));
 }
-$("recommended-buy").addEventListener("click",()=>selectOffer($("recommended-buy").dataset.offer));
+$("recommended-buy").addEventListener("click",()=>activeReport?.is_demo?show("assessment"):selectOffer($("recommended-buy").dataset.offer));
 $("sample-analysis").addEventListener("click",async()=>{
  const data={title:"KI-gestützte Bewerberauswahl · Beispiel",version:"DEMO-1.0",role:"provider",developer:"Demonstrationsfall",purpose:"Bewerbungen vorselektieren und priorisieren",sector:"employment",
  productSafety:false,prohibited:false,gpai:false,systemic:false,chatbot:false,synthetic:false,agents:false,critical:true,controls:{}};
