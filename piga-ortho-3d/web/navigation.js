@@ -6,7 +6,8 @@
  {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./index.html#studio',icon:'cube'},
  {id:'workflow',label:'Prozesse',desc:'Zwölf Schritte, User Route und Ergebnisroute',href:'./workflow.html',icon:'flow'},
  {id:'printer',label:'Fertigung',desc:'OctoPrint mit Gate-2-Freigaben und Status-Readback',href:'./index.html#printer',icon:'printer'},
- {id:'quality',label:'Glassbox',desc:'Audit, PIGA und A7SEM Reverse',href:'./index.html#evidence',icon:'shield'}
+ {id:'quality',label:'Glassbox',desc:'Audit, PIGA und A7SEM Reverse',href:'./index.html#evidence',icon:'shield'},
+ {id:'report',label:'Prüfakte / PDF',desc:'Druckfertiger PIGA und A7SEM-Nachweis mit lokaler Hashprüfung',href:'./report.html',icon:'document'}
  ];
  const icons={
  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
@@ -15,11 +16,12 @@
  flow:'<rect x="2" y="4" width="7" height="6" rx="1"/><rect x="15" y="14" width="7" height="6" rx="1"/><path d="M9 7h5v10h1M4 14h8"/>',
  printer:'<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/><path d="M18 12h1"/>',
  shield:'<path d="m12 2 9 4v6c0 5-3.3 8-9 10-5.7-2-9-5-9-10V6z"/><path d="m8 12 3 3 5-6"/>',
+ document:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 8h8M8 12h8M8 16h6"/>',
  search:'<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/>'
  };
  const svg=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[k]+'</svg>';
  const filename=location.pathname.split('/').pop()||'index.html';
- let selected=filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':'studio';
+ let selected=filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':'studio';
  if(filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
@@ -38,7 +40,7 @@
  const top=document.createElement('div');top.className='piga-command-head';top.insertAdjacentHTML('beforeend',svg('search'));const search=document.createElement('input');search.type='search';search.placeholder='Funktion suchen, z. B. Druck, Kosten, STL …';search.setAttribute('aria-label','Funktion suchen');top.append(search);const close=document.createElement('button');close.type='button';close.className='piga-command-close';close.textContent='Schließen';top.append(close);panel.append(top);
  const results=document.createElement('div');results.className='piga-results';panel.append(results);
  const foot=document.createElement('div');foot.className='piga-command-footer';foot.textContent='Nur freigegebene Module benutzen · keine echten Patientendaten';panel.append(foot);overlay.append(panel);
- const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter registrieren personal kennung kosten login zeit arbeit',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',quality:'evidenz audit export hash gates qualität'};
+ const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter registrieren personal kennung kosten login zeit arbeit',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit'};
  function render(){results.textContent='';const q=search.value.trim().toLocaleLowerCase('de-DE');const found=paths.filter(p=>(p.label+' '+p.desc+' '+keywords[p.id]).toLocaleLowerCase('de-DE').includes(q));
   if(!found.length){const empty=document.createElement('p');empty.textContent='Keine passende Funktion gefunden.';empty.style.padding='15px';results.append(empty);return;}
   found.forEach(p=>{const item=document.createElement('a');item.href=p.href;const b=document.createElement('b');b.textContent=p.label;const sm=document.createElement('small');sm.textContent=p.desc;item.append(b,sm);results.append(item);});}
