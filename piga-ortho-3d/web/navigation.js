@@ -4,6 +4,7 @@
  {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./dashboard.html',icon:'grid'},
  {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./praxis.html',icon:'users'},
  {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./index.html#studio',icon:'cube'},
+ {id:'assistant',label:'Assistent',desc:'Geführte Schritte und KFO-Katalog',href:'./assist.html',icon:'flow'},
  {id:'workflow',label:'Prozesse',desc:'Zwölf Schritte, User Route und Ergebnisroute',href:'./workflow.html',icon:'flow'},
  {id:'devices',label:'Geräte',desc:'WLAN, Bluetooth, USB-Scanimport und technische Geräteprüfung',href:'./devices.html',icon:'printer'},
  {id:'printer',label:'Fertigung',desc:'OctoPrint mit Gate-2-Freigaben und Status-Readback',href:'./index.html#printer',icon:'printer'},
