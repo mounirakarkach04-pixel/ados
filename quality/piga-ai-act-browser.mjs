@@ -60,6 +60,8 @@ try{
  await page.locator("#view-account").waitFor({state:"visible"});
  assert.equal(page.url().includes("stripe.com"),false);
  assert.equal(await page.locator("#purchase-intent").isVisible(),true);
+ assert.equal(await page.locator("#account-journey .account-milestone").count(),5);
+ assert.match(await page.locator("#account-journey").innerText(),/E-Mail bestätigt/);
  await page.screenshot({path:"qa-artifacts/04-account-pending-purchase.png",fullPage:true});
  await page.locator("#nav > [data-view='results']").click();
  await page.locator("#nav > [data-view='articles']").click();
