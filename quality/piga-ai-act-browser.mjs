@@ -55,6 +55,19 @@ try{
  // The A4 print contains all eight Admission Ladder rows, not only the initially expanded two.
  const pdf=await page.pdf({path:"qa-artifacts/02-executive-report.pdf",format:"A4",printBackground:true,preferCSSPageSize:true});
  assert.ok(pdf.byteLength>12000,"Report PDF unexpectedly empty or too small");
+ await page.emulateMedia({media:"print"});
+ const printedGates=await page.evaluate(()=>{
+  const cards=[...document.querySelectorAll(".report-gates>div")];
+  const root=document.querySelector(".report-cover-grid").getBoundingClientRect();
+  return cards.map(card=>{
+   const text=card.querySelector("b");
+   const r=text.getBoundingClientRect();
+   return {value:text.textContent.trim(),withinPage:r.right<=root.right+3,notClipped:text.scrollWidth<=text.clientWidth+2};
+  });
+ });
+ assert.deepEqual(printedGates.map(x=>x.value),["DELAY","BLOCK"]);
+ assert.ok(printedGates.every(x=>x.withinPage&&x.notClipped),"A4 Gate-card clipping: "+JSON.stringify(printedGates));
+ await page.emulateMedia({media:"screen"});
  // Genuine buyer journey: result -> tailored solution -> transparent order -> informed consent -> account.
  await page.locator("#view-results [data-go='solutions']").first().click();
  await page.locator("#view-solutions").waitFor({state:"visible"});
