@@ -77,8 +77,23 @@ test("commercial experience uses exact EU prices and deterministic insight-to-ac
  assert.match(src,/PIGA-PROD-043.*1490/);
  for(const fragment of ["actionPlan","offersForReport","executiveFinding","LICENSE_PRICES_EUR"])assert.ok(src.includes(fragment));
  for(const fragment of ["setWizardStep(1)","selectOffer(","rememberOffer(","confirmationRunning","purchase-intent","commerce-status"])assert.ok((src+app+html).includes(fragment),fragment);
- assert.ok(html.includes("id=\\"recommended-buy\\""));
- assert.ok(html.includes("class=\\"report-cover\\""));
- assert.ok(html.includes("data-assessment-step=\\"4\\""));
+ assert.ok(html.includes('id="recommended-buy"'));
+ assert.ok(html.includes('class="report-cover"'));
+ assert.ok(html.includes('data-assessment-step="4"'));
  assert.ok(app.includes('if(activeReport.is_demo)'));
+});
+
+test("premium UX exposes solutions and blocks blind purchase before order review",()=>{
+ const html=read("ai-act-intelligence/index.html");
+ const app=read("ai-act-intelligence/app.js");
+ const css=read("ai-act-intelligence/design-v3.css");
+ const sw=read("ai-act-intelligence/sw.js");
+ for(const id of ['id="view-solutions"','id="solutions-plan"','id="order-review"','id="order-terms"','id="order-continue"','id="order-price"'])
+  assert.ok(html.includes(id),"missing conversion stage "+id);
+ for(const signal of ['function renderSolutions()','function beginOrder(sku)','if(!$("order-terms").checked)','if(!user)','client.functions.invoke("aiact-payment"'])
+  assert.ok(app.includes(signal),"missing checkout guard: "+signal);
+ assert.ok(css.includes(".solution-checklist"));
+ assert.ok(css.includes("@media print"));
+ assert.ok(sw.includes('"./design-v3.css"'));
+ assert.equal((html.match(/class="journey-step/g)||[]).length,7);
 });
