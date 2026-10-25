@@ -350,11 +350,33 @@ async function loadSaved(){
  if(!user)return;
  const {data,error}=await client.from("aiact_assessments").select("id,title,created_at,status,report,case_data").eq("owner_id",user.id).order("created_at",{ascending:false}).limit(50);
  if(error){$("saved-assessments").textContent="Laden fehlgeschlagen: "+error.message;return;}
- $("saved-assessments").innerHTML=data?.length?data.map(x=>'<div class="saved-row"><div><b>'+escapeHTML(x.title)+'</b><small>'+new Date(x.created_at).toLocaleString("de-DE")+' · Gate 1: '+escapeHTML(x.status)+'</small></div><button data-open="'+escapeHTML(x.id)+'" type="button">Öffnen</button></div>').join(""):"Noch keine gespeicherten Prüfungen.";
+ $("saved-assessments").innerHTML=data?.length?data.map(x=>'<div class="saved-row"><div><b>'+escapeHTML(x.title)+'</b><small>'+new Date(x.created_at).toLocaleString("de-DE")+' · Gate 1: '+escapeHTML(x.status)+'</small></div><div class="saved-actions"><button data-open="'+escapeHTML(x.id)+'" type="button">Öffnen</button><button data-delete="'+escapeHTML(x.id)+'" type="button" class="danger-action" aria-label="Prüfung '+escapeHTML(x.title)+' und Belege löschen">Löschen</button></div></div>').join(""):"Noch keine gespeicherten Prüfungen.";
  $("saved-assessments").querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{
   const record=data.find(a=>a.id===b.dataset.open);if(!record)return;
   activeReport=record.report;activeId=record.id;activeInput=record.case_data||null;
   restoreInput(activeInput);renderReport();show("results");
+ }));
+ $("saved-assessments").querySelectorAll("[data-delete]").forEach(button=>button.addEventListener("click",async()=>{
+  const record=data.find(a=>a.id===button.dataset.delete);if(!record||!user)return;
+  if(!window.confirm("Prüfung „"+record.title+"“ samt den zugehörigen hochgeladenen Nachweisen dauerhaft löschen? Diese Aktion kann nicht rückgängig gemacht werden."))return;
+  button.disabled=true;
+  try{
+   // Fail-closed: never unlink an evidence object unless it belongs to the active user and the selected assessment.
+   const prefix=user.id+"/"+record.id+"/";
+   const uploaded=(record.report?.evidence||[]).filter(x=>x.uploaded===true);
+   if(uploaded.some(x=>typeof x.path!=="string"||!x.path.startsWith(prefix)))throw Error("Nicht eindeutig zugeordnete Belege: Manuelle Prüfung nötig.");
+   const paths=[...new Set(uploaded.map(x=>x.path))];
+   if(paths.length){
+    const {error:storageError}=await client.storage.from("aiact-evidence").remove(paths);
+    if(storageError)throw storageError;
+   }
+   const {data:removed,error:deleteError}=await client.from("aiact_assessments").delete().eq("id",record.id).eq("owner_id",user.id).select("id");
+   if(deleteError)throw deleteError;
+   if(!removed?.length)throw Error("Datenbank hat keine Löschung bestätigt.");
+   if(activeId===record.id){activeId=null;activeReport=null;activeInput=null;$("result-content").classList.add("hidden");$("empty-results").classList.remove("hidden");}
+   toast("Prüfung und zugeordnete Belege wurden entfernt.");
+   await loadSaved();
+  }catch(e){toast("Löschen nicht vollständig bestätigt: "+(e?.message||"Unbekannter Fehler")+". Bitte Kontenansicht aktualisieren und Zustand prüfen.");button.disabled=false;}
  }));
 }
 client.auth.getUser().then(({data,error})=>{if(!error)user=data?.user||null;renderAuth();}).catch(()=>renderAuth());
