@@ -49,8 +49,17 @@ test("non-Annex III ordinary AI is not pre-certified as low risk",()=>{
  assert.equal(r.gate1,"DELAY");
 });
 
-test("15 PIGA architectural lenses remain declared without fabricated subject PASS",()=>{
+test("13 canonical resolver lenses and broader provenance-linked architecture corpus stay separate",()=>{
  const r=evaluate(base);
- assert.equal(r.architecture.length,15);
- assert.equal(r.architecture.every(x=>x.subject_pass===false&&x.needs_specific_evidence===true),true);
+ assert.ok(r.architecture.length>40);
+ assert.equal(r.architecture_summary.canonical,13);
+ assert.equal(r.architecture_summary.indexed,r.architecture.length);
+ assert.ok(r.architecture_summary.research>=15);
+ assert.ok(r.architecture_summary.operational>=15);
+ assert.equal(new Set(r.architecture.map(x=>x.id)).size,r.architecture.length);
+ const canonical=r.architecture.filter(x=>x.family==="canonical");
+ assert.equal(canonical.length,13);
+ for(const x of ["AUEF","PEKI","AHASM","SRE","ARC_S","ARGUS_7","A7SEM_REVERSE","ALGORITHMIC_SOUL","PIGA_H","EFT","REGISTRY_500","DECISION_PASSPORT"])
+   assert.ok(r.architecture.find(y=>y.id===x),"missing "+x);
+ assert.equal(r.architecture.every(x=>x.case_status==="NOT_INDEPENDENTLY_EVALUATED"&&x.licensed_material_excluded),true);
 });
