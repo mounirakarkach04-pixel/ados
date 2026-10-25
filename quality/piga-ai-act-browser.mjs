@@ -20,6 +20,14 @@ try{
   return {titleRight:title.right,previewLeft:preview.left,intersects:title.right>preview.left&&title.top<preview.bottom&&title.bottom>preview.top};
  });
  assert.equal(heroCheck.intersects,false,"hero title overlaps interactive product preview: "+JSON.stringify(heroCheck));
+ await page.locator("#sample-analysis").click();
+ await page.locator("#view-results").waitFor({state:"visible"});
+ assert.match(await page.locator("#report-ref").innerText(),/MUSTERBERICHT/);
+ assert.match(await page.locator("#recommended-buy").innerText(),/Eigene Analyse starten/);
+ await page.locator("#recommended-buy").click();
+ await page.locator("#view-assessment").waitFor({state:"visible"});
+ assert.equal(await page.locator("#order-review").isVisible(),false);
+ await page.locator("#nav > [data-view='home']").click();
  await page.locator("#view-home [data-go='assessment']").click();
  await page.locator("#view-assessment").waitFor({state:"visible",timeout:10000});
  await page.fill("#f-title","Recruiting Engine 1.0");
