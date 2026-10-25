@@ -1,6 +1,14 @@
 package com.piga.ortho;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.os.Build;
+import android.provider.Settings;
 import android.content.Context;
 import android.print.PrintAttributes;
 import android.print.PrintManager;
@@ -35,6 +43,7 @@ public final class MainActivity extends Activity {
   private static final String HOME = "https://appassets.androidplatform.net/assets/dashboard.html";
   private static final int CREATE_JSON=501;
   private static final int PICK_STL=502;
+  private static final int BT_PERMISSION=503;
   private WebView web;
   private final ExecutorService jobs=Executors.newSingleThreadExecutor();
   private final Handler ui=new Handler(Looper.getMainLooper());
@@ -49,7 +58,7 @@ public final class MainActivity extends Activity {
     settings.setJavaScriptEnabled(true);
     settings.setAllowFileAccess(false);settings.setAllowContentAccess(true); // SAF-selected content:// only, not file://
     settings.setJavaScriptCanOpenWindowsAutomatically(false);
-    settings.setDomStorageEnabled(false);
+    settings.setDomStorageEnabled(true); // Required for sessionStorage-based authenticated dashboard; no patient data permitted
     settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
     WebView.setWebContentsDebuggingEnabled(false);
     WebViewAssetLoader loader = new WebViewAssetLoader.Builder().addPathHandler("/assets/",new WebViewAssetLoader.AssetsPathHandler(this)).build();
@@ -110,6 +119,57 @@ public final class MainActivity extends Activity {
           .show());
       }else jobs.execute(()->execute(snap,id,method,path,body));
     }
+    /**
+     * Read-only transport information. Paired device names only; never MACs, scan results,
+     * medical measurements, commands or device credentials.
+     */
+    @JavascriptInterface public String deviceSnapshot(){
+      JSONObject data=new JSONObject();
+      try{
+        ConnectivityManager cm=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        Network nw=cm==null?null:cm.getActiveNetwork();
+        NetworkCapabilities caps=nw==null?null:cm.getNetworkCapabilities(nw);
+        data.put("wifiConnected",caps!=null&&caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
+        data.put("networkConnected",caps!=null);
+        BluetoothAdapter bt=BluetoothAdapter.getDefaultAdapter();
+        boolean available=bt!=null;
+        boolean permission=Build.VERSION.SDK_INT<31 || checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT)==PackageManager.PERMISSION_GRANTED;
+        data.put("bluetoothAvailable",available);
+        data.put("bluetoothPermission",permission);
+        data.put("bluetoothEnabled",available&&permission&&bt.isEnabled());
+        org.json.JSONArray paired=new org.json.JSONArray();
+        if(available&&permission){
+          java.util.Set<BluetoothDevice> devices=bt.getBondedDevices();
+          if(devices!=null){int count=0;for(BluetoothDevice device:devices){
+            if(++count>20)break;
+            JSONObject item=new JSONObject();item.put("name",device.getName()==null?"Gekoppeltes Gerät":device.getName());
+            paired.put(item);
+          }}
+        }
+        data.put("pairedDevices",paired);
+      }catch(Exception ignored){
+        try{data.put("error","device_status_unavailable");}catch(Exception ignoredAgain){}
+      }
+      return data.toString();
+    }
+    @JavascriptInterface public void requestBluetoothPermission(){
+      ui.post(()->{
+        if(Build.VERSION.SDK_INT>=31&&checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT)!=PackageManager.PERMISSION_GRANTED){
+          requestPermissions(new String[]{android.Manifest.permission.BLUETOOTH_CONNECT},BT_PERMISSION);
+        }else{
+          web.evaluateJavascript("window.pigaDeviceRefresh&&window.pigaDeviceRefresh()",null);
+        }
+      });
+    }
+    @JavascriptInterface public void openWirelessSettings(String kind){
+      if(!("wifi".equals(kind)||"bluetooth".equals(kind)))return;
+      ui.post(()->{
+        try{
+          Intent i=new Intent("wifi".equals(kind)?Settings.ACTION_WIFI_SETTINGS:Settings.ACTION_BLUETOOTH_SETTINGS);
+          startActivity(i);
+        }catch(Exception ignored){}
+      });
+    }
     /** Explicit user-initiated Android PrintManager dialog; never a 3D printer operation. */
     @JavascriptInterface public void printReport(){
       ui.post(()->{
@@ -159,6 +219,12 @@ public final class MainActivity extends Activity {
       return;
     }
     if(request==CREATE_JSON){try{if(resultCode==RESULT_OK&&data!=null&&data.getData()!=null){try(OutputStreamWriter out=new OutputStreamWriter(getContentResolver().openOutputStream(data.getData()),StandardCharsets.UTF_8)){out.write(pendingExport);}}}catch(Exception ignored){}finally{pendingExport="";}}
+  }
+  @Override public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
+    super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    if(requestCode==BT_PERMISSION&&web!=null){
+      web.evaluateJavascript("window.pigaDeviceRefresh&&window.pigaDeviceRefresh()",null);
+    }
   }
   @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
   @Override protected void onDestroy(){if(pendingStlSelection!=null){pendingStlSelection.onReceiveValue(null);pendingStlSelection=null;}session=null;jobs.shutdownNow();if(web!=null)web.destroy();super.onDestroy();}
