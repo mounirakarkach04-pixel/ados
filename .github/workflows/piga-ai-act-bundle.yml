@@ -5,6 +5,8 @@ on:
     paths:
       - 'ai-act-intelligence/app.js'
       - 'ai-act-intelligence/engine.js'
+      - 'ai-act-intelligence/portfolio.js'
+      - 'ai-act-intelligence/publications.js'
       - '.github/workflows/piga-ai-act-bundle.yml'
 permissions:
   contents: write
