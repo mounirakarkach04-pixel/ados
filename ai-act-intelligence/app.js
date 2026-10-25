@@ -1,12 +1,13 @@
 import {createClient} from "https://esm.sh/@supabase/supabase-js@2.78.0?bundle";
 import {evaluate,articleCatalog,TERMS,PRODUCTS,LAW_URL,LAW_VERSION} from "./engine.js";
+import {architectureCatalog,portfolioSummary,ARCHITECTURE_FAMILIES} from "./portfolio.js";
 
 const client=createClient("https://sanrkcovmkkhgdqydxfk.supabase.co","sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);
 const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const small=(text,cls="")=>'<span class="pill '+cls+'">'+escapeHTML(text)+'</span>';
 const gateBadge=x=>small(x,x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
-const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
+const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
 let user=null,activeReport=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer;
 function toast(message){const el=$("toast");el.textContent=String(message);el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),4700);}
 function show(view){
@@ -15,6 +16,7 @@ function show(view){
  document.querySelectorAll(".nav-item").forEach(e=>e.classList.toggle("active",e.dataset.view===view));
  $("current-title").textContent=titles[view];
  if(view==="articles")renderArticles();
+ if(view==="portfolio")renderPortfolio();
  if(view==="licensing")loadEntitlements();
  if(view==="account")renderAuth();
  history.replaceState(null,"","#"+view);
@@ -89,7 +91,8 @@ function renderReport(){
  $("ladder").innerHTML=r.ladder.map(x=>'<div class="ladder-step"><b>'+escapeHTML(x.label)+'</b>'+gateBadge(x.state)+'</div>').join("");
  $("priorities").innerHTML='<ol class="numbered">'+r.priorities.map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ol>';
  $("reverse").innerHTML=r.reverse.questions.map(x=>'<div class="reverse-item">◇ '+escapeHTML(x)+'</div>').join("")+'<p class="subtle">Reverse: '+escapeHTML(r.reverse.status)+'; unabhängiger Wirkungsnachweis: nicht erbracht.</p>';
- if($("architecture"))$("architecture").innerHTML=(r.architecture||[]).map(x=>'<div class="result-row"><div><b>'+escapeHTML(x.name)+' · '+escapeHTML(x.domain)+'</b><small>'+escapeHTML(x.purpose)+'</small></div>'+small(x.status,"warn")+'</div>').join("");
+ if($("architecture"))$("architecture").innerHTML=architectureMarkup(r.architecture||architectureCatalog,"");
+ if($("case-architecture-count"))$("case-architecture-count").textContent=String((r.architecture||architectureCatalog).length);
  if($("suggestions")){
   $("suggestions").innerHTML=r.suggestions.map(p=>'<div class="result-row"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.type)+' · '+escapeHTML(PRICE_EUR[p.sku]||"Preis auf Anfrage")+'</small></div><button type="button" class="btn ghost smaller" data-suggest="'+escapeHTML(p.sku)+'">Lösung prüfen</button></div>').join("");
   $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>show("licensing")));
@@ -117,6 +120,35 @@ async function saveReport(){
  else {toast("Prüfung geschützt im Konto gespeichert.");loadSaved();}
 }
 $("save-report").addEventListener("click",saveReport);
+function architectureMarkup(items,search){
+ const term=String(search||"").toLocaleLowerCase("de").trim();
+ const hits=items.filter(x=>[x.name,x.id,x.purpose,x.notes,x.source,x.family].some(v=>String(v||"").toLocaleLowerCase("de").includes(term)));
+ if(!hits.length)return '<p class="subtle">Keine Komponenten zu diesem Suchbegriff gefunden.</p>';
+ return Object.entries(ARCHITECTURE_FAMILIES).map(([family,heading])=>{
+  const rows=hits.filter(x=>x.family===family);
+  if(!rows.length)return "";
+  const expanded=family==="canonical"||Boolean(term);
+  const inner=rows.map(x=>{
+   const source=x.source_url&&/^https:\/\/(zenodo\.org|www\.linkedin\.com)\//.test(x.source_url)?
+     '<a href="'+escapeHTML(x.source_url)+'" target="_blank" rel="noopener noreferrer">Öffentliche Quelle ↗</a>':
+     '<span>Quellregister: '+escapeHTML(x.source||"internes Werkregister")+'</span>';
+   return '<div class="result-row portfolio-entry"><div><b>'+escapeHTML(x.name)+'</b><small>'+escapeHTML(x.purpose)+'</small>'+
+     (x.notes?'<small>'+escapeHTML(x.notes)+'</small>':'')+
+     '<div class="portfolio-source">'+source+'</div></div>'+
+     (x.case_status?small(x.relevance==="CORE_OR_CONTEXT"?"RELEVANT":"ERGÄNZEND",""):"")+'</div>';
+  }).join("");
+  return '<details class="portfolio-group" '+(expanded?'open':'')+'><summary>'+escapeHTML(heading)+' <span>'+rows.length+'</span></summary>'+inner+'</details>';
+ }).join("");
+}
+function renderPortfolio(){
+ const search=$("portfolio-search")?.value||"";
+ $("portfolio-list").innerHTML=architectureMarkup(architectureCatalog,search);
+ $("stat-portfolio-canonical").textContent=String(portfolioSummary.canonical);
+ $("stat-portfolio-research").textContent=String(portfolioSummary.research);
+ $("stat-portfolio-operational").textContent=String(portfolioSummary.operational);
+ $("stat-portfolio-all").textContent=String(portfolioSummary.indexed);
+}
+$("portfolio-search")?.addEventListener("input",renderPortfolio);
 function renderArticles(){
  const filter=$("article-search").value.toLowerCase().trim();
  const matches=articleCatalog.filter(a=>(a.number+" "+a.title).toLowerCase().includes(filter));
@@ -178,6 +210,7 @@ async function confirmPaymentIfNeeded(){
  }finally{confirmationRunning=false;}
 }
 renderLicenses();
+renderPortfolio();
 async function loadEntitlements(){
  if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";return;}
  const {data,error}=await client.from("aiact_entitlements").select("sku,status,granted_at,expires_at").eq("owner_id",user.id);
