@@ -177,3 +177,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
 .account-milestone.complete b{color:#285b47}
 @media(max-width:1070px){.account-journey{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.account-journey{grid-template-columns:repeat(2,minmax(0,1fr))}.account-progress{padding:18px}}
+
+/* Enterprise release refinement: prevent hero headline from invading interactive preview. */
+.hero.hero-v2{grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:clamp(22px,3vw,43px)}
+.hero.hero-v2 .hero-content{min-width:0;max-width:100%;position:relative;z-index:2}
+.hero.hero-v2 h1{font-size:clamp(37px,3.85vw,55px);line-height:1.095;letter-spacing:-2px;max-width:100%;overflow-wrap:normal}
+.hero.hero-v2 .hero-visual{z-index:1;min-width:0}
+.preview-surface{max-width:100%}
+@media(max-width:1120px){.hero.hero-v2{grid-template-columns:1fr}.hero.hero-v2 h1{font-size:clamp(37px,5vw,58px)}}
+@media(max-width:740px){.hero.hero-v2 h1{font-size:clamp(34px,9vw,46px);letter-spacing:-1.5px}}
+@media(max-width:350px){.hero.hero-v2 h1{font-size:34px}}
