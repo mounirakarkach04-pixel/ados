@@ -169,7 +169,7 @@ function renderReport(){
  $("appendix-evidence").textContent=evidence.length?evidence.length+" Dokumentreferenzen erfasst. Davon "+evidence.filter(x=>x.uploaded===true).length+" geschützt hochgeladen; deren Richtigkeit wurde nicht automatisch verifiziert.":"Keine Dokumente übermittelt. Vor einer verbindlichen Umsetzung sind Herkunft, Version und Gültigkeit der Nachweise zu prüfen.";
  $("findings").innerHTML=(r.findings||[]).slice(0,12).map(x=>'<div class="result-row"><div><b>Art. '+escapeHTML(x.article)+' · '+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.issue)+'</small></div>'+small(readableStatus(x.status),x.status==="POTENTIAL_PROHIBITION"?"danger":"warn")+'</div>').join("")||"<p>Weitere Einordnung und Nachweise erforderlich.</p>";
  $("ladder").innerHTML=plan.map((x,i)=>'<details class="ladder-item" '+(i===1||i===4?"open":"")+'><summary><span class="ladder-ordinal">'+String(i+1).padStart(2,"0")+'</span><div><b>'+escapeHTML(x.label.replace(/^\d+\s*[·.-]\s*/,""))+'</b><small>'+escapeHTML(x.kind)+'</small></div>'+gateBadge(x.state)+'</summary><div class="ladder-action"><strong>'+escapeHTML(x.question)+'</strong><p>'+escapeHTML(x.measure)+'</p><small><b>Erwarteter Nachweis:</b> '+escapeHTML(x.proof)+'</small><button type="button" data-ladder-offer="'+escapeHTML(x.sku)+'">Passende Lösung ansehen →</button></div></details>').join("");
- $("ladder").querySelectorAll("[data-ladder-offer]").forEach(button=>button.addEventListener("click",()=>selectOffer(button.dataset.ladderOffer)));
+ $("ladder").querySelectorAll("[data-ladder-offer]").forEach(button=>button.addEventListener("click",()=>r.is_demo?show("assessment"):selectOffer(button.dataset.ladderOffer)));
  const priorities=(r.priorities||[]).slice(0,6);
  $("priorities").innerHTML='<ol class="priority-grid">'+priorities.map((x,i)=>'<li><span>'+String(i+1).padStart(2,"0")+'</span><p>'+escapeHTML(x)+'</p></li>').join("")+'</ol>';
  $("reverse").innerHTML=(r.reverse?.questions||[]).map(x=>'<div class="reverse-item">◇ '+escapeHTML(x)+'</div>').join("")+'<p class="subtle">Status: '+escapeHTML(r.reverse?.status)+' · Keine unbelegte Freigabe.</p>';
@@ -183,7 +183,7 @@ function renderReport(){
  $("recommended-buy").dataset.offer=r.is_demo?"":(featured?.sku||"");
  $("recommended-buy").textContent=r.is_demo?"Eigene Analyse starten →":"Empfohlene Lösung ansehen →";
  $("suggestions").innerHTML=other.map(p=>'<div class="result-offer"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.why)+'</small></div><button type="button" data-suggest="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>').join("");
- $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>selectOffer(b.dataset.suggest)));
+ $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>r.is_demo?show("assessment"):selectOffer(b.dataset.suggest)));
  if(!$("view-solutions").classList.contains("hidden"))renderSolutions();
  $("save-report").disabled=!!r.is_demo;
  $("save-report").title=r.is_demo?"Musterbericht: erst eigene Voranalyse durchführen":"Im persönlichen Konto speichern";
@@ -194,8 +194,8 @@ function renderSolutions(){
  $("solutions-content").classList.toggle("hidden",!r);
  if(!r)return;
  const plan=actionPlan(r),offers=offersForReport(r);
- $("solutions-subject").textContent=r.subject?.title||"Ihr persönlicher Maßnahmenplan";
- $("solutions-intro").textContent=(r.findings?.length||0)+" fallbezogene Prüfpositionen. "+(r.coverage?.remaining_manual_review||0)+" weitere Normen sind gesondert zu prüfen. Sie entscheiden über die nächsten Schritte.";
+ $("solutions-subject").textContent=r.is_demo?"So sieht ein Maßnahmenplan aus":(r.subject?.title||"Ihr persönlicher Maßnahmenplan");
+ $("solutions-intro").textContent=r.is_demo?"Dieser Bericht veranschaulicht den Ablauf anhand eines Musterfalls. Individuelle Empfehlungen entstehen erst nach Ihrer eigenen Analyse.":((r.findings?.length||0)+" fallbezogene Prüfpositionen. "+(r.coverage?.remaining_manual_review||0)+" weitere Normen sind gesondert zu prüfen. Sie entscheiden über die nächsten Schritte.");
  $("solutions-open").textContent=String(plan.filter(x=>x.requiresWork).length);
  $("solutions-plan").innerHTML=plan.map((step,index)=>{
   const offer=PRODUCTS.find(p=>p.sku===step.sku);
@@ -207,7 +207,7 @@ function renderSolutions(){
  $("solutions-offers").innerHTML=offers.slice(0,3).map((p,i)=>
   '<div class="solution-offer"><div><b>'+(i===0?"Empfohlen · ":"")+escapeHTML(p.title)+'</b><span>'+escapeHTML(p.why)+'</span></div><button type="button" data-solution="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>'
  ).join("");
- document.querySelectorAll("#view-solutions [data-solution]").forEach(button=>button.addEventListener("click",()=>selectOffer(button.dataset.solution)));
+ document.querySelectorAll("#view-solutions [data-solution]").forEach(button=>{if(r.is_demo)button.textContent="Eigene Analyse starten →";button.addEventListener("click",()=>r.is_demo?show("assessment"):selectOffer(button.dataset.solution));});
 }
 $("recommended-buy").addEventListener("click",()=>activeReport?.is_demo?show("assessment"):selectOffer($("recommended-buy").dataset.offer));
 $("sample-analysis").addEventListener("click",async()=>{
