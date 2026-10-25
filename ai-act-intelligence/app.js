@@ -9,10 +9,12 @@ const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;"
 const small=(text,cls="")=>'<span class="pill '+cls+'">'+escapeHTML(text)+'</span>';
 const gateBadge=x=>small(x,x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
 const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",publications:"Zenodo-Forschungsbibliothek",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
-let user=null,activeReport=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer;
+let user=null,activeReport=null,activeInput=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer,recoveryMode=false;
 function toast(message){const el=$("toast");el.textContent=String(message);el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),4700);}
 function show(view){
  if(!titles[view])view="home";
+ $("more-sheet").classList.add("hidden");
+ $("nav-more").setAttribute("aria-expanded","false");
  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("hidden",e.id!=="view-"+view));
  document.querySelectorAll(".nav-item").forEach(e=>e.classList.toggle("active",e.dataset.view===view));
  $("current-title").textContent=titles[view];
@@ -26,17 +28,30 @@ function show(view){
 }
 document.querySelectorAll("[data-view]").forEach(e=>e.addEventListener("click",()=>show(e.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(e=>e.addEventListener("click",()=>show(e.dataset.go)));
+$("nav-more").addEventListener("click",()=>{const open=$("more-sheet").classList.toggle("hidden")===false;$("nav-more").setAttribute("aria-expanded",String(open));});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("more-sheet").classList.add("hidden");$("nav-more").setAttribute("aria-expanded","false");}});
+document.addEventListener("pointerdown",e=>{if(!e.target.closest("#more-sheet, #nav-more")){$("more-sheet").classList.add("hidden");$("nav-more").setAttribute("aria-expanded","false");}});
 $("sign-header").addEventListener("click",()=>show(user?"account":"account"));
 window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);if(titles[v])show(v);});
 const keys=["literacy","risk","data","technical","logs","transparency","oversight","robustness","quality","retention","corrective","cooperation","deployer","fr","conformity","declaration","registration","marking","gpai","monitoring","incident"];
 $("controls").innerHTML=keys.map(k=>'<label class="check"><input type="checkbox" data-control="'+escapeHTML(k)+'"><span>'+escapeHTML(TERMS[k].label)+' · Art. '+escapeHTML(TERMS[k].article)+'</span></label>').join("");
+const inputFields=["title","version","role","developer","purpose","sector"];
+const inputFlags=["productSafety","prohibited","gpai","systemic","chatbot","synthetic","agents","critical"];
 function gather(){
- const fields=["title","version","role","developer","purpose","sector"];
+ const fields=inputFields;
  const f=Object.fromEntries(fields.map(x=>[x,$("f-"+x).value.trim()]));
- for(const k of ["productSafety","prohibited","gpai","systemic","chatbot","synthetic","agents","critical"]) f[k]=$("f-"+k).checked;
+ for(const k of inputFlags) f[k]=$("f-"+k).checked;
  f.controls={};
  document.querySelectorAll("[data-control]").forEach(x=>{f.controls[x.dataset.control]=x.checked;});
  return f;
+}
+function restoreInput(f){
+ if(!f)return;
+ for(const key of inputFields){const field=$("f-"+key);if(field)field.value=String(f[key]??"");}
+ for(const key of inputFlags){const field=$("f-"+key);if(field)field.checked=f[key]===true;}
+ document.querySelectorAll("[data-control]").forEach(el=>{el.checked=f.controls?.[el.dataset.control]===true;});
+ selectedFiles=[];docRecords=[];$("evidence-files").value="";
+ $("evidence-list").textContent="Bereits gespeicherte Nachweise bleiben im Bericht referenziert. Für einen neuen Prüfbericht Dateien erneut auswählen.";
 }
 function fileAllowed(f){
  const ok=["application/pdf","text/plain","text/csv","application/json","text/markdown","image/png","image/jpeg"];
@@ -70,7 +85,7 @@ $("assessment-form").addEventListener("submit",async e=>{
  e.preventDefault();
  const btn=$("analyze");btn.disabled=true;btn.textContent="Prüfung läuft …";
  try{
-  const input=gather();activeId=crypto.randomUUID();
+  const input=gather();activeInput=structuredClone(input);activeId=crypto.randomUUID();
   docRecords=await uploadEvidence(activeId);
   activeReport=evaluate(input,docRecords);
   activeReport.assessment_id=activeId;
@@ -115,7 +130,8 @@ $("print-report").addEventListener("click",()=>activeReport&&window.print());
 async function saveReport(){
  if(!activeReport){toast("Erst einen Bericht erstellen.");return;}
  if(!user){toast("Zum Speichern bitte anmelden.");show("account");return;}
- const f=gather();
+ const f=activeInput;
+ if(!f){toast("Eingaben für diesen Bericht fehlen. Bitte neue Analyse durchführen.");return;}
  const payload={id:activeId,owner_id:user.id,title:activeReport.subject.title,subject_version:activeReport.subject.version,case_data:f,report:activeReport,status:activeReport.gate1,source_version:"EU-AI-ACT-"+LAW_VERSION,updated_at:new Date().toISOString()};
  const {error}=await client.from("aiact_assessments").upsert(payload,{onConflict:"id"});
  if(error)toast("Speichern fehlgeschlagen: "+error.message);
@@ -278,6 +294,7 @@ async function renderAuth(){
  $("auth-pane").classList.toggle("hidden",Boolean(user));
  $("user-pane").classList.toggle("hidden",!user);
  $("sign-header").textContent=user?"Mein Konto":"Anmelden";
+ $("password-recovery-pane").classList.toggle("hidden",!user||!recoveryMode);
  if(user){$("user-email").textContent=user.email||"Authentifiziert";loadSaved();confirmPaymentIfNeeded();}
 }
 async function withAuth(fn){
@@ -296,12 +313,33 @@ $("register").addEventListener("click",()=>withAuth((email,password)=>{
  return client.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname+"#account"}});
 }));
 $("login").addEventListener("click",()=>withAuth((email,password)=>client.auth.signInWithPassword({email,password})));
-$("reset").addEventListener("click",()=>withAuth(async email=>{
- const result=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname+"#account"});
- if(!result.error)toast("Falls das Konto existiert und die Weiterleitungsadresse zugelassen ist, erhältst du eine E-Mail.");
- return result;
-}));
-$("logout").addEventListener("click",async()=>{const {error}=await client.auth.signOut();if(error)toast(error.message);else{user=null;renderAuth();toast("Abgemeldet.");}});
+$("reset").addEventListener("click",async()=>{
+ const email=$("auth-email").value.trim();
+ if(!email){$("auth-message").textContent="Bitte zuerst die E-Mail-Adresse deines Kontos eintragen.";return;}
+ const button=$("reset");button.disabled=true;
+ try{
+  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname+"#account"});
+  if(error)throw error;
+  $("auth-message").textContent="Falls zu dieser E-Mail ein Konto existiert, wird ein Wiederherstellungslink versendet. Anschließend kannst du hier ein neues Passwort wählen.";
+ }catch(e){$("auth-message").textContent="Wiederherstellung nicht abgeschlossen: "+(e?.message||"Server nicht erreichbar");}
+ finally{button.disabled=false;}
+});
+$("recovery-submit").addEventListener("click",async()=>{
+ const password=$("recovery-password").value,confirmation=$("recovery-confirm").value;
+ const message=$("recovery-message");
+ if(password.length<8){message.textContent="Das neue Passwort muss mindestens acht Zeichen haben.";return;}
+ if(password!==confirmation){message.textContent="Die beiden Passwörter stimmen nicht überein.";return;}
+ const button=$("recovery-submit");button.disabled=true;message.textContent="Passwort wird sicher aktualisiert …";
+ try{
+  const {error}=await client.auth.updateUser({password});
+  if(error)throw error;
+  recoveryMode=false;$("recovery-password").value="";$("recovery-confirm").value="";
+  message.textContent="Passwort erfolgreich aktualisiert.";
+  renderAuth();toast("Das neue Passwort ist gespeichert.");
+ }catch(e){message.textContent="Passwort nicht geändert: "+(e?.message||"Serverprüfung fehlgeschlagen");}
+ finally{button.disabled=false;}
+});
+$("logout").addEventListener("click",async()=>{const {error}=await client.auth.signOut();if(error)toast(error.message);else{user=null;recoveryMode=false;activeReport=null;activeInput=null;activeId=null;docRecords=[];selectedFiles=[];$("evidence-files").value="";$("empty-results").classList.remove("hidden");$("result-content").classList.add("hidden");renderAuth();toast("Abgemeldet. Lokale Berichtsansicht zurückgesetzt.");}});
 async function loadSaved(){
  if(!user)return;
  const {data,error}=await client.from("aiact_assessments").select("id,title,created_at,status,report").eq("owner_id",user.id).order("created_at",{ascending:false}).limit(50);
@@ -309,10 +347,19 @@ async function loadSaved(){
  $("saved-assessments").innerHTML=data?.length?data.map(x=>'<div class="saved-row"><div><b>'+escapeHTML(x.title)+'</b><small>'+new Date(x.created_at).toLocaleString("de-DE")+' · Gate 1: '+escapeHTML(x.status)+'</small></div><button data-open="'+escapeHTML(x.id)+'" type="button">Öffnen</button></div>').join(""):"Noch keine gespeicherten Prüfungen.";
  $("saved-assessments").querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{
   const record=data.find(a=>a.id===b.dataset.open);if(!record)return;
-  activeReport=record.report;activeId=record.id;renderReport();show("results");
+  activeReport=record.report;activeId=record.id;activeInput=record.case_data||null;
+  restoreInput(activeInput);renderReport();show("results");
  }));
 }
-client.auth.getUser().then(({data,error})=>{if(!error)user=data?.user||null;renderAuth();});
-client.auth.onAuthStateChange((_event,session)=>{user=session?.user||null;renderAuth();});
+client.auth.getUser().then(({data,error})=>{if(!error)user=data?.user||null;renderAuth();}).catch(()=>renderAuth());
+client.auth.onAuthStateChange((event,session)=>{
+ // Supabase callbacks must not synchronously enter another awaited auth/client operation.
+ queueMicrotask(()=>{
+  user=session?.user||null;
+  if(event==="PASSWORD_RECOVERY"){recoveryMode=true;show("account");}
+  if(event==="SIGNED_OUT")recoveryMode=false;
+  renderAuth();
+ });
+});
 show(titles[location.hash.slice(1)]?location.hash.slice(1):"home");
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
