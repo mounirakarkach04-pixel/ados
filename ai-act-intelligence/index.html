@@ -16,6 +16,7 @@
   <button type="button" data-view="results" class="nav-item"><span>▤</span> Ergebnis & Ladder</button>
   <button type="button" data-view="articles" class="nav-item"><span>▦</span> Artikel-Explorer</button>
   <button type="button" data-view="portfolio" class="nav-item"><span>◉</span> PIGA Gesamtarchitektur</button>
+  <button type="button" data-view="publications" class="nav-item"><span>▣</span> Zenodo-Forschungsbibliothek</button>
   <button type="button" data-view="licensing" class="nav-item"><span>⬡</span> Lizenzlösungen</button>
   <button type="button" data-view="account" class="nav-item"><span>◎</span> Konto & Nachweise</button>
  </nav>
@@ -26,7 +27,7 @@
 <main>
 <section class="view" id="view-home">
  <div class="hero"><div class="eyebrow"><span class="spark"></span> GOVERNANCE FIRST · EVIDENCE ALWAYS</div><h1>From AI systems<br>to <em>defensible</em> decisions.</h1><p>Analysiere KI-Systeme gegen den EU AI Act. Identifiziere Risikoklassen, Dokumentationslücken, Haftungsfragen und prüfbare PIGA-Grenzen – mit nachvollziehbaren Ergebnissen statt pauschaler Compliance-Versprechen.</p><div class="hero-actions"><button class="btn primary" type="button" data-go="assessment">Analyse beginnen <span>↗</span></button><button class="btn ghost" type="button" data-go="articles">EU AI Act erkunden</button></div><div class="hero-glow" aria-hidden="true"></div></div>
- <div class="stats"><article><div>119</div><span>Artikelkennungen im Index</span></article><article><div>2</div><span>separate PIGA Gates</span></article><article><div>8</div><span>Admission-Ladder-Prüfpunkte</span></article><article><div>2028</div><span>letzte Hauptphase der Anwendung</span></article></div>
+ <div class="stats"><article><div>119</div><span>Artikelkennungen im Index</span></article><article><div id="home-architecture-count">–</div><span>Architektur-Einträge</span></article><article><div id="home-publications-count">–</div><span>DOI-verknüpfte Forschungsarbeiten</span></article><article><div>2028</div><span>letzte Hauptphase der Anwendung</span></article></div>
  <div class="research-proof">
   <div class="proof-heading"><div><span class="kicker">ARCHITECTURE VALIDATED IN CONTROLLED TESTING</span><h2>Von der Forschung zur ausführbaren Governance.</h2></div><p>Wir nutzen die bereits dokumentierten PIGA- und A7SEM-Testreihen als technische Ausgangsbasis. Die Architektur muss nicht bei jedem Kunden neu erfunden werden; bewertet wird die konkrete Integration.</p></div>
   <div class="proof-grid">
@@ -86,9 +87,22 @@
   <div class="panel"><h2>A7SEM Reverse — Gegenprobe</h2><div id="reverse"></div></div>
  </div>
 </section>
+<section class="view hidden" id="view-publications">
+ <div class="page-heading"><span class="kicker">SCHOLARLY SOURCE GRAPH · DOI VERIFIED OR AUTHOR-INDEXED</span><h1>Forschungsbibliothek · Zenodo.</h1><p>Die Quellen sind getrennt nach ursprünglicher Forschungsreihe, Emergenztheorie, Governance, Branchentransfer, Medizin und Versicherbarkeit. Jede verzeichnete Arbeit besitzt einen eigenständigen DOI-Verweis. Verfügbare DOI-Register sind keine automatische Bestätigung jedes Versions- oder Lizenzstatus.</p></div>
+ <div class="stats portfolio-stats"><article><div id="pub-total">–</div><span>DOI-Einträge</span></article><article><div id="pub-inspected">–</div><span>Zenodo direkt abgeglichen</span></article><article><div id="pub-indexed">–</div><span>Aus Autorenindex</span></article><article><div id="pub-coverage">6</div><span>Forschungskategorien</span></article></div>
+ <div class="panel">
+  <div class="library-controls">
+   <label>Veröffentlichung suchen<input id="publication-search" type="search" placeholder="Stichwort, DOI, PIGA, A7SEM, Haftung …" autocomplete="off"></label>
+   <label>Forschungsgebiet<select id="publication-category"><option value="all">Alle Forschungsgebiete</option></select></label>
+  </div>
+  <p class="subtle" id="publication-result-info">Bibliografische Einträge werden lokal durchsucht. Kein automatischer Upload oder Trackingdienst.</p>
+  <div id="publication-list"></div>
+ </div>
+ <div class="panel"><h2>Quellen, Fassungen und Lizenzgrenzen</h2><p><a href="https://medium.com/@mounirakarkach04/the-complete-zenodo-collection-of-mounir-akarkach-2024-2025-eb9c4b868f27" target="_blank" rel="noopener noreferrer">Faith Poetry DOI-Masterindex</a> · <a href="https://medium.com/@mounirakarkach04/the-canonical-index-of-the-a7sem-asose-asiso-series-2024-2025-661b07e29085" target="_blank" rel="noopener noreferrer">A7SEM–ASOSE–ASiSO Kanonindex</a> · <a href="https://medium.com/@mounirakarkach04/from-faith-poetry-to-pre-inference-governance-e44e8c91da43" target="_blank" rel="noopener noreferrer">Pre-Inference Governance Literaturübersicht</a>.</p><p>Die Liste ist eine quellenbasierte Bestandsaufnahme der auffindbaren Arbeiten, noch kein lückenloser Export des Zenodo-Kontos. Versionen können eigene DOI besitzen und werden nicht als unabhängige Forschungsarchitekturen gezählt. Öffentliche Lesbarkeit erteilt keine Lizenz zur technischen oder kommerziellen Umsetzung.</p></div>
+</section>
 <section class="view hidden" id="view-portfolio">
  <div class="page-heading"><span class="kicker">CANONICAL RESEARCH & GOVERNANCE STACK</span><h1>Ein Architekturportfolio. Viele spezialisierte Komponenten.</h1><p>Die 13 kanonischen K2.1.1-Prüflinsen bilden einen definierten Resolver. Ergänzende Forschungsarchitekturen und operative PIGA-Instrumente gehören ebenfalls zum Gesamtwerk, sind aber nicht automatisch eigenständige Resolver-Linsen.</p></div>
- <div class="stats portfolio-stats"><article><div id="stat-portfolio-canonical">13</div><span>Kanonische Prüflinsen</span></article><article><div id="stat-portfolio-research">—</div><span>Forschungsarchitekturen</span></article><article><div id="stat-portfolio-operational">—</div><span>Operative Module</span></article><article><div id="stat-portfolio-all">—</div><span>Dokumentierte Komponenten</span></article></div>
+ <div class="stats portfolio-stats"><article><div id="stat-portfolio-canonical">13</div><span>Kanonische Prüflinsen</span></article><article><div id="stat-portfolio-research">–</div><span>Forschungsarchitekturen</span></article><article><div id="stat-portfolio-operational">–</div><span>Operative Module</span></article><article><div id="stat-portfolio-sector">–</div><span>Domänenarchitekturen</span></article><article><div id="stat-portfolio-all">–</div><span>Architektureinträge</span></article></div>
  <div class="panel"><label for="portfolio-search">Architektur durchsuchen<input id="portfolio-search" placeholder="AUEF, PEKI, AHASM, ARC-S, Glassbox, Gate 2 …" autocomplete="off"></label>
  <p class="subtle">Kanonische Nummerierung, Forschungsregister und operative Module bleiben getrennt. Öffentliche Quellen werden verlinkt; vertrauliche Implementierungslogik und geschützte Materialien nicht veröffentlicht.</p>
  <div id="portfolio-list"></div></div>
