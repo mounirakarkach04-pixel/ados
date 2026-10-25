@@ -56,6 +56,59 @@ try{
  await page.locator("[data-view='licensing']").click();
  assert.equal(await page.locator(".license-card").count(),8);
  await page.screenshot({path:"qa-artifacts/05-licensing.png",fullPage:true});
+ // Downloaded result must remain machine-readable and retain provenance boundaries.
+ await page.locator("[data-view='results']").click();
+ const [jsonDownload]=await Promise.all([page.waitForEvent("download"),page.locator("#download-json").click()]);
+ const jsonPath=await jsonDownload.path();
+ const exported=JSON.parse(fs.readFileSync(jsonPath,"utf8"));
+ assert.equal(exported.gate1,"DELAY");
+ assert.equal(exported.gate2,"BLOCK");
+ assert.equal(exported.architecture.length,73);
+ assert.equal(exported.architecture_summary.canonical,13);
+ assert.ok(exported.input_sha256&&/^[a-f0-9]{64}$/.test(exported.input_sha256));
+ const [csvDownload]=await Promise.all([page.waitForEvent("download"),page.locator("#download-csv").click()]);
+ const csvText=fs.readFileSync(await csvDownload.path(),"utf8");
+ assert.match(csvText,/Artikel;Titel;Screening-Status;Erläuterung/);
+ assert.match(csvText,/Art\.? 9|^"9";/m);
+ // Guest account protection: never claim report persistence without an actual session.
+ await page.locator("#save-report").click();
+ await page.locator("#view-account").waitFor({state:"visible"});
+ assert.match(await page.locator("#auth-pane").innerText(),/Willkommen zurück/);
+ assert.ok(await page.locator("#password-recovery-pane").count()===1);
+ await page.locator("#reset").click();
+ assert.match(await page.locator("#auth-message").innerText(),/E-Mail-Adresse/);
+ // Mobile-first navigation at narrow Android-like breakpoints.
+ const mobile=await browser.newContext({viewport:{width:360,height:780},isMobile:true,hasTouch:true,acceptDownloads:true});
+ const mobilePage=await mobile.newPage();
+ try{
+  await mobilePage.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:45000});
+  await mobilePage.waitForURL(/#home$/,{timeout:25000});
+  assert.equal(await mobilePage.locator("#nav-more").isVisible(),true);
+  assert.equal(await mobilePage.locator("#more-sheet").isVisible(),false);
+  const overflow=await mobilePage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(overflow<=2,"mobile 360px horizontal overflow: "+overflow);
+  await mobilePage.locator("#nav-more").click();
+  assert.equal(await mobilePage.locator("#more-sheet").isVisible(),true);
+  assert.equal(await mobilePage.locator("#nav-more").getAttribute("aria-expanded"),"true");
+  await mobilePage.locator("#more-sheet [data-view='publications']").click();
+  await mobilePage.locator("#view-publications").waitFor({state:"visible"});
+  assert.equal(await mobilePage.locator("#more-sheet").isVisible(),false);
+  assert.equal((await mobilePage.locator("#pub-total").innerText()).trim(),"96");
+  await mobilePage.locator("#publication-search").fill("zenodo.17905081");
+  assert.match(await mobilePage.locator("#publication-list").innerText(),/Performative Epistemology/);
+  await mobilePage.locator("#nav-more").click();
+  await mobilePage.keyboard.press("Escape");
+  assert.equal(await mobilePage.locator("#more-sheet").isVisible(),false);
+  await mobilePage.screenshot({path:"qa-artifacts/06-mobile-360.png",fullPage:true});
+  await mobilePage.setViewportSize({width:320,height:720});
+  const narrowOverflow=await mobilePage.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  assert.ok(narrowOverflow<=2,"mobile 320px horizontal overflow: "+narrowOverflow);
+  await mobilePage.locator("#nav-more").click();
+  await mobilePage.locator("#more-sheet [data-view='articles']").click();
+  await mobilePage.locator("#article-search").fill("50");
+  assert.match(await mobilePage.locator("#article-table").innerText(),/Art\. 50/);
+  await mobilePage.screenshot({path:"qa-artifacts/07-mobile-320.png",fullPage:true});
+ }finally{await mobile.close();}
  if(failures.length)throw new Error("Browser errors: "+failures.join(" | "));
- console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,article_explorer:true,licensing_cards:8,browser_errors:0},null,2));
+ console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,article_explorer:true,licensing_cards:8,json_csv_downloads:true,mobile_360_320:true,guest_save_guard:true,browser_errors:0},null,2));
 }finally{await browser.close();}
