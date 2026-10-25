@@ -45,7 +45,7 @@ $('authForm').addEventListener('submit',async e=>{
   }else{
     const data=await req('/auth/v1/token?grant_type=password','POST',{email,password:pass},false);
     if(!data?.access_token||!data?.user?.id)throw Error('Anmeldung nicht bestätigt.');
-    session={access_token:data.access_token,user:data.user};
+    session={access_token:data.access_token,user:data.user,expires_in:data.expires_in};
     await launch();
   }
  }catch(err){fail('authMessage',authMode==='login'?'Anmeldung nicht möglich. Bitte E-Mail, Passwort und Verifizierung prüfen.':String(err.message).slice(0,200));}
@@ -64,6 +64,13 @@ async function launch(){
  }
  $('authShell').hidden=true;$('dashboard').hidden=false;
  $('accountLabel').textContent=profile.full_name+' · '+profile.email;
+ const emailVerified=String(user.email||'').toLowerCase();
+ $('praxisGreeting').textContent=emailVerified==='dr.akarkach@gmx.de'&&emailVerified===String(profile.email||'').toLowerCase()
+  ? 'Guten Tag, Dr. Akarkach' : 'Guten Tag, '+String(profile.full_name||'Mitarbeiter').trim().slice(0,80);
+ if(session.access_token){
+  const expiry=Math.min(Number(session.expires_in)||3600,3600);
+  sessionStorage.setItem('piga-ortho-auth-ephemeral',JSON.stringify({token:session.access_token,expiresAt:Date.now()+expiry*1000}));
+ }
  $('staffCodeBadge').textContent=profile.staff_code||'KENNUNG NOCH NICHT ZUGEWIESEN';
  $('kpiStaff').textContent=profile.staff_code||'—';$('workStaffCode').textContent=profile.staff_code||'—';
  $('roleBadge').textContent=isOwner()?'INHABER / ADMIN':profile.status==='active'?'MITARBEITER · AKTIV':'WARTET AUF FREIGABE';
@@ -83,7 +90,7 @@ function showOwnerClaim(){
  const msg=document.createElement('p');msg.className='message';form.append(label,inp,btn,msg);box.append(h,p,form);$('pending').after(box);
  form.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;try{await req('/rest/v1/rpc/ortho_claim_owner','POST',{invite_code:inp.value});inp.value='';notice(msg.id||'authMessage','');box.remove();await launch();}catch(err){msg.textContent='Aktivierung fehlgeschlagen. Bitte Code, E-Mail-Bestätigung und Ablauf prüfen.';}finally{btn.disabled=false;}});
 }
-$('logout').addEventListener('click',async()=>{try{if(session)await req('/auth/v1/logout','POST',{},true);}catch{}session=null;profile=null;shift=null;cost=null;workRecords=[];$('dashboard').hidden=true;$('authShell').hidden=false;$('ownerArea').hidden=true;$('activeTools').hidden=true;$('kpiStrip').hidden=true;$('password').value='';notice('authMessage','Abgemeldet.');});
+$('logout').addEventListener('click',async()=>{try{if(session)await req('/auth/v1/logout','POST',{},true);}catch{}sessionStorage.removeItem('piga-ortho-auth-ephemeral');$('praxisGreeting').textContent='Guten Tag.';session=null;profile=null;shift=null;cost=null;workRecords=[];$('dashboard').hidden=true;$('authShell').hidden=false;$('ownerArea').hidden=true;$('activeTools').hidden=true;$('kpiStrip').hidden=true;$('password').value='';notice('authMessage','Abgemeldet.');});
 function minBetween(start,end){return Math.max(0,(new Date(end).getTime()-new Date(start).getTime())/60000);}
 function runClock(){
  if(!shift){$('elapsed').textContent='00:00:00';return;}
