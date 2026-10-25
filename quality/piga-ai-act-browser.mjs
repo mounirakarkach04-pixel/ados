@@ -113,7 +113,22 @@ try{
   await mobilePage.locator("#article-search").fill("50");
   assert.match(await mobilePage.locator("#article-table").innerText(),/Art\. 50/);
   await mobilePage.screenshot({path:"qa-artifacts/07-mobile-320.png",fullPage:true});
+
+  // Offline-first PWA: static shell and bibliographic index must remain available without network.
+  await mobilePage.evaluate(async()=>{await navigator.serviceWorker.ready;});
+  await mobilePage.waitForFunction(()=>navigator.serviceWorker.controller!==null,{timeout:15000});
+  await mobile.setOffline(true);
+  await mobilePage.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:20000});
+  await mobilePage.waitForURL(/#home$/,{timeout:15000});
+  assert.equal((await mobilePage.locator("#home-publications-count").innerText()).trim(),"96");
+  await mobilePage.locator("#nav-more").click();
+  await mobilePage.locator("#more-sheet [data-view='publications']").click();
+  assert.equal((await mobilePage.locator("#pub-total").innerText()).trim(),"96");
+  await mobilePage.locator("#publication-search").fill("VBR");
+  assert.match(await mobilePage.locator("#publication-list").innerText(),/Verified Blocked Risk/);
+  await mobilePage.screenshot({path:"qa-artifacts/08-mobile-offline.png",fullPage:true});
+  await mobile.setOffline(false);
  }finally{await mobile.close();}
  if(failures.length)throw new Error("Browser errors: "+failures.join(" | "));
- console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,article_explorer:true,licensing_cards:8,json_csv_downloads:true,mobile_360_320:true,guest_save_guard:true,browser_errors:0},null,2));
+ console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,article_explorer:true,licensing_cards:8,json_csv_downloads:true,mobile_360_320:true,offline_pwa:true,guest_save_guard:true,browser_errors:0},null,2));
 }finally{await browser.close();}
