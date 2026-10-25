@@ -133,22 +133,49 @@ $("assessment-form").addEventListener("submit",async e=>{
 });
 function renderReport(){
  const r=activeReport;if(!r)return;
+ const finding=executiveFinding(r),plan=actionPlan(r),offers=offersForReport(r);
  $("empty-results").classList.add("hidden");$("result-content").classList.remove("hidden");
- $("result-title").textContent=r.subject.title||"Nicht benannt";
- $("result-summary").textContent=r.classification.replaceAll("_"," ")+" · "+r.coverage.contextual_findings+" relevante Prüfpositionen · "+r.coverage.remaining_manual_review+" Artikel nicht vertieft geprüft · Belegstatus: nicht unabhängig verifiziert";
+ $("result-title").textContent=r.subject.title||"KI-System";
+ $("result-summary").textContent=finding?.summary||"Einordnung und Nachweislücken";
+ $("report-classification").textContent=finding?.heading||"Risikoeinordnung offen";
+ $("report-date").textContent=r.created_at?new Date(r.created_at).toLocaleDateString("de-DE"):"";
+ $("report-ref").textContent=(r.is_demo?"MUSTERBERICHT · ":"PIGA / ")+(r.assessment_id||"PREASSESSMENT").slice(0,13).toUpperCase();
  $("gate1").textContent=r.gate1;$("gate2").textContent=r.gate2;
- $("findings").innerHTML=r.findings.map(x=>'<div class="result-row"><div><b>Art. '+escapeHTML(x.article)+' · '+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.issue)+'</small></div>'+small(x.status,x.status==="POTENTIAL_PROHIBITION"?"danger":"warn")+'</div>').join("")||"<p>Keine vertieft zugeordneten Artikel. Vollständige Prüfung weiterhin erforderlich.</p>";
- $("ladder").innerHTML=r.ladder.map(x=>'<div class="ladder-step"><b>'+escapeHTML(x.label)+'</b>'+gateBadge(x.state)+'</div>').join("");
- $("priorities").innerHTML='<ol class="numbered">'+r.priorities.map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ol>';
- $("reverse").innerHTML=r.reverse.questions.map(x=>'<div class="reverse-item">◇ '+escapeHTML(x)+'</div>').join("")+'<p class="subtle">Reverse: '+escapeHTML(r.reverse.status)+'; unabhängiger Wirkungsnachweis: nicht erbracht.</p>';
+ $("result-heading").textContent=finding?.heading||"Vorläufige Einordnung";
+ $("result-narrative").textContent=finding?.summary||"Vervollständigen Sie zunächst die Systembeschreibung.";
+ $("result-next-step").textContent=finding?.action||"Verantwortlichkeit und Geltungsbereich klären.";
+ $("metric-findings").textContent=String(r.findings?.length||0);
+ $("metric-evidence").textContent=String((r.evidence||[]).length);
+ $("metric-manual").textContent=String(r.coverage?.remaining_manual_review||0);
+ $("metric-proof").textContent=(r.evidence||[]).some(x=>x.uploaded)?"Eingereicht · noch ungeprüft":"Noch nicht unabhängig belegt";
+ $("findings").innerHTML=(r.findings||[]).slice(0,12).map(x=>'<div class="result-row"><div><b>Art. '+escapeHTML(x.article)+' · '+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.issue)+'</small></div>'+small(x.status,x.status==="POTENTIAL_PROHIBITION"?"danger":"warn")+'</div>').join("")||"<p>Weitere Einordnung und Nachweise erforderlich.</p>";
+ $("ladder").innerHTML=plan.map((x,i)=>'<details class="ladder-item" '+(i===1||i===4?"open":"")+'><summary><span class="ladder-ordinal">'+String(i+1).padStart(2,"0")+'</span><div><b>'+escapeHTML(x.label.replace(/^\d+\s*[·.-]\s*/,""))+'</b><small>'+escapeHTML(x.kind)+'</small></div>'+gateBadge(x.state)+'</summary><div class="ladder-action"><strong>'+escapeHTML(x.question)+'</strong><p>'+escapeHTML(x.measure)+'</p><small><b>Erwarteter Nachweis:</b> '+escapeHTML(x.proof)+'</small><button type="button" data-ladder-offer="'+escapeHTML(x.sku)+'">Passende Lösung ansehen →</button></div></details>').join("");
+ $("ladder").querySelectorAll("[data-ladder-offer]").forEach(button=>button.addEventListener("click",()=>selectOffer(button.dataset.ladderOffer)));
+ const priorities=(r.priorities||[]).slice(0,6);
+ $("priorities").innerHTML='<ol class="priority-grid">'+priorities.map((x,i)=>'<li><span>'+String(i+1).padStart(2,"0")+'</span><p>'+escapeHTML(x)+'</p></li>').join("")+'</ol>';
+ $("reverse").innerHTML=(r.reverse?.questions||[]).map(x=>'<div class="reverse-item">◇ '+escapeHTML(x)+'</div>').join("")+'<p class="subtle">Status: '+escapeHTML(r.reverse?.status)+' · Keine unbelegte Freigabe.</p>';
  if($("architecture-details")?.open)$("architecture").innerHTML=architectureMarkup(r.architecture||architectureCatalog,"");
  else $("architecture").replaceChildren();
- if($("case-architecture-count"))$("case-architecture-count").textContent=String((r.architecture||architectureCatalog).length);
- if($("suggestions")){
-  $("suggestions").innerHTML=r.suggestions.map(p=>'<div class="result-row"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.type)+' · '+escapeHTML(PRICE_EUR[p.sku]||"Preis auf Anfrage")+'</small></div><button type="button" class="btn ghost smaller" data-suggest="'+escapeHTML(p.sku)+'">Lösung prüfen</button></div>').join("");
-  $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>show("licensing")));
- }
+ $("case-architecture-count").textContent=String((r.architecture||architectureCatalog).length);
+ const featured=offers[0],other=offers.slice(1,4);
+ $("recommended-title").textContent=featured?.title||"Governance-Assessment";
+ $("recommended-price").textContent=featured?.price||"Preis auf Anfrage";
+ $("recommended-why").textContent=featured?.why||"Passende Maßnahmen und nachvollziehbare Nachweise.";
+ $("recommended-buy").dataset.offer=featured?.sku||"";
+ $("suggestions").innerHTML=other.map(p=>'<div class="result-offer"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.why)+'</small></div><button type="button" data-suggest="'+escapeHTML(p.sku)+'">'+escapeHTML(p.price)+' →</button></div>').join("");
+ $("suggestions").querySelectorAll("[data-suggest]").forEach(b=>b.addEventListener("click",()=>selectOffer(b.dataset.suggest)));
+ $("save-report").disabled=!!r.is_demo;
+ $("save-report").title=r.is_demo?"Musterbericht: erst eigene Voranalyse durchführen":"Im persönlichen Konto speichern";
 }
+$("recommended-buy").addEventListener("click",()=>selectOffer($("recommended-buy").dataset.offer));
+$("sample-analysis").addEventListener("click",async()=>{
+ const data={title:"KI-gestützte Bewerberauswahl · Beispiel",version:"DEMO-1.0",role:"provider",developer:"Demonstrationsfall",purpose:"Bewerbungen vorselektieren und priorisieren",sector:"employment",
+ productSafety:false,prohibited:false,gpai:false,systemic:false,chatbot:false,synthetic:false,agents:false,critical:true,controls:{}};
+ activeInput=structuredClone(data);activeId=crypto.randomUUID();docRecords=[];
+ activeReport=evaluate(data,[]);activeReport.is_demo=true;activeReport.assessment_id=activeId;
+ activeReport.input_sha256=await sha256(new TextEncoder().encode(JSON.stringify(data)));
+ renderReport();show("results");
+});
 function download(filename,content,type){
  const obj=new Blob([content],{type});const url=URL.createObjectURL(obj);
  const a=document.createElement("a");a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
