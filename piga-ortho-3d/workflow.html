@@ -15,7 +15,7 @@
     <span class="threshold" aria-hidden="true">⊓</span>
     <span><strong>PIGA</strong><small>ORTHO 3D / GLASSBOX STUDIO</small></span>
   </a>
-  <div class="top-actions"><span class="version">RESEARCH & DESIGN · V0.3</span><a href="./index.html" class="toplink">3D-Studio öffnen <span aria-hidden="true">↗</span></a></div>
+  <div class="top-actions"><span class="version">RESEARCH & DESIGN · V0.4</span><a href="./index.html" class="toplink">3D-Studio öffnen <span aria-hidden="true">↗</span></a></div>
 </header>
 <main>
   <section class="intro" aria-label="Prozessübersicht">
@@ -46,6 +46,30 @@
     <div><small>VERANTWORTUNG</small><b>Arzt + Labor</b></div>
     <div><small>FREIGABEN</small><b>Gate 1 / Gate 2</b></div>
     <div><small>ERGEBNIS</small><b>Glassbox-Nachweis</b></div>
+  </section>
+  <section class="route-studio" aria-label="User Route und Ergebnisroute">
+    <div class="route-head">
+      <div><span class="eyebrow">PIGA DUAL-TRACK JOURNEY · V0.4</span><h2>Zwei Perspektiven. Ein überprüfbarer Prozess.</h2>
+      <p>Oben die Handlung des Anwenders, darunter die dokumentierbare Wirkung. Tippe auf einen Abschnitt, um seinen detaillierten Arbeitsschritt zu öffnen.</p></div>
+      <div class="route-switch" role="group" aria-label="Routenfokus">
+        <button type="button" id="focusUser" class="selected" aria-pressed="true">User Route</button>
+        <button type="button" id="focusEvidence" aria-pressed="false">Ergebnisroute</button>
+      </div>
+    </div>
+    <div class="route-track route-track-user" id="userTrack" aria-label="Benutzerweg">
+      <div class="route-label"><span class="route-tag">01</span><strong>USER ROUTE</strong><small>Was der Behandler tut</small></div>
+      <div class="route-nodes" id="userNodes"></div>
+    </div>
+    <div class="route-track route-track-evidence" id="evidenceTrack" aria-label="Ergebnis und Evidenz">
+      <div class="route-label"><span class="route-tag">02</span><strong>ERGEBNISROUTE</strong><small>Was nachweisbar entsteht</small></div>
+      <div class="route-nodes" id="evidenceNodes"></div>
+    </div>
+    <div class="route-bridge" role="status" aria-live="polite">
+      <span class="bridge-pulse" aria-hidden="true"></span>
+      <div><b id="routeStageName">Prozessbezug</b><p id="routeStageEvidence">Die Einträge sind ein Architekturentwurf und kein Produktionsnachweis.</p></div>
+      <span class="route-boundary">GATE 1 ≠ GATE 2</span>
+    </div>
+    <div class="route-legend"><span><i class="legend-ready"></i> Technisch verfügbar</span><span><i class="legend-part"></i> Teilweise umgesetzt</span><span><i class="legend-plan"></i> Geplant / blockiert</span></div>
   </section>
   <section class="workbench" id="workbench">
     <aside class="rail" aria-label="Prozessschritte">

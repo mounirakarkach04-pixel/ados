@@ -42,3 +42,6 @@ PROZESSNAVIGATOR v0.3
 ---------------------
 https://mounirakarkach04-pixel.github.io/ados/piga-ortho-3d/workflow.html
 Eine interaktive 12-Phasen-Prozessdarstellung mit farblich gekennzeichnetem Implementierungsstatus, Eingabe-/Prüf-/Ausgabekette, Gate 1/2, A7SEM Reverse und JSON-Export. Keine klinischen Berechnungen und keine Patientendatenverarbeitung im Navigator.
+
+V0.4 — DUAL-TRACK NAVIGATION
+User Route und Ergebnis-/Glassbox-Route als interaktive, barrierearme Prozessbahnen in workflow.html. Kein Patienten- oder Druckereingriff im Navigator; jede Stufe zeigt den tatsächlichen Implementierungsstatus. Im Audit-Blueprint Export sind beide Routen ausdrücklich enthalten.

@@ -5,6 +5,55 @@
   const list=$('stageList');
   const modeText={aligner:"Aligner-Modell: Scan → fachlich validierte Therapieplanung → Staging → CAM → Slicing → Druck → Nachbearbeitung. Die klinische Planungsstrecke ist noch nicht implementiert.",retainer:"Retainer-Modell: Scan → fachlich freigegebenes Retainer-Design → Druckmodell oder Formmodell → Slicing → Fertigung → QA. Ein Retainer-CAD-Modul ist noch nicht implementiert.",study:"Studienmodell: Scan → technischer STL-Check → Slicer des Herstellers → Druck → Dokumentation. Dieser Pfad hat die engste technische Evaluationsgrenze."};
   let selected=0;let mode='aligner';
+  // Dual tracks use one immutable stage catalogue; no external action is performed.
+  const USER_ROUTE=[
+    {step:0,label:'Einstieg',note:'Workspace'},
+    {step:1,label:'Fall',note:'Auftrag anlegen'},
+    {step:2,label:'3D-Scan',note:'STL öffnen'},
+    {step:4,label:'KFO',note:'Fachprüfung'},
+    {step:7,label:'CAM',note:'Druckvorbereitung'},
+    {step:9,label:'Druck',note:'Freigeben / Start'},
+    {step:11,label:'Abschluss',note:'QA prüfen'}
+  ];
+  const EVIDENCE_ROUTE=[
+    {step:0,label:'Sitzung',note:'Rollenstatus'},
+    {step:1,label:'Fall-ID',note:'Scope / Kontext'},
+    {step:2,label:'Modellhash',note:'Datei-Integrität'},
+    {step:3,label:'Gate 1',note:'Prüfbarkeit'},
+    {step:6,label:'Version',note:'Review-Beleg'},
+    {step:9,label:'Gate 2',note:'Einzel-Autorisierung'},
+    {step:9,label:'Readback',note:'Wirkung beobachten'},
+    {step:11,label:'QA & Reverse',note:'Evidenzpaket'}
+  ];
+  let routeFocus='user';
+  function renderRoute(trackId,items){
+    const parent=$(trackId);parent.textContent='';
+    items.forEach(item=>{
+      const s=STAGES[item.step];
+      const btn=document.createElement('button');
+      btn.type='button';btn.className='route-node '+s.kind+(selected===item.step?' highlight':'');
+      btn.setAttribute('aria-label',item.label+' – Arbeitsschritt '+(item.step+1));
+      const dot=document.createElement('span');dot.className='route-dot';dot.setAttribute('aria-hidden','true');
+      const strong=document.createElement('b');strong.textContent=item.label;
+      const small=document.createElement('small');small.textContent=item.note;
+      btn.append(dot,strong,small);
+      btn.addEventListener('click',()=>select(item.step));
+      parent.append(btn);
+    });
+  }
+  function drawRoutes(){
+    renderRoute('userNodes',USER_ROUTE);renderRoute('evidenceNodes',EVIDENCE_ROUTE);
+    $('userTrack').classList.toggle('active',routeFocus==='user');
+    $('evidenceTrack').classList.toggle('active',routeFocus==='evidence');
+    $('focusUser').classList.toggle('selected',routeFocus==='user');
+    $('focusEvidence').classList.toggle('selected',routeFocus==='evidence');
+    $('focusUser').setAttribute('aria-pressed',String(routeFocus==='user'));
+    $('focusEvidence').setAttribute('aria-pressed',String(routeFocus==='evidence'));
+    const step=STAGES[selected];
+    $('routeStageName').textContent=routeFocus==='user'?'Benutzer: '+step.short:'Nachweis: '+step.out;
+    $('routeStageEvidence').textContent=routeFocus==='user'?step.description:'Quelle: '+step.in+' · Prüfung: '+step.control+' · Ziel: '+step.out+' · A7SEM Reverse: '+step.reverse+'. Umsetzung: '+statusText(step.kind)+'.';
+  }
+
   function statusText(kind){return kind==='ready'?'TECHNISCH UMGESETZT':kind==='part'?'TEILWEISE UMGESETZT':'GEPLANTE FUNKTION';}
   function stateClass(kind){return kind==='ready'?'ready':kind==='part'?'part':'plan';}
   function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -25,14 +74,16 @@
     $('openModule').href=s.module;$('openModule').textContent=s.kind==='plan'?'Vorhandene App ansehen ↗':'Zu diesem App-Bereich ↗';
     $('back').disabled=selected===0;$('next').disabled=selected===STAGES.length-1;
     $('progressFill').style.width=((selected+1)/STAGES.length*100)+'%';
-    renderList();
+    renderList();drawRoutes();
     history.replaceState(null,'','#schritt-'+(selected+1));
   }
   function exportJSON(){
-    const payload={schema:'piga.ortho.workflow-blueprint.v0.3',kind:'design-only',version:'0.3',owner:'Mounir Akarkach',recipient:'Dr. med. dent. Ibrahim Akarkach',clinicalApproved:false,printerProductionApproved:false,applicationMode:mode,stages:STAGES.map((s,i)=>({step:i+1,...s}))};
+    const payload={schema:'piga.ortho.workflow-blueprint.v0.4',kind:'design-only',version:'0.4',owner:'Mounir Akarkach',recipient:'Dr. med. dent. Ibrahim Akarkach',clinicalApproved:false,printerProductionApproved:false,applicationMode:mode,userRoute:USER_ROUTE,evidenceRoute:EVIDENCE_ROUTE,stages:STAGES.map((s,i)=>({step:i+1,...s}))};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='PIGA_ORTHO_3D_Workflow_Blueprint_v0_3.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='PIGA_ORTHO_3D_Workflow_Blueprint_v0_4.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
   }
+  $('focusUser').addEventListener('click',()=>{routeFocus='user';drawRoutes();});
+  $('focusEvidence').addEventListener('click',()=>{routeFocus='evidence';drawRoutes();});
   $('back').addEventListener('click',()=>select(selected-1));$('next').addEventListener('click',()=>select(selected+1));
   $('mode').addEventListener('change',e=>{mode=e.target.value;$('modeText').textContent=modeText[mode];});
   $('exportSpec').addEventListener('click',exportJSON);$('printPlan').addEventListener('click',()=>window.print());
