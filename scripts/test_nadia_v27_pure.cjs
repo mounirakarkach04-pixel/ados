@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Nadia v27 source regression test. No network, AI, login, email or browser.
+// Nadia v28 source regression test. No network, AI, login, email or browser.
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
@@ -42,9 +42,9 @@ check('November excludes October birthday',!nov.some(e=>e.title.includes('Test-G
 check('May 2031 public holiday',nbMonthDetails(2031,5).some(e=>e.date==='2031-05-01'&&e.title==='Tag der Arbeit'));
 check('October 2026 German Unity Day',oct.some(e=>e.date==='2026-10-03'&&e.title==='Tag der Deutschen Einheit'));
 check('2027 Easter dates',nbHolidayDates(2027).some(e=>e[0]==='2027-03-26'&&e[1]==='Karfreitag')&&nbHolidayDates(2027).some(e=>e[0]==='2027-03-29'&&e[1]==='Ostermontag'));
-for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png','happy-avatar-rose.png','happy-avatar-hair.svg']) check('Static asset '+f,fs.statSync(path.join(root,f)).size>0);
+for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png']) check('Static asset '+f,fs.statSync(path.join(root,f)).size>0);
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
 check('PWA launch scope',manifest.display==='standalone'&&manifest.start_url==='./'&&manifest.scope==='./');
-check('Happy online is separate and optional',html.includes('happy-live-token')&&html.includes("if($('happyOnline').checked)"));
-check('No admin credential in browser source',!html.includes('service_role')&&!html.includes('sb_secret_'));
+check('Happy and portraits safely withdrawn',!html.includes('id="view-happy"')&&!html.includes('happy-live-token')&&!html.includes('happy-avatar-rose.png'));
+check('New botanical design without face',html.includes('v28-bloom-editorial-no-happy'));check('No admin credential in browser source',!html.includes('service_role')&&!html.includes('sb_secret_'));
 console.log(JSON.stringify({verdict:'PASS_LOCAL_SOURCE_INVARIANTS',checks:checks.length,failures:0,aiCalls:0,emailsSent:0,details:checks},null,2));

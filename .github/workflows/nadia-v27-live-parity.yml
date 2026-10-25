@@ -1,4 +1,4 @@
-name: Nadia v27 Live Parity (Read-only)
+name: Nadia v28 Live Parity (Read-only)
 on:
   workflow_dispatch:
   push:
@@ -11,7 +11,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: nadia-v27-readonly-parity
+  group: nadia-v28-readonly-parity
   cancel-in-progress: true
 jobs:
   verify:
@@ -24,7 +24,7 @@ jobs:
           persist-credentials: false
       - name: Node version
         run: node --version
-      - name: Verify Nadia v27 source invariants (offline, no dependencies)
+      - name: Verify Nadia v28 source invariants (offline, no dependencies)
         run: node scripts/test_nadia_v27_pure.cjs
       - name: Verify GitHub Pages and Cloudflare bytes (GET only)
         run: node scripts/check_nadia_v27_live.cjs

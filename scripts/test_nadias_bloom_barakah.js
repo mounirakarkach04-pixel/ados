@@ -27,12 +27,11 @@ try{for(const [name,viewport] of [["desktop",{width:1440,height:900}],["mobile",
  await nav("haushalt");check(await p.locator("[data-chore]").count()===14,"book household");
  await p.locator("[data-chore]").first().check();check(await p.locator("[data-chore]").first().isChecked(),"chores");
  await nav("journal");await p.locator('#journalForm [name=text]').fill("Ein guter Tag");await p.locator("#journalForm button").click();check((await p.locator("#journalList").innerText()).includes("Ein guter Tag"),"journal");
- await nav("happy");await p.locator("#happyInput").fill("Was steht auf meiner Einkaufsliste?");await p.locator("#happySend").click();check((await p.locator("#happyChat").innerText()).includes("Brot"),"offline Happy");check(!(await p.locator("#happyOnline").isChecked()),"online off by default");
- await p.locator("#happyInput").fill("Füge Milch zur Einkaufsliste hinzu");await p.locator("#happySend").click();check(await p.evaluate(()=>window.NADIAS_BLOOM_QA.read().shop.some(x=>x.title==="Milch")),"Happy confirmed intent");
+ check(await p.locator('#view-happy').count()===0,'Happy withdrawn pending verified voice');
  await p.reload();check((await p.locator("#statShop").innerText())==="2","local persistence");
  await nav("buch");check(await p.locator("#backup").count()===1&&await p.locator("#restore").count()===1,"backup/restore");check(await p.locator("#downloadOffline").count()===1,"offline download");
  check(errs.length===0,"no pageerrors "+errs.join("; "));check((await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth))<=2,"no final overflow");
  results.push({viewport:name,checks,errors:errs});await cx.close();
 }}finally{await browser.close()}
-console.log(JSON.stringify({status:"PASS_NADIA_BARAKAH",checks,duas:365,rootPigaVoice:"UNCHANGED_BY_DESIGN",happy:"SCOPED_EXISTING_API",results},null,2));
+console.log(JSON.stringify({status:"PASS_NADIA_BARAKAH",checks,duas:365,rootPigaVoice:"UNCHANGED_BY_DESIGN",happy:"WITHDRAWN_UNVERIFIED",results},null,2));
 })().catch(e=>{console.error(e);process.exitCode=1});

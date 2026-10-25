@@ -1,4 +1,4 @@
-name: Nadia Bloom PIGA Happy Safe Release QA
+name: Nadia Bloom v28 Editorial & Auth Mock QA
 on:
   workflow_dispatch:
   push:
@@ -26,8 +26,6 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
           npx playwright install --with-deps chromium
-      - name: Verify 365 Duas, family planning, Happy local and mock online speech
+      - name: Verify calendar, prayer times, no portrait, and synthetic Auth
         run: |
-          node scripts/test_nadias_bloom_v261.js
-          node scripts/test_nadia_happy_v262.js
           node scripts/test_nadia_v27_features.js

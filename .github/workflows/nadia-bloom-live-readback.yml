@@ -1,4 +1,4 @@
-name: Nadia Bloom Live Links and Separate Happy API (Free)
+name: Nadia Bloom v28 Live Links (Read-only)
 on:
   workflow_dispatch:
   push:
@@ -20,5 +20,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Canonical and Happy public non-secret health checks
+      - name: Verify canonical PWA and backup without AI calls
         run: node scripts/verify_nadias_bloom_live.js
