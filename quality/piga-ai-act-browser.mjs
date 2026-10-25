@@ -37,6 +37,31 @@ try{
  assert.match(await page.locator("#architecture").innerText(),/Gate|PIGA|A7SEM/);
  await page.locator("#architecture-details > summary").click();
  await page.screenshot({path:"qa-artifacts/02-report.png",fullPage:true});
+ // The A4 print contains all eight Admission Ladder rows, not only the initially expanded two.
+ const pdf=await page.pdf({path:"qa-artifacts/02-executive-report.pdf",format:"A4",printBackground:true,preferCSSPageSize:true});
+ assert.ok(pdf.byteLength>12000,"Report PDF unexpectedly empty or too small");
+ // Genuine buyer journey: result -> tailored solution -> transparent order -> informed consent -> account.
+ await page.locator("#view-results [data-go='solutions']").first().click();
+ await page.locator("#view-solutions").waitFor({state:"visible"});
+ assert.equal(await page.locator("#solutions-plan .solution-step").count(),8);
+ assert.ok(await page.locator("#solutions-offers [data-solution]").count()>=3);
+ await page.screenshot({path:"qa-artifacts/03-solutions-roadmap.png",fullPage:true});
+ await page.locator("#solutions-offers [data-solution]").first().click();
+ await page.locator("#view-licensing").waitFor({state:"visible"});
+ await page.locator("#featured-license [data-buy]").click();
+ await page.locator("#order-review").waitFor({state:"visible"});
+ assert.match(await page.locator("#order-price").innerText(),/€/);
+ assert.equal(await page.locator("#order-terms").isChecked(),false);
+ await page.locator("#order-continue").click();
+ assert.match(await page.locator("#order-status").innerText(),/Bitte lesen und bestätigen/);
+ assert.equal(page.url().includes("stripe.com"),false);
+ await page.locator("#order-terms").check();
+ await page.locator("#order-continue").click();
+ await page.locator("#view-account").waitFor({state:"visible"});
+ assert.equal(page.url().includes("stripe.com"),false);
+ assert.equal(await page.locator("#purchase-intent").isVisible(),true);
+ await page.screenshot({path:"qa-artifacts/04-account-pending-purchase.png",fullPage:true});
+ await page.locator("#nav > [data-view='results']").click();
  await page.locator("#nav > [data-view='articles']").click();
  await page.fill("#article-search","50");
  assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
@@ -135,5 +160,5 @@ try{
   await mobile.setOffline(false);
  }finally{await mobile.close();}
  if(failures.length)throw new Error("Browser errors: "+failures.join(" | "));
- console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,article_explorer:true,licensing_cards:8,json_csv_downloads:true,mobile_360_320:true,offline_pwa:true,guest_save_guard:true,browser_errors:0},null,2));
+ console.log(JSON.stringify({status:"PASS",guest_assessment:true,gate1,gate2,tailored_solution_steps:8,informed_order_review:true,no_stripe_without_auth:true,print_a4_pdf:true,article_explorer:true,licensing_cards:8,json_csv_downloads:true,mobile_360_320:true,offline_pwa:true,guest_save_guard:true,browser_errors:0},null,2));
 }finally{await browser.close();}
