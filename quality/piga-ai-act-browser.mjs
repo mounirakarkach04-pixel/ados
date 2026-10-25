@@ -83,7 +83,7 @@ try{
  // Guest account protection: never claim report persistence without an actual session.
  await page.locator("#save-report").click();
  await page.locator("#view-account").waitFor({state:"visible"});
- assert.match(await page.locator("#auth-pane").innerText(),/Willkommen zurück/);
+ assert.match(await page.locator("#auth-pane").innerText(),/Willkommen bei PIGA/);
  assert.ok(await page.locator("#password-recovery-pane").count()===1);
  await page.locator("#reset").click();
  assert.match(await page.locator("#auth-message").innerText(),/E-Mail-Adresse/);
