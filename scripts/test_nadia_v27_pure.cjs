@@ -32,11 +32,11 @@ function extract(name){
   }
   throw Error('Unclosed function: '+name)
 }
-const bundle=['nbIsoUTC','nbDayShift','nbEaster','nbHolidayDates','nbMonthDetails'].map(extract).join('\n');
+const bundle='const NB_ISLAM_YEAR_CACHE=new Map();\n'+['nbIsoUTC','nbDayShift','nbEaster','nbHolidayDates','nbIslamicEvents','nbMonthDetails'].map(extract).join('\n');
 const sandbox={state:{members:[{name:'Test-Geburtstag',birthday:'2020-10-14'}],settings:{nbLocale:{lang:'de',country:'DE'}}},NB_SCHOOL:[['2026-10-05','2026-10-17','Herbstferien Hessen']],NB_ISLAM:[['2027-03-09','Eid al-Fitr']],fmt:x=>x,nbLocalizedIslam:x=>x};
 sandbox.nbInGermany=()=>sandbox.state.settings.nbLocale.country==='DE';
-vm.runInNewContext(bundle+';globalThis.__qa={nbHolidayDates,nbMonthDetails}',sandbox,{timeout:1000});
-const {nbHolidayDates,nbMonthDetails}=sandbox.__qa;
+vm.runInNewContext(bundle+';globalThis.__qa={nbHolidayDates,nbMonthDetails,nbIslamicEvents}',sandbox,{timeout:1000});
+const {nbHolidayDates,nbMonthDetails,nbIslamicEvents}=sandbox.__qa;
 const oct=nbMonthDetails(2026,10),nov=nbMonthDetails(2026,11);
 check('October 2026 contains annual birthday',oct.some(e=>e.title==='Geburtstag: Test-Geburtstag'&&e.date==='2026-10-14'));
 check('November excludes October birthday',!nov.some(e=>e.title.includes('Test-Geburtstag')));
@@ -48,6 +48,7 @@ sandbox.state.settings.nbLocale.country='NL';
 check('Netherlands removes German holidays and school vacation',!nbMonthDetails(2026,10).some(e=>e.type==='holiday'||e.type==='vacation'));
 check('Netherlands keeps Islamic occasions',nbMonthDetails(2027,3).some(e=>e.type==='islam'));
 check('Netherlands retains birthday',nbMonthDetails(2026,10).some(e=>e.type==='birthday'));
+check('Islamic dates continue after published book years',nbIslamicEvents(2028).some(e=>e[1].includes('Eid al-Fitr'))&&nbIslamicEvents(2031).some(e=>e[1].includes('Ramadan')));
 sandbox.state.settings.nbLocale.country='DE';
 for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png']) check('Static asset '+f,fs.statSync(path.join(root,f)).size>0);
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
