@@ -226,10 +226,13 @@ $("download-csv").addEventListener("click",()=>{
  download("piga-ai-act-articles.csv","\ufeff"+lines.map(row=>row.map(csvSafe).join(";")).join("\r\n"),"text/csv;charset=utf-8");
 });
 const printOpenStates=new Map();
+let originalPrintTitle=null;
 window.addEventListener("beforeprint",()=>{
+ originalPrintTitle=document.title;
+ if(activeReport)document.title="PIGA_AI_Act_Assessment_"+String(activeReport.assessment_id||"Report").slice(0,13);
  document.querySelectorAll(".ladder-item").forEach(el=>{printOpenStates.set(el,el.open);el.open=true;});
 });
-window.addEventListener("afterprint",()=>{for(const [el,open] of printOpenStates)el.open=open;printOpenStates.clear();});
+window.addEventListener("afterprint",()=>{for(const [el,open] of printOpenStates)el.open=open;printOpenStates.clear();if(originalPrintTitle!==null)document.title=originalPrintTitle;originalPrintTitle=null;});
 $("print-report").addEventListener("click",()=>activeReport&&window.print());
 async function saveReport(){
  if(!activeReport){toast("Erst einen Bericht erstellen.");return;}
