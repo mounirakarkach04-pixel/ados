@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8f9ff"><meta name="description" content="PIGA AI Act Intelligence — evidenzbasierte EU AI Act Vorprüfung mit Admission Ladder, 113-Artikel-Index und Governance-Lösungen.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://esm.sh; connect-src 'self' https://esm.sh https://*.supabase.co; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+<title>PIGA AI Act Intelligence | Govern Before You Infer</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div class="shell">
+<aside class="sidebar">
+ <a class="brand" href="#home"><span class="logo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 34 9v10c0 9-6 14-14 18C12 33 6 28 6 19V9Z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="m13 20 5 5 10-11" fill="none" stroke="currentColor" stroke-width="2.5"/></svg></span><span><b>PIGA<span class="mark">/</span>ACT</b><small>INTELLIGENCE PLATFORM</small></span></a>
+ <div class="nav-caption">WORKSPACE</div>
+ <nav id="nav" aria-label="Hauptnavigation">
+  <button type="button" data-view="home" class="nav-item active"><span>◈</span> Übersicht</button>
+  <button type="button" data-view="assessment" class="nav-item"><span>◇</span> Neue Analyse</button>
+  <button type="button" data-view="results" class="nav-item"><span>▤</span> Ergebnis & Ladder</button>
+  <button type="button" data-view="articles" class="nav-item"><span>▦</span> Artikel-Explorer</button>
+  <button type="button" data-view="licensing" class="nav-item"><span>⬡</span> Lizenzlösungen</button>
+  <button type="button" data-view="account" class="nav-item"><span>◎</span> Konto & Nachweise</button>
+ </nav>
+ <div class="sidebar-bottom"><div class="micro-label">GOVERNANCE KERNEL</div><div class="status-dot"><i></i> Screeningsystem v1.0</div><p>Gate 1 ≠ Gate 2<br>Capability ≠ Permission</p><div class="sidebar-foot"><a href="privacy.html">Datenschutz</a> · <a href="terms.html">Nutzungsbedingungen</a></div></div>
+</aside>
+<div class="main">
+<header class="topbar"><div class="breadcrumbs">PIGA / EU AI ACT <span>/</span> <b id="current-title">Übersicht</b></div><div class="right-actions"><span class="source-status">EU AI ACT · 27.07.2026</span><button type="button" class="small-button" id="sign-header">Anmelden</button></div></header>
+<main>
+<section class="view" id="view-home">
+ <div class="hero"><div class="eyebrow"><span class="spark"></span> GOVERNANCE FIRST · EVIDENCE ALWAYS</div><h1>From AI systems<br>to <em>defensible</em> decisions.</h1><p>Analysiere KI-Systeme gegen den EU AI Act. Identifiziere Risikoklassen, Dokumentationslücken, Haftungsfragen und prüfbare PIGA-Grenzen – mit nachvollziehbaren Ergebnissen statt pauschaler Compliance-Versprechen.</p><div class="hero-actions"><button class="btn primary" type="button" data-go="assessment">Analyse beginnen <span>↗</span></button><button class="btn ghost" type="button" data-go="articles">EU AI Act erkunden</button></div><div class="hero-glow" aria-hidden="true"></div></div>
+ <div class="stats"><article><div>113</div><span>Artikel im Index</span></article><article><div>2</div><span>separate PIGA Gates</span></article><article><div>8</div><span>Admission-Ladder-Prüfpunkte</span></article><article><div>2028</div><span>letzte Hauptphase der Anwendung</span></article></div>
+ <div class="section-heading"><div><span class="kicker">ANALYSIS PIPELINE</span><h2>Ein nachvollziehbarer Prüfpfad.</h2></div></div>
+ <div class="feature-grid">
+ <article class="feature"><span class="feature-icon">01</span><h3>Scope & Einordnung</h3><p>Zweck, Anbieter-/Betreiberrolle, Anhang I/III, verbotene Praktiken, GPAI und Transparenz.</p></article>
+ <article class="feature"><span class="feature-icon">02</span><h3>Evidence & A7SEM Reverse</h3><p>Dokumentierte Aussagen von Beweisen trennen; Gegenhypothesen und fehlende Wirkungspfade identifizieren.</p></article>
+ <article class="feature"><span class="feature-icon">03</span><h3>Admission & Liability</h3><p>Gate 1, Gate 2, VBR, Haftung, Schaden, Versicherbarkeit und lizenzierbare Abhilfen.</p></article>
+ </div>
+ <div class="callout-line"><b>Wichtig:</b> Vorprüfung ist weder behördliche Zertifizierung noch juristische Einzelfallprüfung. Unterlagen gelten ohne unabhängige Prüfung als nicht verifiziert.</div>
+</section>
+<section class="view hidden" id="view-assessment">
+ <div class="page-heading"><span class="kicker">NEW ASSESSMENT</span><h1>Dein KI-System. Unser Prüfpfad.</h1><p>Fünf Minuten für einen strukturierten Einstieg. Unbekannte Angaben bleiben bewusst UNKNOWN.</p></div>
+ <form id="assessment-form" class="assessment-form">
+ <div class="panel"><div class="panel-top"><span class="stepno">01</span><div><h2>System & Verantwortlichkeit</h2><p>Identität, Einsatzkontext, Version und rechtliche Rolle.</p></div></div><div class="field-grid">
+ <label>System / Produktname <span>*</span><input id="f-title" maxlength="130" required placeholder="z. B. Bewerber-Ranking v2.1"></label>
+ <label>Modell / Versionskennung<input id="f-version" maxlength="100" placeholder="z. B. 2.1.4 / Modell-SHA"></label>
+ <label>Deine Rolle <span>*</span><select id="f-role" required><option value="">Bitte auswählen</option><option value="provider">Anbieter / Provider</option><option value="deployer">Betreiber / Deployer</option><option value="both">Beides</option><option value="other">Noch unklar</option></select></label>
+ <label>Systemanbieter / Organisation<input id="f-developer" maxlength="130" placeholder="Organisation / Verantwortliche Stelle"></label>
+ <label class="full">Was entscheidet oder beeinflusst das System? <span>*</span><textarea id="f-purpose" rows="3" required placeholder="Erkläre Zweck, betroffene Personen und reale Auswirkungen."></textarea></label></div></div>
+ <div class="panel"><div class="panel-top"><span class="stepno">02</span><div><h2>Rechtsbereich & Einsatz</h2><p>Die Einstufung ist ein Hinweis, keine rechtsverbindliche Klassifikation.</p></div></div><div class="field-grid">
+ <label class="full">Einsatzbereich <span>*</span><select id="f-sector" required><option value="">Bereich wählen</option><option value="general">Allgemeine digitale Anwendung</option><option value="biometric">Biometrie</option><option value="infrastructure">Kritische Infrastruktur</option><option value="education">Bildung / Prüfung</option><option value="employment">Beschäftigung / Recruiting</option><option value="essential">Wesentliche Dienste / Kreditwürdigkeit</option><option value="policing">Strafverfolgung</option><option value="migration">Migration / Asyl / Grenzschutz</option><option value="justice">Justiz / demokratische Verfahren</option><option value="medical">Medizin / Gesundheitsversorgung</option><option value="other">Sonstige / unbekannt</option></select></label>
+ </div><div class="checkbox-grid">
+ <label class="check"><input type="checkbox" id="f-productSafety"><span>Sicherheitskomponente eines regulierten Produkts (Anhang I möglich)</span></label>
+ <label class="check"><input type="checkbox" id="f-prohibited"><span>Möglicherweise verbotene Praxis (Art. 5)</span></label>
+ <label class="check"><input type="checkbox" id="f-gpai"><span>Ich biete selbst ein General-Purpose-AI-Modell an</span></label>
+ <label class="check"><input type="checkbox" id="f-systemic"><span>Mögliche systemische Risiken eines GPAI-Modells</span></label>
+ <label class="check"><input type="checkbox" id="f-chatbot"><span>Direkte KI-Interaktion mit natürlichen Personen</span></label>
+ <label class="check"><input type="checkbox" id="f-synthetic"><span>Erzeugung synthetischer Inhalte / Deepfakes</span></label>
+ <label class="check"><input type="checkbox" id="f-agents"><span>Autonome Tools / Agenten wirken auf externe Systeme</span></label>
+ <label class="check"><input type="checkbox" id="f-critical"><span>Erhöhtes finanzielles, physisches oder rechtliches Schadenspotenzial</span></label>
+ </div></div>
+ <div class="panel"><div class="panel-top"><span class="stepno">03</span><div><h2>Vorhandene Kontrollnachweise</h2><p>Markierungen sind Selbstauskünfte und werden ausdrücklich <b>nicht</b> als konforme Umsetzung gewertet.</p></div></div><div class="controls-grid" id="controls"></div></div>
+ <div class="panel"><div class="panel-top"><span class="stepno">04</span><div><h2>Unterlagen & Evidenz</h2><p>Privater Upload nach Anmeldung. Ohne Login werden keine Dateien an den Server übertragen.</p></div></div>
+ <label class="dropzone" for="evidence-files"><span class="upload-icon">↥</span><b>Dokumente auswählen</b><small>PDF, TXT, CSV, JSON, Markdown, PNG oder JPEG · je max. 10 MB</small><input type="file" id="evidence-files" accept=".pdf,.txt,.csv,.json,.md,.png,.jpg,.jpeg" multiple></label><div id="evidence-list" class="upload-list">Noch keine Dokumente ausgewählt.</div><p class="subtle">Enthalten Dokumente personenbezogene Daten, Geschäftsgeheimnisse oder Gesundheitsdaten, muss die Übermittlung rechtlich zulässig sein. Keine sensiblen Rohdaten ohne Erforderlichkeit hochladen.</p></div>
+ <div class="actions-row"><button class="btn primary" type="submit" id="analyze">Vorprüfung erstellen <span>↗</span></button><span class="subtle">Keine Zertifizierung · kein automatisches ALLOW</span></div>
+ </form>
+</section>
+<section class="view hidden" id="view-results">
+ <div class="page-heading"><span class="kicker">ASSESSMENT RESULTS</span><h1>Entscheidung braucht Nachweise.</h1><p>Transparentes Screening mit nachvollziehbaren rechtlichen Anknüpfungspunkten und expliziten Unsicherheiten.</p></div>
+ <div id="empty-results" class="empty"><span>◇</span><h2>Noch kein Bericht vorhanden.</h2><p>Starte mit einem konkreten KI-System, damit die Admission Ladder ausgefüllt werden kann.</p><button type="button" class="btn primary" data-go="assessment">Analyse erstellen</button></div>
+ <div id="result-content" class="hidden">
+  <div class="result-banner"><div><span class="kicker">PIGA ASSESSMENT</span><h2 id="result-title"></h2><p id="result-summary"></p></div><div class="gate-row"><div><span>GATE 1</span><b id="gate1">UNKNOWN</b></div><div><span>GATE 2</span><b id="gate2">BLOCK</b></div></div></div>
+  <div class="report-actions"><button type="button" class="btn smaller primary" id="save-report">Im Konto speichern</button><button type="button" class="btn smaller ghost" id="download-json">JSON exportieren</button><button type="button" class="btn smaller ghost" id="download-csv">Artikel als CSV</button><button type="button" class="btn smaller ghost" id="print-report">PDF / Drucken</button></div>
+  <div class="results-grid"><div class="panel"><h2>Relevante Prüfbereiche</h2><div id="findings"></div></div><div class="panel"><h2>Admission Ladder</h2><div id="ladder"></div></div></div>
+  <div class="panel"><h2>Priorisierte Lösungswege</h2><div id="priorities"></div><h3>Haftung, Schaden & Versicherung</h3><p>Art und Umfang von Haftung und Versicherbarkeit bedürfen einer separaten rechtlichen und versicherungstechnischen Prüfung. PIGA liefert eine kontrollierbare Evidenz- und Handlungsarchitektur, ersetzt aber keinen Versicherungsvertrag.</p></div>
+  <div class="panel"><h2>A7SEM Reverse — Gegenprobe</h2><div id="reverse"></div></div>
+ </div>
+</section>
+<section class="view hidden" id="view-articles"><div class="page-heading"><span class="kicker">REGULATORY MAP</span><h1>EU AI Act Explorer.</h1><p>Vollständiger nummerischer Index der 113 Ausgangsartikel. Die vertieft erfassten Bestimmungen sind markiert; die übrigen erfordern weiterhin eine manuelle Normenprüfung.</p></div><div class="explorer-tools"><input id="article-search" placeholder="Artikelnummer, Überschrift oder Suchbegriff…" aria-label="Artikel suchen"><a class="external" href="https://eur-lex.europa.eu/eli/reg/2024/1689/2026-07-27/eng" target="_blank" rel="noopener">Amtlicher Rechtstext ↗</a></div><div class="panel"><div id="article-table"></div></div></section>
+<section class="view hidden" id="view-licensing"><div class="page-heading"><span class="kicker">GOVERNANCE AS A PRODUCT</span><h1>Aus regulatorischen Lücken werden prüfbare Maßnahmen.</h1><p>Die kostenlose Vorprüfung erklärt Problembereiche. Kommerzielle Fachleistungen und Implementierungslizenzen sind gesonderte Leistungen.</p></div><div class="license-info"><b>Strikte Lizenzgrenze</b><p>Ein Stripe-Zahlungslink allein beweist noch keine Berechtigung. Proprietäre Implementierungsanleitungen werden hier erst nach serverseitig bestätigter, produktspezifischer Lizenz zugeordnet. Eine automatische Freischaltung ist aktuell noch nicht aktiviert.</p></div><div class="license-grid" id="licence-cards"></div><div class="panel"><h2>Meine Lizenzberechtigungen</h2><p class="subtle">Nur serverseitig hinterlegte Berechtigungen berechtigen zum Zugriff auf lizenzierte Inhalte.</p><div id="entitlement-list">Anmelden, um Berechtigungen zu prüfen.</div></div></section>
+<section class="view hidden" id="view-account"><div class="page-heading"><span class="kicker">SECURE WORKSPACE</span><h1>Konto, Fälle & Nachweise.</h1><p>Mit E-Mail-Bestätigung, privaten Nachweisen und getrennten Nutzerberechtigungen.</p></div><div id="auth-pane" class="auth-layout"><div class="panel"><h2>Willkommen zurück</h2><p>Melde dich an, um deine Prüfungen vertraulich zu speichern.</p><label>E-Mail<input id="auth-email" type="email" autocomplete="email" placeholder="name@unternehmen.eu"></label><label>Passwort<input id="auth-password" type="password" autocomplete="current-password" placeholder="Mindestens 8 Zeichen"></label><div class="auth-actions"><button type="button" class="btn primary" id="login">Anmelden</button><button type="button" class="btn ghost" id="register">Registrieren</button></div><button type="button" class="text-button" id="reset">Passwort vergessen?</button><div class="message" id="auth-message" role="status"></div></div><div class="auth-side"><div class="auth-decoration">✳</div><h2>Evidence by design.</h2><p>Deine Berichte werden personenbezogen abgesichert; hochgeladene Belege liegen in einem privaten Storage-Bucket. Keine Inhalte werden für ein öffentliches Modelltraining bereitgestellt.</p></div></div>
+<div id="user-pane" class="hidden"><div class="panel"><h2>Aktive Sitzung</h2><p id="user-email"></p><button type="button" class="btn ghost" id="logout">Abmelden</button></div><div class="panel"><h2>Gespeicherte Prüfungen</h2><div id="saved-assessments"></div></div></div></section>
+</main>
+<footer class="footer"><span>© 2026 PIGA · Independent Governance Architecture</span><span><a href="privacy.html">Datenschutz</a> · <a href="terms.html">Bedingungen</a> · <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/eu-ai-act-implementation-timeline" target="_blank" rel="noopener">EU-Zeitplan ↗</a></span></footer>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="app.js"></script>
+</body></html>
