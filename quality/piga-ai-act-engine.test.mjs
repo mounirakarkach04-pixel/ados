@@ -48,3 +48,9 @@ test("non-Annex III ordinary AI is not pre-certified as low risk",()=>{
  assert.equal(r.classification,"CLASSIFICATION_PENDING");
  assert.equal(r.gate1,"DELAY");
 });
+
+test("15 PIGA architectural lenses remain declared without fabricated subject PASS",()=>{
+ const r=evaluate(base);
+ assert.equal(r.architecture.length,15);
+ assert.equal(r.architecture.every(x=>x.subject_pass===false&&x.needs_specific_evidence===true),true);
+});
