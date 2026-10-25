@@ -3,6 +3,7 @@ import {evaluate,articleCatalog,TERMS,PRODUCTS,LAW_URL,LAW_VERSION} from "./engi
 import {architectureCatalog,portfolioSummary,ARCHITECTURE_FAMILIES} from "./portfolio.js";
 import {publicationCatalog,publicationCategories,publicationSummary} from "./publications.js";
 import {priceLabel,offersForReport,actionPlan,executiveFinding} from "./journey.js";
+import {evidenceBridgeForReport,BRIDGE_BOUNDARY} from "./piga-act-bridge.js";
 
 const HOSTED_APP="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/";
 const isNativeShell=location.protocol==="capacitor:"||location.protocol==="ionic:"||((location.hostname==="localhost"||location.hostname==="127.0.0.1")&&location.protocol==="https:")||window.Capacitor?.isNativePlatform?.()===true;
@@ -159,6 +160,20 @@ function renderReport(){
  $("metric-evidence").textContent=String((r.evidence||[]).length);
  $("metric-manual").textContent=String(r.coverage?.remaining_manual_review||0);
  $("metric-proof").textContent=(r.evidence||[]).some(x=>x.uploaded)?"Eingereicht · noch ungeprüft":"Noch nicht unabhängig belegt";
+ const regulatory=evidenceBridgeForReport(r,activeInput||{});
+ $("report-legal-map").innerHTML=regulatory.map(item=>
+  '<article class="legal-map-card '+(item.priority==="critical"?"urgent":"")+'">'+
+   '<div class="legal-map-title"><span class="legal-map-number">'+item.refs.map(ref=>"ART. "+escapeHTML(ref)).join(" / ")+'</span><span class="legal-map-state">'+escapeHTML(item.proofStatus)+'</span></div>'+
+   '<h3>'+escapeHTML(item.title)+'</h3>'+
+   '<p><b>Rechtlicher Bezug</b>'+escapeHTML(item.duty)+'</p>'+
+   '<p><b>PIGA-Kontrollpunkt</b>'+escapeHTML(item.architecture)+'</p>'+
+   '<div class="legal-map-action"><b>Entscheidende Frage</b><span>'+escapeHTML(item.question)+'</span>'+
+   '<small>Benötigter Nachweis: '+escapeHTML(item.proof)+'</small></div>'+
+   '<div class="legal-map-footer"><div>'+item.links.map(link=>'<a href="'+escapeHTML(link.url)+'" target="_blank" rel="noopener noreferrer">Art. '+escapeHTML(link.article)+' ↗</a>').join(" ")+'</div>'+
+   '<button type="button" data-bridge-sku="'+escapeHTML(item.sku)+'">Passende Lösung →</button></div>'+
+  '</article>').join("");
+ $("report-legal-map").querySelectorAll("[data-bridge-sku]").forEach(b=>b.addEventListener("click",()=>selectOffer(b.dataset.bridgeSku)));
+
  $("report-document-id").textContent=(r.assessment_id||"PREASSESSMENT").slice(0,21).toUpperCase();
  $("report-system-version").textContent=r.subject?.version||"Nicht angegeben";
  $("report-law-version").textContent=r.law_version||"Quellenabgleich erforderlich";
