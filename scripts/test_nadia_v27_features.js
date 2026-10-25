@@ -3,7 +3,7 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 (async()=>{
 const root=path.resolve('nadias-bloom');
-const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),name=url.pathname.replace(/^\/nadias-bloom\/?/,'')||'index.html';if(!['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png'].includes(name)){res.writeHead(404);return res.end('404')}const f=path.join(root,name);try{res.writeHead(200,{'Content-Type':name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'text/javascript':name.endsWith('.png')?'image/png':'application/octet-stream'});res.end(fs.readFileSync(f))}catch(e){res.writeHead(404);res.end('Missing')}});
+const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),name=url.pathname.replace(/^\/nadias-bloom\/?/,'')||'index.html';if(!['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png','barakah-home-2027-original-cover.png'].includes(name)){res.writeHead(404);return res.end('404')}const f=path.join(root,name);try{res.writeHead(200,{'Content-Type':name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'text/javascript':name.endsWith('.png')?'image/png':'application/octet-stream'});res.end(fs.readFileSync(f))}catch(e){res.writeHead(404);res.end('Missing')}});
 await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const port=server.address().port;
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
@@ -24,6 +24,11 @@ await route.fulfill({status:200,contentType:'application/json',headers:{'access-
 });
 await page.goto('http://127.0.0.1:'+port+'/nadias-bloom/');
 check((await page.title()).includes("Nadia"),"loaded");
+await page.locator('.nb-promo-book .nb-book-cover img').scrollIntoViewIfNeeded();
+await page.waitForFunction(()=>{const img=document.querySelector('.nb-promo-book .nb-book-cover img');return img&&img.complete&&img.naturalWidth===1536&&img.naturalHeight===1024});
+check(await page.locator('.nb-promo-book .nb-book-cover img').count()===1,'original cover shown on home');
+check(await page.locator('.nb-promo-book .nb-book-cover img').evaluate(e=>getComputedStyle(e).objectPosition.includes('right')),'original image cropped to true front cover');
+check(await page.locator('.nb-step').count()===3,'three start tiles match heading');
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
 check(await page.locator('#nb-lang-quick option').count()===15,'15 supported languages');
 check(await page.locator('#nb-country-setting option').count()>=20,'independent country picker');
@@ -81,6 +86,8 @@ check(await page.locator('img[src*="happy-avatar"]').count()===0,'no face image'
 check(await page.locator('[data-view="happy"]').count()===0,'no Happy navigation');
 check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v28'),'feminine v28 design loaded');
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
+check(await page.locator('.nb-book-showcase img[src="barakah-home-2027-original-cover.png"]').count()===1,'original book cover in details');
+check(await page.locator('.nb-book-showcase').isVisible(),'book showcase is visible');
 check(await page.locator('#nb-auth-card').isVisible(),'optional auth card present');
 check(!(await page.locator('#nb-auth-logged-out').isHidden()),'no forced login');
 await page.locator('#nb-auth-check').click();
