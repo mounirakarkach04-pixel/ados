@@ -8,6 +8,7 @@ on:
       - 'ai-act-intelligence/portfolio.js'
       - 'ai-act-intelligence/publications.js'
       - 'ai-act-intelligence/journey.js'
+      - 'ai-act-intelligence/piga-act-bridge.js'
       - '.github/workflows/piga-ai-act-bundle.yml'
 permissions:
   contents: write
