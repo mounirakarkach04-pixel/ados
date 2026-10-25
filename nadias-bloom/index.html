@@ -223,8 +223,43 @@ const $=id=>document.getElementById(id),esc=t=>String(t==null?'':t).replace(/[&<
 const date=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,9);
 function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}}
-let state=Object.assign({},initial,read(KEY)||{});for(const k of Object.keys(initial)){if(state[k]===null||state[k]===undefined)state[k]=structuredClone(initial[k]);}
-if(!state.migrated){const old=read(OLD);if(old&&typeof old==='object'){for(const k of ['members','events','tasks','shop','meals','routines'])if(Array.isArray(old[k])&&(!Array.isArray(state[k])||!state[k].length))state[k]=old[k];if(old.prayers&&Object.values(old.prayers).some(Boolean))state.prayers=old.prayers;state.migrated=true;try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}}
+const NB_STATE_LISTS=['members','events','tasks','shop','meals','routines','notes','shura','journal','money','customRoutines'];
+const NB_STATE_MAPS=['daily','prayers','prayerDone','choreDone','settings'];
+function nbCleanState(source,strict=false){
+ if(!source||typeof source!=='object'||Array.isArray(source))throw Error('Kein gültiges Sicherungsobjekt');
+ if(strict&&!['members','events','tasks','shop'].every(k=>Array.isArray(source[k])))throw Error('Wichtige Listen fehlen');
+ const out=structuredClone(initial);
+ for(const key of NB_STATE_LISTS){
+  const values=source[key];if(values===undefined)continue;
+  if(!Array.isArray(values)||values.length>3000)throw Error('Ungültige oder zu große Liste: '+key);
+  out[key]=values.map(item=>{
+   if(!item||typeof item!=='object'||Array.isArray(item)||Object.keys(item).length>25)throw Error('Ungültiger Eintrag in '+key);
+   const copy={};
+   for(const [k,v] of Object.entries(item)){
+    if(k==='__proto__'||k==='constructor'||k==='prototype')continue;
+    if(v!==null&&!['string','number','boolean'].includes(typeof v))throw Error('Unerwartetes Datenfeld in '+key);
+    if(typeof v==='string'&&v.length>6000)throw Error('Textfeld zu lang');
+    if(typeof v==='number'&&!Number.isFinite(v))throw Error('Ungültiger Zahlenwert');
+    if((k==='date'||k==='birthday')&&v&&!(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)))throw Error('Ungültiges Datum');
+    copy[k]=v;
+   }
+   return copy;
+  });
+ }
+ for(const key of NB_STATE_MAPS){
+  const values=source[key];if(values===undefined)continue;
+  if(!values||typeof values!=='object'||Array.isArray(values)||Object.keys(values).length>4000)throw Error('Ungültige Einstellungen: '+key);
+  if(JSON.stringify(values).length>250000)throw Error('Datenbereich zu groß: '+key);
+  out[key]=Object.fromEntries(Object.entries(values).filter(([k])=>!['__proto__','constructor','prototype'].includes(k)));
+ }
+ out.migrated=strict?true:!!source.migrated;
+ return out;
+}
+let nbStoredDataDamaged=false;
+let state;
+try{state=nbCleanState(read(KEY)||structuredClone(initial))}catch{state=structuredClone(initial);nbStoredDataDamaged=true}
+
+if(!nbStoredDataDamaged&&!state.migrated){const old=read(OLD);if(old&&typeof old==='object'){for(const k of ['members','events','tasks','shop','meals','routines'])if(Array.isArray(old[k])&&(!Array.isArray(state[k])||!state[k].length))state[k]=old[k];if(old.prayers&&Object.values(old.prayers).some(Boolean))state.prayers=old.prayers;state.migrated=true;try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{toast('Speicher voll. Bitte Backup exportieren und ältere Inhalte reduzieren.');return false}}
 function toast(text){const t=$('toast');t.textContent=text;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),3800)}
 function fmt(d){if(!d)return'Ohne Datum';const x=d.split('-');return x.length===3?x[2]+'.'+x[1]+'.'+x[0]:d}
@@ -501,7 +536,18 @@ function shopText(){return 'Nadia’s Bloom – Einkauf\n'+state.shop.filter(x=>
 $('shareShop').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent(shopText()),'_blank','noopener,noreferrer');
 $('copyShop').onclick=async()=>{try{await navigator.clipboard.writeText(shopText());toast('Einkaufsliste kopiert.')}catch{toast('Kopieren nicht verfügbar. Nutze Teilen.')}}
 $('backup').onclick=()=>download('nadias-bloom-barakah-backup.json',JSON.stringify({schema:'nadias-bloom-v26',savedAt:new Date().toISOString(),state},null,2),'application/json');
-$('restore').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=async(e)=>{const file=e.target.files[0];if(!file||file.size>2000000){toast('Bitte eine gültige Sicherung unter 2 MB auswählen.');return}try{const j=JSON.parse(await file.text()),v=j.state||j;if(!v||typeof v!=='object'||!['members','tasks','shop','events'].every(k=>Array.isArray(v[k])))throw Error('schema');if(!confirm('Lokale Daten durch diese Sicherung ersetzen?'))return;state={...structuredClone(initial),...v,migrated:true};save();render();toast('Sicherung eingelesen.')}catch{toast('Die Sicherungsdatei ist ungültig.')}e.target.value=''};
+$('restore').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=async(e)=>{
+ const file=e.target.files?.[0];e.target.value='';
+ if(!file||file.size>2000000){toast('Bitte eine gültige Sicherung unter 2 MB auswählen.');return}
+ try{
+  const json=JSON.parse(await file.text()),candidate=nbCleanState(json.state||json,true);
+  const counts='Familie: '+candidate.members.length+' · Termine: '+candidate.events.length+' · Aufgaben: '+candidate.tasks.length;
+  if(!confirm('Die Sicherung enthält '+counts+'. Alle aktuellen Daten dieses Geräts ersetzen?'))return;
+  /* Commit storage BEFORE changing app state. If quota is full, previous data stay intact. */
+  localStorage.setItem(KEY,JSON.stringify(candidate));
+  state=candidate;render();toast('Sicherung geprüft und wiederhergestellt. ✿');
+ }catch(error){toast('Sicherung nicht übernommen: '+String(error?.message||'ungültige Datei').slice(0,100))}
+};
 $('downloadOffline').onclick=()=>{const copy=document.documentElement.outerHTML;download('Nadias_Bloom_Barakah_Home_2027_OFFLINE.html','<!doctype html>\n'+copy,'text/html;charset=utf-8');toast('Offline-HTML heruntergeladen.')};
 $('clearData').onclick=()=>{if(confirm('Alle lokal gespeicherten Nadia’s-Bloom-Daten unwiderruflich löschen? Bitte vorher sichern.')){localStorage.removeItem(KEY);location.reload()}};
 /* Happy disabled by explicit release gate: no portrait, tokens or live calls. PIGA owner voice remains unchanged. */
@@ -537,7 +583,15 @@ nbSession.access_token=data.access_token;nbSession.refresh_token=data.refresh_to
 nbSession.expires_at=Math.floor(Date.now()/1000)+(Number(data.expires_in)||3600);
 nbSession.email=data.user?.email||nbSession.email;
 sessionStorage.setItem(NB_AUTH_SESSION_KEY,JSON.stringify(nbSession));nbAuthRender();return true;
-}catch{nbSession=null;nbRecoveryReady=false;sessionStorage.removeItem(NB_AUTH_SESSION_KEY);sessionStorage.removeItem('nadia-auth-reset-ready');nbAuthRender();nbAuthStatus('Sitzung abgelaufen. Bitte erneut anmelden.');return false}
+}catch(error){
+ const reason=String(error?.message||'');
+ /* An outage, rate limit or timeout is not proof that the user's refresh token was revoked. */
+ if(!/(?:HTTP 400|HTTP 401|HTTP 403|invalid.grant|refresh.token.not.found|already.used|expired|revoked)/i.test(reason)){
+  nbAuthStatus('Kontodienst vorübergehend nicht erreichbar. Die lokale Planung bleibt verfügbar; deine Sitzung wird nicht vorschnell gelöscht.');
+  return false;
+ }
+ nbSession=null;nbRecoveryReady=false;sessionStorage.removeItem(NB_AUTH_SESSION_KEY);sessionStorage.removeItem('nadia-auth-reset-ready');nbAuthRender();nbAuthStatus('Sitzung abgelaufen. Bitte erneut anmelden.');return false;
+}
 }
 function nbAuthRender(){
 const active=!!nbSession?.access_token;
@@ -651,6 +705,7 @@ window.NADIA_AUTH_QA={configured:!!NB_SUPABASE_KEY,provider:'supabase-goTrue',ap
 
 nbSetupLocale();
 window.NADIAS_BLOOM_QA={version:'v28-i18n-15-lang-no-happy',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',read:()=>structuredClone(state),setView:openView,locale:()=>({...nbLocaleConfig()}),setLocale:(lang,country)=>{if(NB_LANGS[lang]&&NB_COUNTRIES[country]){const c=nbLocaleConfig();c.lang=lang;c.country=country;save();$('nb-lang-quick').value=lang;$('nb-lang-setting').value=lang;$('nb-country-setting').value=country;nbApplyLocale();render()}}};
+if(nbStoredDataDamaged)toast('Gespeicherte Daten sind beschädigt. Die bisherigen Rohdaten wurden nicht überschrieben; bitte Sicherung prüfen.');
 const today=date();$('eventForm').querySelector('[name=date]').value=today;$('mealForm').querySelector('[name=date]').value=today;$('moneyForm').querySelector('[name=date]').value=today;$('monthChoose').value=today.slice(0,7);
 if(location.hash){const h=location.hash.slice(1);if($('view-'+h))openView(h)}render();nbShowInstallState();
 window.addEventListener('hashchange',()=>{const h=decodeURIComponent(location.hash.slice(1));if($('view-'+h)&&!$('view-'+h).classList.contains('active'))openView(h)});
