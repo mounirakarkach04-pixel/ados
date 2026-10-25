@@ -58,6 +58,15 @@ check('New botanical design without face',html.includes('v28-i18n-15-lang-no-hap
 check('Civil holidays require Germany',html.includes('if(nbInGermany())for(const [date,title] of nbHolidayDates(y))'));
 check('Birthdays remain country-independent',html.includes('member.birthday.slice(5,7)===mon.slice(5,7)'));
 check('PWA standalone install mode',manifest.display==='standalone');
+const coverPath=path.join(root,'barakah-home-2027-original-cover.png');
+const coverBytes=fs.readFileSync(coverPath);
+const crypto=require('node:crypto');
+check('Exact original 2027 Blauregen cover SHA256 from owner Drive',crypto.createHash('sha256').update(coverBytes).digest('hex')==='bc939d4117bc4a2d96445973c0ca631e6560bae4a0326c26720612e2f0ff83d0');
+check('Original front cover appears as an image in both app sections',(html.match(/src="barakah-home-2027-original-cover.png"/g)||[]).length===2&&html.includes('object-position:right center'));
+check('No fake cover mockup replaces original image',!html.includes('class="nb-mini-cover"'));
+check('Feminine book-cover palette applies to the entire app',html.includes('original-cover-inspired wisteria couture')&&html.includes('.sidebar .side-btn')&&html.includes('.mobilebar button.active'));
+check('Three quickstart steps accurately labeled',html.includes('Drei kleine Schritte.')&&((html.match(/class="nb-step"/g)||[]).length===3));
+
 check('No credential-consuming voice integration',!html.includes('happy-live-token')&&!html.includes('LIVE_URL'));
 check('No admin credential in browser source',!html.includes('service_role')&&!html.includes('sb_secret_'));
 console.log(JSON.stringify({verdict:'PASS_LOCAL_SOURCE_INVARIANTS',checks:checks.length,failures:0,aiCalls:0,emailsSent:0,details:checks},null,2));
