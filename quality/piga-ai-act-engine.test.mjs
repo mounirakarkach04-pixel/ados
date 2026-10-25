@@ -67,8 +67,8 @@ test("13 canonical resolver lenses and broader provenance-linked architecture co
 });
 
 test("Zenodo bibliography is DOI-unique, categorised, provenance-rated and non-executable",()=>{
- assert.equal(publicationSummary.indexed,92);
- assert.equal(publicationSummary.zenodo_inspected,39);
+ assert.equal(publicationSummary.indexed,96);
+ assert.equal(publicationSummary.zenodo_inspected,43);
  assert.equal(publicationSummary.author_indexed,53);
  assert.equal(new Set(publicationCatalog.map(p=>p.doi)).size,publicationSummary.indexed);
  assert.ok(publicationCatalog.every(p=>/^10\.5281\/zenodo\.\d{7,9}$/.test(p.doi)));
