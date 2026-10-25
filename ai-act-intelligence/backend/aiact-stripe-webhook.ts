@@ -105,12 +105,16 @@ Deno.serve(async(req:Request)=>{
    if(/^pi_[A-Za-z0-9]+$/.test(paymentIntent)){
     const receipts=await supa(db,service,"aiact_payment_receipts?stripe_payment_intent=eq."+encodeURIComponent(paymentIntent)+"&select=owner_id,sku,stripe_checkout_session");
     if(Array.isArray(receipts)&&receipts.length){
+     let changed=0;
      for(const receipt of receipts){
+      if(!receipt.owner_id||!receipt.sku||!receipt.stripe_checkout_session)throw Error("RECEIPT_OWNER_SCOPE_MISSING");
       const qs="aiact_entitlements?owner_id=eq."+encodeURIComponent(receipt.owner_id)+"&sku=eq."+encodeURIComponent(receipt.sku)
        +"&stripe_checkout_session=eq."+encodeURIComponent(receipt.stripe_checkout_session);
-      await supa(db,service,qs,"PATCH",{status:"REVOKED",expires_at:new Date().toISOString()});
+      const updated=await supa(db,service,qs,"PATCH",{status:"REVOKED",expires_at:new Date().toISOString()});
+      if(!Array.isArray(updated))throw Error("REVOCATION_READBACK_MISSING");
+      changed+=updated.length;
      }
-     status="REVOKED";
+     status=changed>0?"REVOKED":"IGNORED";
     }
    }
   }
