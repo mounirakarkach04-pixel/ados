@@ -56,10 +56,10 @@ for(const id of ['staffCodeBadge','kpiStaff','kpiToday','kpiTotal','kpiState','w
 for(const required of ['staff_code','ortho_work_events','function loadTrail()','event_type','occurred_at','caseEvents','toLocaleString']){
  assert(workspace.includes(required),'Missing v0.6 employee-trace logic '+required);
 }
-assert(read('sw.js').includes('piga-ortho-v060-static'),'Offline service worker version not bumped');
+assert(read('sw.js').includes('piga-ortho-v070-static'),'Offline service worker version not bumped');
 assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
 assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
-process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 14 parity assets, offline cache, controls, gate boundaries, attribution.\n');
+process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 19 parity assets, offline cache, controls, gate boundaries, attribution.\n');
 
 const cockpit=read('dashboard.html');const navScript=read('navigation.js');const cockpitCode=read('dashboard.js');
 for(const name of ['index.html','praxis.html','workflow.html','dashboard.html']){
