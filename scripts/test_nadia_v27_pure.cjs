@@ -33,7 +33,8 @@ function extract(name){
   throw Error('Unclosed function: '+name)
 }
 const bundle=['nbIsoUTC','nbDayShift','nbEaster','nbHolidayDates','nbMonthDetails'].map(extract).join('\n');
-const sandbox={state:{members:[{name:'Test-Geburtstag',birthday:'2020-10-14'}]},NB_SCHOOL:[],NB_ISLAM:[],fmt:x=>x};
+const sandbox={state:{members:[{name:'Test-Geburtstag',birthday:'2020-10-14'}],settings:{nbLocale:{lang:'de',country:'DE'}}},NB_SCHOOL:[['2026-10-05','2026-10-17','Herbstferien Hessen']],NB_ISLAM:[['2027-03-09','Eid al-Fitr']],fmt:x=>x,nbLocalizedIslam:x=>x};
+sandbox.nbInGermany=()=>sandbox.state.settings.nbLocale.country==='DE';
 vm.runInNewContext(bundle+';globalThis.__qa={nbHolidayDates,nbMonthDetails}',sandbox,{timeout:1000});
 const {nbHolidayDates,nbMonthDetails}=sandbox.__qa;
 const oct=nbMonthDetails(2026,10),nov=nbMonthDetails(2026,11);
@@ -42,6 +43,12 @@ check('November excludes October birthday',!nov.some(e=>e.title.includes('Test-G
 check('May 2031 public holiday',nbMonthDetails(2031,5).some(e=>e.date==='2031-05-01'&&e.title==='Tag der Arbeit'));
 check('October 2026 German Unity Day',oct.some(e=>e.date==='2026-10-03'&&e.title==='Tag der Deutschen Einheit'));
 check('2027 Easter dates',nbHolidayDates(2027).some(e=>e[0]==='2027-03-26'&&e[1]==='Karfreitag')&&nbHolidayDates(2027).some(e=>e[0]==='2027-03-29'&&e[1]==='Ostermontag'));
+check('Germany includes Hessen vacation',nbMonthDetails(2026,10).some(e=>e.type==='vacation'));
+sandbox.state.settings.nbLocale.country='NL';
+check('Netherlands removes German holidays and school vacation',!nbMonthDetails(2026,10).some(e=>e.type==='holiday'||e.type==='vacation'));
+check('Netherlands keeps Islamic occasions',nbMonthDetails(2027,3).some(e=>e.type==='islam'));
+check('Netherlands retains birthday',nbMonthDetails(2026,10).some(e=>e.type==='birthday'));
+sandbox.state.settings.nbLocale.country='DE';
 for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png']) check('Static asset '+f,fs.statSync(path.join(root,f)).size>0);
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
 check('PWA launch scope',manifest.display==='standalone'&&manifest.start_url==='./'&&manifest.scope==='./');
