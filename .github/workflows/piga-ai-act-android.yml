@@ -1,0 +1,50 @@
+name: PIGA AI Act Android Debug APK
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ai-act-intelligence/**'
+      - 'mobile/**'
+      - '.github/workflows/piga-ai-act-android.yml'
+permissions:
+  contents: read
+concurrency:
+  group: piga-aiact-android-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install Android components
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+      - name: Install and create native project
+        working-directory: mobile
+        run: |
+          npm install --no-audit --no-fund --ignore-scripts
+          npx cap add android
+          npx cap sync android
+      - name: Build unsigned release? No — safe debug APK
+        working-directory: mobile/android
+        run: chmod +x gradlew && ./gradlew --no-daemon assembleDebug
+      - name: Verify artifact
+        run: |
+          test -s mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          sha256sum mobile/android/app/build/outputs/apk/debug/app-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: piga-ai-act-android-debug-apk
+          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
