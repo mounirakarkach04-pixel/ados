@@ -1,7 +1,46 @@
-const CACHE='nadias-bloom-v28-20261025',CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'],OPTIONAL=['./icon-192.png','./icon-512.png'];
-self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(CORE);await Promise.allSettled(OPTIONAL.map(url=>cache.add(url)));await self.skipWaiting()})())});
-self.addEventListener('activate',event=>{event.waitUntil((async()=>{for(const k of await caches.keys())if(k.startsWith('nadias-bloom-')&&k!==CACHE)await caches.delete(k);await self.clients.claim()})())});
+/* Nadia's Bloom v28: safe, bounded offline shell. Authentication URLs are never cached. */
+const CACHE='nadias-bloom-v28-20261025-secure1';
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'];
+const OPTIONAL=['./icon-192.png','./icon-512.png','./barakah-home-2027-original-cover.png'];
+const SCOPE=new URL('./',self.location.href);
+const CACHEABLE=new Set([...CORE,...OPTIONAL].map(file=>new URL(file,SCOPE).pathname));
+const NAVIGATIONS=new Set([new URL('./',SCOPE).pathname,new URL('index.html',SCOPE).pathname]);
+self.addEventListener('install',event=>{
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE);
+    await cache.addAll(CORE);
+    await Promise.allSettled(OPTIONAL.map(file=>cache.add(file)));
+    await self.skipWaiting();
+  })());
+});
+self.addEventListener('activate',event=>{
+  event.waitUntil((async()=>{
+    for(const key of await caches.keys())if(key.startsWith('nadias-bloom-')&&key!==CACHE)await caches.delete(key);
+    await self.clients.claim();
+  })());
+});
 self.addEventListener('fetch',event=>{
-if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;
-event.respondWith((async()=>{try{const response=await fetch(event.request);if(response.ok){const cache=await caches.open(CACHE);void cache.put(event.request,response.clone()).catch(()=>{})}return response}catch{const cache=await caches.open(CACHE),match=await cache.match(event.request);if(match)return match;if(event.request.mode==='navigate')return(await cache.match('./index.html'))||Response.error();return Response.error()}})())
+  const req=event.request,url=new URL(req.url);
+  if(req.method!=='GET'||url.origin!==self.location.origin)return;
+  /* Supabase login/reset may return ?token_hash, ?code, ?error and sensitive URLs.
+     Do not intercept or persist ANY query-bearing request, even on the app root. */
+  if(url.search||url.hash||req.headers.has('authorization'))return;
+  if(req.mode==='navigate'&&!NAVIGATIONS.has(url.pathname))return;
+  if(!CACHEABLE.has(url.pathname))return;
+  event.respondWith((async()=>{
+    try{
+      const response=await fetch(req);
+      if(response.ok&&response.type!=='opaque'){
+        const cache=await caches.open(CACHE);
+        await cache.put(req,response.clone()).catch(()=>{});
+      }
+      return response;
+    }catch{
+      const cache=await caches.open(CACHE);
+      const cached=await cache.match(req);
+      if(cached)return cached;
+      if(req.mode==='navigate')return(await cache.match('./index.html'))||Response.error();
+      return Response.error();
+    }
+  })());
 });
