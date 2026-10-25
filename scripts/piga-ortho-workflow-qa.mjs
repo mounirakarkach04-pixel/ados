@@ -47,4 +47,16 @@ assert(read('praxis.js').includes('/rest/v1/rpc/ortho_claim_owner'),'Owner one-t
 assert(read('praxis.js').includes("profile?.role==='owner'"),'Owner guard absent');
 assert(read('praxis.html').includes('Die Eingabe echter Patientendaten ist hier derzeit deaktiviert.'),'Health-data exclusion missing');
 assert(js.includes('application/json')&&js.includes('clinicalApproved:false'),'Export and nonclinical flag required');
+
+const praxis=read('praxis.html');
+const workspace=read('praxis.js');
+for(const id of ['staffCodeBadge','kpiStaff','kpiToday','kpiTotal','kpiState','workStaffCode','handoffPanel','traceCase','traceLoad','traceCsv','traceList','traceSummary']){
+ assert(praxis.includes('id="'+id+'"'),'Missing v0.6 employee-trace UI '+id);
+}
+for(const required of ['staff_code','ortho_work_events','function loadTrail()','event_type','occurred_at','caseEvents','toLocaleString']){
+ assert(workspace.includes(required),'Missing v0.6 employee-trace logic '+required);
+}
+assert(read('sw.js').includes('piga-ortho-v060-static'),'Offline service worker version not bumped');
+assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
+assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
 process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 14 parity assets, offline cache, controls, gate boundaries, attribution.\n');

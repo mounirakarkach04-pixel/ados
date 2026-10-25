@@ -26,3 +26,5 @@ jobs:
           node --check piga-ortho-3d/praxis.js
       - name: Verify interactive workflow, gates and APK asset source parity
         run: node scripts/piga-ortho-workflow-qa.mjs
+      - name: Parse responsive pages and reject malformed HTML nesting
+        run: python3 scripts/piga-ortho-html-qa.py
