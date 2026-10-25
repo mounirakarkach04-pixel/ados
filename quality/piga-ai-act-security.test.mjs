@@ -111,3 +111,14 @@ test("dedicated Stripe webhook verifies signatures and never grants by redirect 
  assert.ok(hook.includes("session?.metadata?.piga_origin"));
  assert.ok(hook.includes("receipt.stripe_checkout_session"));
 });
+
+test("post-purchase account progress uses verified owner session and server entitlement",()=>{
+ const app=read("ai-act-intelligence/app.js"),html=read("ai-act-intelligence/index.html");
+ assert.ok(html.includes('id="account-journey"'));
+ for(const fragment of ["function renderAccountJourney(", 'ownerAtRequest=user.id','user.id!==ownerAtRequest',
+   'e.status==="ACTIVE"','E-Mail bestätigt','Zahlung bestätigt','Lizenz aktiv']){
+  assert.ok(app.includes(fragment),"missing bound account milestone: "+fragment);
+ }
+ assert.ok(app.includes('originalPrintTitle'));
+ assert.ok(html.includes('id="report-document-id"'));
+});
