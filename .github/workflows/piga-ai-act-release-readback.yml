@@ -1,6 +1,8 @@
 name: PIGA AI Act Production Readback Worker
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *' # once daily UTC; one bounded Gate1/readback/Reverse cycle
   workflow_run:
     workflows: ['pages build and deployment']
     types: [completed]
