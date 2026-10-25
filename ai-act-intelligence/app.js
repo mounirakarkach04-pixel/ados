@@ -172,7 +172,10 @@ function renderReport(){
    '<div class="legal-map-footer"><div>'+item.links.map(link=>'<a href="'+escapeHTML(link.url)+'" target="_blank" rel="noopener noreferrer">Art. '+escapeHTML(link.article)+' ↗</a>').join(" ")+'</div>'+
    '<button type="button" data-bridge-sku="'+escapeHTML(item.sku)+'">Passende Lösung →</button></div>'+
   '</article>').join("");
- $("report-legal-map").querySelectorAll("[data-bridge-sku]").forEach(b=>b.addEventListener("click",()=>selectOffer(b.dataset.bridgeSku)));
+ $("report-legal-map").querySelectorAll("[data-bridge-sku]").forEach(b=>{
+  if(r.is_demo)b.textContent="Eigene Analyse starten →";
+  b.addEventListener("click",()=>r.is_demo?show("assessment"):selectOffer(b.dataset.bridgeSku));
+ });
 
  $("report-document-id").textContent=(r.assessment_id||"PREASSESSMENT").slice(0,21).toUpperCase();
  $("report-system-version").textContent=r.subject?.version||"Nicht angegeben";
