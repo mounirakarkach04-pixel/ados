@@ -36,3 +36,9 @@ Slicerintegration, geprüfter Android-Native-Adapter, validierte revisionssicher
 regulatorische und versicherungsseitige Prüfung.
 
 PIGA Forschungsprojekt – im Auftrag von Mounir Akarkach. Kostenlos für seinen Bruder.
+
+
+PROZESSNAVIGATOR v0.3
+---------------------
+https://mounirakarkach04-pixel.github.io/ados/piga-ortho-3d/workflow.html
+Eine interaktive 12-Phasen-Prozessdarstellung mit farblich gekennzeichnetem Implementierungsstatus, Eingabe-/Prüf-/Ausgabekette, Gate 1/2, A7SEM Reverse und JSON-Export. Keine klinischen Berechnungen und keine Patientendatenverarbeitung im Navigator.
