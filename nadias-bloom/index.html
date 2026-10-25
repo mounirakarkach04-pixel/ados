@@ -338,6 +338,36 @@ input:focus,textarea:focus,select:focus{outline:2px solid #b98bb0!important}
 .nb-piga-guard-details{margin-top:12px;padding:12px;border:1px solid #eee0eb;border-radius:15px;background:#ffffffb0;font-size:12px;color:#665467}
 .nb-piga-guard-details summary{cursor:pointer;font-weight:800}
 .nb-piga-guard-result{max-width:750px;overflow-wrap:anywhere}
+
+/* v28: modern, feminine, legible and accessible in all supported scripts. */
+:root{--nb-primary:#94617f;--nb-secondary:#b089a2;--nb-blush:#f8e5f0;--nb-violet:#e8dbe9;--nb-paper:#fffafa;--nb-contrast:#392e3d}
+:where(button,.btn,select,input,[data-view]){touch-action:manipulation}
+:where(button,.btn,input,select,textarea):focus-visible{outline:3px solid #b66b91;outline-offset:3px;box-shadow:0 0 0 6px #f6dbe7}
+:where(.card,.nb-book-showcase,.nb-locale-card){overflow-wrap:anywhere}
+:where(.card,.nb-locale-card) h2{line-height:1.2}
+:where(.content,.view,.topbar,.topbar-actions){min-width:0}
+:where(.btn,.side-btn,.mobilebar button){min-height:44px}
+:where(.field input,.field select,.field textarea){min-height:44px}
+@media(max-width:750px){
+ .topbar{gap:10px;align-items:center}
+ .topbar-actions{max-width:60%;flex-wrap:wrap;justify-content:flex-end}
+ .nb-lang-top select{max-width:min(30vw,130px);width:100%}
+ .hero{border-radius:24px}
+ .hero h1{font-size:clamp(28px,9vw,49px)}
+ .view .title{font-size:clamp(27px,8vw,44px);line-height:1.15}
+ .nb-book-showcase{grid-template-columns:minmax(0,1fr)}
+ .nb-book-cover{max-width:280px;margin-inline:auto}
+ .mobilebar{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
+ .content{padding-bottom:calc(105px + env(safe-area-inset-bottom,0px))}
+}
+:lang(ar) :where(.title,.hero h1,.nb-book-showcase h2,.nb-piga-guard h2),:lang(th) :where(.title,.hero h1),:lang(zh) :where(.title,.hero h1),:lang(ja) :where(.title,.hero h1),:lang(ko) :where(.title,.hero h1){
+ font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.35;letter-spacing:0
+}
+html[dir="rtl"] .nb-book-showcase{direction:rtl}
+html[dir="rtl"] .mobilebar{direction:rtl}
+html[dir="rtl"] :where(.card,.nb-book-showcase){text-align:right}
+@media(prefers-reduced-motion:reduce){.side-btn,.btn{transition:none!important;animation:none!important}}
+
 </style></head><body><a class="skip" href="#main">Zum Inhalt springen</a>
 <div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><span class="flower" aria-hidden="true"><img src="icon.svg" width="43" height="43" alt="" decoding="async"></span><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
@@ -599,7 +629,7 @@ function sortDays(arr){return arr.slice().sort((a,b)=>String(a.date||'').localeC
 function row(obj,sub,kind,buttons){return '<div class="item '+(obj.done?'done':'')+'"><div class="main"><strong>'+esc(obj.title||obj.name||obj.text||'')+'</strong><small>'+esc(sub||'')+'</small></div><div class="item-actions">'+(buttons||'')+'</div></div>'}
 function action(k,id,title){return '<button class="iconbtn" data-remove="'+k+'" data-id="'+esc(id)+'" aria-label="'+esc(title||'Eintrag entfernen')+'" title="Entfernen">×</button>'}
 function empty(text){return '<div class="empty">'+esc(text)+'</div>'}
-function openView(id){if(!$('view-'+id))id='start';document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+id));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===id));$('crumb').textContent=({start:'Mein Zuhause',kalender:'Kalender',aufgaben:'Aufgaben',kinder:'Kinder-Kompass',essen:'Essen',einkauf:'Einkauf',haushalt:'Haushalt',geld:'Finanzen',iman:'Iman & Barakah',journal:'Dankbarkeit',buch:'Buch & Einstellungen'})[id]||id;location.hash=id;scrollTo({top:0,behavior:'instant'});render()}
+function openView(id){if(!$('view-'+id))id='start';document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+id));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===id));$('crumb').textContent=nbTr(id);location.hash=id;scrollTo({top:0,behavior:'instant'});render()}
 function defaultMember(){return '<option value="">Für die ganze Familie</option>'+state.members.map(m=>'<option value="'+esc(m.id)+'">'+esc(m.name)+'</option>').join('')}
 function membership(id){return state.members.find(m=>m.id===id)?.name||'Familie'}
 function getDua(d){let k=d;if(!DUAS[k])k='2027-'+d.slice(5);return DUAS[k]||DUAS['2027-01-01']}
