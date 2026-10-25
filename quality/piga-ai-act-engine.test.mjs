@@ -84,3 +84,26 @@ test("PEKI is not confused with AUEF and AVM has correct canonical name",()=>{
  assert.match(names.get("AUEF"),/Unified Epistemic Framework/);
  assert.match(names.get("AVM"),/Akarkach Valuation Model/);
 });
+
+import {PIGA_ACT_BRIDGE,evidenceBridgeForReport,BRIDGE_BOUNDARY} from "../ai-act-intelligence/piga-act-bridge.js";
+test("EU articles map to explicit questions, evidence and bounded PIGA control proposals",()=>{
+ assert.deepEqual(PIGA_ACT_BRIDGE.flatMap(x=>x.refs),["5","9","10","12","14"]);
+ assert.equal(PIGA_ACT_BRIDGE.length,4);
+ const report=evaluate({...base,prohibited:true,controls:{risk:true,logs:true,oversight:true}});
+ const rows=evidenceBridgeForReport(report,{controls:{risk:true,logs:true,oversight:true}});
+ assert.equal(rows[0].priority,"critical");
+ assert.match(rows[0].proofStatus,/Verbotsrisiko/);
+ assert.match(rows[1].proofStatus,/nicht geprüft/);
+ for(const row of rows){
+  assert.match(row.technicalStatus,/nicht als produktive Sperre nachgewiesen/);
+  assert.ok(row.links.every(l=>l.url==="https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-"+l.article));
+  assert.ok(row.question.length>30&&row.proof.length>25);
+ }
+ assert.match(BRIDGE_BOUNDARY,/keine Kunden-Inferenz/);
+});
+test("unflagged non-high-risk inputs are never granted technical or legal conformity from public bridge",()=>{
+ const r=evaluate({...base,sector:"general"});
+ const rows=evidenceBridgeForReport(r,{});
+ assert.ok(rows.every(row=>row.applicability.includes("prüfen")||row.applicability.includes("Klassifikation")));
+ assert.ok(rows.every(row=>row.proofStatus!=="VERIFIED"&&row.priority!=="critical"));
+});
