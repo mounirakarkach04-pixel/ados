@@ -148,3 +148,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
  .results-grid{display:block}
  .report-metrics strong{font-size:16pt}
 }
+
+/* PDF-style provenance with source status; restrained in-app, legible in A4. */
+.report-provenance{border-top:3px solid #0a73e9;background:linear-gradient(180deg,#fff,#fafcff)}
+.report-provenance-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:17px 0}
+.report-provenance-grid>div{border:1px solid #dce9f6;background:#f8fbff;border-radius:10px;padding:12px;min-width:0}
+.report-provenance-grid small{display:block;font-size:10px;font-weight:800;color:#7790a6;margin-bottom:5px}
+.report-provenance-grid b{display:block;font-size:11px;color:#234e7a;overflow-wrap:anywhere}
+.report-provenance p{font-size:11px;line-height:1.75}.report-provenance a{color:#056bcf;text-decoration:underline}
+@media(max-width:750px){.report-provenance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media print{.report-provenance{break-inside:avoid;box-shadow:none}.report-provenance-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.report-provenance-grid>div{padding:8px}}
