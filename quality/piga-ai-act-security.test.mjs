@@ -60,3 +60,11 @@ test("native or unverified website cannot start payment lacking a secure return 
  assert.ok(source.includes('redirectTo:accountEmailRedirect'));
  assert.ok(source.includes('const HOSTED_APP="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/"'));
 });
+
+test("user-controlled assessment and attached evidence deletion is ownership-bounded",()=>{
+ const source=read("ai-act-intelligence/app.js");
+ for(const fragment of ['data-delete','window.confirm(','user.id+"/"+record.id+"/"','uploaded.some(','storage.from("aiact-evidence").remove(paths)', '.delete().eq("id",record.id).eq("owner_id",user.id).select("id")']){
+  assert.ok(source.includes(fragment),"missing scoped-deletion guard "+fragment);
+ }
+ assert.match(read("ai-act-intelligence/privacy.html"),/einzelne gespeicherte Vorprüfungen/);
+});
