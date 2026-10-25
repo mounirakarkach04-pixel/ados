@@ -97,3 +97,17 @@ test("premium UX exposes solutions and blocks blind purchase before order review
  assert.ok(sw.includes('"./design-v3.css"'));
  assert.equal((html.match(/class="journey-step/g)||[]).length,7);
 });
+
+test("dedicated Stripe webhook verifies signatures and never grants by redirect claim",()=>{
+ const hook=read("ai-act-intelligence/backend/aiact-stripe-webhook.ts");
+ for(const fragment of ["STRIPE_WEBHOOK_SECRET","stripe-signature","verifySignedPayload","HMAC","SHA-256",
+    "payment_status","line_items","amount_total","aiact_grant_paid_license","aiact_webhook_events",
+    'status:"REVOKED"',"charge.dispute.created","charge.refunded","checkout.session.async_payment_succeeded"]){
+   assert.ok(hook.includes(fragment),"missing webhook security requirement "+fragment);
+ }
+ assert.doesNotMatch(hook,/whsec_[0-9A-Za-z]{20,}|sk_live_[0-9A-Za-z]{20,}/);
+ assert.ok(hook.includes("WEBHOOK_RUNTIME_NOT_ADMITTED"));
+ assert.ok(hook.includes('!await verifySignedPayload('));
+ assert.ok(hook.includes("session?.metadata?.piga_origin"));
+ assert.ok(hook.includes("receipt.stripe_checkout_session"));
+});
