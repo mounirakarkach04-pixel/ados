@@ -50,7 +50,7 @@
   }
   return {triangles,degenerate,bounds:min.map((v,i)=>max[i]-v),min,max};
  }
- function reset(){set('stepScan','OFFEN');set('stepFile','OFFEN');set('stepMeasure','OFFEN');$('saveEvidence').disabled=true;evidence=null;}
+ function reset(){set('stepScan','OFFEN');set('stepFile','OFFEN');set('stepMeasure','OFFEN');$('saveEvidence').disabled=true;$('openReport').disabled=true;evidence=null;}
  async function process(file){
   reset();log('Modell wird ausschließlich auf diesem Gerät geprüft …');
   try{
@@ -62,8 +62,9 @@
    set('stepScan','LOKAL');set('stepFile',m.degenerate?'HINWEIS':'GEPRÜFT');set('stepMeasure','EINHEIT OFFEN');
    evidence={schema:'piga-ortho-technical-device-evaluation.v1',time:new Date().toISOString(),sourceFile:file.name.slice(0,120),synthetic:Boolean(file.synthetic),sha256:hash,sizeBytes:file.size,triangles:m.triangles,degenerate:m.degenerate,stlUnits:'UNKNOWN',boundsSTL:m.bounds.map(x=>Number(x.toFixed(4))),piga:{gate1:'DELAY',reason:'Einheit, fachliche Eingangsprüfung und Mesh-Manifoldness nicht bestätigt',gate2:'BLOCK'},a7semReverse:{effect:'NO_DEVICE_ACTION',readback:'NOT_APPLICABLE'},medicalMeasurements:'NOT_COMPUTED',deviceTransmissions:0,clinicalApproved:false};
    log('Format: Binary STL · '+m.triangles+' Dreiecke · '+m.degenerate+' geometrisch degeneriert\nGrenzmaße X/Y/Z (STL-Einheiten): '+m.bounds.map(x=>x.toFixed(3)).join(' / ')+'\nSHA-256: '+hash+'\nPIGA Gate 1: DELAY (Maßstab unbekannt). Gate 2: BLOCK.');
-   $('saveEvidence').disabled=false;
-  }catch(err){reset();log('BLOCK / Fehler: '+String(err.message).slice(0,220),true);}
+   $('saveEvidence').disabled=false;$('openReport').disabled=false;
+   return evidence;
+  }catch(err){reset();log('BLOCK / Fehler: '+String(err.message).slice(0,220),true);return null;}
  }
  $('scanFile').onchange=e=>{process(e.target.files?.[0]);e.target.value='';};
  $('scanFile2').onchange=e=>{process(e.target.files?.[0]);e.target.value='';};
@@ -90,6 +91,45 @@
    Object.defineProperty(file,'synthetic',{value:true});return file;
  }
  $('demoModel').onclick=()=>process(makeDemo());
+ async function report(){
+   if(!evidence)return log('Keine zulässige technische Evidenz für einen Bericht.','error');
+   try{
+     const e=evidence,list=[];let prior='GENESIS';
+     const stages=[
+       ['SESSION_INITIALIZED','OBSERVED',{mode:'technical-demo',synthetic:e.synthetic}],
+       ['STL_IMPORT','OBSERVED',{fileBytes:e.sizeBytes,triangles:e.triangles,invalid:0,degenerateSample:e.degenerate,sha256:e.sha256,synthetic:e.synthetic}],
+       ['TECHNICAL_GEOMETRY','OBSERVED',{bounds:e.boundsSTL,units:'UNVERIFIED_STL_UNITS'}],
+       ['PIGA_GATE1_EVALUATION','DELAY',{reason:e.piga.reason}],
+       ['FINITE_INFINITE_START','OBSERVED',{maxCycles:2,automaticActions:false}],
+       ['FINITE_WORKER_CYCLE','OBSERVED',{cycle:1,geometryObserved:true,externalEffects:0}],
+       ['FINITE_WORKER_CYCLE','OBSERVED',{cycle:2,readback:'NO_EXTERNAL_EFFECT',externalEffects:0}],
+       ['FINITE_INFINITE_RESULT','OBSERVED',{status:'COMPLETED',externalEffects:0}],
+       ['A7SEM_REVERSE','UNKNOWN',{op:'NONE',before:'NO_ACTION',after:'NO_ACTION',fileMatches:false,externalEffects:0}]
+     ];
+     for(const [type,decision,details] of stages){
+       const item={schema:'piga-ortho-event.v1',time:new Date().toISOString(),sequence:list.length+1,type,decision,
+         caseId:e.synthetic?'CASE-DEMO-001':null,modelSha256:e.sha256,details,previousSha256:prior};
+       item.sha256=await sha(new TextEncoder().encode(JSON.stringify(item)));
+       if(!item.sha256)throw Error('SHA256 unavailable');
+       prior=item.sha256;list.push(item);
+     }
+     const payload={
+       schema:'piga-ortho-report-input.v1',exportedAt:new Date().toISOString(),
+       caseId:e.synthetic?'CASE-DEMO-001':null,gate1:'DELAY',gate2:'BLOCK',readback:'UNKNOWN',
+       unitVerified:false,clinicalApproved:false,
+       model:{name:e.sourceFile,sha256:e.sha256,triangles:e.triangles,bounds:e.boundsSTL,fileBytes:e.sizeBytes,invalid:0,synthetic:e.synthetic},
+       events:list,terminalSha256:prior
+     };
+     sessionStorage.setItem('piga-ortho-report-once',JSON.stringify(payload));
+     location.assign('./report.html');
+   }catch(err){log('Druckakte nicht erstellt: '+String(err.message).slice(0,120)+' · Sie können den Prüfbeleg getrennt exportieren.','error');}
+ }
+ $('openReport').onclick=report;
+ $('demoJourney').onclick=async()=>{
+   const file=makeDemo(),checked=await process(file);
+   if(checked)await report();
+ };
+
  $('saveEvidence').onclick=()=>{
    if(!evidence)return;
    const blob=new Blob([JSON.stringify(evidence,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
