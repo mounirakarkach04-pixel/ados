@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { evaluate, articleCatalog, LAW_VERSION } from "../ai-act-intelligence/engine.js";
+import {publicationCatalog,publicationSummary} from "../ai-act-intelligence/publications.js";
 const base={title:"HR Helper",purpose:"Ranks employment applicants",version:"1.0",role:"provider",sector:"employment",controls:{}};
 test("all 113 statutory article numbers are indexed, unreviewed clearly marked",()=>{
  assert.equal(articleCatalog.length,119);
@@ -51,7 +52,8 @@ test("non-Annex III ordinary AI is not pre-certified as low risk",()=>{
 
 test("13 canonical resolver lenses and broader provenance-linked architecture corpus stay separate",()=>{
  const r=evaluate(base);
- assert.ok(r.architecture.length>40);
+ assert.equal(r.architecture.length,73);
+ assert.equal(r.architecture_summary.sector,11);
  assert.equal(r.architecture_summary.canonical,13);
  assert.equal(r.architecture_summary.indexed,r.architecture.length);
  assert.ok(r.architecture_summary.research>=15);
@@ -62,4 +64,23 @@ test("13 canonical resolver lenses and broader provenance-linked architecture co
  for(const x of ["AUEF","PEKI","AHASM","SRE","ARC_S","ARGUS_7","A7SEM_REVERSE","ALGORITHMIC_SOUL","PIGA_H","EFT","REGISTRY_500","DECISION_PASSPORT"])
    assert.ok(r.architecture.find(y=>y.id===x),"missing "+x);
  assert.equal(r.architecture.every(x=>x.case_status==="NOT_INDEPENDENTLY_EVALUATED"&&x.licensed_material_excluded),true);
+});
+
+test("Zenodo bibliography is DOI-unique, categorised, provenance-rated and non-executable",()=>{
+ assert.equal(publicationSummary.indexed,92);
+ assert.equal(publicationSummary.zenodo_inspected,39);
+ assert.equal(publicationSummary.author_indexed,53);
+ assert.equal(new Set(publicationCatalog.map(p=>p.doi)).size,publicationSummary.indexed);
+ assert.ok(publicationCatalog.every(p=>/^10\.5281\/zenodo\.\d{7,9}$/.test(p.doi)));
+ assert.ok(publicationCatalog.every(p=>/^https:\/\/doi\.org\/10\.5281\/zenodo\.\d{7,9}$/.test(p.url)));
+ assert.ok(publicationCatalog.every(p=>/licen[sc]e/i.test(p.rights_notice)));
+ for(const doi of ["10.5281/zenodo.17905081","10.5281/zenodo.17614357","10.5281/zenodo.19058610","10.5281/zenodo.21393619"])
+   assert.ok(publicationCatalog.some(p=>p.doi===doi),"missing "+doi);
+});
+test("PEKI is not confused with AUEF and AVM has correct canonical name",()=>{
+ const r=evaluate(base);
+ const names=new Map(r.architecture.map(x=>[x.id,x.name]));
+ assert.match(names.get("PEKI"),/Performative Epistemology/);
+ assert.match(names.get("AUEF"),/Unified Epistemic Framework/);
+ assert.match(names.get("AVM"),/Akarkach Valuation Model/);
 });
