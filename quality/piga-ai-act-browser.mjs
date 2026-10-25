@@ -64,7 +64,7 @@ try{
  const gate1=await page.locator("#gate1").innerText();
  const gate2=await page.locator("#gate2").innerText();
  assert.equal(gate1,"DELAY");assert.equal(gate2,"BLOCK");
- assert.match(await page.locator("#findings").innerText(),/Art\\. 9/);
+ assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
  assert.equal(await page.locator("#report-legal-map .legal-map-card").count(),4);
  assert.equal(await page.locator("#report-legal-map .legal-map-footer a").count(),5);
  assert.match(await page.locator("#report-legal-map").innerText(),/Nachweis nicht vorgelegt/);
