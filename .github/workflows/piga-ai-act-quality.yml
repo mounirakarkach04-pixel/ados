@@ -23,6 +23,7 @@ jobs:
       - name: Parse ESM module syntax
         run: |
           node --check ai-act-intelligence/engine.js
+          node --check ai-act-intelligence/piga-act-bridge.js
           node --check ai-act-intelligence/app.js
           node --check ai-act-intelligence/sw.js
       - name: Verify PIGA gates and EU AI Act evidence semantics
