@@ -5,6 +5,7 @@ on:
     paths:
       - 'ai-act-intelligence/**'
       - 'quality/piga-ai-act-engine.test.mjs'
+      - 'quality/piga-ai-act-security.test.mjs'
       - '.github/workflows/piga-ai-act-quality.yml'
 permissions:
   contents: read
@@ -25,4 +26,4 @@ jobs:
           node --check ai-act-intelligence/app.js
           node --check ai-act-intelligence/sw.js
       - name: Verify PIGA gates and EU AI Act evidence semantics
-        run: node --test quality/piga-ai-act-engine.test.mjs
+        run: node --test quality/piga-ai-act-engine.test.mjs quality/piga-ai-act-security.test.mjs
