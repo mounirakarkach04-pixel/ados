@@ -1,0 +1,27 @@
+name: PIGA ORTHO 3D — Workflow UX and Glassbox QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'piga-ortho-3d/**'
+      - 'scripts/piga-ortho-workflow-qa.mjs'
+      - '.github/workflows/piga-ortho-workflow-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ux-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static syntax verification
+        run: |
+          node --check piga-ortho-3d/workflow.js
+          node --check piga-ortho-3d/app.js
+          node --check piga-ortho-3d/sw.js
+      - name: Verify interactive workflow, gates and APK asset source parity
+        run: node scripts/piga-ortho-workflow-qa.mjs
