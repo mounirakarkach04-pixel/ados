@@ -414,8 +414,11 @@ renderLicenses();
 // Lists are rendered on first visit to keep mobile startup fast.
 setupPublications();
 async function loadEntitlements(){
- if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";return;}
- const {data,error}=await client.from("aiact_entitlements").select("sku,status,granted_at,expires_at").eq("owner_id",user.id);
+ if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";renderAccountJourney();return;}
+ const ownerAtRequest=user.id;
+ const {data,error}=await client.from("aiact_entitlements").select("sku,status,granted_at,expires_at").eq("owner_id",ownerAtRequest);
+ // Fail closed if the current session changed while a network request was in flight.
+ if(!user||user.id!==ownerAtRequest)return;
  if(error){$("entitlement-list").textContent="Berechtigungsprüfung nicht möglich: "+error.message;return;}
  renderAccountJourney(data||[]);
  const valid=e=>e.status==="ACTIVE"&&(!e.expires_at||Date.parse(e.expires_at)>Date.now());
