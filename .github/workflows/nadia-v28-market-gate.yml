@@ -1,0 +1,24 @@
+name: PIGA Nadia v28 Bounded Market Gate (Free)
+on:
+  push:
+    branches: [main, fix/nadia-v28-market-gate-20261025]
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadia_v28_market_gate.cjs'
+      - '.github/workflows/nadia-v28-market-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: piga-nadia-v28-market-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  piga-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: PIGA Gate 1 + A7SEM Reverse + finite safety cases
+        run: node scripts/test_nadia_v28_market_gate.cjs
