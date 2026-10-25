@@ -47,7 +47,7 @@ try{
  await page.locator("#view-assessment").waitFor({state:"visible"});
  assert.equal(await page.locator("#order-review").isVisible(),false);
  await page.locator("#nav > [data-view='home']").click();
- await page.locator("#view-home [data-go='assessment']").click();
+ await page.locator("#view-home .hero [data-go='assessment']").click();
  await page.locator("#view-assessment").waitFor({state:"visible",timeout:10000});
  await page.fill("#f-title","Recruiting Engine 1.0");
  await page.fill("#f-version","v1.0");
