@@ -52,3 +52,7 @@ body.piga-has-nav>main{max-width:1600px}
 
 /* Safe-area and overlay readability during mobile tool feedback */
 @media(max-width:760px){body.piga-has-nav #toast{bottom:calc(85px + env(safe-area-inset-bottom))!important;z-index:220!important}body.piga-has-nav .message[role="status"]{scroll-margin-bottom:90px}}
+
+/* v0.9 keep selected device destination plainly visible */
+.piga-links a[aria-current="page"]{box-shadow:inset 3px 0 0 #7edbd9}
+@media(max-height:640px) and (min-width:761px){.piga-rail{overflow-y:auto}.piga-rail-foot{margin-top:14px}}

@@ -5,6 +5,7 @@
  {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./praxis.html',icon:'users'},
  {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./index.html#studio',icon:'cube'},
  {id:'workflow',label:'Prozesse',desc:'Zwölf Schritte, User Route und Ergebnisroute',href:'./workflow.html',icon:'flow'},
+ {id:'devices',label:'Geräte',desc:'WLAN, Bluetooth, USB-Scanimport und technische Geräteprüfung',href:'./devices.html',icon:'printer'},
  {id:'printer',label:'Fertigung',desc:'OctoPrint mit Gate-2-Freigaben und Status-Readback',href:'./index.html#printer',icon:'printer'},
  {id:'quality',label:'Glassbox',desc:'Audit, PIGA und A7SEM Reverse',href:'./index.html#evidence',icon:'shield'},
  {id:'report',label:'Prüfakte / PDF',desc:'Druckfertiger PIGA und A7SEM-Nachweis mit lokaler Hashprüfung',href:'./report.html',icon:'document'}
@@ -21,7 +22,7 @@
  };
  const svg=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[k]+'</svg>';
  const filename=location.pathname.split('/').pop()||'index.html';
- let selected=filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':'studio';
+ let selected=filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='devices.html'?'devices':'studio';
  if(filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
@@ -33,14 +34,14 @@
  const info=document.createElement('span');info.className='piga-label';info.textContent='Technische Evaluation · keine klinische Freigabe';tools.append(info);
  const safe=document.createElement('span');safe.className='piga-safety';safe.innerHTML='<span class="piga-safety-dot"></span> PIGA GATE 1 / GATE 2';tools.append(safe);rail.append(tools);
  const bottom=document.createElement('nav');bottom.className='piga-bottom';bottom.setAttribute('aria-label','Mobile Hauptnavigation');
- [paths[0],paths[1],paths[2],paths[3]].forEach(p=>bottom.append(a(p,'piga-bottom-link')));
+ [paths.find(x=>x.id==='dashboard'),paths.find(x=>x.id==='praxis'),paths.find(x=>x.id==='studio'),paths.find(x=>x.id==='devices')].forEach(p=>bottom.append(a(p,'piga-bottom-link')));
  const more=document.createElement('button');more.type='button';more.setAttribute('aria-label','Weitere Bereiche suchen');more.innerHTML=svg('search')+'<span>Mehr</span>';bottom.append(more);
  const overlay=document.createElement('div');overlay.className='piga-command';overlay.hidden=true;overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Bereiche und Funktionen suchen');
  const panel=document.createElement('div');panel.className='piga-command-panel';
  const top=document.createElement('div');top.className='piga-command-head';top.insertAdjacentHTML('beforeend',svg('search'));const search=document.createElement('input');search.type='search';search.placeholder='Funktion suchen, z. B. Druck, Kosten, STL …';search.setAttribute('aria-label','Funktion suchen');top.append(search);const close=document.createElement('button');close.type='button';close.className='piga-command-close';close.textContent='Schließen';top.append(close);panel.append(top);
  const results=document.createElement('div');results.className='piga-results';panel.append(results);
  const foot=document.createElement('div');foot.className='piga-command-footer';foot.textContent='Nur freigegebene Module benutzen · keine echten Patientendaten';panel.append(foot);overlay.append(panel);
- const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter registrieren personal kennung kosten login zeit arbeit',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit'};
+ const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter registrieren personal kennung kosten login zeit arbeit',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
  function render(){results.textContent='';const q=search.value.trim().toLocaleLowerCase('de-DE');const found=paths.filter(p=>(p.label+' '+p.desc+' '+keywords[p.id]).toLocaleLowerCase('de-DE').includes(q));
   if(!found.length){const empty=document.createElement('p');empty.textContent='Keine passende Funktion gefunden.';empty.style.padding='15px';results.append(empty);return;}
   found.forEach(p=>{const item=document.createElement('a');item.href=p.href;const b=document.createElement('b');b.textContent=p.label;const sm=document.createElement('small');sm.textContent=p.desc;item.append(b,sm);results.append(item);});}
