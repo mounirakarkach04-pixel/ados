@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
 
 /** Offline first, strictly allowlisted local printer bridge. Not a medical device release. */
 public final class MainActivity extends Activity {
-  private static final String HOME = "https://appassets.androidplatform.net/assets/index.html";
+  private static final String HOME = "https://appassets.androidplatform.net/assets/dashboard.html";
   private static final int CREATE_JSON=501;
   private static final int PICK_STL=502;
   private WebView web;

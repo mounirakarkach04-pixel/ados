@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root='piga-ortho-3d';
-const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js'];
+const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js'];
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 for(const name of names){
   assert(fs.existsSync(path.join(root,name)),'Missing web asset: '+name);
@@ -15,7 +15,7 @@ const css=read('workflow.css');
 const js=read('workflow.js');
 const sw=read('sw.js');
 assert(main.includes('href="./workflow.html"'),'Main entry to navigator missing');
-for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
+for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
 for(const name of ['workflow.css','workflow.js'])assert(html.includes('./'+name),'Workflow asset link missing '+name);
 assert(!/https?:\/\//i.test(html),'External URLs forbidden in local UI');
 assert(read('praxis.css').includes('@media(max-width:600px)'),'Mobile staff UI missing');
@@ -60,3 +60,19 @@ assert(read('sw.js').includes('piga-ortho-v060-static'),'Offline service worker 
 assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
 assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
 process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 14 parity assets, offline cache, controls, gate boundaries, attribution.\n');
+
+const cockpit=read('dashboard.html');const navScript=read('navigation.js');const cockpitCode=read('dashboard.js');
+for(const name of ['index.html','praxis.html','workflow.html','dashboard.html']){
+  assert(read(name).includes('href="./navigation.css"'),'Shared navigation style missing on '+name);
+  assert(read(name).includes('src="./navigation.js"'),'Shared navigation controller missing on '+name);
+}
+for(const key of ['quickStl','stlResult','checklist','checkStatus','checkBar','clearChecks','findFeature'])assert(cockpit.includes('id="'+key+'"'),'Cockpit tool '+key+' missing');
+for(const f of ['index.html#studio','index.html#printer','index.html#evidence','praxis.html','workflow.html'])assert(navScript.includes(f),'Destination missing: '+f);
+assert(navScript.includes('aria-current'),'Navigation has no active indicator');
+assert(navScript.includes("ctrlKey"),'Keyboard navigation missing');
+assert(cockpitCode.includes('crypto.subtle.digest'),'Local STL integrity hash missing');
+assert(cockpitCode.includes('n===boxes.length'),'Checklist completeness missing');
+assert(cockpitCode.includes('Eine Druckfreigabe ist damit nicht erteilt'),'Checklist must not misrepresent authorization');
+assert(read('app.js').includes('activateRequestedSection'),'Deep-linked studio tabs not connected');
+assert(read('sw.js').includes('piga-ortho-v070-static'),'Outdated service-worker cache version');
+assert(read('manifest.webmanifest').includes('"start_url":"./dashboard.html"'),'PWA should launch cockpit first');
