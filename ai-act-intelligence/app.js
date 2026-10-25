@@ -195,7 +195,7 @@ function renderSolutions(){
  $("solutions-open").textContent=String(plan.filter(x=>x.requiresWork).length);
  $("solutions-plan").innerHTML=plan.map((step,index)=>{
   const offer=PRODUCTS.find(p=>p.sku===step.sku);
-  return '<article class="solution-step"><div class="solution-top"><span class="solution-num">'+String(index+1).padStart(2,"0")+'</span><div class="solution-title">'+escapeHTML(step.label.replace(/^\d+\s*[·.-]\s*/,""))+'</div><span class="solution-state">'+escapeHTML(step.state)+'</span></div>'+
+  return '<article class="solution-step"><div class="solution-top"><span class="solution-num">'+String(index+1).padStart(2,"0")+'</span><div class="solution-title">'+escapeHTML(step.label.replace(/^\d+\s*[·.-]\s*/,""))+'</div><span class="solution-state">'+escapeHTML(readableStatus(step.state))+'</span></div>'+
    '<h3>'+escapeHTML(step.question)+'</h3><p>'+escapeHTML(step.measure)+'</p>'+
    '<div class="solution-proof"><b>Benötigter Nachweis:</b> '+escapeHTML(step.proof)+'</div>'+
    (offer?'<button type="button" data-solution="'+escapeHTML(offer.sku)+'">Passende Fachleistung: '+escapeHTML(offer.title)+' →</button>':'')+'</article>';
