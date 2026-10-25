@@ -21,8 +21,21 @@ jobs:
           node-version: '22'
       - name: Install pinned browser runner
         run: |
-          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.64.1
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.64.1 @supabase/supabase-js@2.78.0 esbuild@0.25.10
           npx playwright install --with-deps chromium
+      - name: Compile fresh client bundle from this exact commit
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const src=fs.readFileSync('ai-act-intelligence/app.js','utf8');
+          const reviewed='https://esm.sh/@supabase/supabase-js@2.78.0?bundle';
+          if(!src.includes(reviewed))throw Error('Expected pinned dependency was changed');
+          fs.writeFileSync('ai-act-intelligence/app.e2e.tmp.js',src.replace(reviewed,'@supabase/supabase-js'));
+          NODE
+          ./node_modules/.bin/esbuild ai-act-intelligence/app.e2e.tmp.js --bundle --format=esm --platform=browser --target=es2022 --minify --outfile=ai-act-intelligence/app.bundle.js
+          node --check ai-act-intelligence/app.bundle.js
+          rm ai-act-intelligence/app.e2e.tmp.js
+          test -s ai-act-intelligence/app.bundle.js
       - name: Start static test server
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/piga-aiact-server.log 2>&1 &
