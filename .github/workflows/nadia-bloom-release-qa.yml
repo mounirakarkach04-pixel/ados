@@ -8,6 +8,7 @@ on:
       - 'scripts/test_nadia_happy_v262.js'
       - 'scripts/test_nadia_v27_features.js'
       - 'scripts/test_nadia_v27_pure.cjs'
+      - 'scripts/test_nadia_v28_piga_cover.cjs'
       - '.github/workflows/nadia-bloom-release-qa.yml'
 permissions:
   contents: read
@@ -29,6 +30,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Offline source regression and international calendar gates
         run: node scripts/test_nadia_v27_pure.cjs
+      - name: Verify exact original cover and bounded PIGA AI-pathology controls (offline)
+        run: node scripts/test_nadia_v28_piga_cover.cjs
       - name: Verify calendar, prayer times, no portrait, and synthetic Auth
         run: |
           node scripts/test_nadia_v27_features.js
