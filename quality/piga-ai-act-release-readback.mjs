@@ -46,9 +46,19 @@ try{
  const denied=response.status===401||response.status===403;
  record("negative_proprietary_license_no_auth",denied?"ALLOW":"BLOCK",{http_status:response.status,reason:denied?"unauthenticated_private_playbook_rejected":"unexpected_server_status"});
 }catch(error){record("negative_proprietary_license_no_auth","UNKNOWN",{reason:"edge_transport_unverified",message:String(error.message||error).slice(0,150)});}
+try{
+ // Empty/untrusted body must NEVER be admitted as a valid Stripe event.
+ const response=await remote("https://sanrkcovmkkhgdqydxfk.supabase.co/functions/v1/aiact-stripe-webhook",{
+  method:"POST",headers:{"content-type":"application/json"},body:'{"id":"evt_forged","type":"checkout.session.completed","livemode":true}'
+ });
+ const denied=response.status===400||response.status===401||response.status===403||response.status===503;
+ record("negative_webhook_unsigned_event",denied?"ALLOW":"BLOCK",{http_status:response.status,
+  reason:denied?"unsigned_webhook_denied_or_runtime_not_configured":"unexpected_unsigned_webhook_acceptance",
+  payment_created:false,entitlement_granted:false});
+}catch(error){record("negative_webhook_unsigned_event","UNKNOWN",{reason:"webhook_transport_unverified",message:String(error.message||error).slice(0,150)});}
 const reverse=[
  "A SHA256 match proves bytes published, not accessibility or UX quality on physical phones",
- "Rejected unauthenticated checkout is not evidence that a real payment and refund lifecycle works",
+ "Rejected unauthenticated checkout or unsigned webhook is not evidence that a real paid lifecycle works",
  "Historical CI tests are not real-world customer onboarding or Apple/Google signed release",
  "Operator identity, privacy, customer support, legal contracts and incident response need separate readback",
  "The 119 legal article identifiers contain a bounded subset of contextual analysis, not a certified legal opinion",
