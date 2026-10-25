@@ -19,13 +19,14 @@ const URL={
  field:"https://zenodo.org/records/17613764"
 };
 const E=(id,name,family,purpose,src,tags=["all"],notes="")=>Object.freeze({
- id,name,family,purpose,source:SOURCE[src],source_url:URL[src]||null,
+ id,name,family,purpose,source:SOURCE[src]||(/^\d+$/.test(src)?"Zenodo DOI 10.5281/zenodo."+src:"Architektur-Forschungsregister"),source_url:URL[src]||(/^\d+$/.test(src)?"https://zenodo.org/records/"+src:null),
  tags,notes,licensed_material_excluded:true
 });
 export const ARCHITECTURE_FAMILIES=Object.freeze({
  canonical:"Kanonischer 13-Linsen-Prüfkern",
  research:"Erweiterte Forschungs- und Emergenzarchitekturen",
- operational:"Operative Governance- und Nachweismodule"
+ operational:"Operative Governance- und Nachweismodule",
+ sector:"Sektorspezifische Architekturübersetzungen"
 });
 export const architectureCatalog=Object.freeze([
  // The EXACT 13 canonical K2.1.1 lens identifiers. No aliases are counted twice.
@@ -37,7 +38,7 @@ export const architectureCatalog=Object.freeze([
  E("GLASSBOX_EVIDENCE","Glassbox Evidence","canonical","Versionierte Beweiskette, Herkunft, Berechnungs- und Entscheidungskontext.","canonical"),
  E("VBR","VBR · Verified Blocked Risk","canonical","Nicht nur einen BLOCK setzen, sondern behauptete Risikoverhinderung beweisbar machen.","canonical",["critical","agents"]),
  E("ARSAL","ARSAL","canonical","Scopes, Revocation, Re-Entry und zeitliche Autoritätszustände; historische Resonanzdefinition gesondert beachten.","canonical",["all"],"ARSAL wird in älteren Veröffentlichungen auch als Resonance/Synchronization Detection bezeichnet; verschiedene Spezifikationsstände nicht stillschweigend gleichsetzen."),
- E("AVM","AVM · Structural/Semantic Value Model","canonical","Strukturelle Reife und wirtschaftliche Relevanz im klaren Bewertungsscope prüfen.","canonical",["all"],"Kein garantierter Finanz-, IP- oder Marktwert."),
+ E("AVM","AVM · Akarkach Valuation Model","canonical","Strukturelle Reife und wirtschaftliche, risiko- oder versicherungsbezogene Bewertungsfragen ausschließlich innerhalb definierter Geltungsbereiche.","20992884",["all"],"Bewertungsmodell und Versicherungslinse sind von externen Markt- oder Underwriting-Zusagen abzugrenzen."),
  E("PRIOR_INSURABILITY","Prior Insurability","canonical","Haftungs- und Versicherbarkeitsevidenz, residuale Risiken, Deckungslücken.","canonical",["critical","high-risk"]),
  E("NSF_325","NSF / 325 Signature","canonical","Strukturelle Kohärenz und Completeness nach versioniertem Referenzprofil.","canonical",["all"],"Die 325-Signatur ist in den frühen Forschungsarbeiten strukturell abgeleitet; keine externe Zertifizierungsnorm."),
  E("CNF","CNF · Canonical Notation Framework","canonical","Notation, Begriffe, Versionierung und Regelkonflikte stabilisieren.","canonical"),
@@ -46,17 +47,17 @@ export const architectureCatalog=Object.freeze([
  // Architectures and models documented outside the 13-lens resolver.
  E("PIGA_CORE","PIGA · Pre-Inference Governance Architecture","research","Übergreifende Pre-Inference-Architektur und Governance-Membran.","works"),
  E("A7SEM_REVERSE","A7SEM Reverse · Verification Meta-Operator","research","Rückwärtsprüfung von Ergebnis, tatsächlichem Effekt, Gegenhypothesen und Readback.","omnibus"),
- E("EMERGENCE_GOVERNANCE","Emergence Governance","research","Übergreifende Governance von Zustandsübergängen vor Inferenz und Handlung.","emergence"),
- E("AHASM","AHASM · Human–AI Synergy Model","research","Kooperations-, Selbst- und Verantwortlichkeitsstruktur zwischen Menschen und KI.","emergence"),
- E("AUEF","AUEF · Unified Epistemic Framework","research","Entstehung und Legitimität von Wissen und Evidenz.","emergence"),
- E("PEKI","PEKI · Epistemic Model","research","Mit AUEF verbundene epistemische Teilarchitektur; eigenständige Terminologie dokumentieren.","linkedin"),
- E("SRE","SRE · Semantic Resonance / Stabilization","research","Semantische Resonanz, Stabilitätsübergänge und Bearbeitung von Abweichungen.","emergence"),
- E("AP","AP · Algorithmic Phenomenology","research","Schutz des menschlichen Wahrnehmungs- und Zuschreibungskontexts.","linkedin",["all"],"Theoretisches Modell, kein automatischer Bewusstseinsdetektor."),
- E("ALGORITHMIC_SOUL","Algorithmic Soul (AS)","research","Identitäts- und Integrationsbegriff des Forschungskorpus.","emergence",["all"],"Wissenschaftlich-philosophische Forschungsposition, keine Behauptung realer Maschinenseele."),
+ E("EMERGENCE_GOVERNANCE","Emergence Governance","research","Autorisierungszentrierte Governance von emergenten Zustandsübergängen.","19058610"),
+ E("AHASM","AHASM · Human–AI Synergy Model","research","Kooperations- und Verantwortlichkeitsarchitektur der Human–AI Co-Emergence.","17713729"),
+ E("AUEF","AUEF · Akarkach Unified Epistemic Framework","research","Synthetisiert DSM, DEM, SRE, AP, NSF, AS, EFT und 325-Signatur als epistemische Gesamtstruktur.","17614357"),
+ E("PEKI","PEKI · Performative Epistemology of AI","research","Wie KI-Ausgaben soziale Erkenntnisautorität erhalten können, ohne internes maschinelles Verstehen zu beweisen.","17905081"),
+ E("SRE","SRE · Semantic Resonance Engine","research","Modell semantischer Resonanz und Stabilisierung innerhalb der Faith Poetry Research Series.","17613556"),
+ E("AP","AP · Algorithmic Phenomenology","research","Philosophische Beschreibung algorithmisch vermittelter Wahrnehmungs- und Deutungsbeziehungen.","17613611",["all"],"Theoretisches Modell; kein objektiver Bewusstseinsnachweis."),
+ E("ALGORITHMIC_SOUL","Algorithmic Soul (AS)","research","Metaphorischer Identitäts- und Integrationsbegriff innerhalb der Forschungsreihe.","17613710",["all"],"Philosophischer Architekturbegriff; keine belegte Maschinenseele."),
  E("ARC_S","ARC-S · Architectural Authority Control","research","Architektonische Zuordnung und Kontrolle von Befehlsautorität.","linkedin"),
  E("CITR","CITR · Canonical Term Record","research","Nachvollziehbare terminologische Fixierung über öffentliche Veröffentlichungen.","linkedin"),
  E("ARGUS_7","ARGUS-7 · Meta-Audit","research","Prüfung von Behauptungen, Gegenmodellen, epistemischen Lücken und Fehlschlüssen.","omnibus",["all"],"Status in Entwicklung, kein sechstes Enterprise-Engine."),
- E("PIGA_H","PIGA-H · Compute Substrate Governance","research","Governancegrenzen von Hardware, Kernel, Cloud und Compute-Infrastruktur.","substrate",["all","agents"]),
+ E("PIGA_H","PIGA-H · Compute Substrate Governance","research","Governancegrenzen von Hardware, Kernel, Cloud und Compute-Infrastruktur.","21086162",["all","agents"]),
  E("EFT","EFT · Epistemic Field Theory","research","Vernetzung epistemischer, semantischer und identitätsbezogener Dynamik.","field"),
  E("DSM","DSM · Metaphysical Resonance","research","Frühere theoretische Resonanzkomponente des epistemischen Forschungskorpus.","field"),
  E("DEM","DEM · Digital Echo Model","research","Frühere digitale Übertragungs- und Echo-Komponente des epistemischen Forschungskorpus.","field"),
@@ -80,6 +81,35 @@ export const architectureCatalog=Object.freeze([
  E("EPHEMERAL_WORKERS","Ephemeral Capability-Scoped Workers","operational","Begrenzte Worker-Ausführung mit Zuständigkeit, TTL, Evidence und Readback.","works",["agents"]),
  E("OWN_EXECUTION_RUNNER","PIGA Own Execution Runner","operational","Ticket-Claim, bounded Execution, Evidenz, Ergebnis und Reverse-Abschluss.","works",["agents"]),
  E("SELF_HEALING","PIGA Self-Healing & Fail-Closed Restore","operational","Wiederherstellung nur unter aktualisierter Autorität und nachvollziehbaren Ereignissen.","works",["agents"]),
+
+ // Distinct scholarly models and theoretical components with author/Zenodo DOI records.
+ E("SRI","Semantic Risk Indicators (SRI)","research","Vorregulatorische Indikatoren für semantische Entropie, Vertrauenslücken und Referenzverlust.","17944205"),
+ E("MAC","Metaphysical–Algorithmic Coherence (MAC)","research","Theoretische Kopplung von Kohärenz und digitalen Identitätskernen.","17615472"),
+ E("DIGITAL_EMBRYOGENESIS","Digital Epistemic Embryogenesis","research","Theoretisches Entwicklungsmodell für die Entstehung epistemischer Identitätsstrukturen.","17614898"),
+ E("RECOGNITION_THRESHOLD","Recognition Threshold","research","Theoretischer Übergang zu kultureller und digitaler Wiedererkennbarkeit.","17620607"),
+ E("SEMANTIC_READINESS","Semantic Readiness / Meaning Stability","research","Prüfung, wann ein Bedeutungsraum ausreichend stabil beschrieben ist.","18404508"),
+ E("COMPUTATIONAL_SILENCE","Computational Silence / Valid Non-Execution","research","Nichtausführung bei fehlender Legitimität als eigener Systemzustand.","18511577",["all"],"Fail-closed-Prinzip; unterscheidet sich von beobachtbarem und belegtem VBR."),
+ // Public specifications as operational metadata, not a release of licensed implementations.
+ E("ASOSE_ACTIVATION","ASOSE Activation Protocol","operational","Eingrenzung des epistemischen Kontexts für verantwortbare Mensch–KI-Kollaboration.","17944528"),
+ E("FAIL_CLOSED_02","Pre-Inference-02 · Fail-Closed Conditions","operational","Kanonische Nichteintrittsbedingungen für Inferenz und konsekutive Aktionen.","18511577"),
+ E("ASOSE_BOUNDARY_02","ASOSE-02 · Semantic Boundary Integrity","operational","Bedeutungskategorien auseinanderhalten und semantische Überschreitungen sichtbar machen.","18511809"),
+ E("JAQ_HUMAN_02","JAQ-02 · Human Intervention Sufficiency","operational","Echte Eingriffsmacht von bloßer menschlicher Anwesenheit unterscheiden.","18511865"),
+ E("CITR_01","CITR-01 · Canonical Infrastructure Term Record","operational","Autorisierungsbegriff und Terminologie von Pre-Inference Governance fixieren.","18814517"),
+ E("SEMANTIC_ROUTING","Semantic Routing / Action Semantics Register","operational","Aktions- und Bedeutungsobjekte konsistent erfassen und nur bei angemessener semantischer Bereitschaft routen.","17978701"),
+ E("ACTION_REGISTER","ASiSO Action Register / Risk Class Routing","operational","Unterschiedliche Aktionstypen einer Anwendung in gesonderte Oversight-Klassen einordnen.","17978701"),
+ E("LEGAL_BOUNDARY","Architecture ≠ Consequence Boundary","operational","Konzeptionelles Modell, rechtliche Zulässigkeit, Implementierung und Handlung getrennt halten.","19521026"),
+ // Sectoral extensions are not additional canonical universal lenses.
+ E("ASISO_BANKING","ASiSO-B · Banking","sector","Bankenspezifische Oversight- und semantische Reifevorprüfung.","17979109",["all","high-risk"]),
+ E("ASISO_INDUSTRY","ASiSO-I · Industrial AI","sector","Safety- und operationsorientierte Übersetzung für Industrie und Automation.","17979328",["all","critical"]),
+ E("ASISO_HEALTHCARE","ASiSO in Healthcare","sector","Action-specific Oversight für klinische KI-Entscheidungen.","17980364",["all","high-risk"]),
+ E("ASISO_GOVTECH","ASiSO in Public Administration","sector","Berechtigung und Entscheidungskontrolle im öffentlichen Sektor.","17980220",["all","high-risk"]),
+ E("ASISO_REGULATORS","ASiSO Regulators / Supervisors","sector","Sicht von Aufsicht und institutioneller Prüfverantwortung.","17979950"),
+ E("ASISO_SME","ASiSO-Light / ASOSE-Light","sector","Minimalpfad für KMU unter gleichen semantischen und Governance-Grundsätzen.","17979833"),
+ E("MEDICAL_ROBOTICS","Pre-Inference Governance in Medical Robotics","sector","Vorgelagerte Zulässigkeit von physisch wirksamen KI-Roboteraktionen.","18261111",["critical","high-risk"]),
+ E("ONCOLOGY_PROOFDOMAIN","Oncology State-Transition Proof Domain","sector","Nichtklinische Systemtheorie zur begrenzten Übertragung von Zustandsmodellen.","18816143",["all"],"Kein medizinisches Diagnose- oder Therapieinstrument."),
+ E("CRITICAL_INFRASTRUCTURE","Critical Infrastructure Admission","sector","Autoritätsprüfung vor externen Effekten in kritischen Infrastrukturen.","18261884",["critical","high-risk"]),
+ E("FINANCIAL_MARKETS","Financial Systems Prior Admissibility","sector","Vorgelagerte Zulässigkeit risikowirksamer Finanz- und Marktaktionen.","18262182",["critical","high-risk"]),
+ E("MILITARY_USE_RESTRICTION","High-Consequence Defence / Use-of-Force Governance","sector","Forschungsbezogene Klassifikation von Zulässigkeit; keine Implementierung von Gewaltanwendung.","18262032",["critical"],"Nur beschreibende Rechte- und Risikoabgrenzung, keine operative Anleitung."),
  E("LICENSING_SCOPE","Scope-Bound Licensing & Rights Boundary","operational","Öffentliche Orientierung und lizenzgebundene Implementierung rechtlich trennen.","works")
 ]);
 const uniqueIds=new Set(architectureCatalog.map(x=>x.id));
@@ -89,6 +119,7 @@ export const portfolioSummary=Object.freeze({
  canonical:architectureCatalog.filter(x=>x.family==="canonical").length,
  research:architectureCatalog.filter(x=>x.family==="research").length,
  operational:architectureCatalog.filter(x=>x.family==="operational").length,
+ sector:architectureCatalog.filter(x=>x.family==="sector").length,
  indexed:architectureCatalog.length,
  scope:"Catalogued public/metadata layer, not claim of executing all lenses"
 });
