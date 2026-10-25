@@ -1,0 +1,39 @@
+name: PIGA AI Act iOS Simulator Build
+# Manual only: simulator build; distributable iOS IPA requires Apple signing.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  simulator:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate Capacitor iOS container
+        working-directory: mobile
+        run: |
+          npm install --no-audit --no-fund --ignore-scripts
+          npx cap add ios
+          npx cap sync ios
+      - name: Compile iOS app for simulator without distribution signing
+        working-directory: mobile
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/piga-ios-build" CODE_SIGNING_ALLOWED=NO build
+          test -d "$RUNNER_TEMP/piga-ios-build/Build/Products/Debug-iphonesimulator/App.app"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$RUNNER_TEMP/piga-ios-build/Build/Products/Debug-iphonesimulator/App.app" \
+            "$RUNNER_TEMP/piga-ai-act-ios-simulator.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: piga-ai-act-ios-simulator-unsigned
+          path: ${{ runner.temp }}/piga-ai-act-ios-simulator.zip
+          if-no-files-found: error
+          retention-days: 14
