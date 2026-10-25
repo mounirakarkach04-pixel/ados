@@ -3,10 +3,13 @@ import assert from "node:assert/strict";
 import { evaluate, articleCatalog, LAW_VERSION } from "../ai-act-intelligence/engine.js";
 const base={title:"HR Helper",purpose:"Ranks employment applicants",version:"1.0",role:"provider",sector:"employment",controls:{}};
 test("all 113 statutory article numbers are indexed, unreviewed clearly marked",()=>{
- assert.equal(articleCatalog.length,113);
- assert.deepEqual(articleCatalog.map(x=>x.number),Array.from({length:113},(_,i)=>i+1));
+ assert.equal(articleCatalog.length,119);
+ assert.deepEqual(articleCatalog.filter(x=>typeof x.number==="number").map(x=>x.number),Array.from({length:113},(_,i)=>i+1));
+ assert.deepEqual(articleCatalog.filter(x=>typeof x.number==="string").map(x=>x.number),["4a","60a","75a","75b","75c","75d"]);
  const r=evaluate(base);
- assert.equal(r.coverage.indexed,113);
+ assert.equal(r.coverage.indexed,119);
+ assert.equal(r.coverage.inserted_2026,6);
+ for(const n of ['4a','60a','75a','75b','75c','75d'])assert.equal(r.articles.find(a=>a.article===n)?.status,'NOT_ASSESSED');
  assert.ok(r.coverage.remaining_manual_review>0);
  assert.equal(r.law_version,"2026-07-27");
 });
