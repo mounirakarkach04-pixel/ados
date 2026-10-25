@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'ai-act-intelligence/app.js'
+      - 'ai-act-intelligence/engine.js'
       - '.github/workflows/piga-ai-act-bundle.yml'
 permissions:
   contents: write
