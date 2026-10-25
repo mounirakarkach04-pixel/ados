@@ -1,0 +1,19 @@
+name: Nadia v28 Security Regression (Free)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'nadias-bloom/index.html'
+      - 'nadias-bloom/sw.js'
+      - 'scripts/test_nadia_v28_security.cjs'
+      - '.github/workflows/nadia-v28-security-regression.yml'
+permissions:
+  contents: read
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify cached URL exclusions, backup and legacy continuity
+        run: node scripts/test_nadia_v28_security.cjs
