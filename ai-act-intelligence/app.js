@@ -462,7 +462,7 @@ async function renderAuth(){
  $("user-pane").classList.toggle("hidden",!user);
  $("sign-header").textContent=user?"Mein Konto":"Anmelden";
  $("password-recovery-pane").classList.toggle("hidden",!user||!recoveryMode);
- if(user){$("user-email").textContent=user.email||"Authentifiziert";loadSaved();confirmPaymentIfNeeded();}
+ if(user){$("user-email").textContent=user.email||"Authentifiziert";loadSaved();loadEntitlements();confirmPaymentIfNeeded();}
 }
 async function withAuth(fn){
  const email=$("auth-email").value.trim();
