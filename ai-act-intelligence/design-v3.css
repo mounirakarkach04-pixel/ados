@@ -158,3 +158,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
 .report-provenance p{font-size:11px;line-height:1.75}.report-provenance a{color:#056bcf;text-decoration:underline}
 @media(max-width:750px){.report-provenance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media print{.report-provenance{break-inside:avoid;box-shadow:none}.report-provenance-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.report-provenance-grid>div{padding:8px}}
+
+.postpurchase-path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:19px 0 25px}
+.postpurchase-path>div{border:1px solid #dceafa;border-radius:14px;padding:17px;background:#fff}
+.postpurchase-path span{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#eaf4ff;color:#076fe9;font-size:11px;font-weight:850}
+.postpurchase-path b{display:block;margin-top:11px;color:#153c65;font-size:12px}
+.postpurchase-path p{font-size:11px;color:#6a829c;line-height:1.65;margin:7px 0 0}
+@media(max-width:780px){.postpurchase-path{grid-template-columns:1fr}.postpurchase-path>div{display:grid;grid-template-columns:32px 1fr;gap:3px 12px}.postpurchase-path span{grid-row:1/3}.postpurchase-path b{margin:1px 0}.postpurchase-path p{margin:0}}
+@media print{.postpurchase-path{display:none!important}}
