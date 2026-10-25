@@ -14,7 +14,7 @@ class Check(HTMLParser):
         assert self.stack,f'unexpected </{tag}>'
         actual=self.stack.pop()
         assert actual==tag,f'expected </{actual}> but received </{tag}>'
-for file in ['piga-ortho-3d/praxis.html','piga-ortho-3d/workflow.html','piga-ortho-3d/index.html']:
+for file in ['piga-ortho-3d/praxis.html','piga-ortho-3d/workflow.html','piga-ortho-3d/index.html','piga-ortho-3d/dashboard.html','piga-ortho-3d/report.html']:
     html=Path(file).read_text(encoding='utf-8')
     checker=Check();checker.feed(html);checker.close()
     assert not checker.stack,f'unclosed tags in {file}: {checker.stack}'

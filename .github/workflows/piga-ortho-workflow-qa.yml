@@ -26,6 +26,7 @@ jobs:
           node --check piga-ortho-3d/praxis.js
           node --check piga-ortho-3d/dashboard.js
           node --check piga-ortho-3d/navigation.js
+          node --check piga-ortho-3d/report.js
       - name: Verify interactive workflow, gates and APK asset source parity
         run: node scripts/piga-ortho-workflow-qa.mjs
       - name: Parse responsive pages and reject malformed HTML nesting

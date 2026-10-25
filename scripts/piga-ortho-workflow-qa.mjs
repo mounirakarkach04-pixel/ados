@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root='piga-ortho-3d';
-const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js'];
+const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js'];
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 for(const name of names){
   assert(fs.existsSync(path.join(root,name)),'Missing web asset: '+name);
@@ -15,7 +15,7 @@ const css=read('workflow.css');
 const js=read('workflow.js');
 const sw=read('sw.js');
 assert(main.includes('href="./workflow.html"'),'Main entry to navigator missing');
-for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
+for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
 for(const name of ['workflow.css','workflow.js'])assert(html.includes('./'+name),'Workflow asset link missing '+name);
 assert(!/https?:\/\//i.test(html),'External URLs forbidden in local UI');
 assert(read('praxis.css').includes('@media(max-width:600px)'),'Mobile staff UI missing');
@@ -56,10 +56,10 @@ for(const id of ['staffCodeBadge','kpiStaff','kpiToday','kpiTotal','kpiState','w
 for(const required of ['staff_code','ortho_work_events','function loadTrail()','event_type','occurred_at','caseEvents','toLocaleString']){
  assert(workspace.includes(required),'Missing v0.6 employee-trace logic '+required);
 }
-assert(read('sw.js').includes('piga-ortho-v070-static'),'Offline service worker version not bumped');
+assert(read('sw.js').includes('piga-ortho-v080-static'),'Offline service worker version not bumped');
 assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
 assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
-process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 19 parity assets, offline cache, controls, gate boundaries, attribution.\n');
+process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 22 parity assets, offline cache, controls, gate boundaries, attribution.\n');
 
 const cockpit=read('dashboard.html');const navScript=read('navigation.js');const cockpitCode=read('dashboard.js');
 for(const name of ['index.html','praxis.html','workflow.html','dashboard.html']){
@@ -76,3 +76,18 @@ assert(cockpitCode.includes('Eine Druckfreigabe ist damit nicht erteilt'),'Check
 assert(read('app.js').includes('activateRequestedSection'),'Deep-linked studio tabs not connected');
 assert(read('sw.js').includes('piga-ortho-v070-static'),'Outdated service-worker cache version');
 assert(read('manifest.webmanifest').includes('"start_url":"./dashboard.html"'),'PWA should launch cockpit first');
+
+// v0.8 personal display and print-ready evidence report checks
+for(const name of ['report.html','report.css','report.js'])assert(read(name).length>300,'Missing printable artifact '+name);
+for(const id of ['personalGreeting'])assert(read('dashboard.html').includes('id="'+id+'"'),'Dashboard greeting missing');
+assert(read('dashboard.js').includes('/auth/v1/user'),'Greeting must verify signed-in account server-side');
+assert(read('dashboard.js').includes("email==='dr.akarkach@gmx.de'"),'Specific verified owner greeting missing');
+assert(read('praxis.js').includes("sessionStorage.removeItem('piga-ortho-auth-ephemeral')"),'Logout must clear short-lived auth token');
+assert(read('praxis.html').includes('id="praxisGreeting"'),'Authenticated greeting missing on praxis');
+assert(read('index.html').includes('id="printEvidence"'),'Technical studio lacks report trigger');
+assert(read('app.js').includes("sessionStorage.setItem('piga-ortho-report-once'"),'No one-time report handoff');
+assert(read('app.js').includes("gate2:'BLOCK'"),'Report must not grant Gate2');
+for(const x of ['id="importAudit"','id="print"','id="export"','id="seven"','id="terminal"'])assert(read('report.html').includes(x),'Report control missing '+x);
+for(const x of ['crypto.subtle.digest','e.previousSha256!==previous','payload.sha256','terminal!==previous','function synthetic()','window.PigaNative.printReport'])assert(read('report.js').includes(x),'Missing report verification '+x);
+assert(read('report.css').includes('@page{size:A4'),'Report lacks A4 print layout');
+assert(read('navigation.js').includes("'./report.html'"),'Report not accessible through navigation');
