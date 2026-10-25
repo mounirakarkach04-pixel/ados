@@ -28,3 +28,23 @@ test("No unsupported full EU AI Act compliance PASS claim",()=>{
  assert.ok(s.includes('gate2="BLOCK"'));
  assert.ok(s.includes("USER_DECLARED_NOT_INDEPENDENTLY_VERIFIED"));
 });
+
+test("reopened saved assessments retain original case_data, never current form state",()=>{
+ const source=read("ai-act-intelligence/app.js");
+ for(const fragment of ['activeInput=structuredClone(input)','const f=activeInput;', 'report,case_data','activeInput=record.case_data||null','restoreInput(activeInput)'])
+  assert.ok(source.includes(fragment),"missing input-integrity guard: "+fragment);
+});
+test("password recovery consumes Supabase recovery event and updates password explicitly",()=>{
+ const source=read("ai-act-intelligence/app.js");
+ const page=read("ai-act-intelligence/index.html");
+ for(const fragment of ['PASSWORD_RECOVERY','recoveryMode=true','auth.updateUser({password})','"recovery-submit"','queueMicrotask('])
+  assert.ok(source.includes(fragment),fragment);
+ assert.ok(page.includes('id="password-recovery-pane"'));
+ assert.ok(page.includes('autocomplete="new-password"'));
+});
+test("secondary navigation is reachable without duplicating protected implementation",()=>{
+ const source=read("ai-act-intelligence/app.js"),page=read("ai-act-intelligence/index.html");
+ assert.ok(source.includes('aria-expanded'));
+ assert.ok(page.includes('id="more-sheet"'));
+ for(const view of ['articles','portfolio','publications','licensing'])assert.ok(page.includes('id="more-sheet"')&&page.includes('data-view="'+view+'"'));
+});
