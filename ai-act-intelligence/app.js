@@ -1,13 +1,14 @@
 import {createClient} from "https://esm.sh/@supabase/supabase-js@2.78.0?bundle";
 import {evaluate,articleCatalog,TERMS,PRODUCTS,LAW_URL,LAW_VERSION} from "./engine.js";
 import {architectureCatalog,portfolioSummary,ARCHITECTURE_FAMILIES} from "./portfolio.js";
+import {publicationCatalog,publicationCategories,publicationSummary} from "./publications.js";
 
 const client=createClient("https://sanrkcovmkkhgdqydxfk.supabase.co","sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);
 const escapeHTML=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const small=(text,cls="")=>'<span class="pill '+cls+'">'+escapeHTML(text)+'</span>';
 const gateBadge=x=>small(x,x==="BLOCK"?"danger":x==="UNKNOWN"||x==="DELAY"?"warn":"");
-const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
+const titles={home:"Übersicht",assessment:"Neue Analyse",results:"Ergebnis & Ladder",articles:"Artikel-Explorer",portfolio:"PIGA Gesamtarchitektur",publications:"Zenodo-Forschungsbibliothek",licensing:"Lizenzlösungen",account:"Konto & Nachweise"};
 let user=null,activeReport=null,activeId=null,selectedFiles=[],docRecords=[],toastTimer;
 function toast(message){const el=$("toast");el.textContent=String(message);el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),4700);}
 function show(view){
@@ -17,6 +18,7 @@ function show(view){
  $("current-title").textContent=titles[view];
  if(view==="articles")renderArticles();
  if(view==="portfolio")renderPortfolio();
+ if(view==="publications")renderPublications();
  if(view==="licensing")loadEntitlements();
  if(view==="account")renderAuth();
  history.replaceState(null,"","#"+view);
@@ -146,9 +148,40 @@ function renderPortfolio(){
  $("stat-portfolio-canonical").textContent=String(portfolioSummary.canonical);
  $("stat-portfolio-research").textContent=String(portfolioSummary.research);
  $("stat-portfolio-operational").textContent=String(portfolioSummary.operational);
+ $("stat-portfolio-sector").textContent=String(portfolioSummary.sector);
  $("stat-portfolio-all").textContent=String(portfolioSummary.indexed);
 }
 $("portfolio-search")?.addEventListener("input",renderPortfolio);
+function renderPublications(){
+ const filter=($("publication-search")?.value||"").trim().toLocaleLowerCase("de");
+ const category=$("publication-category")?.value||"all";
+ const hits=publicationCatalog.filter(p=>(category==="all"||category===p.category)&&[p.title,p.doi,publicationCategories[p.category]].some(v=>String(v||"").toLocaleLowerCase("de").includes(filter)));
+ $("pub-total").textContent=String(publicationSummary.indexed);
+ $("pub-inspected").textContent=String(publicationSummary.zenodo_inspected);
+ $("pub-indexed").textContent=String(publicationSummary.author_indexed);
+ $("pub-coverage").textContent=String(Object.keys(publicationCategories).length);
+ $("publication-result-info").textContent=hits.length+" von "+publicationSummary.indexed+" DOI-Einträgen. "+
+  "Abgleichstatus kennzeichnet die Quellenherkunft, nicht die fachliche Begutachtung.";
+ $("publication-list").innerHTML=Object.entries(publicationCategories).map(([key,title])=>{
+  const papers=hits.filter(x=>x.category===key);
+  if(!papers.length)return "";
+  const entries=papers.map(p=>{
+   const status=p.evidence_type==="ZENODO_RECORD_INSPECTED"?"Zenodo-Datensatz eingesehen":"DOI im Autorenindex";
+   return '<div class="publication-item"><div><b>'+escapeHTML(p.title)+'</b><small>'+escapeHTML(p.doi)+'</small><small>'+escapeHTML(status)+'</small></div>'+
+    '<a href="'+escapeHTML(p.url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+escapeHTML(p.title)+' aufrufen">DOI öffnen ↗</a></div>';
+  }).join("");
+  return '<details class="portfolio-group" '+(filter||category!=="all"||key==="governance"?"open":"")+'><summary>'+escapeHTML(title)+' <span>'+papers.length+'</span></summary>'+entries+'</details>';
+ }).join("")||'<p class="subtle">Keine Veröffentlichungen unter diesem Suchbegriff.</p>';
+}
+function setupPublications(){
+ const picker=$("publication-category");
+ picker.innerHTML='<option value="all">Alle Forschungsgebiete</option>'+Object.entries(publicationCategories).map(([id,name])=>'<option value="'+escapeHTML(id)+'">'+escapeHTML(name)+'</option>').join("");
+ picker.addEventListener("change",renderPublications);
+ $("publication-search").addEventListener("input",renderPublications);
+ $("home-architecture-count").textContent=String(portfolioSummary.indexed);
+ $("home-publications-count").textContent=String(publicationSummary.indexed);
+ renderPublications();
+}
 function renderArticles(){
  const filter=$("article-search").value.toLowerCase().trim();
  const matches=articleCatalog.filter(a=>(a.number+" "+a.title).toLowerCase().includes(filter));
@@ -211,6 +244,7 @@ async function confirmPaymentIfNeeded(){
 }
 renderLicenses();
 renderPortfolio();
+setupPublications();
 async function loadEntitlements(){
  if(!user){$("entitlement-list").textContent="Bitte anmelden, damit serverseitig geprüfte Berechtigungen angezeigt werden.";return;}
  const {data,error}=await client.from("aiact_entitlements").select("sku,status,granted_at,expires_at").eq("owner_id",user.id);
