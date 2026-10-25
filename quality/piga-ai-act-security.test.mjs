@@ -52,6 +52,8 @@ test("secondary navigation is reachable without duplicating protected implementa
 test("native or unverified website cannot start payment lacking a secure return route",()=>{
  const source=read("ai-act-intelligence/app.js");
  assert.ok(source.includes('const isNativeShell=location.protocol==="capacitor:"'));
+ assert.ok(source.includes('location.hostname==="localhost"'));
+ assert.ok(source.includes('window.Capacitor?.isNativePlatform?.()===true'));
  assert.ok(source.includes('const isVerifiedCheckoutReturnHost='));
  assert.ok(source.includes('if(!isVerifiedCheckoutReturnHost){toast('));
  assert.ok(source.includes('emailRedirectTo:accountEmailRedirect'));
