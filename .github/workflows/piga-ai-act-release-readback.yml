@@ -1,0 +1,33 @@
+name: PIGA AI Act Production Readback Worker
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'quality/piga-ai-act-release-readback.mjs'
+      - '.github/workflows/piga-ai-act-release-readback.yml'
+permissions:
+  contents: read
+concurrency:
+  group: piga-aiact-prod-readback
+  cancel-in-progress: true
+jobs:
+  bounded-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Production byte readback, fail-closed authorization checks, A7SEM Reverse
+        run: node quality/piga-ai-act-release-readback.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: piga-ai-act-production-release-readback
+          path: qa-artifacts/piga-release-readback.json
+          if-no-files-found: error
+          retention-days: 14
