@@ -95,6 +95,8 @@ export const portfolioSummary=Object.freeze({
 export function portfolioForSubject(subject={}){
  const tags=new Set(["all"]);
  if(subject.highRisk)tags.add("high-risk");
+ if(subject.agents)tags.add("agents");
+ if(subject.critical)tags.add("critical");
  if(subject.gpai)tags.add("gpai");
  if(subject.bot)tags.add("synthetic");
  if(subject.prohibited)tags.add("critical");
