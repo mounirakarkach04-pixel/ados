@@ -27,6 +27,7 @@ jobs:
           cp quality/piga-ai-act-*.mjs qa-artifacts/source-snapshot/quality/
           cp .github/workflows/piga-ai-act-*.yml qa-artifacts/source-snapshot/workflows/
           printf 'SOURCE_COMMIT=%s\nREPOSITORY=%s\nORIGIN=%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/" > qa-artifacts/source-snapshot/manifest.txt
+          printf 'RELEASE_BOUNDARY=PUBLIC_SOURCE_ONLY_NO_PRIVATE_SECRETS\nDESIGN=ENTERPRISE_V3_SEVEN_STAGE\nADMISSION=GATE1_SCOPE_ONLY_G2_REQUIRES_LIVE_PROOF\n' >> qa-artifacts/source-snapshot/manifest.txt
           find qa-artifacts/source-snapshot -type f -print0 | sort -z | xargs -0 sha256sum > qa-artifacts/source-snapshot/SHA256SUMS.txt
           (cd qa-artifacts && zip -q -r piga-ai-act-source-snapshot.zip source-snapshot)
           test -s qa-artifacts/piga-ai-act-source-snapshot.zip
