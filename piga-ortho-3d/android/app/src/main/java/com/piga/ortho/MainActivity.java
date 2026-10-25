@@ -170,6 +170,20 @@ public final class MainActivity extends Activity {
         }catch(Exception ignored){}
       });
     }
+    /** Compose only; never send automatically or attach patient/health data. */
+    @JavascriptInterface public void composeOwnerEmail(String subject,String body){
+      if(subject==null||body==null||subject.length()>180||body.length()>2500
+          ||!subject.startsWith("PIGA ORTHO 3D")||!body.contains("keine Patienten- oder Gesundheitsdaten"))return;
+      ui.post(()->{
+        try{
+          Intent intent=new Intent(Intent.ACTION_SENDTO);
+          intent.setData(Uri.parse("mailto:dr.akarkach@gmx.de"));
+          intent.putExtra(Intent.EXTRA_SUBJECT,subject);
+          intent.putExtra(Intent.EXTRA_TEXT,body);
+          startActivity(Intent.createChooser(intent,"Statusbericht per E-Mail"));
+        }catch(Exception ignored){}
+      });
+    }
     /** Explicit user-initiated Android PrintManager dialog; never a 3D printer operation. */
     @JavascriptInterface public void printReport(){
       ui.post(()->{
