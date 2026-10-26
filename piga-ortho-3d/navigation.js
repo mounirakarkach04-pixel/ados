@@ -1,10 +1,10 @@
 'use strict';
 (()=>{
  const paths=[
- {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./direct.html',icon:'grid'},
- {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./direct.html#overview',icon:'users'},
- {id:'team',label:'Personal & Steuer',desc:'Unterweisung, Dienstplan, Urlaub, Krankmeldung und freigegebene Lohndaten',href:'./direct.html#team',icon:'users'},
- {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./direct.html#inventory',icon:'grid'},
+ {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./dashboard.html',icon:'grid'},
+ {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./praxis.html',icon:'users'},
+ {id:'team',label:'Personal & Steuer',desc:'Unterweisung, Dienstplan, Urlaub, Krankmeldung und freigegebene Lohndaten',href:'./team.html',icon:'users'},
+ {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./inventory.html',icon:'grid'},
  {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./studio.html#studio',icon:'cube'},
  {id:'assistant',label:'Assistent',desc:'Geführte Schritte und KFO-Katalog',href:'./assist.html',icon:'flow'},
  {id:'workflow',label:'Prozesse',desc:'Zwölf Schritte, User Route und Ergebnisroute',href:'./workflow.html',icon:'flow'},
@@ -29,7 +29,7 @@
  if(filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
- const brand=document.createElement('a');brand.className='piga-mark';brand.href='./direct.html';brand.innerHTML='<span class="piga-mark-icon">⊓</span><span><b>PIGA</b><small>ORTHO 3D</small></span>';rail.append(brand);
+ const brand=document.createElement('a');brand.className='piga-mark';brand.href='./dashboard.html';brand.innerHTML='<span class="piga-mark-icon">⊓</span><span><b>PIGA</b><small>ORTHO 3D</small></span>';rail.append(brand);
  const cap=document.createElement('span');cap.className='piga-caption';cap.textContent='ARBEITSBEREICHE';rail.append(cap);
  const links=document.createElement('div');links.className='piga-links';paths.forEach(p=>links.append(a(p,'piga-link')));rail.append(links);
  const tools=document.createElement('div');tools.className='piga-rail-foot';
