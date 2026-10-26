@@ -1,0 +1,73 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ebfaff"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D Control – sofort nutzbarer lokaler PIGA Chat, begrenzte Worker mit Herzschlag, menschliche Freigabe und lokaler Teamchat.">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css"><link rel="stylesheet" href="./piga-control.css">
+<title>PIGA Control · Brain, Chat & Workers</title></head><body>
+<main class="piga-control" id="content">
+<section class="pc-hero"><div><span class="eyebrow">PIGA ORTHO 3D · DEVICE-FIRST CONTROL</span><h1>Das Nervensystem <em>deiner Praxis.</em></h1>
+<p>Ein zentraler Arbeitsraum für PIGA-Gates, lokal ausgeführte Worker, Wissen, Chat, Teamfragen und technische Freigabeentwürfe – mit transparenter Kontrolle über jede Aktion.</p>
+<div class="pc-hero-links"><a href="./dashboard.html">Zur Übersicht</a><a href="./imaging.html">CBCT & 4K</a><a href="./handoff.html">Praxis → Labor</a><a href="./assist.html">KFO / BEMA-Katalog</a></div></div>
+<img src="./visuals/ortho-hero.svg" width="1100" height="720" alt="Illustrative technische Kiefergeometrie"></section>
+<div class="pc-safety"><strong>LOKALER EVALUATIONSBETRIEB · KEINE ECHTEN PATIENTEN- ODER PERSONALDATEN.</strong> „Inhaber“ und „Mitarbeiter“ sind hier nur Ansichtsmodi, keine verifizierte Anmeldung oder Zugriffssperre. Medizinische Entscheidungen, Urlaubsgenehmigungen, Abrechnung und Druckeraktionen bleiben bis zu echter Identitäts- und Autorisierungsprüfung gesperrt.</div>
+<section class="pc-dashboard" aria-label="Worker und PIGA Status">
+<div><small>Geräte-Laufzeit</small><b id="pcRuntime">PRÜFEN</b><span id="pcRuntimeHint">Tab muss aktiv bleiben</span></div>
+<div><small>Lokaler Herzschlag</small><b id="pcHeartbeat">–</b><span>Nur dieses geöffnete Gerät</span></div>
+<div><small>Worker-Aufträge</small><b id="pcJobs">–</b><span id="pcJobsHint">Lesende Analysen</span></div>
+<div><small>Offene Freigaben</small><b id="pcPending">0</b><span>Erst nach Prüfung ausführen</span></div></section>
+<div class="pc-ticker" role="status" aria-live="off"><span class="pc-live" aria-hidden="true"></span><b>LIVE · GERÄT</b><div id="pcTicker">Lokale Worker bereit zur Prüfung.</div><small id="pcTickTime">–</small></div>
+<section class="pc-workspace">
+<div class="pc-primary">
+<section class="pc-card pc-chat" id="brain"><header><span class="pc-number">01</span><div><h2>PIGA Chat · sofort startklar</h2><p>Lokales PIGA-Wissen und Navigation ohne Registrierung. Optionale Sprachbedienung separat.</p></div></header>
+<div class="pc-switch"><label for="pcAudience">Assistentenansicht</label><select id="pcAudience"><option value="owner">Inhaber · technischer Testmodus</option><option value="staff">Mitarbeiter · reduzierter Hilfemodus</option></select>
+<span id="pcAudienceHint">Keine echte Rollenprüfung – nur UI-Filter.</span></div>
+<div class="pc-conversation" id="pcChatFeed" role="log" aria-live="polite"></div>
+<form id="pcChatForm" class="pc-compose"><label class="sr-only" for="pcChatInput">PIGA fragen</label><textarea id="pcChatInput" rows="2" maxlength="500" placeholder="Frag PIGA: Wie prüfe ich ein STL-Modell? / Urlaub beantragen / Material prüfen …" required></textarea>
+<div><button type="button" id="pcListen" title="Spracheingabe mit Geräteberechtigung">Mikrofon</button><button type="button" id="pcSpeak" title="Letzte Antwort vorlesen">Vorlesen</button><button class="pc-primary-button" type="submit">PIGA fragen</button></div></form>
+<div class="pc-shortcuts" id="pcShortcuts"><button type="button" data-query="Wie funktionieren PIGA Gate 1 und Gate 2?">PIGA erklären</button><button type="button" data-query="Wie kann ich Urlaub beantragen?">Urlaub</button><button type="button" data-query="Wie funktioniert der 4K STL Viewer?">3D / 4K</button><button type="button" data-query="Wie prüfe ich BEMA Ziffern?">BEMA</button><button type="button" data-query="Was ist der Worker-Status?">Worker</button></div>
+<div class="pc-chat-boundary">Der sofortige Chat ist **regelbasiert und lokal**, kein generatives LLM und kein Live-Web-Rechercheagent. Er kann Fragen zu bekannten Modulen beantworten und kontrollierte Aufträge vorbereiten; unbekannte Fragen werden als solche gekennzeichnet.</div>
+</section>
+<section class="pc-card pc-review" id="approvals"><header><span class="pc-number">02</span><div><h2>PIGA Admission Inbox</h2><p>Entwürfe annehmen, ablehnen oder pausieren; geschützte Aktionen bleiben gesperrt.</p></div></header>
+<form id="pcRequestForm" class="pc-request"><label for="pcRequestKind">Art des Auftrags</label><select id="pcRequestKind">
+<option value="LEAVE_REQUEST">Urlaubsanfrage · als Entwurf</option>
+<option value="PRINT_REVIEW">Druckauftrag · technische Prüfung</option>
+<option value="INVENTORY_REVIEW">Inventurprüfung · Worker</option>
+<option value="BILLING_REVIEW">BEMA/GOZ Prüfvorschlag</option>
+<option value="CLINICAL_REVIEW">Klinische Fachprüfung · externe Freigabe</option>
+<option value="GEOMETRY_REVIEW">STL-Geometrieprüfung</option></select>
+<label for="pcRequestText">Notiz ohne Personenbezug</label><textarea id="pcRequestText" maxlength="250" rows="2" placeholder="Beispiel: Testauftrag prüfen, keine Patientendaten" required></textarea>
+<button class="pc-primary-button" type="submit">Zur PIGA-Prüfung vormerken</button></form>
+<div class="pc-review-list" id="pcRequests" aria-live="polite"><p>Noch keine Freigabeentwürfe.</p></div>
+<p class="pc-footnote">„Freigeben“ kann hier nur eine lokale technische Sichtung bestätigen. Ohne verifizierte Inhaberidentität bleibt die Schaltfläche für rechtswirksame Genehmigungen bewusst gesperrt; „Ablehnen“ und „Pausieren“ funktionieren als lokale Review-Status.</p></section>
+</div>
+<div class="pc-secondary">
+<section class="pc-card pc-workers" id="workers"><header><span class="pc-number">03</span><div><h2>Worker Fabric</h2><p>Ein gerätelokales, begrenztes Analysesystem – ohne Desktop-Abhängigkeit, solange die Seite geöffnet ist.</p></div></header>
+<div class="pc-worker-parts"><div><b>Gehirn</b><span>Lokales Wissen + Gate-Regeln</span></div><div><b>Augen</b><span>STL / DICOM / Materialanalyse</span></div><div><b>Hände</b><span>Nur zugelassene, lesende Jobs</span></div><div><b>Nervensystem</b><span>Heartbeat, Queue, Journal</span></div></div>
+<div class="pc-worker-actions"><button id="pcRun" class="pc-primary-button" type="button">Worker jetzt ausführen</button><button id="pcAuto" type="button" aria-pressed="false">Auto bei geöffnetem Tab: AUS</button><button id="pcPauseWorker" type="button">Automatik pausieren</button></div>
+<div class="pc-worker-actions"><button type="button" data-job="HEALTH_CHECK">Datenbank prüfen</button><button type="button" data-job="INVENTORY_FORECAST">Material analysieren</button><button type="button" data-job="WORKFLOW_SUMMARY">Aufträge zusammenfassen</button></div>
+<div class="pc-worker-events" id="pcEvents" aria-live="polite"><p>Keine Worker-Ereignisse geladen.</p></div>
+<div class="pc-footnote">Foreground-Heartbeat alle ca. 10 Sekunden, nur bei sichtbarer Seite. Browser werden vom Betriebssystem pausiert oder beendet; das ist **kein garantierter 24/7-Prozess**. Eine native Android-Foreground-Ausführung oder ein externer dauerhaft laufender Host ist dafür separat erforderlich.</div>
+</section>
+<section class="pc-card pc-team" id="teamchat"><header><span class="pc-number">04</span><div><h2>Teamchat · auf diesem Gerät</h2><p>Technische Testnachrichten zwischen Tabs desselben Browserprofils. Kein übergreifender Messenger.</p></div></header>
+<div id="pcTeamFeed" class="pc-teamfeed" role="log" aria-live="polite"></div>
+<form id="pcTeamForm"><label for="pcTeamName">Anzeigename (Pseudonym)</label><input id="pcTeamName" maxlength="32" value="TEAM-01" pattern="[a-zA-Z0-9_-]{3,32}" required>
+<label for="pcTeamMessage">Nachricht ohne Gesundheits- oder Personaldaten</label><textarea id="pcTeamMessage" maxlength="500" rows="2" required placeholder="Welche STL-Prüfung steht an?"></textarea><button class="pc-primary-button" type="submit">Nachricht lokal senden</button></form>
+<div class="pc-footnote">Keine Verschlüsselung zwischen Geräten, keine serverseitige Übertragung und keine Mitarbeiter-Authentifizierung. Für echten Mehrgeräte-Praxischat wird ein sicherer Backend-Dienst benötigt.</div>
+</section>
+<section class="pc-card pc-internet" id="voice"><header><span class="pc-number">05</span><div><h2>Sprache & Internet optional</h2><p>Zuerst ohne API-Schlüssel nutzbar. Sprach-KI-Dienste erst nach eigener sicherer Anbindung.</p></div></header>
+<details><summary>Sprachsteuerung in zwei Schritten</summary>
+<p>1. Im PIGA-Chat auf <b>„Mikrofon“</b> tippen und dem Browser die Berechtigung geben. 2. Frage sprechen und mit <b>„PIGA fragen“</b> senden. Alternativ <b>„Vorlesen“</b> drücken. Die Verfügbarkeit hängt vom Browser und gegebenenfalls von dessen Spracherkennungsdienst ab; Sprache kann dabei an einen Drittanbieter übertragen werden.</p></details>
+<details><summary>Gemini / andere KI später sicher anbinden</summary>
+<p>1. In Google AI Studio ein eigenes API-Projekt einrichten. 2. Einen <b>serverseitigen PIGA-Proxy</b> mit Zugangskontrolle, Kostenlimit und Datenschutzprüfung konfigurieren. 3. Erst dann den Proxy als ausdrücklich erlaubte Quelle für generative Antworten nutzen. <b>Keinen Gemini-API-Schlüssel im Browser, Chat oder HTML speichern.</b> Derzeit ist kein LLM-Proxy aktiv.</p>
+<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio öffnen</a></details>
+<form id="pcWebForm"><label for="pcWebQuery">Öffentliche Websuche im separaten Browser-Tab</label><input id="pcWebQuery" maxlength="150" placeholder="DICOM Standard oder KFO-Fachinformation" required>
+<button type="submit">Websuche öffnen</button></form>
+<div class="pc-footnote">Öffnet nur eine öffentliche Suchseite. Ergebnisse werden ohne zugelassenen Backend-Connector nicht automatisch vom PIGA-Chat gelesen. Keine Patientendaten als Suchbegriff verwenden.</div>
+</section>
+</div></section>
+<div id="pcNotice" class="pc-notice" role="status" aria-live="polite">PIGA lokal initialisiert. Keine echte Medizin-, Urlaubs- oder Druckfreigabe.</div>
+<footer class="pc-footer">PIGA · GATE 1 DELAY · GATE 2 BLOCK · A7SEM / A7SEM REVERSE · LOCAL-FIRST · HUMAN CONTROL</footer>
+</main>
+<script src="./device-store.js" defer></script><script src="./piga-brain.js" defer></script>
+<script src="./piga-control.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script>
+</body></html>
