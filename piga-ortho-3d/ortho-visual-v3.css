@@ -173,3 +173,17 @@ body.ortho-focus-mode #studio #mesh{min-height:min(70vh,850px)!important;width:1
  body.ortho-focus-mode.piga-has-nav>main{padding-bottom:84px!important}
 }
 @media print{.ortho-focus-toggle,.ortho-focus-exit{display:none!important}}
+
+/* Integrated case-to-lab path highlighted on existing workspace dashboard. */
+.handoff-promo{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(210px,.7fr);align-items:center;gap:19px;
+ padding:clamp(20px,2.5vw,35px);margin:23px 0;border:1px solid #b8e6e7;background:linear-gradient(110deg,#e4fffd,#f4feff 58%,#e2f3ff);
+ border-radius:22px;box-shadow:0 12px 31px #227b9516}
+.handoff-promo h2{font-size:clamp(23px,2.3vw,35px);color:#1c4664;letter-spacing:-.045em;margin:10px 0 7px}
+.handoff-promo h2 em{font-style:normal;color:#078da1}
+.handoff-promo p{font-size:13px;color:#578096;line-height:1.7;margin:4px 0 18px;max-width:690px}
+.handoff-promo img{width:100%;max-height:205px;object-fit:contain;filter:drop-shadow(0 8px 14px #1c8db640)}
+.handoff-promo .handoff-promo-action{display:inline-flex;align-items:center;text-decoration:none;font-size:12px;
+ color:#fff;background:linear-gradient(110deg,#078bba,#07b9b7);border:1px solid #078bba;border-radius:11px;
+ font-weight:800;padding:12px 16px}
+.handoff-promo small{display:block;color:#618e9e;font-size:10px;margin-top:11px}
+@media(max-width:760px){.handoff-promo{grid-template-columns:1fr;gap:5px}.handoff-promo img{max-height:130px}.handoff-promo h2{font-size:25px}}
