@@ -1,16 +1,16 @@
 'use strict';
 (()=>{
  const paths=[
- {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./dashboard.html',icon:'grid'},
- {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./praxis.html',icon:'users'},
- {id:'team',label:'Personal & Steuer',desc:'Unterweisung, Dienstplan, Urlaub, Krankmeldung und freigegebene Lohndaten',href:'./team.html',icon:'users'},
- {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./inventory.html',icon:'grid'},
- {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./index.html#studio',icon:'cube'},
+ {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./direct.html',icon:'grid'},
+ {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./direct.html#overview',icon:'users'},
+ {id:'team',label:'Personal & Steuer',desc:'Unterweisung, Dienstplan, Urlaub, Krankmeldung und freigegebene Lohndaten',href:'./direct.html#team',icon:'users'},
+ {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./direct.html#inventory',icon:'grid'},
+ {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./studio.html#studio',icon:'cube'},
  {id:'assistant',label:'Assistent',desc:'Geführte Schritte und KFO-Katalog',href:'./assist.html',icon:'flow'},
  {id:'workflow',label:'Prozesse',desc:'Zwölf Schritte, User Route und Ergebnisroute',href:'./workflow.html',icon:'flow'},
  {id:'devices',label:'Geräte',desc:'WLAN, Bluetooth, USB-Scanimport und technische Geräteprüfung',href:'./devices.html',icon:'printer'},
- {id:'printer',label:'Fertigung',desc:'OctoPrint mit Gate-2-Freigaben und Status-Readback',href:'./index.html#printer',icon:'printer'},
- {id:'quality',label:'Glassbox',desc:'Audit, PIGA und A7SEM Reverse',href:'./index.html#evidence',icon:'shield'},
+ {id:'printer',label:'Fertigung',desc:'OctoPrint mit Gate-2-Freigaben und Status-Readback',href:'./studio.html#printer',icon:'printer'},
+ {id:'quality',label:'Glassbox',desc:'Audit, PIGA und A7SEM Reverse',href:'./studio.html#evidence',icon:'shield'},
  {id:'report',label:'Prüfakte / PDF',desc:'Druckfertiger PIGA und A7SEM-Nachweis mit lokaler Hashprüfung',href:'./report.html',icon:'document'}
  ];
  const icons={
@@ -29,7 +29,7 @@
  if(filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
- const brand=document.createElement('a');brand.className='piga-mark';brand.href='./dashboard.html';brand.innerHTML='<span class="piga-mark-icon">⊓</span><span><b>PIGA</b><small>ORTHO 3D</small></span>';rail.append(brand);
+ const brand=document.createElement('a');brand.className='piga-mark';brand.href='./direct.html';brand.innerHTML='<span class="piga-mark-icon">⊓</span><span><b>PIGA</b><small>ORTHO 3D</small></span>';rail.append(brand);
  const cap=document.createElement('span');cap.className='piga-caption';cap.textContent='ARBEITSBEREICHE';rail.append(cap);
  const links=document.createElement('div');links.className='piga-links';paths.forEach(p=>links.append(a(p,'piga-link')));rail.append(links);
  const tools=document.createElement('div');tools.className='piga-rail-foot';
@@ -44,7 +44,7 @@
  const top=document.createElement('div');top.className='piga-command-head';top.insertAdjacentHTML('beforeend',svg('search'));const search=document.createElement('input');search.type='search';search.placeholder='Funktion suchen, z. B. Druck, Kosten, STL …';search.setAttribute('aria-label','Funktion suchen');top.append(search);const close=document.createElement('button');close.type='button';close.className='piga-command-close';close.textContent='Schließen';top.append(close);panel.append(top);
  const results=document.createElement('div');results.className='piga-results';panel.append(results);
  const foot=document.createElement('div');foot.className='piga-command-footer';foot.textContent='Nur freigegebene Module benutzen · keine echten Patientendaten';panel.append(foot);overlay.append(panel);
- const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter registrieren personal kennung kosten login zeit arbeit',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
+ const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
  function render(){results.textContent='';const q=search.value.trim().toLocaleLowerCase('de-DE');const found=paths.filter(p=>(p.label+' '+p.desc+' '+keywords[p.id]).toLocaleLowerCase('de-DE').includes(q));
   if(!found.length){const empty=document.createElement('p');empty.textContent='Keine passende Funktion gefunden.';empty.style.padding='15px';results.append(empty);return;}
   found.forEach(p=>{const item=document.createElement('a');item.href=p.href;const b=document.createElement('b');b.textContent=p.label;const sm=document.createElement('small');sm.textContent=p.desc;item.append(b,sm);results.append(item);});}
