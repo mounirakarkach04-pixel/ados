@@ -1,0 +1,100 @@
+/* PIGA ORTHO 3D · Light Precision v3. Shared, accessible sales-preview design language.
+   Pure presentation. Does not alter admission, medical, printer or payment authority. */
+:root{
+ --v3-ink:#113a5d;--v3-sub:#52758a;--v3-turquoise:#0ebdcc;
+ --v3-light:#ecfbff;--v3-stroke:#c9e7f1;--v3-shadow:0 11px 32px rgba(14,86,136,.075);
+}
+html{background:#f4fcff}
+body.ortho-visual-v3{background:radial-gradient(ellipse 1100px 400px at 92% -10%,#c9f4ffad 0%,transparent 80%),
+ radial-gradient(ellipse 1000px 410px at 3% 48%,#dbf8ff90 0%,transparent 83%),#f4fcff!important}
+body.ortho-visual-v3 .piga-rail{background:linear-gradient(180deg,#fff,#f4fcff 62%,#eaf9ff)!important;border-right:1px solid #cae7f0!important}
+body.ortho-visual-v3 .piga-links a[aria-current=page]{background:linear-gradient(110deg,#d5f8fa,#e7f3ff)!important;border-color:#b6e6ee!important;color:#007caa!important}
+body.ortho-visual-v3 .piga-links a:hover{background:#e0f7fb!important}
+body.ortho-visual-v3 .piga-mark-icon{background:linear-gradient(120deg,#00cdbc,#068ee1)!important}
+body.ortho-visual-v3>main{width:auto!important;max-width:none!important;overflow:visible!important}
+.ortho-v3-masthead{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(220px,.65fr);
+ align-items:center;gap:25px;width:100%;min-height:170px;padding:clamp(18px,2vw,29px) clamp(21px,2.4vw,42px);
+ margin:8px 0 24px;border:1px solid #c4e6f2;border-radius:26px;
+ background:linear-gradient(110deg,#fff 0%,#effcff 38%,#e3f7ff 72%,#daf5ff 100%);
+ box-shadow:0 15px 34px #0e679b12;overflow:hidden}
+.ortho-v3-masthead::before{content:"";position:absolute;inset:-120px -9% auto auto;z-index:-1;width:66%;height:265px;
+ transform:rotate(-9deg);border:1px solid #b0e7f9a0;border-radius:50%;box-shadow:0 24px 0 -2px #b6eaff38,0 49px 0 -5px #37c9e52a}
+.ortho-v3-masthead::after{content:"";position:absolute;bottom:0;left:0;right:0;height:25px;z-index:-1;
+ background:linear-gradient(90deg,transparent,#b5f3f739,transparent);pointer-events:none}
+.ortho-v3-mast-kicker{display:flex;gap:11px;align-items:center;color:#078da7;font-size:10px;font-weight:850;letter-spacing:.11em}
+.ortho-v3-mast-kicker b{width:36px;height:36px;background:linear-gradient(135deg,#08c9c8,#0788c1);border-radius:50%;
+ display:grid;place-items:center;color:#fff;letter-spacing:0;font-size:17px;box-shadow:0 6px 13px #158aa52e}
+.ortho-v3-mast-title{font-size:clamp(25px,2.55vw,39px);font-weight:840;letter-spacing:-.055em;
+ color:#173d64!important;margin:11px 0 6px;line-height:1.09}
+.ortho-v3-mast-copy>p{max-width:840px;margin:0;font-size:clamp(12px,.98vw,15px);color:#477590;line-height:1.65}
+.ortho-v3-mast-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
+.ortho-v3-mast-actions a{display:inline-flex;align-items:center;color:#116c8d!important;text-decoration:none;
+ background:#fff9;border:1px solid #bce5ee;border-radius:9px;padding:7px 11px;font-size:11px;font-weight:750}
+.ortho-v3-mast-actions a:hover{background:#def8fc!important;transform:translateY(-1px)}
+.ortho-v3-mast-art{width:100%;height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:18px;
+ background:radial-gradient(ellipse at 53% 55%,#fff,#ddf6ffb5 63%,transparent);box-shadow:inset 0 0 18px #4ec6e910}
+.ortho-v3-mast-art img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 7px 11px #1878a63a)}
+body.ortho-page-studio .ortho-v3-mast-art img,body.ortho-page-devices .ortho-v3-mast-art img{transform:scale(1.22)}
+/* Work surfaces should be genuinely usable, not squeezed into preview-sized cards */
+body.ortho-visual-v3 :where(.panel,.tile,.workbench,.workspace,.inspector,.rail,.transport,.tool-card,.stepper,.paper,.guide,.support,
+ .hub-panel,.module-card,.stat,.stock-wrap .item,.kpi-card){border-radius:17px!important;border-color:#d3e9f0!important;
+ box-shadow:var(--v3-shadow)!important}
+body.ortho-visual-v3 :where(h1,h2,h3){letter-spacing:-.025em}
+body.ortho-visual-v3 :where(.panel,.workspace,.workbench,.hub-panel,.transport,.stepper,.paper){min-width:0}
+body.ortho-visual-v3 :where(.section-top,.team-header,.top,.device-top,.pagebar){border-color:#d0ebf3!important}
+body.ortho-visual-v3 :where(button.primary,.btn.primary,.button.primary,.top-action){
+ background:linear-gradient(110deg,#069dc3,#0dc2be)!important;border-color:#039ac0!important;color:#fff!important;
+ border-radius:11px!important}
+body.ortho-visual-v3 input:focus-visible,body.ortho-visual-v3 select:focus-visible,
+body.ortho-visual-v3 button:focus-visible,body.ortho-visual-v3 a:focus-visible{outline:3px solid #00b6d5!important;outline-offset:2px!important}
+body.ortho-visual-v3 .connection-help:not([hidden]){display:block;padding:16px 20px;margin:12px 0 20px;border-radius:14px;
+ background:#e7f8fd;border:1px solid #b7e2ec;color:#246d82}
+body.ortho-visual-v3 .connection-help p{line-height:1.6;margin:6px 0 0}
+/* Hero aligned with provided 2026 light orthodontic reference. */
+.ortho-reference-brand{border-radius:25px!important;border:1px solid #b7e4ee!important;background:linear-gradient(110deg,#fff,#dffaff)!important}
+.ortho-reference-brand .ref-brand-lockup strong{color:#12375d!important}
+.ortho-reference-brand .ref-brand-lockup em{color:#00aeca!important}
+body.ortho-visual-v3 .shell .hero{grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr)!important;
+ background:linear-gradient(115deg,#f9feff,#e7f9ff 54%,#e6f1ff)!important}
+body.ortho-visual-v3 .hero-graphic{overflow:hidden!important;min-height:310px!important;
+ background:radial-gradient(ellipse at 50% 40%,#fff,#e0f8ff 72%,#d9f3fb)!important}
+body.ortho-visual-v3 .hero-graphic .ortho-hero-art{width:100%;height:min(30vw,350px);min-height:235px;
+ object-fit:contain;filter:drop-shadow(0 12px 17px #167eaf42)}
+body.ortho-visual-v3 .core-grid{gap:17px!important}
+body.ortho-visual-v3 .module-card{min-height:240px!important;background:linear-gradient(142deg,#fff,#f4fcff)!important}
+body.ortho-visual-v3 .module-card:hover{border-color:#7fcddf!important;box-shadow:0 15px 30px #177ab31f!important}
+/* Wide desktop + comfortable intermediate tablet */
+@media(min-width:1100px){
+ body.ortho-visual-v3>main{padding-left:clamp(18px,2vw,40px)!important;padding-right:clamp(18px,2vw,40px)!important}
+ body.ortho-visual-v3 :where(.owner-grid,.stock-wrap .layout,.workbench,.transport-grid,.hub-grid){column-gap:clamp(17px,1.7vw,29px)!important}
+ body.ortho-page-studio #studio .two{grid-template-columns:minmax(0,2.15fr) minmax(300px,.87fr)!important}
+ body.ortho-page-studio #studio #mesh{min-height:460px!important;aspect-ratio:1.65!important}
+ body.ortho-page-inventory .stock-wrap .layout{grid-template-columns:minmax(0,1.55fr) minmax(330px,.95fr)!important}
+ body.ortho-page-team .owner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1700px){.ortho-v3-masthead{min-height:184px}.ortho-v3-mast-art{height:175px}
+ body.ortho-page-studio #studio #mesh{min-height:560px!important}}
+@media(min-width:761px) and (max-width:1099px){
+ .ortho-v3-masthead{grid-template-columns:1fr 230px;gap:10px}
+ .ortho-v3-mast-art{height:140px}
+ body.ortho-page-studio #studio .two{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+ .ortho-v3-masthead{grid-template-columns:minmax(0,1fr) 100px;gap:10px;padding:15px;margin:5px 0 16px;border-radius:19px;min-height:115px}
+ .ortho-v3-mast-kicker{font-size:8px;gap:7px}.ortho-v3-mast-kicker b{width:25px;height:25px;font-size:12px}
+ .ortho-v3-mast-title{font-size:clamp(20px,5.3vw,28px)!important;margin:8px 0 3px}
+ .ortho-v3-mast-copy>p{font-size:11px;line-height:1.48}
+ .ortho-v3-mast-art{height:115px;background:transparent;box-shadow:none}
+ .ortho-v3-mast-actions{grid-column:1/-1;margin-top:8px;gap:5px}
+ .ortho-v3-mast-actions a{font-size:10px;padding:6px 8px}
+ body.ortho-visual-v3 :where(.module-grid,.owner-grid,.hub-grid,.panels,.transport-grid){grid-template-columns:1fr!important}
+ body.ortho-visual-v3 .shell .hero{grid-template-columns:1fr!important}
+ body.ortho-visual-v3 .hero-graphic .ortho-hero-art{height:205px;min-height:190px}
+}
+@media(max-width:430px){
+ .ortho-v3-masthead{grid-template-columns:1fr 70px}
+ .ortho-v3-mast-art{height:95px}
+ .ortho-v3-mast-actions a:nth-child(n+4){display:none}
+}
+@media print{.ortho-v3-masthead{background:white;box-shadow:none;min-height:auto}
+ .ortho-v3-mast-art{display:none}.ortho-v3-mast-actions{display:none}}
