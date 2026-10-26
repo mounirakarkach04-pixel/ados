@@ -194,5 +194,7 @@
  }
  window.addEventListener('pageshow',()=>{if(!working)void update()});
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!working)void update()});
+ const initialCase=new URLSearchParams(location.hash.slice(1)).get('case');
+ if(initialCase&&/^[\w-]{1,90}$/.test(initialCase))selected=initialCase;
  try{await S.initialize('direct');await update()}catch(err){notification('Geräte-Datenbank: '+String(err.message),true)}
 })();
