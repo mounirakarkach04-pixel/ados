@@ -6,7 +6,8 @@ let passes=0;const check=(name,fn)=>{fn();console.log('PASS '+name);passes++};
 const ids=['pcRuntime','pcHeartbeat','pcJobs','pcPending','pcTicker','pcChatForm','pcChatInput',
  'pcChatFeed','pcTeamFeed','pcTeamForm','pcTeamName','pcTeamMessage','pcRequestForm',
  'pcRequestKind','pcRequestText','pcRequests','pcRun','pcAuto','pcPauseWorker',
- 'pcWake','pcWebForm','pcWebQuery','pcListen','pcSpeak','pcAudience','pcEvents'];
+ 'pcWake','pcWebForm','pcWebQuery','pcListen','pcSpeak','pcAudience','pcEvents',
+ 'pcReviewDialog','pcNotifyTeam','pcReviewDescription'];
 check('All PIGA control JS modules parse without network injections',()=>{
  for(const f of ['piga-brain.js','piga-control.js','piga-pocket-widget.js','device-store.js',
   'device-hub.js','navigation.js','sw.js'])new vm.Script(read(f),{filename:f});
@@ -51,6 +52,7 @@ check('Local chat and worker fabric cannot silently call internet or LLM provide
  assert(ui.includes('navigator.locks.request'));
  assert(ui.includes("document.visibilityState==='hidden'"));
  assert(ui.includes('setInterval'));
+ assert(ui.includes("Notification.requestPermission()"));
 });
 check('Worker telemetry names a page heartbeat, not a server 24/7 claim',()=>{
  const h=read('piga-control.html'),ui=read('piga-control.js');
@@ -65,6 +67,8 @@ check('Team mode hides elevated controls and limits employee request forms',()=>
  assert(ui.includes("staff?'LEAVE_REQUEST':'INVENTORY_REVIEW'"));
  assert(ui.includes("'pcRequestKind').disabled=staff"));
  assert(ui.includes("state.teamMessages.push"));
+ assert(ui.includes("reviewDialog.close(btn.dataset.review)"));
+ assert(ui.includes("B.decide(state.requests[idx],outcome,false)"));
  assert(ui.includes('PigaDeviceStore')||ui.includes('savePigaControl'));
 });
 check('Encrypted backup round-trips the PIGA request/chat snapshot',()=>{
