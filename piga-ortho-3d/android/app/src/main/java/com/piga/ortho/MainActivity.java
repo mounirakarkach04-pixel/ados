@@ -270,6 +270,7 @@ public final class MainActivity extends Activity {
       }
       wifiScanDeliver(fresh?"complete":"cached",fresh?"Frische WLAN-Ergebnisse":"Android liefert zwischengespeicherte Ergebnisse (Scan-Drosselung möglich)",result);
     }catch(SecurityException e){wifiScanDeliver("permission_denied","Zugriff auf WLAN-Suchergebnisse nicht erlaubt",null);}
+    catch(org.json.JSONException e){wifiScanDeliver("error","Android-WLAN-Ergebnis kann nicht serialisiert werden",null);}
   }
   private void wifiScanDeliver(String state,String message,org.json.JSONArray found){
     ui.post(()->{
