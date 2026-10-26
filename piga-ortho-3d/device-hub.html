@@ -29,6 +29,14 @@
 <button id="execute" type="button">Bis zu 5 Aufträge ausführen</button></div>
 <div id="workerStatus" class="hub-feedback" role="status">Bereit.</div>
 <div id="jobs" class="hub-list" aria-live="polite"></div></section>
+<section class="hub-panel" id="integrity"><p class="eyebrow">03 / GLASSBOX CHECK</p><h2>Datenintegrität prüfen</h2>
+<p>Die Datenbank technisch kontrollieren, ohne Testdaten zu verändern. Prüft doppelte Kennungen, fehlerhafte Referenzen, ungültige Termine und Materialmengen. Keine Patientendaten werden in den Bericht kopiert.</p>
+<div class="hub-actions"><button id="checkIntegrity" class="primary" type="button">Jetzt lokal prüfen</button>
+<button id="exportIntegrity" type="button" disabled>Prüfbericht als JSON exportieren</button></div>
+<div class="hub-feedback" id="integrityStatus" role="status">Noch keine Integritätsprüfung durchgeführt.</div>
+<div id="integrityIssues" class="hub-list" aria-live="polite"></div>
+<p class="hub-note">SHA-256 vergleicht Datenschnappschüsse, ist aber weder eine digitale Signatur noch eine klinische Freigabe. Eventuelle Fehler werden nur angezeigt, niemals automatisch korrigiert.</p>
+</section>
 <section class="hub-panel" id="transfer"><p class="eyebrow">03 / DEVICE TO DEVICE</p><h2>Verschlüsselter Datentransfer</h2><p><strong>Jetzt automatisch angeboten:</strong> Auf einem neuen Gerät erscheint ein Import-Hinweis. Nach Änderungen erinnert die App an eine neue Sicherung. Ein echtes automatisches Kopieren zwischen zwei Geräten erfordert eine sichere Verbindung und deren Freigabe.</p>
 <p>Ohne Cloud: Auf Gerät A verschlüsselt exportieren, Datei sicher auf Gerät B übertragen, dort wieder importieren. Keine automatische Synchronisierung.</p>
 <label for="secret">Sicherungspasswort (mindestens 12 Zeichen)</label><input id="secret" type="password" autocomplete="new-password" minlength="12" placeholder="Nur für den Export/Import; wird nicht gespeichert">
@@ -49,4 +57,4 @@
 <li>Keine echten Patientenakten oder vertraulichen Personalunterlagen in diese offene Evaluation eintragen.</li>
 <li>Synchronisierung mehrerer Geräte braucht später einen geprüften Transport, Konfliktbehandlung und Datenschutz.</li></ul></section>
 </div><footer>DEVICE FIRST · PIGA GATE 1 / GATE 2 · KEINE KLINISCHE FREIGABE</footer></main>
-<script src="./device-store.js" defer></script><script src="./device-hub.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
+<script src="./device-store.js" defer></script><script src="./device-integrity.js" defer></script><script src="./device-hub.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
