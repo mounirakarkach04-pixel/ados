@@ -27,3 +27,35 @@
 @media(max-width:1050px){.setup-layout{grid-template-columns:1fr}.setup-steps{grid-template-columns:repeat(3,minmax(0,1fr))}.setup-steps button{min-height:78px;padding:11px}.setup-hero{grid-template-columns:1fr 160px}}
 @media(max-width:760px){.setup-app{padding:13px 12px 107px!important}.setup-hero{grid-template-columns:1fr;padding:20px}.setup-hero img{max-height:135px}.setup-steps{display:flex;overflow:auto;scroll-snap-type:x mandatory;gap:6px}.setup-steps button{flex:0 0 145px;scroll-snap-align:start}.setup-panel{padding:18px;min-height:0}.setup-overview{display:block}.setup-panel h2{font-size:25px}.setup-bottom button{flex:1 1 135px}}
 @media(prefers-reduced-motion:reduce){.setup-track>div{transition:none}}
+
+/* Ergonomic mobile setup and AI bridge 2026-10-26 */
+.setup-app,.setup-hero,.setup-panel,.setup-info,.setup-admin-details{box-sizing:border-box;min-width:0;max-width:100%;overflow-wrap:anywhere}
+.setup-ai-card{display:grid;gap:12px;border:1px solid #c7e6f0;border-radius:16px;padding:clamp(13px,2.5vw,20px);background:linear-gradient(115deg,#f7fdff,#effbfd);margin:20px 0}
+.setup-ai-card>div{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.setup-ai-card strong{color:#18536c;font-size:14px}
+.setup-ai-badge{padding:6px 10px;border:1px solid #cde5ec;border-radius:20px;color:#477789;background:white;font-size:11px;font-weight:750}
+.setup-ai-badge[data-state=warn]{color:#8b6322;border-color:#ead8a9;background:#fff9ef}
+.setup-ai-badge[data-state=good]{color:#157e7f;border-color:#93d6cf;background:#eafffb}
+.setup-ai-badge[data-state=error]{color:#91513f;border-color:#efc1ae;background:#fff5f0}
+.setup-ai-card .setup-statusline{margin:0;max-width:100%;font-size:13px}
+.setup-admin-details ol{padding-left:21px;line-height:1.75;font-size:13px;color:#477d8d}
+.setup-admin-details li{margin-bottom:10px;overflow-wrap:anywhere}
+.setup-admin-details code{white-space:normal;overflow-wrap:anywhere;font-size:12px}
+.setup-admin-details p{overflow-wrap:anywhere}
+@media(max-width:760px){
+ .setup-app{overflow-x:clip}
+ .setup-hero{padding:18px;gap:11px}
+ .setup-hero h1{font-size:clamp(23px,6vw,29px);line-height:1.21;overflow-wrap:normal}
+ .setup-hero p{font-size:13px;line-height:1.55}
+ .setup-hero img{max-height:100px;margin:0 auto}
+ .setup-hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+ .setup-hero-actions a{min-width:0;padding:9px 8px;text-align:center;font-size:11px;line-height:1.4}
+ .setup-steps{scrollbar-width:thin}
+ .setup-steps button{flex-basis:135px}
+ .setup-panel{padding:16px;box-shadow:none}
+ .setup-panel h2{font-size:clamp(22px,6vw,28px);line-height:1.25}
+ .setup-panel p{font-size:13px;line-height:1.57}
+ .setup-ai-card{padding:13px}
+ .setup-ai-card button{width:100%}
+ .setup-bottom button{flex:1 1 35%;min-width:0}
+}
