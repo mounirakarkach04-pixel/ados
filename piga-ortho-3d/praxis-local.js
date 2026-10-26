@@ -1,5 +1,6 @@
 'use strict';
-(()=>{
+(async()=>{
+ await window.OrthoLocalReady;
  const L=window.OrthoLocal,{db,$,value,number,text,visible,date,format,euro,now,uuid,el,row,csv,save,showMsg}=L;
  L.banner();
  ['dashboard','activeTools','kpiStrip','ownerArea','handoffPanel'].forEach(id=>visible(id));
