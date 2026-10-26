@@ -98,3 +98,28 @@ body.ortho-visual-v3 .module-card:hover{border-color:#7fcddf!important;box-shado
 }
 @media print{.ortho-v3-masthead{background:white;box-shadow:none;min-height:auto}
  .ortho-v3-mast-art{display:none}.ortho-v3-mast-actions{display:none}}
+
+/* Functional guided assistant: light reference-inspired conversation area */
+.ortho-help-station{padding:clamp(17px,2.3vw,31px);margin:15px 0 25px;background:linear-gradient(135deg,#fff,#effbff);border:1px solid #c9e9f2;
+ border-radius:21px;box-shadow:var(--v3-shadow)}
+.ortho-help-head{display:flex;align-items:start;justify-content:space-between;gap:19px}
+.ortho-help-head h2{color:#173f61!important;font-size:clamp(20px,2vw,29px);margin:9px 0 6px!important}
+.ortho-help-head p{color:#577b8b;font-size:13px;line-height:1.6;margin:0}
+.ortho-help-head button{flex-shrink:0;background:#fff;color:#187b97;border:1px solid #c3e4eb;border-radius:10px;padding:11px;cursor:pointer}
+.ortho-help-prompts{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0 15px}
+.ortho-help-prompts button{background:#e5f9fb;color:#166c87;border:1px solid #bee7ed;
+ border-radius:11px;padding:10px 13px;font-size:12px;font-weight:800;cursor:pointer}
+.ortho-help-prompts button:hover{background:#d4f2f8}
+.ortho-help-feed{max-height:310px;min-height:100px;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:20px;
+ background:linear-gradient(160deg,#f3fcff,#fafdff);border:1px solid #daedf3;border-radius:14px}
+.ortho-help-message{max-width:min(100%,780px);padding:13px 18px;border-radius:17px;border:1px solid #d7eaf0;background:white;color:#375d72}
+.ortho-help-message.user{align-self:flex-end;background:#dff7fb;border-color:#a9e1e9}
+.ortho-help-message b{font-size:11px;color:#078fa2;letter-spacing:.04em}
+.ortho-help-message p{font-size:13px;line-height:1.7;margin:5px 0;color:#365f77}
+.ortho-help-message a{display:inline-flex;padding-top:3px;color:#077eac;font-size:12px;font-weight:850;text-decoration:none}
+.ortho-help-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-top:13px}
+.ortho-help-form input{border:1px solid #c8e3ed;background:#fff;border-radius:12px;padding:13px 16px;min-width:0}
+.ortho-help-form button{border:1px solid #039ac0;border-radius:12px;color:white;background:linear-gradient(105deg,#0594c4,#05bfc3);padding:12px 19px;font-weight:850;cursor:pointer}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:600px){.ortho-help-head{display:block}.ortho-help-head button{margin-top:10px}.ortho-help-feed{padding:11px}
+ .ortho-help-form{grid-template-columns:1fr}.ortho-help-form button{min-height:43px}}
