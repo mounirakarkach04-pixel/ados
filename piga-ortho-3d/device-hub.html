@@ -13,6 +13,10 @@
 <div class="hub-metric"><span>Speicher verwendet</span><b id="used">–</b><small id="limit">Größe wird ermittelt</small></div>
 <div class="hub-metric"><span>Speichererhalt</span><b id="persistent">Unbekannt</b><small>Vom Browser abhängig</small></div>
 <div class="hub-metric"><span>Worker-Warteschlange</span><b id="jobCount">–</b><small>Persistente Aufträge</small></div></section>
+<section class="hub-panel" id="resilience" aria-label="PIGA lokaler Ausfallschutz"><p class="eyebrow">AUTONOMIE · GERÄTEPRIORITÄT</p>
+<h2>Ausfallschutz & lokaler Runner</h2><p>Das Gerät bleibt die primäre Datenbank; Supabase ist optional. Technische Prüfung und Optimierungsvorschläge laufen nach dem Öffnen der App oder spätestens beim nächsten sichtbaren 15-Minuten-Zyklus, soweit Browserberechtigungen dies erlauben. Eine Web-App läuft nicht garantiert rund um die Uhr, sobald sie geschlossen wurde.</p>
+<div class="hub-actions"><button id="resilienceRun" type="button" class="primary">Lokale Prüfung jetzt ausführen</button><a href="./device-hub.html#transfer">Verschlüsselt sichern</a></div>
+<p class="hub-feedback" id="resilienceStatus" role="status" aria-live="polite">Gerätezustand wird gelesen …</p></section>
 <div class="hub-actions"><button id="refresh" type="button">Status aktualisieren</button><button id="keep" type="button" class="primary">Dauerhaften Speicher anfragen</button><a href="./direct.html#cases">Fälle & Termine</a><a href="./inventory.html">Materialverwaltung</a></div>
 <div class="hub-grid">
 <section class="hub-panel"><p class="eyebrow">01 / DEVICE DATA</p><h2>Lokale Datenbestände</h2>
@@ -57,4 +61,4 @@
 <li>Keine echten Patientenakten oder vertraulichen Personalunterlagen in diese offene Evaluation eintragen.</li>
 <li>Synchronisierung mehrerer Geräte braucht später einen geprüften Transport, Konfliktbehandlung und Datenschutz.</li></ul></section>
 </div><footer>DEVICE FIRST · PIGA GATE 1 / GATE 2 · KEINE KLINISCHE FREIGABE</footer></main>
-<script src="./device-store.js" defer></script><script src="./device-integrity.js" defer></script><script src="./device-hub.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
+<script src="./device-store.js" defer></script><script src="./device-integrity.js" defer></script><script src="./resilience-status.js" defer></script><script src="./device-hub.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
