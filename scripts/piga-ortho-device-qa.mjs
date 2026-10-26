@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const root='piga-ortho-3d',read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const pages=['dashboard','studio','praxis','team','inventory','devices','assist','workflow','report','direct','device-hub'];
-const js=['ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
+const js=['ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
 let tests=0;const test=(title,fn)=>{fn();tests++;console.log('PASS '+title)};
 test('All active UI scripts parse',()=>js.forEach(file=>new vm.Script(read(file),{filename:file})));
 test('Every full app page contains unified wide theme + navigation',()=>pages.forEach(name=>{
@@ -64,7 +64,7 @@ test('Service worker includes all new assets with new release cache',()=>{
  const sw=read('sw.js');
  for(const file of ['device-store.js','device-hub.html','device-hub.css','device-hub.js','device-worker.js','ortho-light.css','transfer-offer.js','worker-autoresume.js'])
   assert(sw.includes("'./"+file+"'"),file);
- assert(sw.includes('v130-light-visual-html'));
+ assert(sw.includes('v131-installable-html'));
 });
 test('No broken local relative links for all active UI pages',()=>{
  for(const page of pages){
@@ -146,5 +146,13 @@ test('Core operational actions have actual handlers and stay local',()=>{
  ];
  for(const [file,ids] of pairs){const js=read(file);for(const id of ids)assert(js.includes("'"+id+"'"),file+':'+id)}
  assert(read('device-hub.js').includes('crypto.subtle.encrypt'));
+});
+test('The installable HTML PWA offers real install or platform-specific instructions',()=>{
+ const install=read('ortho-install.js'),navigation=read('navigation.js'),worker=read('sw.js');
+ assert(install.includes("beforeinstallprompt"));
+ assert(install.includes("await p.prompt()"));
+ assert(install.includes("Zum Home-Bildschirm"));
+ assert(navigation.includes("install.src='./ortho-install.js'"));
+ assert(worker.includes("'./ortho-install.js'"));
 });
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
