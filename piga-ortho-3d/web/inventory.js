@@ -45,7 +45,7 @@ async function authenticate(token){
  $('permissionBadge').textContent=isOwner?'INHABER / VOLLER LAGERZUGRIFF':'INVENTUR FREIGEGEBEN';
  $('staffNav').hidden=!isOwner;
  $('staffPermissions').hidden=!isOwner;
- $('configuration').hidden=!isOwner;
+ $('configuration').hidden=!isOwner;$('addNewItem').hidden=!isOwner;
  await loadAll();
 }
 function logout(){
@@ -129,11 +129,12 @@ function drawDetails(){
  const keys={minimum:'minimum',incoming:'incoming',leadDays:'lead_days',reserveDays:'reserve_days',packSize:'pack_size',expiry:'expiry_on',batch:'batch_lot',supplier:'supplier',fixedUse:'fixed_per_visit',removableUse:'removable_per_visit',alignerUse:'aligner_per_visit',generalUse:'general_per_visit'};
  for(const [id,key] of Object.entries(keys))$(id).value=x[key]??'';
 }
+$('changeReason').addEventListener('change',()=>{$('correctionDirection').hidden=$('changeReason').value!=='COUNT_CORRECTION';});
 $('adjustForm').onsubmit=async e=>{
  e.preventDefault();if(!selected)return;
  const amount=Number($('changeQuantity').value),reason=$('changeReason').value;
  if(!Number.isFinite(amount)||amount<=0||amount>1000000)return msg('adjustStatus','Ungültige Menge.',true);
- const delta=reason==='RECEIVE'?amount:reason==='COUNT_CORRECTION'?Number(promptForSignedCorrection(amount)): -amount;
+ const delta=reason==='RECEIVE'?amount:reason==='COUNT_CORRECTION'?($('correctionSign').value==='+'?amount:-amount):-amount;
  if(!Number.isFinite(delta)||delta===0)return msg('adjustStatus','Keine gültige Differenz.',true);
  const note=clean($('changeNote').value);
  $('adjust').disabled=true;
@@ -144,11 +145,19 @@ $('adjustForm').onsubmit=async e=>{
  }catch(err){msg('adjustStatus',err.message,true);}
  finally{$('adjust').disabled=false;}
 };
-function promptForSignedCorrection(amount){
- // User chooses direction with dedicated form control instead of silently assuming a sign.
- const choice=window.confirm('Inventurkorrektur: OK = Bestand erhöhen, Abbrechen = Bestand vermindern.');
- return choice?amount:-amount;
-}
+$('newItemForm').onsubmit=async e=>{
+ e.preventDefault();if(!isOwner)return;
+ const sku=$('newSku').value.trim().toUpperCase();
+ const category=clean($('newCategory').value),label=clean($('newLabel').value);
+ const variant=clean($('newVariant').value),unit=clean($('newUnit').value);
+ if(!/^[A-Z0-9_-]{3,32}$/.test(sku)||category.length<3||label.length<3||!unit)return msg('newItemFeedback','Bitte Artikelnummer und Felder korrekt ausfüllen.',true);
+ const button=$('newItemForm').querySelector('button');button.disabled=true;
+ try{
+  await req('/rest/v1/ortho_inventory_items','POST',{sku,category,label,variant,unit});
+  msg('newItemFeedback','Artikel erfolgreich angelegt. Bitte Mindestmenge, Lieferzeit und Verbrauch konfigurieren.');
+  $('newItemForm').reset();await loadAll();
+ }catch(err){msg('newItemFeedback',err.message,true);}finally{button.disabled=false;}
+};
 $('settingsForm').onsubmit=async e=>{
  e.preventDefault();if(!isOwner||!selected)return;
  const fields={

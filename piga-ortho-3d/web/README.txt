@@ -1,5 +1,5 @@
 PIGA ORTHO 3D — GLASSBOX STUDIO v0.2 | 25.10.2026
-Kostenlose technische Evaluationsausgabe — NICHT FÜR KLINISCHEN PRODUKTIVBETRIEB.
+Technische Evaluationsausgabe — NICHT FÜR KLINISCHEN PRODUKTIVBETRIEB.
 
 START:
 1. Die Hauptseite /piga-ortho-3d/ via HTTPS öffnen.
@@ -35,7 +35,7 @@ DICOM/CBCT, Zahnsegmentierung, klinische 3D-Planung, automatische Staging, herst
 Slicerintegration, geprüfter Android-Native-Adapter, validierte revisionssichere Speicherung,
 regulatorische und versicherungsseitige Prüfung.
 
-PIGA Forschungsprojekt – im Auftrag von Mounir Akarkach. Kostenlos für seinen Bruder.
+PIGA Forschungsprojekt – im Auftrag von Mounir Akarkach. Entwickelt von Mounir Akarkach für Herrn Dr. med. dent. Ibrahim Akarkach.
 
 
 PROZESSNAVIGATOR v0.3
@@ -89,3 +89,10 @@ V1.1 HR STAFF & ACCOUNTANT PORTAL (CONTROLLED EVALUATION)
 - HR time events, vacations/sickness without diagnosis, staff shift scheduling, in-app owner alerts and accountant-visible payroll EXPORT previews are implemented with RLS; not validated for payroll accounting completeness.
 - Authentication recovery callback auth.html supports verified token_hash or fragment access_token. Supabase must allow callback URL and have reliable SMTP sending, otherwise registration delivery cannot be called working.
 - Owner postal email push, DATEV API and clinical patient data are NOT connected. No real medical data in this evaluation app.
+
+
+VERSION 1.2 / MATERIAL & BESTELLPLANUNG
+-----------------------------------
+38 vorstrukturierte KFO-Verbrauchs- und Geräteverbrauchsartikel, reale Mengen absichtlich zunächst Null. Authentifizierter eigener Lagerbestand in Supabase mit Row Level Security, Inhaber-/Mitarbeiterdelegation, unveränderlichen Buchungsereignissen per serverautorisierter RPC und Kritisch-Alarm im Inhaber-Dashboard. Vertrauliche Einstandspreise getrennt (owner-only RLS).
+4 Behandlungs- bzw. Terminarten, Mengenplanung aus selbst kalibrierten Faktoren pro Behandlungstermin, Tagesbedarf, Lieferzeit, Reserve, Mindestmenge, Packungsrundung, Bestell-CSV und nachvollziehbare Eingangs- und Entnahmebuchungen. Ein App-Alarm wird nach Unterschreiten des Mindestbestands angelegt; das Feld mail_delivery=NOT_CONFIGURED ist ABSICHTLICH. Bis Outlook/Microsoft Graph bzw. SMTP mit kostenfreier Autorisierung eingerichtet und real getestet sind, ist die Mailfunktion ein ausdrücklich manuell auszulösender Entwurf (mailto), KEIN automatischer Versand. Keine Bestellung wird eigenständig abgesandt.
+Katalog-SKU ist derzeit der Primärschlüssel, optionale LOT/Verfalldaten je Artikel sind nicht voll chargenscharf. Für sterile oder implantierbare Medizinprodukte wäre eine separate Chargenverwaltungs-/UDI-Komponente mit regulatorischer Prüfung erforderlich. Onlinezugriff für geteilte Bestände; nur die leere App-Oberfläche ist offline gecacht, keine Bestandsänderungen offline. PIGA-Gates und evidenzbasierter Readback bleiben maßgeblich. Produkt ist technische Evaluation, keine regulatorisch validierte Klinikfreigabe.
