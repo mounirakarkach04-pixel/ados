@@ -98,6 +98,12 @@
 
  // Offer local encrypted transfer without blocking app workflows or storing credentials.
  const offer=document.createElement('script');offer.src='./transfer-offer.js';offer.defer=true;document.head.append(offer);
+ // Run only previously queued, bounded local analyses on PWA foreground.
+ const resume=()=>{const s=document.createElement('script');s.src='./worker-autoresume.js';s.defer=true;document.head.append(s);};
+ if(window.PigaDeviceStore)resume();else{
+   const s=document.createElement('script');s.src='./device-store.js';s.defer=true;s.onload=resume;document.head.append(s);
+ }
+
 
  // All Ortho pages use the same worker; avoid the separate direct-worker taking over this scope.
  if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});}
