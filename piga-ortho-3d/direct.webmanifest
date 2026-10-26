@@ -1,0 +1,18 @@
+{
+  "name": "PIGA ORTHO 3D – Direkter Praxiszugang",
+  "short_name": "PIGA ORTHO 3D",
+  "id": "/piga-ortho-3d/direct",
+  "start_url": "./direct.html",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#133a49",
+  "background_color": "#f5f9f8",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
