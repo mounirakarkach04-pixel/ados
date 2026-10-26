@@ -1,6 +1,34 @@
-// No authenticated API or uploaded evidence is cached by this service worker.
-const CACHE="piga-aiact-shell-v14-a11y-offline";
-const SHELL=["./","./index.html","./styles.css","./design-v3.css","./app.bundle.js","./engine.js","./portfolio.js","./publications.js","./journey.js","./piga-act-bridge.js","./icon.svg","./manifest.webmanifest","./privacy.html","./terms.html"];
-self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));
-self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
-self.addEventListener("fetch",e=>{const u=new URL(e.request.url);if(e.request.method!=="GET"||u.origin!==self.location.origin||u.pathname.includes("/auth/")||u.pathname.includes("/storage/"))return;if(e.request.mode==="navigate"){e.respondWith(fetch(e.request).catch(async()=>await caches.match(e.request)||await caches.match("./index.html")));return;}e.respondWith(caches.match(e.request).then(hit=>hit||fetch(e.request)));});
+// Public application shell only. Never intercept cross-origin, authenticated API or private evidence.
+const CACHE = "piga-aiact-shell-v15-scoped-offline";
+const SHELL = [
+  "./", "./index.html", "./styles.css", "./design-v3.css", "./app.bundle.js",
+  "./engine.js", "./portfolio.js", "./publications.js", "./journey.js",
+  "./piga-act-bridge.js", "./icon.svg", "./manifest.webmanifest",
+  "./privacy.html", "./terms.html"
+];
+const shellURLs = new Set(SHELL.map(path => new URL(path, self.registration.scope).href));
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+});
+self.addEventListener("activate", event => {
+  event.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(key => key.startsWith("piga-aiact-shell-") && key !== CACHE)
+      .map(key => caches.delete(key)))
+  ).then(() => self.clients.claim()));
+});
+self.addEventListener("fetch", event => {
+  const request = event.request;
+  if (request.method !== "GET" || request.headers.has("authorization")) return;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin || !shellURLs.has(url.href)) return;
+  if (request.mode === "navigate") {
+    // Network first: show current legal notices; offline only for an explicitly cached public page.
+    event.respondWith(fetch(request).catch(async () => {
+      const cached = await caches.match(request, {ignoreSearch: true});
+      if (cached) return cached;
+      return Response.error();
+    }));
+    return;
+  }
+  event.respondWith(caches.match(request, {ignoreSearch: true}).then(cached => cached || fetch(request)));
+});
