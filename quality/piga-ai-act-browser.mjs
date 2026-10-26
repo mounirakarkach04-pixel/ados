@@ -90,6 +90,40 @@ try{
  await page.locator("#architecture .portfolio-entry").first().waitFor({state:"visible",timeout:10000});
  assert.match(await page.locator("#architecture").innerText(),/Gate|PIGA|A7SEM/);
  await page.locator("#architecture-details > summary").click();
+ // Regression from actual Android screenshots: Executive Determination became a
+ // one-character-wide left grid column because design-v3's 290px desktop
+ // minimum overrode the earlier mobile one-column rule.
+ // Assert real computed geometries at representative Android/Tablet widths.
+ const layouts=[];
+ for(const width of [320,360,375,393,412,480,740,820]){
+  await page.setViewportSize({width,height:800});
+  const layout=await page.evaluate(()=>{
+   const overview=document.querySelector("#view-results .report-overview");
+   const verdict=document.querySelector("#view-results .report-verdict");
+   const evidence=document.querySelector("#view-results .report-evidence");
+   const grid=overview.getBoundingClientRect(),left=verdict.getBoundingClientRect(),right=evidence.getBoundingClientRect();
+   const viewport=document.documentElement.clientWidth;
+   const columns=getComputedStyle(overview).gridTemplateColumns;
+   return {viewport,scrollExcess:document.documentElement.scrollWidth-viewport,
+     gridWidth:grid.width,leftWidth:left.width,rightWidth:right.width,
+     leftX:left.x,rightX:right.x,leftY:left.y,rightY:right.y,columns,
+     headingText:verdict.querySelector("h2")?.textContent?.trim()||"",
+     leftScrollWidth:verdict.scrollWidth,leftClientWidth:verdict.clientWidth};
+  });
+  assert.ok(layout.gridWidth>=width*.73,"report grid unexpectedly narrow at "+width+": "+JSON.stringify(layout));
+  assert.ok(layout.leftWidth>=Math.min(220,width*.65),"Executive Determination collapsed at "+width+": "+JSON.stringify(layout));
+  assert.ok(layout.rightWidth>=Math.min(220,width*.65),"Evidence Snapshot collapsed at "+width+": "+JSON.stringify(layout));
+  assert.ok(layout.rightY>=layout.leftY+20,"Report cards must stack on "+width+"px: "+JSON.stringify(layout));
+  assert.ok(layout.scrollExcess<=3,"Horizontal overflow at "+width+"px: "+JSON.stringify(layout));
+  assert.ok(layout.leftScrollWidth<=layout.leftClientWidth+3,"Clipped executive finding at "+width+"px: "+JSON.stringify(layout));
+  assert.ok(layout.headingText.length>4);
+  layouts.push({width,...layout});
+  if([320,360,393].includes(width)){
+   await page.screenshot({path:"qa-artifacts/02-report-mobile-"+width+".png",fullPage:true});
+  }
+ }
+ fs.writeFileSync("qa-artifacts/02-report-responsive-layout.json",JSON.stringify(layouts,null,2));
+ await page.setViewportSize({width:1365,height:850});
  await page.screenshot({path:"qa-artifacts/02-report.png",fullPage:true});
  // The A4 print contains all eight Admission Ladder rows, not only the initially expanded two.
  const pdf=await page.pdf({path:"qa-artifacts/02-executive-report.pdf",format:"A4",printBackground:true,preferCSSPageSize:true});
