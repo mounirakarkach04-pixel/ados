@@ -20,7 +20,8 @@
  input.setAttribute('aria-label','PIGA lokale Frage');
  const send=N('button','Fragen');send.type='submit';form.append(input,send);
  const action=N('a','Zur PIGA-Zentrale');action.href='./piga-control.html';action.className='piga-pocket-more';
- panel.append(head,status,answer,form,action);holder.append(launch,panel);document.body.append(holder);
+ const voiceLink=N('a','PIGA Sprach-KI (ohne API-Schlüssel)');voiceLink.href='./piga-voice.html';voiceLink.className='piga-pocket-more';
+ panel.append(head,status,answer,form,voiceLink,action);holder.append(launch,panel);document.body.append(holder);
  const closePanel=()=>{panel.hidden=true;launch.setAttribute('aria-expanded','false');launch.focus()};
  launch.onclick=()=>{panel.hidden=!panel.hidden;launch.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)input.focus()};
  close.onclick=closePanel;
