@@ -18,7 +18,7 @@ assert(!/\bfetch\s*\(/.test(worker),'local worker must not perform online action
 assert(worker.includes("status:'PROPOSAL_ONLY'"),'optimization worker must propose rather than mutate');
 assert(worker.includes('actionsPerformed:0'),'Worker must prove no action');
 assert(resilience.includes("navigator.locks?.request"),'Automatic foreground workers must use exclusive browser tab lock');
-assert(resilience.includes("document.visibilityState==='hidden'"),'No 24x7 browser claim');
+assert(resilience.includes("document.visibilityState!=='hidden'"),'No 24x7 browser claim');
 assert(nav.includes("r.src='./device-resilience.js'"),'Runner is not integrated across app');
 assert(studio.includes('src="./dental-anatomy.js"'),'Dental specimen not loaded in 3D studio');
 assert(app.includes("window.PigaDentalAnatomy?.build?.()"),'New dental orientation does not replace cube');
