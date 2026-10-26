@@ -147,6 +147,6 @@
       show('Synthetisches Scanner-Testmodell übernommen. Keine klinische Nutzung.');
     }catch{show('Demoimport aus Geräte-Center fehlgeschlagen.');}
   }
-  consumeDeviceDemo();
+  void consumeDeviceDemo().then(()=>{if(!state.model&&window.PigaDentalAnatomy){void $('demo').onclick();}});
   labels();draw();log('SESSION_INITIALIZED','OBSERVED',{version:'0.2.0',mode:'technical-evaluation',clinicalApproved:false});
 })();
