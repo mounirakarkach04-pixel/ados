@@ -15,6 +15,7 @@ on:
       - 'scripts/piga-ortho-offline-failover-qa.mjs'
       - 'scripts/piga-ortho-webgl-qa.mjs'
       - 'scripts/piga-ortho-manager-qa.mjs'
+      - 'scripts/piga-female-persona-qa.mjs'
       - 'scripts/piga-ortho-pc-runner.mjs'
       - 'scripts/piga-ortho-operations-runtime-qa.mjs'
       - 'scripts/piga-ortho-handoff-qa.mjs'
@@ -47,6 +48,7 @@ jobs:
           node scripts/piga-ortho-showroom-keyless-qa.mjs
           node scripts/piga-unified-kfo-shop-qa.mjs
           node scripts/piga-ortho-manager-qa.mjs
+          node scripts/piga-female-persona-qa.mjs
           node scripts/piga-ortho-operations-runtime-qa.mjs
           node scripts/piga-ortho-handoff-qa.mjs
           node scripts/piga-ortho-function-readiness-qa.mjs
