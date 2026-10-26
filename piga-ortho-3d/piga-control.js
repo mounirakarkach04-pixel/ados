@@ -84,7 +84,14 @@
       }catch(e){notice(short(e.message),true)}
      });
     }
-    row.append(reviewed,reject,pause,approve);block.append(row);
+    const popup=mk('button','Im Popup prüfen');popup.type='button';
+    popup.addEventListener('click',()=>{
+     const dlg=$('pcReviewDialog');if(!dlg?.showModal)return notice('Dieser Browser unterstützt keine Popup-Prüfansicht.',true);
+     dlg.dataset.requestId=r.id;
+     $('pcReviewDescription').textContent=(kindLabel[r.kind]||r.kind)+' — '+r.description;
+     dlg.showModal();
+    });
+    row.prepend(popup);row.append(reviewed,reject,pause,approve);block.append(row);
    }
    root.append(block);
   }
@@ -132,6 +139,25 @@
   try{sessionStorage.setItem('piga-control-view',audience)}catch{}
   renderAudience();notice('Ansichtsmodus geändert – keine echte Inhaber-/Mitarbeiter-Authentifizierung.');
  });
+ const reviewDialog=$('pcReviewDialog');
+ reviewDialog?.addEventListener('close',async()=>{
+  const outcome=reviewDialog.returnValue;
+  if(!['ACK_TECHNICAL','PAUSE','REJECT'].includes(outcome))return;
+  const key=reviewDialog.dataset.requestId;
+  const idx=state.requests.findIndex(x=>x.id===key);
+  if(idx<0)return;
+  try{state.requests[idx]=B.decide(state.requests[idx],outcome,false);
+   await save();renderRequests();notice('PIGA Review-Status gespeichert: '+state.requests[idx].status+'. Externe Freigaben BLOCK.');
+  }catch(e){notice('Popup-Prüfung: '+short(e.message),true)}
+ });
+ $('pcNotifyTeam').onclick=async()=>{
+  if(!('Notification' in window))return notice('Dieses Gerät unterstützt keine Browser-Benachrichtigungen.',true);
+  try{
+   const p=await Notification.requestPermission();
+   notice(p==='granted'?'Lokale Team-Popup-Benachrichtigungen erlaubt. Nur allgemeiner Hinweistext, kein Nachrichteninhalt.':
+    'Benachrichtigungen wurden nicht erlaubt; der lokale Teamchat bleibt nutzbar.',p!=='granted');
+  }catch(e){notice('Benachrichtigungen: '+short(e.message),true)}
+ };
  $('pcRequestForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const kind=$('pcRequestKind').value,text=short($('pcRequestText').value,250);
@@ -262,7 +288,16 @@
  if(typeof BroadcastChannel!=='undefined'){
   channel=new BroadcastChannel('piga-ortho-device-updates');
   channel.onmessage=e=>{
-   if(e.data?.name==='piga-control')void load().then(()=>{renderTeam();renderRequests()});
+   if(e.data?.name==='piga-control'){
+    const previous=state.teamMessages.at(-1)?.id;
+    void load().then(()=>{
+     renderTeam();renderRequests();
+     const newest=state.teamMessages.at(-1)?.id;
+     if(newest&&previous&&newest!==previous&&typeof Notification!=='undefined'&&Notification.permission==='granted'&&document.visibilityState==='hidden'){
+      try{new Notification('PIGA ORTHO · neue lokale Teamnachricht',{body:'Team-Testnachricht im geöffneten Browserprofil vorhanden.'})}catch{}
+     }
+    });
+   }
    if(e.data?.name==='direct'||e.data?.name==='suite')void info();
   };
  }
