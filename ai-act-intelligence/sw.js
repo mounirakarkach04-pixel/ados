@@ -1,5 +1,5 @@
 // Public application shell only. Never intercept cross-origin, authenticated API or private evidence.
-const CACHE = "piga-aiact-shell-v16-welcome-evidence";
+const CACHE = "piga-aiact-shell-v17-mobile-report";
 const SHELL = [
   "./", "./index.html", "./styles.css", "./design-v3.css", "./app.bundle.js",
   "./engine.js", "./portfolio.js", "./publications.js", "./journey.js",
@@ -8,7 +8,7 @@ const SHELL = [
 ];
 const shellURLs = new Set(SHELL.map(path => new URL(path, self.registration.scope).href));
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL.map(path => new Request(path, {cache:"reload"})))).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", event => {
   event.waitUntil(caches.keys().then(keys =>
