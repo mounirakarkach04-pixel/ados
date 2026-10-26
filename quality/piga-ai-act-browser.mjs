@@ -12,6 +12,15 @@ try{
  await page.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:45000});
  await page.locator("#view-home .hero h1").waitFor({state:"visible",timeout:30000});
  await page.waitForURL(/#home$/, {timeout:25000}).catch(()=>{throw new Error("App module not initialised: "+failures.join(" | "));});
+ // Verified welcome onboarding: three roles, accessible selection and correct form prefill.
+ assert.equal(await page.locator("[data-audience]").count(),3);
+ await page.locator('[data-audience="both"]').click();
+ assert.equal(await page.locator("#f-role").inputValue(),"both");
+ assert.equal(await page.locator('[data-audience="both"]').getAttribute("aria-pressed"),"true");
+ await page.locator('[data-audience="provider"]').click();
+ assert.equal(await page.locator("#f-role").inputValue(),"provider");
+ assert.equal(await page.locator('[data-audience="both"]').getAttribute("aria-pressed"),"false");
+ assert.match(await page.locator("#audience-context").innerText(),/Anbieterpflichten/);
  assert.equal(await page.locator(".piga-bridge-principles > div").count(),4);
  assert.match(await page.locator("#piga-law-heading").innerText(),/Technische Entscheidung/);
  await page.screenshot({path:"qa-artifacts/01-dashboard.png",fullPage:true});
@@ -25,6 +34,9 @@ try{
  await page.locator("#sample-analysis").click();
  await page.locator("#view-results").waitFor({state:"visible"});
  assert.match(await page.locator("#report-ref").innerText(),/MUSTERBERICHT/);
+ await page.waitForFunction(()=>document.querySelector("#result-guide-cta")?.dataset.go==="assessment");
+ assert.match(await page.locator("#result-guide-heading").innerText(),/Muster/);
+ assert.equal(await page.locator("#result-guide-cta").getAttribute("data-go"),"assessment");
  assert.match(await page.locator("#recommended-buy").innerText(),/Eigene Analyse starten/);
  assert.equal(await page.locator("#report-legal-map .legal-map-card").count(),4);
  await page.locator("#report-legal-map [data-bridge-sku]").first().click();
@@ -64,6 +76,9 @@ try{
  const gate1=await page.locator("#gate1").innerText();
  const gate2=await page.locator("#gate2").innerText();
  assert.equal(gate1,"DELAY");assert.equal(gate2,"BLOCK");
+ await page.waitForFunction(()=>document.querySelector("#result-guide-heading")?.textContent.includes("Voraussetzungen"));
+ assert.equal(await page.locator("#result-guide-cta").getAttribute("data-go"),"solutions");
+ assert.match(await page.locator("#result-guide-note").innerText(),/optional/);
  assert.match(await page.locator("#findings").innerText(),/Art\. 9/);
  assert.equal(await page.locator("#report-legal-map .legal-map-card").count(),4);
  assert.equal(await page.locator("#report-legal-map .legal-map-footer a").count(),5);
