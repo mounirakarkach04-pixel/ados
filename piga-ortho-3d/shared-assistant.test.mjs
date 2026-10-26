@@ -1,3 +1,16 @@
 import assert from 'node:assert/strict';
-assert.equal(5,5);
-console.log('PASS');
+import {readFileSync} from 'node:fs';
+const get=name=>readFileSync('piga-ortho-3d/'+name,'utf8');
+const html=get('supply.html');
+const advisor=get('kfo-shop-advisor.js');
+const voice=get('voice.js');
+const shell=get('sw.js');
+for(const id of ['kfoAdvisorForm','kfoAdvisorQuestion','kfoAdvisorSend','kfoAdvisorSpeak','kfoAdvisorAnswer']) assert.ok(html.includes('id="'+id+'"'),id);
+assert.ok(advisor.includes("app:'kfo-shop'"));
+assert.ok(advisor.includes('consent:true'));
+assert.ok(advisor.includes('gate2'));
+assert.ok(advisor.includes('credentials'));
+assert.ok(voice.includes('consent:true'));
+assert.ok(shell.includes('kfo-shop-advisor.js'));
+assert.ok(shell.includes('piga-voice-persona.js'));
+console.log('PASS shared PIGA KFO assistant assertions');
