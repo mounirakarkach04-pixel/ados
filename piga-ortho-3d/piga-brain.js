@@ -3,6 +3,7 @@
  No network, no secrets, no diagnoses, no impersonated authority, no physical effects. */
 window.PigaBrain=(()=>{
  const routes={
+ setup:['Ersteinrichtung','./setup.html'],procurement:['Einkaufsvorschläge','./procurement.html'],
  research:['PIGA – 10 Rules (Zenodo)','https://zenodo.org/records/21390720'],
  sales:['PIGA ORTHO Produktübersicht','./sales.html'],privacy:['Datenschutz & Datenverarbeitung','./privacy.html'],
  overview:['Dashboard','./dashboard.html'],cases:['Fälle & Termine','./direct.html#cases'],
@@ -14,6 +15,17 @@ window.PigaBrain=(()=>{
  governance:['PIGA Prozesse','./workflow.html'],diagnostics:['Systemtest','./diagnostics.html'],
  };
  const patterns=[
+  {rx:/(kfoshop24|warenkorb|bestellliste|einkaufsvorschlag|einkauf.*material)/i,kind:'INVENTORY_REVIEW',route:'procurement',
+   reply:'PIGA prüft Mindestbestände und bereitet eine Einkaufsliste als CSV und einen technischen Freigabeentwurf vor. Für kfoshop24.de ist derzeit keine verifizierte Shop-API oder Artikelliste integriert; automatisches Einlegen in einen echten Warenkorb, Bestellen und Bezahlen sind NICHT aktiviert.'},
+  {rx:/(erste.*(install|start)|einricht|konfigur|onboarding|anschlie.ss)/i,kind:'GENERAL_HELP',route:'setup',
+   reply:'Der neue Ersteinrichtungsassistent führt dich in sechs Schritten durch Gerätespeicher, Offline-Cache, Netz, Bluetooth, PIGA Worker und optionale Sprache. Du kannst jeden Schritt überspringen, die App sofort öffnen und später weitermachen.'},
+  {rx:/(jahreslizenz|12.?000|governed compute|executive evaluation|two.gate admission|preisangebote)/i,kind:'GENERAL_HELP',route:'sales',
+   reply:'Im PIGA-Angebotskatalog wurde PIGA ORTHO 3D als 12.000 € Jahreslizenz für externe Praxen vorgesehen; das Stripe-Produkt ist noch inaktiv, keine aktive Kauf- oder Entitlement-Freigabe. Frühere PIGA Evaluationsangebote: Governed Compute Assessment 1.490 €, Executive Evaluation 6.900 €, Two-Gate Admission Pack 13.900 €. Preise/Leistungsumfang vor Vertrag schriftlich bestätigen.'},
+  {rx:/(festsitzend|herausnehmbar|lose zahnspange|zahnspangenarten|aligner|brackets|retainer|funktionskieferorthop.die|gaumennahterweiterung)/i,kind:'CLINICAL_REVIEW',route:'assist',
+   reply:'Kieferorthopädische Geräteklassen umfassen festsitzende Brackets/Bögen, herausnehmbare Platten und funktionskieferorthopädische Apparaturen, Aligner, Retainer, Lückenhalter und Erweiterungsgeräte. Indikation, geeignete Apparatur, Wechselgebiss, Risiken und Therapieplanung kann die App nicht autonom bestimmen. Nutze den KFO-Katalog und fachärztliche Befundprüfung.'},
+  {rx:/(mehrleistungen|zusatzleistungen|privatleistung|patientenrechnung|mehrkosten|eigenanteil|goz.?0065)/i,kind:'BILLING_REVIEW',route:'assist',
+   reply:'Bei KFO-Mehr- und Zusatzleistungen nach § 29 SGB V sind die gültigen Regeln, Anlage B BMV-Z und die geeignete schriftliche Vereinbarung vor Leistungsbeginn entscheidend. Beispiel: digitale Abformung GOZ 0065 kann unter Voraussetzungen privat vereinbart werden. Diese App darf ohne dokumentierte Leistung, Einwilligung und Prüfung keine echte Patientenrechnung verschicken.'},
+
   {rx:/(a7sem.reverse|rückwärtsprüf|reverse.audit|reverse.evidence)/i,kind:'GOVERNANCE_REVIEW',route:'governance',
    reply:'A7SEM Reverse prüft ein beobachtetes Ergebnis gegen die anfängliche Zulassung, Quelle, Abhängigkeiten und mögliche Widersprüche. Ohne authentifizierten Readback ist das Ergebnis UNKNOWN und keine neue Autorisierung.'},
   {rx:/(zenodo|forschungswerk|publikation|forschung.*piga|piga.*paper|mein wissen|meine arbeit|mounir akarkach)/i,kind:'GOVERNANCE_REVIEW',route:'research',
