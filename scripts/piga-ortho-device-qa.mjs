@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const root='piga-ortho-3d',read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const pages=['dashboard','studio','praxis','team','inventory','devices','assist','workflow','report','direct','device-hub'];
-const js=['device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
+const js=['ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
 let tests=0;const test=(title,fn)=>{fn();tests++;console.log('PASS '+title)};
 test('All active UI scripts parse',()=>js.forEach(file=>new vm.Script(read(file),{filename:file})));
 test('Every full app page contains unified wide theme + navigation',()=>pages.forEach(name=>{
@@ -64,7 +64,7 @@ test('Service worker includes all new assets with new release cache',()=>{
  const sw=read('sw.js');
  for(const file of ['device-store.js','device-hub.html','device-hub.css','device-hub.js','device-worker.js','ortho-light.css','transfer-offer.js','worker-autoresume.js'])
   assert(sw.includes("'./"+file+"'"),file);
- assert(sw.includes('v127-transfer-offer'));
+ assert(sw.includes('v130-light-visual-html'));
 });
 test('No broken local relative links for all active UI pages',()=>{
  for(const page of pages){
@@ -102,5 +102,49 @@ test('Reference-inspired dashboard style and network controls remain available',
   assert(devices.includes('id="'+id+'"'),id);
  assert(js.includes('navigator.bluetooth.requestDevice')&&js.includes("window.addEventListener('online',detect)"));
  assert(js.includes("native.openWirelessSettings('wifi')"));
+});
+test('Every original HTML module loads the same light visual release exactly once',()=>{
+ for(const name of pages){
+  const h=read(name+'.html');
+  for(const x of ['ortho-visual-v3.css','ortho-visual-v3.js']){
+   assert.equal(h.split('./'+x).length-1,1,name+' '+x);
+  }
+ }
+ const v=read('ortho-visual-v3.js');
+ for(const id of ['studio','praxis','team','inventory','assist','workflow','devices','report','direct','device-hub'])
+  assert(v.includes(id+':{')||v.includes("'"+id+"':{"),id);
+});
+test('Asset illustrations exist, have unique names, and are cached for offline HTML',()=>{
+ const sw=read('sw.js');
+ for(const name of ['ortho-hero','ortho-dashboard','ortho-calendar','ortho-team','ortho-inventory','ortho-ai']){
+  const filename='visuals/'+name+'.svg',svg=read(filename);
+  assert(svg.startsWith('<svg'),filename);
+  assert(svg.includes('</svg>'),filename);
+  assert(sw.includes("'./"+filename+"'"),filename);
+ }
+ const dash=read('dashboard.html');assert(dash.includes('ortho-hero-art'));
+});
+test('Guided assistant is functional offline and clearly non-clinical',()=>{
+ const h=read('assist.html'),js=read('assist-help.js');
+ for(const id of ['technicalHelpForm','technicalQuestion','technicalHelpFeed','clearTechnicalHelp'])
+  assert(h.includes('id="'+id+'"'),id);
+ assert(h.includes('src="./assist-help.js"'));
+ assert(js.includes("form.addEventListener('submit'"));
+ assert(js.includes("data-help-prompt"));
+ assert(js.includes('sensitive.test(q)'));
+ assert(js.includes('keine Diagnose')||js.includes('keine Diagnose'.toLowerCase())||js.includes('keine Diagnose'.replace('Diagnose','Diagnose')));
+ assert(!js.includes('fetch('));
+});
+test('Core operational actions have actual handlers and stay local',()=>{
+ const pairs=[
+ ['praxis-local.js',['startShift','stopShift','costForm','traceCsv']],
+ ['team-local.js',['clockIn','clockOut','absenceForm','scheduleForm','createPayroll']],
+ ['inventory-local.js',['newItemForm','adjustForm','settingsForm','inventoryCsv']],
+ ['devices.js',['wifiSettings','btSettings','btGrant']],
+ ['app.js',['printStart','printPause','printCancel','exportAudit']],
+ ['report.js',['importAudit','print','export','example']],
+ ];
+ for(const [file,ids] of pairs){const js=read(file);for(const id of ids)assert(js.includes("'"+id+"'"),file+':'+id)}
+ assert(read('device-hub.js').includes('crypto.subtle.encrypt'));
 });
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
