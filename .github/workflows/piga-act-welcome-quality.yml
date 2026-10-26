@@ -19,4 +19,4 @@ jobs:
       - name: Accessibility, caching and experience contract
         run: node ai-act-intelligence/quality-accessibility.mjs && node ai-act-intelligence/welcome-integration.test.mjs
       - name: Deterministic recommendation boundaries
-        run: node ai-act-intelligence/welcome-journey.test.mjs
+        run: node ai-act-intelligence/welcome-journey.test.mjs && node quality/piga-ai-act-119-guides.test.mjs
