@@ -5,6 +5,7 @@ on:
     paths:
       - 'piga-ortho-3d/**'
       - 'scripts/piga-ortho-device-qa.mjs'
+      - 'scripts/piga-ortho-operations-runtime-qa.mjs'
       - '.github/workflows/piga-ortho-device-first-qa.yml'
   workflow_dispatch:
 jobs:
@@ -16,4 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify local-first worker, data safety and responsive layout
-        run: node scripts/piga-ortho-device-qa.mjs
+        run: |
+          node scripts/piga-ortho-device-qa.mjs
+          node scripts/piga-ortho-operations-runtime-qa.mjs
