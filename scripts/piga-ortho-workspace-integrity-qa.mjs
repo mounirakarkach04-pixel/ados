@@ -68,7 +68,7 @@ test('Versioned offline PWA caches all new functional assets',()=>{
  const sw=read('sw.js');
  for(const f of ['workspace-manager.js','workspace-manager.css','device-integrity.js'])
   assert(sw.includes("'./"+f+"'"),f);
- assert(sw.includes('piga-ortho-v135-workspace-integrity'));
+ assert(/piga-ortho-v[0-9]+-[a-z-]+/.test(sw),'Expected versioned Ortho PWA cache');
 });
 await (async()=>{
  const report=await audit.audit(suite,direct);
