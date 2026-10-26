@@ -9,6 +9,7 @@ on:
       - 'scripts/piga-ortho-handoff-qa.mjs'
       - 'scripts/piga-ortho-function-readiness-qa.mjs'
       - 'scripts/piga-ortho-workspace-integrity-qa.mjs'
+      - 'scripts/piga-ortho-imaging-qa.mjs'
       - '.github/workflows/piga-ortho-device-first-qa.yml'
   workflow_dispatch:
 jobs:
@@ -26,3 +27,4 @@ jobs:
           node scripts/piga-ortho-handoff-qa.mjs
           node scripts/piga-ortho-function-readiness-qa.mjs
           node scripts/piga-ortho-workspace-integrity-qa.mjs
+          node scripts/piga-ortho-imaging-qa.mjs
