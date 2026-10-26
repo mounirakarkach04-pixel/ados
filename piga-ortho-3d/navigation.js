@@ -114,6 +114,7 @@
  const install=document.createElement('script');install.src='./ortho-install.js';install.defer=true;document.head.append(install);
  // Consistent full-width ergonomic workspaces without changing existing module logic.
  const workspaceStyle=document.createElement('link');workspaceStyle.rel='stylesheet';workspaceStyle.href='./workspace-manager.css';document.head.append(workspaceStyle);
+ const responsive=document.createElement('link');responsive.rel='stylesheet';responsive.href='./responsive-overrides.css';document.head.append(responsive);
  const workspace=document.createElement('script');workspace.src='./workspace-manager.js';workspace.defer=true;document.head.append(workspace);
 
  // Run only previously queued, bounded local analyses on PWA foreground.
