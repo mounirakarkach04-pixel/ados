@@ -21,6 +21,30 @@ try{
  assert.equal(await page.locator("#f-role").inputValue(),"provider");
  assert.equal(await page.locator('[data-audience="both"]').getAttribute("aria-pressed"),"false");
  assert.match(await page.locator("#audience-context").innerText(),/Anbieterpflichten/);
+ // Cross-app PIGA: the public evaluation never silently submits anything.
+ // Stub the backend so an E2E run cannot incur AI cost or transmit private text.
+ let assistantCalls=0;
+ await page.route("https://pigapocket.com/api/piga/assistant/**",async route=>{
+  assistantCalls++;
+  if(route.request().url().includes("/status"))return route.fulfill({
+   status:200,contentType:"application/json",body:JSON.stringify({schema:"piga.shared.voice.v1",app:"ai-act",ready:false})
+  });
+  return route.fulfill({status:200,contentType:"application/json",
+   body:JSON.stringify({status:"ANSWER",gate2:"BLOCK",externalEffects:0,
+    answer:"Artikel 14: Aufsicht dokumentieren und evidenzbasiert prüfen.",sources:[{title:"EU AI Act",url:"https://eur-lex.europa.eu/"}]})});
+ });
+ assert.equal(assistantCalls,0,"Unsolicited PIGA model call before user click");
+ assert.equal(await page.locator("#aiact-piga-read").isDisabled(),true);
+ await page.locator("#aiact-piga-check").click();
+ await page.locator("#aiact-piga-status").waitFor({state:"visible"});
+ assert.match(await page.locator("#aiact-piga-status").innerText(),/nicht freigegeben/i);
+ await page.locator("#aiact-piga-question").fill("Welche Nachweise empfiehlt PIGA für Artikel 14?");
+ await page.locator("#aiact-piga-send").click();
+ await page.waitForFunction(()=>document.querySelector("#aiact-piga-answer")?.textContent?.includes("Artikel 14: Aufsicht dokumentieren"));
+ assert.equal(await page.locator("#aiact-piga-read").isEnabled(),true);
+ assert.equal(assistantCalls,2,"Only explicit status + explicit answer call");
+ assert.match(await page.locator("#aiact-piga-answer").innerText(),/EU AI Act/);
+
  assert.equal(await page.locator(".piga-bridge-principles > div").count(),4);
  assert.match(await page.locator("#piga-law-heading").innerText(),/Technische Entscheidung/);
  await page.screenshot({path:"qa-artifacts/01-dashboard.png",fullPage:true});
@@ -255,14 +279,14 @@ try{
   await mobilePage.waitForFunction(()=>navigator.serviceWorker.controller!==null,{timeout:15000});
   const cacheEvidence=await mobilePage.evaluate(async()=>{
    const names=await caches.keys();
-   const current="piga-aiact-shell-v17-mobile-report";
+   const current="piga-aiact-shell-v19-voice-specialist";
    const cache=await caches.open(current);
    const response=await cache.match("./design-v3.css");
    const css=response?await response.text():"";
    return {names,cssContainsMobileRepair:css.includes("#view-results .report-overview")&&css.includes("@media screen and (max-width:880px)")};
   });
-  assert.ok(cacheEvidence.names.includes("piga-aiact-shell-v17-mobile-report"),"Old mobile CSS cache not invalidated: "+JSON.stringify(cacheEvidence));
-  assert.ok(!cacheEvidence.names.some(x=>x.startsWith("piga-aiact-shell-")&&x!=="piga-aiact-shell-v17-mobile-report"),"Old shell cache survived activation: "+JSON.stringify(cacheEvidence));
+  assert.ok(cacheEvidence.names.includes("piga-aiact-shell-v19-voice-specialist"),"Old mobile CSS cache not invalidated: "+JSON.stringify(cacheEvidence));
+  assert.ok(!cacheEvidence.names.some(x=>x.startsWith("piga-aiact-shell-")&&x!=="piga-aiact-shell-v19-voice-specialist"),"Old shell cache survived activation: "+JSON.stringify(cacheEvidence));
   assert.equal(cacheEvidence.cssContainsMobileRepair,true,"Cached CSS does not contain mobile report fix");
   await mobile.setOffline(true);
   await mobilePage.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:20000});
