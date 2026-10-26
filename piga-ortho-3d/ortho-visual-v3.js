@@ -4,6 +4,7 @@
  const page=(location.pathname.split('/').pop()||'dashboard.html').replace('.html','');
  if(['sales','index','auth'].includes(page))return;
  const pages={
+ operations:{title:'Dein Tagescockpit',desc:'Fälle, offene Aufgaben, Termine, Material und lokale Worker-Ergebnisse auf einen Blick.',image:'ortho-dashboard.svg',num:'01',label:'OPERATIONS'},
  dashboard:{title:'Dein digitaler KFO-Arbeitsplatz',desc:'Übersicht, Prüfschritte und alle technischen Werkzeuge auf einem Bildschirm.',image:'ortho-dashboard.svg',num:'01',label:'DASHBOARD'},
  studio:{title:'3D Studio & Model Viewer',desc:'Große Arbeitsfläche für STL-Geometrie, Ansichten und überprüfbare technische Prüfungen.',image:'ortho-hero.svg',num:'02',label:'3D / LAB'},
  praxis:{title:'Praxis & Operations',desc:'Auftragszeiten, technische Kosten und Arbeitsabläufe lokal organisieren.',image:'ortho-calendar.svg',num:'03',label:'PRAXIS'},
