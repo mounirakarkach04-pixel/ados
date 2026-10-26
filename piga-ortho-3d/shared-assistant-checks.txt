@@ -1,0 +1,1 @@
+Checks required before release: no secrets in UI; no automatic purchases; bounded requests; explicit user consent; verified readback. Status: pending.
