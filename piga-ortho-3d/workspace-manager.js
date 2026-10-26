@@ -33,7 +33,7 @@
  // Place after a module heading, never inside a form or the 3D rendering canvas.
  const heading=main.querySelector('.ortho-v3-masthead,.shell-top,.hub-top,.handoff-intro,.diag-hero,.ops-note');
  if(heading)heading.insertAdjacentElement('afterend',bar);else main.prepend(bar);
- let chosen=null,maximized=null,returnFocus=null,shade=null,close=null;
+ let chosen=null,maximized=null,returnFocus=null,shade=null,close=null,oldRole=null,oldLabel=null;
  const candidates=()=>[...main.querySelectorAll(PANELS.join(','))].filter(p=>{
   if(p.closest('#piga-workspace-bar')||p.closest('.piga-workspace-controls'))return false;
   // Avoid selecting parent/child duplicates and non-visible content or summary tiles.
@@ -62,6 +62,9 @@
  function teardown(){
   if(!maximized)return;
   maximized.classList.remove('piga-maximized-panel','piga-workspace-selected');
+  if(oldRole===null)maximized.removeAttribute('role');else maximized.setAttribute('role',oldRole);
+  if(oldLabel===null)maximized.removeAttribute('aria-label');else maximized.setAttribute('aria-label',oldLabel);
+  maximized.removeAttribute('aria-modal');oldRole=null;oldLabel=null;
   document.body.classList.remove('piga-panel-open');
   shade?.remove();close?.remove();shade=null;close=null;maximized=null;chosen=null;
   expand.disabled=false;status.textContent='Werkzeug geschlossen · alle Bereiche sichtbar';
@@ -71,6 +74,9 @@
   if(!panel||maximized)return;
   returnFocus=document.activeElement;
   chosen=panel;maximized=panel;
+  oldRole=panel.getAttribute('role');oldLabel=panel.getAttribute('aria-label');
+  panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');
+  panel.setAttribute('aria-label','Vergrößertes Werkzeug');
   shade=document.createElement('div');shade.className='piga-panel-backdrop';
   shade.setAttribute('aria-hidden','true');shade.addEventListener('click',teardown);
   close=document.createElement('button');close.type='button';close.className='piga-panel-close';
@@ -105,12 +111,28 @@
  saved={density:'comfort',font:'normal'};persist();settings();status.textContent='Übersicht und großzügige Standarddarstellung aktiv'});
  document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&maximized){e.preventDefault();teardown();}
+  if(e.key==='Tab'&&maximized){
+   const items=[close,...maximized.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]')]
+    .filter(el=>el?.getClientRects().length>0&&!el.hidden);
+   if(items.length){const first=items[0],last=items[items.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+   }
+  }
   if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key.toLowerCase()==='m'){e.preventDefault();if(maximized)teardown();else expand.click();}
  });
  // Delay initial attachment until modules have rendered; no polling and no infinite observers.
  document.addEventListener('DOMContentLoaded',attach,{once:true});
  if(document.readyState!=='loading')attach();
  window.addEventListener('pageshow',attach);
+ // New local tasks/cards appear without reload. Attach a toolbar only to added functional cards.
+ if(typeof MutationObserver!=='undefined'){
+  let queued=false;
+  const observer=new MutationObserver(records=>{
+   if(queued||!records.some(r=>[...r.addedNodes].some(n=>n.nodeType===1&&!n.classList?.contains('piga-panel-action'))))return;
+   queued=true;queueMicrotask(()=>{queued=false;attach()});
+  });observer.observe(main,{childList:true,subtree:true});
+ }
  window.addEventListener('piga-worker-resume',attach);
  expand.disabled=false;settings();
 })();
