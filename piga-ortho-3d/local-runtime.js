@@ -27,6 +27,7 @@ window.OrthoLocalReady=(async()=>{
   }catch{}
   db.importedDirect=true;
   try{localStorage.setItem(STORE,JSON.stringify(db))}catch{}
+  window.PigaDeviceStore.save('suite',db).catch(()=>{});
  }
  function uuid(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)}
  const $=id=>document.getElementById(id);
@@ -62,6 +63,7 @@ window.OrthoLocalReady=(async()=>{
   info.append(el('strong','PIGA ORTHO 3D · v1.2 · ohne Anmeldung'));
   info.append(el('div','Die vorhandenen Module speichern Testdaten ausschließlich in diesem Browser. Keine Supabase-Abfragen, kein gemeinsamer Praxisdatenbestand. Keine realen Patienten- oder Personaldaten eingeben.'));
   info.append(button('Lokale Sicherung (JSON)',backup));
+  const hub=el('a','Geräte-Datenbank & Worker →');hub.href='./device-hub.html';hub.style.cssText='display:inline-block;margin:10px 12px;color:#087c90;font-weight:750';info.append(hub);
   root.prepend(info);
   for(const id of ['authShell','loginPanel','locked','waitingPanel','pending'])$(id)?.remove();
   $('logout')?.remove();$('signoutPending')?.remove();
