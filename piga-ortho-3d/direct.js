@@ -227,6 +227,21 @@ let promptEvent=null;window.addEventListener('beforeinstallprompt',e=>{e.prevent
 $('install').onclick=async()=>{if(promptEvent){await promptEvent.prompt();promptEvent=null;$('install').hidden=true}};
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 renderAll();
+// Receive local changes created in the practice-to-lab screen or another app tab.
+// No server sync or new permissions are implied.
+if(typeof BroadcastChannel!=='undefined'){
+ const otherTab=new BroadcastChannel('piga-ortho-device-updates');
+ otherTab.onmessage=async event=>{
+  if(event.data?.name!=='direct')return;
+  try{
+   const record=await window.PigaDeviceStore.get('direct');
+   const updated=record?.data;
+   if(updated?.version===1&&Array.isArray(updated.cases)&&Array.isArray(updated.tasks)){
+    state=updated;renderAll();msg('Lokaler Arbeitsstand aus einem anderen Modul aktualisiert.');
+   }
+  }catch{msg('Änderungen aus anderem Modul vorhanden – bitte Ansicht neu laden.',true)}
+ };
+}
 const allowedPanels=new Set(['overview','cases','tasks','calendar','inventory','team','studio','reports','controls']);
 const navigateFromHash=()=>{const panel=decodeURIComponent(location.hash.slice(1));panelOpen(allowedPanels.has(panel)?panel:'overview');};
 window.addEventListener('hashchange',navigateFromHash);
