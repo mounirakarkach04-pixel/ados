@@ -58,6 +58,10 @@ function renderCases(){
     if(!state.tasks.some(t=>t.caseId===c.id)||pending)throw Error('Fallabschluss benötigt mindestens eine erledigte Aufgabe und keine offenen/negativen Aufgaben.');
     c.state='closed';c.closedAt=iso();commit('case_closed',c.ref+' abgeschlossen');
    });
+   const link=el('a','Praxis → Labor');
+   link.href='./handoff.html#case='+encodeURIComponent(c.id);
+   link.className='handoff-case-link';link.title='Diesen Testauftrag ohne Neuerfassung an den Laborworkflow übergeben';
+   tools.append(link);
    action(tools,'Entfernen',()=>{if(!confirm('Fall inklusive zugeordneter Aufgaben wirklich löschen?'))return;
     state.cases=state.cases.filter(x=>x.id!==c.id);state.tasks=state.tasks.filter(x=>x.caseId!==c.id);commit('case_removed',c.ref+' entfernt')});
   });
