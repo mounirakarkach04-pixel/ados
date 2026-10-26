@@ -40,3 +40,7 @@
  .ops-panel{padding:15px}.ops-head-actions{width:100%}.ops-head button{flex:1}
  .ops-head h2{font-size:25px}}
 @media print{.ops-head-actions{display:none}.ops-metrics{gap:7px}.ops-panel{box-shadow:none}.ops-route{break-inside:avoid}}
+
+.ops-head .ops-full{display:inline-flex;align-items:center;justify-content:center;padding:11px 15px;border:1px solid #bde1e9;border-radius:10px;background:#e9f9fe;color:#0a7c9b;text-decoration:none;font-size:12px;font-weight:800}
+.ops-head .ops-full:hover{background:#d8f3fb}
+@media(max-width:650px){.ops-head .ops-full{flex:1 1 100%}}
