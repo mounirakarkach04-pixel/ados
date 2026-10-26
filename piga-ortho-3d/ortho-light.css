@@ -236,3 +236,18 @@ footer{color:#72909d!important;border-color:#e0edef!important}
 body>main>.hero .heroactions button{background:#078a99;color:#fff;border-color:#078a99}
 footer{background:#f4fafc!important;color:#6d8998!important;border-top:1px solid #d9e8ed!important}
 @media(max-width:760px){footer{padding-bottom:18px!important}}
+
+/* Contrast polish for deeply styled legacy sections */
+.wizard-controls .primary,.fileBtn,button.primary,.button.primary,.btn.primary,
+button#startShift,.navigator button.solid{
+ background:linear-gradient(105deg,#087f94,#12aab7)!important;color:#fff!important;
+ border-color:#078f9e!important;border-radius:11px!important}
+.step-node{background:#fff!important;color:#24566a!important;border:1px solid #d0e6ea!important;border-radius:14px!important}
+.step-node.focus{background:#e2f8fb!important;border-color:#63c6d1!important}
+.step-node span,.step-node strong{color:#23566b!important}
+.canvas-label,.screen-label{color:#337285!important}
+.owner-label{background:#e2f7f9!important;color:#0f7c8c!important}
+.paper thead th{background:#e8f4f7!important;color:#25586c!important}
+.brand .mark,body>header .mark{box-shadow:inset 0 0 12px #36bbca12}
+body>main .more-links a{background:#e8f7fa!important;color:#0b7587!important;border-color:#c7e5e9!important}
+body>main .more-links a:hover{background:#d9f2f6!important}
