@@ -12,6 +12,7 @@ on:
       - 'scripts/piga-ortho-imaging-qa.mjs'
       - 'scripts/piga-ortho-control-qa.mjs'
       - 'scripts/piga-ortho-setup-qa.mjs'
+      - 'scripts/piga-ortho-ai-connection-qa.mjs'
       - 'scripts/piga-ortho-supply-atlas-qa.mjs'
       - 'scripts/piga-ortho-onboarding-qa.mjs'
       - 'scripts/piga-ortho-procurement-qa.mjs'
@@ -35,6 +36,7 @@ jobs:
           node scripts/piga-ortho-imaging-qa.mjs
           node scripts/piga-ortho-control-qa.mjs
           node scripts/piga-ortho-setup-qa.mjs
+          node scripts/piga-ortho-ai-connection-qa.mjs
           node scripts/piga-ortho-supply-atlas-qa.mjs
           node scripts/piga-ortho-onboarding-qa.mjs
           node scripts/piga-ortho-procurement-qa.mjs
