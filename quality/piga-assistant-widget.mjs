@@ -11,17 +11,24 @@ if(profile){
  field.rows=3;field.maxLength=650;field.placeholder=translated[1];field.required=true;
  confirm.type="checkbox";const checkText=document.createElement("label");checkText.append(confirm,document.createTextNode(" "+translated[2]));
  send.type="submit";send.textContent=translated[3];status.role="status";status.textContent=translated[2];output.className="piga-common-answer";
- form.append(field,checkText,send);host.append(form,status,output);document.body.append(host);
+ const speak=document.createElement("button");speak.type="button";speak.textContent="♫ "+translated[0];speak.disabled=true;
+ speak.addEventListener("click",()=>{if(!output.textContent||!window.speechSynthesis)return;
+  const utter=new SpeechSynthesisUtterance(output.textContent.slice(0,1600));
+  const voice=speechSynthesis.getVoices().find(v=>/katja|hedda|anna|vicki|petra|gacrux|sulafat/i.test(v.name)&&v.lang?.startsWith(lang.slice(0,2)));
+  if(voice)utter.voice=voice;utter.lang=voice?.lang||lang;utter.rate=.87;utter.pitch=1;
+  speechSynthesis.cancel();speechSynthesis.speak(utter);
+ });
+ form.append(field,checkText,send,speak);host.append(form,status,output);document.body.append(host);
  form.addEventListener("submit",async event=>{
   event.preventDefault();if(send.disabled||!confirm.checked)return void(status.textContent=translated[2]);
   const question=field.value.trim();if(question.length<2||question.length>650)return;
-  send.disabled=true;status.textContent="PIGA …";
+  send.disabled=true;speak.disabled=true;status.textContent="PIGA …";
   const c=new AbortController(),timer=setTimeout(()=>c.abort(),11000);
   try{
    const r=await fetch("https://pigapocket.com/api/piga/assistant/v1/ask",{method:"POST",headers:{"content-type":"application/json"},credentials:"omit",cache:"no-store",mode:"cors",referrerPolicy:"no-referrer",signal:c.signal,body:JSON.stringify({app:profile,message:question,consent:true})});
    const answer=await r.json();
    if(!r.ok||answer.status!=="ANSWER"||answer.gate2!=="BLOCK"||answer.externalEffects!==0)throw Error("PIGA_NOT_ADMITTED");
-   output.textContent=String(answer.answer||"").slice(0,2400);status.textContent=translated[0];
+   output.textContent=String(answer.answer||"").slice(0,2400);speak.disabled=false;status.textContent=translated[0];
   }catch{output.textContent=translated[4];status.textContent=translated[4]}
   finally{clearTimeout(timer);send.disabled=false}
  });
