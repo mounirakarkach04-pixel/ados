@@ -1,9 +1,14 @@
-name: PIGA ORTHO 3D — Workflow UX and Glassbox QA
+name: PIGA ORTHO 3D — Legacy Android WebView QA
 on:
+  pull_request:
+    paths:
+      - 'piga-ortho-3d/web/**'
+      - 'scripts/piga-ortho-workflow-qa.mjs'
+      - '.github/workflows/piga-ortho-workflow-qa.yml'
   push:
     branches: [main]
     paths:
-      - 'piga-ortho-3d/**'
+      - 'piga-ortho-3d/web/**'
       - 'scripts/piga-ortho-workflow-qa.mjs'
       - '.github/workflows/piga-ortho-workflow-qa.yml'
   workflow_dispatch:
