@@ -171,6 +171,18 @@ try{
  await page.locator("#nav > [data-view='articles']").click();
  await page.fill("#article-search","50");
  assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
+ await page.locator("#article-table .piga-article-guide").first().locator("summary").click();
+ assert.match(await page.locator("#article-table").innerText(),/PIGA-Kontrollvorschlag/);
+ assert.match(await page.locator("#article-table").innerText(),/Konkrete Gegenprobe/);
+ assert.equal(await page.locator("#piga-law-export-json").isVisible(),true);
+ await page.locator("#article-search").fill("");
+ assert.match(await page.locator(".piga-law-quick-stats").innerText(),/119 \/ 119/);
+ assert.equal(await page.locator("#piga-law-chapter option").count(),14);
+ await page.locator("#piga-law-chapter").selectOption("XIII");
+ assert.match(await page.locator("#article-table").innerText(),/Inkrafttreten|Übergangs|Änderung/);
+ await page.locator("#piga-law-chapter").selectOption("all");
+ await page.locator("#article-search").fill("50");
+
  await page.locator("#nav > [data-view='portfolio']").click();
  await page.locator("#view-portfolio").waitFor({state:"visible",timeout:10000});
  assert.equal((await page.locator("#stat-portfolio-canonical").innerText()).trim(),"13");
@@ -255,15 +267,19 @@ try{
   await mobilePage.waitForFunction(()=>navigator.serviceWorker.controller!==null,{timeout:15000});
   const cacheEvidence=await mobilePage.evaluate(async()=>{
    const names=await caches.keys();
-   const current="piga-aiact-shell-v17-mobile-report";
+   const current="piga-aiact-shell-v18-full-article-guides";
    const cache=await caches.open(current);
    const response=await cache.match("./design-v3.css");
    const css=response?await response.text():"";
-   return {names,cssContainsMobileRepair:css.includes("#view-results .report-overview")&&css.includes("@media screen and (max-width:880px)")};
+   const guide=await cache.match("./article-piga-guides.mjs");
+   const guideText=guide?await guide.text():"";
+   return {names,cssContainsMobileRepair:css.includes("#view-results .report-overview")&&css.includes("@media screen and (max-width:880px)"),
+     publicArticleMappingCached:guideText.includes("PIGA_ARTICLE_GUIDES")&&guideText.includes("4a|")};
   });
-  assert.ok(cacheEvidence.names.includes("piga-aiact-shell-v17-mobile-report"),"Old mobile CSS cache not invalidated: "+JSON.stringify(cacheEvidence));
-  assert.ok(!cacheEvidence.names.some(x=>x.startsWith("piga-aiact-shell-")&&x!=="piga-aiact-shell-v17-mobile-report"),"Old shell cache survived activation: "+JSON.stringify(cacheEvidence));
+  assert.ok(cacheEvidence.names.includes("piga-aiact-shell-v18-full-article-guides"),"Old mobile CSS cache not invalidated: "+JSON.stringify(cacheEvidence));
+  assert.ok(!cacheEvidence.names.some(x=>x.startsWith("piga-aiact-shell-")&&x!=="piga-aiact-shell-v18-full-article-guides"),"Old shell cache survived activation: "+JSON.stringify(cacheEvidence));
   assert.equal(cacheEvidence.cssContainsMobileRepair,true,"Cached CSS does not contain mobile report fix");
+  assert.equal(cacheEvidence.publicArticleMappingCached,true,"Offline 119-article PIGA guide not cached");
   await mobile.setOffline(true);
   await mobilePage.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:20000});
   await mobilePage.waitForURL(/#home$/,{timeout:15000});
