@@ -4,6 +4,7 @@
 window.PigaDeviceStore=(()=>{
  const NAME='PIGA_ORTHO_DEVICE_V1',SCHEMA=1;
  const KEYS={suite:'piga-ortho-v12-local',direct:'piga-ortho-direct-v1'};
+ const META='piga-ortho-transfer-metadata-v1';
  const allowed=new Set(['HEALTH_CHECK','INVENTORY_FORECAST','WORKFLOW_SUMMARY']);
  const open=()=>new Promise((resolve,reject)=>{
   if(!('indexedDB' in window)){reject(Error('IndexedDB nicht verfügbar'));return;}
@@ -38,6 +39,11 @@ window.PigaDeviceStore=(()=>{
  let chain=Promise.resolve();
  const broadcast=typeof BroadcastChannel!=='undefined'?new BroadcastChannel('piga-ortho-device-updates'):null;
  const status=()=>availability;
+ const meta=()=>{try{return JSON.parse(localStorage.getItem(META)||'{}')}catch{return {}}};
+ const stamp=(field)=>{try{const m=meta();m[field]=new Date().toISOString();localStorage.setItem(META,JSON.stringify(m));window.dispatchEvent(new CustomEvent('piga-ortho-transfer-metadata',{detail:m}));}catch{}};
+ const markBackup=()=>stamp('lastExport');
+ const markImport=()=>stamp('lastImport');
+ const flush=()=>chain;
  async function initialize(name){
   if(!(name in KEYS))throw Error('Ungültiger lokaler Bereich');
   try{
@@ -57,7 +63,7 @@ window.PigaDeviceStore=(()=>{
   // Snapshot is detached from the live mutable object before the queued transaction.
   const snapshot=structuredClone(data);
   chain=chain.catch(()=>{}).then(()=>put(name,snapshot)).then(()=>{
-   availability='indexeddb';try{broadcast?.postMessage({name})}catch{}
+   availability='indexeddb';stamp('lastChange');try{broadcast?.postMessage({name})}catch{}
   },error=>{
    availability='browser-fallback';
    document.dispatchEvent(new CustomEvent('piga-device-storage-warning',{detail:String(error.message)}));
@@ -83,5 +89,5 @@ window.PigaDeviceStore=(()=>{
   return {status:availability,usage:estimate?.usage??null,quota:estimate?.quota??null,persistent};
  };
  const persist=async()=>!!(await navigator.storage?.persist?.());
- return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS};
+ return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush};
 })();
