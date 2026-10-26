@@ -38,12 +38,12 @@
   "apps": [
     {
       "id": "ados-portal",
-      "profile": "research",
+      "profile": "showroom",
       "clientSurface": "generic_opt_in"
     },
     {
       "id": "ados-research",
-      "profile": "research",
+      "profile": "showroom",
       "clientSurface": "generic_opt_in"
     },
     {
@@ -53,18 +53,17 @@
     },
     {
       "id": "nadias-bloom",
-      "profile": "wellbeing",
+      "profile": "nadias_bloom",
       "clientSurface": "generic_opt_in_no_family_data"
     },
     {
       "id": "ortho-preview",
-      "profile": "ortho-practice",
-      "clientSurface": "PENDING_SOURCE_ADAPTER_REVIEW",
-      "reason": "HTML adapter not yet committed; existing local app remains available."
+      "profile": "ortho",
+      "clientSurface": "generic_opt_in_nonclinical"
     },
     {
       "id": "ortho-workspace",
-      "profile": "ortho-practice",
+      "profile": "ortho",
       "clientSurface": "generic_opt_in_nonclinical"
     },
     {
@@ -74,22 +73,22 @@
     },
     {
       "id": "cancer-research",
-      "profile": "research",
+      "profile": "cancer",
       "clientSurface": "generic_opt_in_nonclinical"
     },
     {
       "id": "cancer-intake",
-      "profile": "research",
+      "profile": "cancer",
       "clientSurface": "generic_opt_in_nonclinical"
     },
     {
       "id": "la-preuve",
-      "profile": "research",
+      "profile": "la_preuve",
       "clientSurface": "generic_opt_in_nonclinical"
     },
     {
       "id": "la-preuve-lab",
-      "profile": "research",
+      "profile": "la_preuve",
       "clientSurface": "PENDING_SOURCE_ADAPTER_REVIEW",
       "reason": "HTML adapter not yet committed; existing local app remains available."
     }
@@ -98,7 +97,7 @@
     "sourceOnly": true,
     "serverStatus": "NOT_DEPLOYED_OR_NOT_VERIFIED",
     "fullAppRuntime": "UNKNOWN",
-    "reconciliation": "current branch includes 7 new opt-in widgets, 2 established specialized UIs and 2 pending HTML adapters",
+    "reconciliation": "8 generic opt-in assistant UIs (including KFO HTML sales), 2 specialized, 1 pending LA PREUVE LAB; release only after live server readback",
     "gate2": "BLOCK"
   }
 }
