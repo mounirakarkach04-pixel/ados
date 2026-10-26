@@ -1,0 +1,45 @@
+name: PIGA 24h Factory — 25 workers / 3 supervisors
+on:
+  schedule:
+    # 24 bounded hourly slots on 27 October UTC; separate cleanup slot on 28 October.
+    - cron: '17 * 27 10 *'
+    - cron: '17 0 28 10 *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: piga-factory-24h-20261027
+  cancel-in-progress: false
+jobs:
+  factory-evidence:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Perform one finite source-only tick (no AI calls, phone effects or spending)
+        run: node scripts/piga-factory-25x3-tick.mjs
+      - name: Upload bounded A7SEM / Reverse evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: piga-factory-25x3-${{ github.run_id }}
+          path: qa-reports/piga-factory-25x3-hourly.json
+          retention-days: 3
+          if-no-files-found: error
+      - name: Disable factory scheduler after the approved window
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if node -e 'const cutoff=Date.parse("2026-10-28T00:00:00Z");process.exit(Date.now()>=cutoff?0:1)' ; then
+            gh api -X PUT "repos/$GH_REPO/actions/workflows/piga-factory-24h.yml/disable"
+            echo "PIGA 24h scheduled runner disabled after UTC cutoff"
+          fi
