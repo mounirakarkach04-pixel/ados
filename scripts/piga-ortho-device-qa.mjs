@@ -91,4 +91,16 @@ test('Previously admitted local work may resume in foreground without an unlimit
  assert(n.includes("s.src='./worker-autoresume.js'"));
  assert(!o.includes('setInterval('));
 });
+test('Reference-inspired dashboard style and network controls remain available',()=>{
+ const dashboard=read('dashboard.html'),css=read('ortho-light.css'),devices=read('devices.html'),js=read('devices.js');
+ assert(dashboard.includes('ortho-reference-brand'));
+ assert(dashboard.includes('From Scan to Smile'));
+ for(const label of ['PRACTICE','LAB','WORKFLOW','AI'])assert(dashboard.includes(label));
+ assert(css.includes('ref-brand-lockup')&&css.includes('connection-help'));
+ assert(devices.includes('id="connectionHelp"'));
+ for(const id of ['wifiSettings','btGrant','btSettings','probe','scanFile','scanFile2'])
+  assert(devices.includes('id="'+id+'"'),id);
+ assert(js.includes('navigator.bluetooth.requestDevice')&&js.includes("window.addEventListener('online',detect)"));
+ assert(js.includes("native.openWirelessSettings('wifi')"));
+});
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
