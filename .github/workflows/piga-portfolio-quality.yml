@@ -5,6 +5,7 @@ on:
       - 'quality/portfolio-**'
       - 'quality/PORTFOLIO_DESIGN_RELEASE_STANDARD.md'
       - 'scripts/verify-portfolio-contract.mjs'
+      - 'scripts/portfolio-live-readback.mjs'
       - '**/*.html'
       - '.github/workflows/piga-portfolio-quality.yml'
   push:
@@ -13,6 +14,7 @@ on:
       - 'quality/portfolio-**'
       - 'quality/PORTFOLIO_DESIGN_RELEASE_STANDARD.md'
       - 'scripts/verify-portfolio-contract.mjs'
+      - 'scripts/portfolio-live-readback.mjs'
       - '**/*.html'
       - '.github/workflows/piga-portfolio-quality.yml'
   workflow_dispatch:
@@ -32,3 +34,7 @@ jobs:
           node-version: '22'
       - name: Check portfolio app metadata, accessibility and local assets
         run: node scripts/verify-portfolio-contract.mjs
+      - name: Validate bounded public readback without network
+        run: |
+          node --check scripts/portfolio-live-readback.mjs
+          node scripts/portfolio-live-readback.mjs
