@@ -8,7 +8,8 @@ for(const name of ['supply.html','supply.css','supply.js','kfo-atlas.html','kfo-
 const nav=read('navigation.js'),sw=read('sw.js'),brain=read('piga-brain.js'),v3=read('ortho-visual-v3.js');
 for(const name of ['supply.html','supply.css','supply.js','kfo-atlas.html','kfo-atlas.css','kfo-atlas.js'])
  assert(sw.includes("'./"+name+"'"),'offline cache missing '+name);
-for(const name of ['supply','atlas'])assert(nav.includes("id:'"+name+"'"),'nav missing '+name);
+for(const name of ['procurement','atlas'])assert(nav.includes("id:'"+name+"'"),'nav missing '+name);
+assert(read('procurement.html').includes('href="./supply.html"'),'single purchasing entry must link detailed basket');
 assert(v3.includes("'kfo-atlas':")&&v3.includes('supply:{title:'),'responsive skin missing');
 assert(brain.includes("atlas:['KFO Fachatlas'"),'local PIGA chat missing atlas');
 for(const file of ['supply.js','kfo-atlas.js','piga-brain.js'])
