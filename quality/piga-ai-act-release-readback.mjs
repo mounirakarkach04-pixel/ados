@@ -49,6 +49,21 @@ try{
  const failed=Object.entries(expected).filter(([,ok])=>!ok).map(([name])=>name);
  record("welcome_journey_contract",failed.length?"BLOCK":"ALLOW",{checks:expected,failed});
 }catch(error){record("welcome_journey_contract","BLOCK",{reason:"welcome_readback_source_error",message:String(error.message||error).slice(0,160)});}
+// Detect regressions where desktop grid minimums force one-character-wide
+// report cards on narrow screens. Full geometry is checked independently
+// by the Chromium end-to-end suite on eight viewport widths.
+try {
+ const css=fs.readFileSync(root+"/design-v3.css","utf8");
+ const expected={
+  narrow_screen_override:css.includes("@media screen and (max-width:880px)"),
+  scoped_results_grid:css.includes("#view-results .report-overview"),
+  one_column_layout:css.includes("grid-template-columns:minmax(0,1fr)"),
+  print_media_preserved:css.includes("@media print")
+ };
+ const missing=Object.entries(expected).filter(([,ok])=>!ok).map(([key])=>key);
+ record("mobile_report_grid_contract",missing.length?"BLOCK":"ALLOW",{checks:expected,missing,
+  chromium_evidence:"https://github.com/mounirakarkach04-pixel/ados/actions/runs/40377211740"});
+}catch(error){record("mobile_report_grid_contract","BLOCK",{reason:"mobile_css_contract_error",message:String(error.message||error).slice(0,160)});}
 const sensitive=fs.readFileSync(root+"/app.bundle.js","utf8");
 record("client_secret_boundary",/(?:sk_live_|whsec_|SUPABASE_SERVICE_ROLE_KEY\s*[=:]\s*['"])/.test(sensitive)?"BLOCK":"ALLOW",{checked:"no Stripe live secret / no public service-role assignment"});
 try{
