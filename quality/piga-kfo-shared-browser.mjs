@@ -2,7 +2,7 @@ import {chromium} from "playwright";
 import assert from "node:assert/strict";
 import {mkdirSync,writeFileSync} from "node:fs";
 mkdirSync("qa-artifacts/kfo-shared",{recursive:true});
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,...(process.env.CI?{channel:'chrome'}:{})});
 const page=await browser.newPage({viewport:{width:393,height:852}});
 let questions=[],statusChecks=0,replyMode="good",jsErrors=[];
 page.on("pageerror",e=>jsErrors.push(e.message));
