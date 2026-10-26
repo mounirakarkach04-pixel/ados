@@ -5,7 +5,7 @@ window.PigaDeviceStore=(()=>{
  const NAME='PIGA_ORTHO_DEVICE_V1',SCHEMA=1;
  const KEYS={suite:'piga-ortho-v12-local',direct:'piga-ortho-direct-v1'};
  const META='piga-ortho-transfer-metadata-v1';
- const allowed=new Set(['HEALTH_CHECK','INVENTORY_FORECAST','WORKFLOW_SUMMARY']);
+ const allowed=new Set(['HEALTH_CHECK','INVENTORY_FORECAST','WORKFLOW_SUMMARY','DATA_INTEGRITY_AUDIT','IMPROVEMENT_BACKLOG']);
  const open=()=>new Promise((resolve,reject)=>{
   if(!('indexedDB' in window)){reject(Error('IndexedDB nicht verfügbar'));return;}
   const req=indexedDB.open(NAME,SCHEMA);
