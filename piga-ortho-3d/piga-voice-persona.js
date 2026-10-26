@@ -15,8 +15,9 @@
   try{available=speechSynthesis.getVoices()||[]}catch{return null}
   const voices=available.filter(isGerman);
   const preferred=['gacrux','sulafat','anna','hed da','hedda','katja','petra','marlene','vicki','victoria','female','frau','woman'];
-  const excluded=['male','mann','thomas','stefan','markus','charon','puck','or us','orus'];
-  const plausible=voices.filter(v=>!excluded.some(x=>normalized(v.name).includes(x)));
+  // Do not reject "female" merely because it ends in "male".
+  const excluded=/\b(?:male|mann|thomas|stefan|markus|charon|puck|orus)\b/i;
+  const plausible=voices.filter(v=>!excluded.test(normalized(v.name)));
   const matched=plausible.find(v=>preferred.some(x=>normalized(v.name).includes(x)));
   return matched||null;
  };
@@ -28,11 +29,15 @@
   if(!message){onStatus?.('Noch keine Antwort zum Vorlesen.');return false}
   try{
    speechSynthesis.cancel();
-   const voice=choose(),utterance=new SpeechSynthesisUtterance(message);
+   const voice=choose();
+   if(!voice){
+    onStatus?.('Keine verlässlich weibliche deutsche Gerätestimme verfügbar. PIGA bleibt schriftlich; eine beliebige Systemstimme wird nicht als PIGA ausgegeben.');
+    return false;
+   }
+   const utterance=new SpeechSynthesisUtterance(message);
    utterance.lang=PROFILE.language;utterance.rate=PROFILE.rate;
    utterance.pitch=PROFILE.pitch;utterance.volume=PROFILE.volume;
-   if(voice)utterance.voice=voice;
-   else onStatus?.('Keine eindeutig weibliche deutsche Gerätestimme erkannt. Vorlesen über Systemstandard; Gacrux steht bei freigegebener Gemini-TTS zur Verfügung.');
+   utterance.voice=voice;
    utterance.onerror=()=>onStatus?.('Sprachausgabe nicht abgeschlossen.');
    speechSynthesis.speak(utterance);
    return true;
