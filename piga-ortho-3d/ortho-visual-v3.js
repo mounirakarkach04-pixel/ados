@@ -5,6 +5,7 @@
  if(['sales','index','auth'].includes(page))return;
  const pages={
  procurement:{title:'Materialbedarf · Einkaufsvorschläge',desc:'Erfassungsfreie Vorschläge aus der lokalen Inventur, mit CSV und PIGA Freigabeentwurf.',image:'ortho-inventory.svg',num:'05',label:'PROCUREMENT'},
+ supply:{title:'Bestellvorbereitung KFOshop24',desc:'Prüfbare Mindestbestände und Warenkorbliste mit menschlicher Freigabe.',image:'ortho-inventory.svg',num:'05',label:'BESTELLUNG'},
  setup:{title:'Einrichtung Schritt für Schritt',desc:'Lokalen Speicher, WLAN, Worker und optionale Sprache in sechs Schritten prüfen.',image:'ortho-dashboard.svg',num:'00',label:'START'},
  diagnostics:{title:'Systemtest & Funktionsstatus',desc:'Echte Funktionstests für IndexedDB, Kryptografie, Worker, STL, Offline und Geräteverfügbarkeit.',image:'ortho-dashboard.svg',num:'00',label:'DIAGNOSTICS'},
  handoff:{title:'Praxis-Labor-Übergabe',desc:'Eine Auftragsreferenz für STL-Grundprüfung, Materialkontrolle, Aufgaben, Prüftermine und technische Evidenz.',image:'ortho-hero.svg',num:'02',label:'CASE TO LAB'},
