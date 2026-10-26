@@ -18,10 +18,10 @@
  border-color:#078daf!important;box-shadow:0 5px 14px #188aab24!important}
 .piga-workspace-control:disabled{opacity:.5;cursor:not-allowed}
 .piga-workspace-status{font-size:11px;color:#658da1;line-height:1.4;width:100%}
-body.piga-density-compact :where(.panel,.tile,.tool-card,.module-card,.handoff-card,.hub-panel,.diag-section,.ops-panel,.ops-card,.transport,.stepper,.paper){
+body.piga-density-compact :where(.panel,.tile,.tool-card,.module-card,.pc-card,.handoff-card,.hub-panel,.diag-section,.ops-panel,.ops-card,.transport,.stepper,.paper){
  padding:clamp(12px,1.2vw,18px)!important}
 body.piga-density-compact :where(.core-grid,.module-grid,.tool-grid,.handoff-grid,.hub-grid,.diag-checks){gap:10px!important}
-body.piga-density-compact :where(.panel,.tile,.handoff-card,.hub-panel,.diag-section){min-height:unset!important}
+body.piga-density-compact :where(.panel,.tile,.pc-card,.handoff-card,.hub-panel,.diag-section){min-height:unset!important}
 body.piga-font-large :where(main input,main select,main textarea,main button,main a,main label,main small,main td,main th,main p,main li){
  font-size:max(15px,1.08em)!important}
 body.piga-font-large :where(main h2,main h3){font-size:clamp(20px,1.55vw,27px)!important}
