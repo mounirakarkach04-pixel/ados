@@ -30,3 +30,6 @@
 .device-hub footer{margin-top:35px;padding:24px 0;color:#8299a7;font-size:11px;letter-spacing:.05em}
 @media(max-width:1200px){.hub-status{grid-template-columns:repeat(2,minmax(0,1fr))}.hub-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.hub-top{display:block}.hub-status{gap:8px}.hub-metric{padding:15px}.hub-actions button,.hub-actions a,.file-button{flex:1 1 auto}.hub-panel{padding:18px}.device-hub{padding:19px 14px 45px}}
+
+/* Hidden native OS share option must remain hidden until a verified encrypted export exists. */
+.hub-actions [hidden]{display:none!important}
