@@ -3,6 +3,8 @@
  No network, no secrets, no diagnoses, no impersonated authority, no physical effects. */
 window.PigaBrain=(()=>{
  const routes={
+ research:['PIGA – 10 Rules (Zenodo)','https://zenodo.org/records/21390720'],
+ sales:['PIGA ORTHO Produktübersicht','./sales.html'],privacy:['Datenschutz & Datenverarbeitung','./privacy.html'],
  overview:['Dashboard','./dashboard.html'],cases:['Fälle & Termine','./direct.html#cases'],
  praxis:['Praxis','./praxis.html'],team:['Personal','./team.html'],
  inventory:['Material','./inventory.html'],studio:['3D Studio','./studio.html#studio'],
@@ -12,6 +14,15 @@ window.PigaBrain=(()=>{
  governance:['PIGA Prozesse','./workflow.html'],diagnostics:['Systemtest','./diagnostics.html'],
  };
  const patterns=[
+  {rx:/(a7sem.reverse|rückwärtsprüf|reverse.audit|reverse.evidence)/i,kind:'GOVERNANCE_REVIEW',route:'governance',
+   reply:'A7SEM Reverse prüft ein beobachtetes Ergebnis gegen die anfängliche Zulassung, Quelle, Abhängigkeiten und mögliche Widersprüche. Ohne authentifizierten Readback ist das Ergebnis UNKNOWN und keine neue Autorisierung.'},
+  {rx:/(zenodo|forschungswerk|publikation|forschung.*piga|piga.*paper|mein wissen|meine arbeit|mounir akarkach)/i,kind:'GOVERNANCE_REVIEW',route:'research',
+   reply:'Die öffentlich veröffentlichte Forschungsarbeit „PIGA for Everyone – 10 Rules. One Architecture“ ist über Zenodo (DOI 10.5281/zenodo.21390720) zugänglich. Die lokale App enthält ein begrenztes Modul- und Governance-Wissensverzeichnis; private Google-Drive-Werke werden ohne separat autorisierte Schnittstelle nicht automatisch gelesen.'},
+  {rx:/(produktbeschreibung|was kann die app|preise|lizenz|vertrieb|kommerziell)/i,kind:'GENERAL_HELP',route:'sales',
+   reply:'PIGA ORTHO 3D verbindet technische 3D-/DICOM-Werkzeuge, Workflow, lokale Datenbank, Personal-Testansichten, PIGA-Prüfungen und einen gerätegebundenen Chat. Die Vertriebsübersicht zeigt die Produktpositionierung; ein produktiver Lizenzzugang wird erst nach überprüfter Authentifizierung und Stripe-Entitlement-Anbindung freigegeben.'},
+  {rx:/(dsgvo|datenschutz|patientendaten|gesundheitsdaten|privatsphäre)/i,kind:'GENERAL_HELP',route:'privacy',
+   reply:'Dies ist eine öffentliche, passwortlose technische Evaluation. Bitte ausschließlich synthetische oder zuverlässig anonymisierte Testdaten verwenden. Für echte Patienten- und Mitarbeiterdaten sind gesicherte Konten, Zugriffskontrolle, Verschlüsselung, Backup, Löschkonzept und rechtliche/medizinische Prüfung erforderlich.'},
+ 
   {rx:/\b(urlaub|ferien|freistellung|abwesenheit)\b/i,role:'staff',kind:'LEAVE_REQUEST',route:'team',
    reply:'Ich kann eine Urlaubsanfrage als Entwurf in den lokalen Freigabeeingang aufnehmen. Ohne bestätigte Inhaberidentität wird kein Urlaub rechtsverbindlich genehmigt.'},
   {rx:/(druckauftrag|drucken|drucker|fertigung|resin)/i,kind:'PRINT_REVIEW',route:'studio',
