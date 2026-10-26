@@ -3,8 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'piga-ortho-3d/android/**'
-      - 'piga-ortho-3d/web/**'
+      - 'piga-ortho-3d/**'
       - '.github/workflows/piga-ortho-3d-apk.yml'
 jobs:
   android-debug-build:
