@@ -2,7 +2,7 @@
 <html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8f9ff"><meta name="description" content="Prüfen. Verstehen. Handeln. EU AI Act Voranalyse, evidenzbasierte Admission Ladder und passende PIGA-Governance-Lösungen.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://*.supabase.co; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://*.supabase.co https://pigapocket.com; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>PIGA AI Act Intelligence | KI prüfen, Risiken einordnen, Maßnahmen verstehen</title>
 <meta property="og:type" content="website"><meta property="og:locale" content="de_DE"><meta property="og:title" content="PIGA AI Act Intelligence – Erst prüfen. Dann entscheiden."><meta property="og:description" content="Kostenfreie KI-Voranalyse in vier Schritten: nachvollziehbarer Befund, Nachweislücken, konkrete Maßnahmen und transparente PIGA-Fachleistungen."><meta name="twitter:card" content="summary">
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="design-v3.css">
@@ -43,6 +43,22 @@
    <button type="button" class="audience-choice" data-audience="both" aria-pressed="false"><span class="audience-icon" aria-hidden="true">03</span><strong>Ich übernehme beide Rollen</strong><span>Anbieter und Betreiber getrennt betrachten</span></button>
   </div>
   <div class="welcome-direction"><p id="audience-context" role="status" aria-live="polite">Noch unsicher? Sie können Ihre Rolle auch direkt im Analyseformular auswählen. Die Vorprüfung bleibt unabhängig davon kostenfrei.</p><button type="button" class="btn primary" data-go="assessment">Mit meiner Voranalyse fortfahren →</button></div>
+ </section>
+ <section class="piga-specialist" id="aiact-piga-specialist" aria-labelledby="aiact-piga-heading">
+  <div class="piga-specialist-intro">
+   <span class="kicker">DIESELBE PIGA KI · SPEZIALISIERT AUF EU AI ACT</span>
+   <h2 id="aiact-piga-heading">Fragen zum EU AI Act? Frag PIGA persönlich.</h2>
+   <p>PIGA erklärt technische Prüfpfade, rechtliche Anwendungsfragen und Evidenzlücken – ruhig, verständlich und im Kontext deiner Frage. Die kostenlose Voranalyse bleibt ohne Cloud-KI nutzbar. Kein Modellschlüssel im Browser; kein verpflichtendes Login.</p>
+  </div>
+  <div class="piga-specialist-content">
+   <form id="aiact-piga-form">
+    <label for="aiact-piga-question">Deine Fachfrage an PIGA</label>
+    <textarea id="aiact-piga-question" rows="3" minlength="2" maxlength="650" placeholder="Wie prüfe ich den Nachweis zur menschlichen Aufsicht nach Artikel 14?" required></textarea>
+    <div class="piga-specialist-controls"><button type="submit" class="btn primary" id="aiact-piga-send">PIGA fragen →</button><button class="btn ghost" type="button" id="aiact-piga-check">Zentrale prüfen</button><button class="btn ghost" type="button" id="aiact-piga-read" disabled>Ruhig vorlesen</button></div>
+   </form>
+   <div class="piga-specialist-response"><strong>PIGA antwortet hier</strong><div id="aiact-piga-answer" aria-live="polite"><p>Stelle eine fachliche Frage. Erst durch „PIGA fragen“ wird der Fragetext an den freigegebenen Server übermittelt.</p></div><p id="aiact-piga-status" role="status">Nur öffentliche Fachfragen, keine Patienten- oder Kontodaten. Gate 2 für Außenwirkungen bleibt BLOCK.</p></div>
+  </div>
+  <p class="piga-specialist-note">PIGA ist eine technische Orientierung, keine individuelle Rechtsberatung oder EU-Konformitätsbescheinigung. Online-Informationen werden nur mit gekennzeichneter Quellenlage verwendet. Bevorzugt eine erwachsene, ruhige weibliche Stimme; die tatsächliche Audio-Ausgabe hängt vom Gerät ab.</p>
  </section>
  <div class="stats"><article><div>119</div><span>Artikelkennungen im Index</span></article><article><div id="home-architecture-count">–</div><span>Architektur-Einträge</span></article><article><div id="home-publications-count">–</div><span>DOI-verknüpfte Forschungsarbeiten</span></article><article><div>2028</div><span>letzte Hauptphase der Anwendung</span></article></div>
  <details class="proof-disclosure"><summary>Forschung & technische Validierung <span>Methodik und Testnachweise ansehen</span></summary><div class="research-proof">
@@ -161,4 +177,5 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script type="module" src="app.bundle.js"></script>
 <script type="module" src="welcome-journey.mjs"></script>
+<script type="module" src="piga-specialist.mjs"></script>
 </body></html>
