@@ -1,0 +1,47 @@
+/* PIGA Portfolio UI baseline v1 — additive and app-neutral.
+   Deliberately does not change the individual application's brand palette/layout.
+   WCAG-oriented keyboard and reduced-motion improvements. */
+:root {
+  --piga-portfolio-focus: #1779b9;
+  --piga-portfolio-skip-bg: #123644;
+  --piga-portfolio-skip-fg: #ffffff;
+}
+.piga-skip-link {
+  position: fixed;
+  z-index: 2147483000;
+  inset-block-start: .75rem;
+  inset-inline-start: .75rem;
+  transform: translateY(-200%);
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: .75rem 1rem;
+  border: 2px solid currentColor;
+  border-radius: .8rem;
+  background: var(--piga-portfolio-skip-bg);
+  color: var(--piga-portfolio-skip-fg);
+  font: 700 1rem/1.4 system-ui, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 4px 15px #0003;
+}
+.piga-skip-link:focus, .piga-skip-link:focus-visible {
+  transform: translateY(0);
+}
+:where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
+  outline: 3px solid var(--piga-portfolio-focus);
+  outline-offset: 3px;
+}
+@media (forced-colors: active) {
+  :where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
+    outline-color: Highlight;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
