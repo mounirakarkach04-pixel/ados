@@ -13,7 +13,7 @@
  {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./praxis.html',icon:'users'},
  {id:'team',label:'Personal & Steuer',desc:'Unterweisung, Dienstplan, Urlaub, Krankmeldung und freigegebene Lohndaten',href:'./team.html',icon:'users'},
  {id:'procurement',label:'Einkauf & Warenkorb',desc:'Materialbedarf, PIGA-Prüfung und lokaler bearbeitbarer Bestellkorb',href:'./procurement.html',icon:'grid'},
- {id:'voice',label:'PIGA Sprach-KI',desc:'Freies lokales Sprachmodell nach Einwilligung, ohne API-Schlüssel am Gerät',href:'./piga-voice.html',icon:'activity'},
+ {id:'voice',label:'PIGA Sprach-KI',desc:'Gemeinsame PIGA Showroom-KI mit KFO-Spezialisierung und ruhiger weiblicher Sprachausgabe, ohne Schlüssel am Gerät',href:'./piga-voice.html',icon:'activity'},
  {id:'atlas',label:'KFO Fachatlas',desc:'Befunde, Zahnspangen, Diagnostik, Zusatzleistungen und fachliche Prüfpunkte',href:'./kfo-atlas.html',icon:'document'},
  {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./inventory.html',icon:'grid'},
  {id:'imaging',label:'DICOM / CBCT',desc:'Bildserien ansehen, Grauwertmasken und nichtklinische geometrische Staging-Proben mit Freigaben prüfen',href:'./imaging.html',icon:'cube'},
