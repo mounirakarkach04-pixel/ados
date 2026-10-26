@@ -7,6 +7,7 @@
  procurement:{title:'Materialbedarf · Einkaufsvorschläge',desc:'Erfassungsfreie Vorschläge aus der lokalen Inventur, mit CSV und PIGA Freigabeentwurf.',image:'ortho-inventory.svg',num:'05',label:'PROCUREMENT'},
  'kfo-atlas':{title:'Orthodontic Knowledge Atlas',desc:'KFO-Wissens- und Apparaturübersicht mit Leitlinienverweisen.',image:'ortho-hero.svg',num:'06',label:'FACHTHEMEN'},
  supply:{title:'Bestellvorbereitung KFOshop24',desc:'Prüfbare Mindestbestände und Warenkorbliste mit menschlicher Freigabe.',image:'ortho-inventory.svg',num:'05',label:'BESTELLUNG'},
+ manager:{title:'PIGA Manager · Geräteautonomie',desc:'Lokal starten, Status prüfen, technische Worker und Optimierung kontrollieren.',image:'ortho-dashboard.svg',num:'00',label:'MANAGER'},
  setup:{title:'Einrichtung Schritt für Schritt',desc:'Lokalen Speicher, WLAN, Worker und optionale Sprache in sechs Schritten prüfen.',image:'ortho-dashboard.svg',num:'00',label:'START'},
  diagnostics:{title:'Systemtest & Funktionsstatus',desc:'Echte Funktionstests für IndexedDB, Kryptografie, Worker, STL, Offline und Geräteverfügbarkeit.',image:'ortho-dashboard.svg',num:'00',label:'DIAGNOSTICS'},
  handoff:{title:'Praxis-Labor-Übergabe',desc:'Eine Auftragsreferenz für STL-Grundprüfung, Materialkontrolle, Aufgaben, Prüftermine und technische Evidenz.',image:'ortho-hero.svg',num:'02',label:'CASE TO LAB'},
@@ -44,7 +45,7 @@
  }
  const config=pages[page],main=document.querySelector('main');
  if(!config||!main)return;
- if(['piga-control','setup','procurement'].includes(page)){
+ if(['piga-control','setup','procurement','manager'].includes(page)){
    // These pages already carry large premium hero layouts; avoid duplicate mastheads.
    document.body.classList.add('ortho-visual-v3','ortho-page-'+page);
    installFocus(main);return;
