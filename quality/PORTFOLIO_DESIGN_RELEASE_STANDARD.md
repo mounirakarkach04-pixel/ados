@@ -28,3 +28,10 @@ Dieses öffentliche Repository stellt die ADOS-, EU AI Act-, Nadia-, ORTHO-3D-, 
 - Bestehende fünf Engines bleiben: intake, queue, govern, evidence, decision. A7SEM Reverse ist Prüfschicht, keine sechste Engine.
 
 **Review-Reihenfolge:** Accessibility/Navigation → Load/Error UX → Mobile Screenshot-Parität → Backend-/Auth-Vertrag → app-spezifische Funktionsprüfung → Live-/Kosten-Readback.
+
+## Portfolio Control Room und reale Live-Prüfung (Ergänzung 26.10.2026)
+
+- `quality/portfolio-control-room.html`: mobil optimiertes, barrierearmes **rein lesendes** Verzeichnis mit 11 App-Einstiegen, Suche, Filter, internem Quelllink und kanonischem Link. Benutzt nur `quality/portfolio-registry.json`, keine Secrets, keine Telemetrie oder automatische Backend-Aufrufe. Der Wert „hier live verifiziert“ bleibt bewusst **0**, bis separate und tatsächlich belegte Laufzeitnachweise vorliegen.
+- `scripts/portfolio-live-readback.mjs`: Finite Zero-Cost-Quellprüfung ohne Netzwerk in der regulären PR-CI, explizite Netzprüfung mit `node scripts/portfolio-live-readback.mjs --live` oder für eine App `--live --only=nadias-bloom`. Zulässig nur öffentliche HTTPS-GET auf `pigapocket.com`, Redirect-Host-Prüfung, maximal 3 gleichzeitige Abrufe, 9s Request-Timeout, 2 MB Textlimit, HTML-MIME und titelbasierter falscher-Homepage-Schutz. Erzeugt `qa-artifacts/portfolio-live-readback.json` als technisches Proof-of-Readback-Artefakt; es darf bei Fehler nicht als PASS vermarktet werden.
+- Technische `PASS`-Meldungen des Readbacks gelten **ausschließlich** für HTTP + HTML + passenden Titel. Es wird weder die Funktionsfähigkeit von PIGA Voice, Happy, Anmeldung, Stripe, App-State, Entitlements, klinischen Abläufen, Offline-Sync noch ein vollständiges E2E attestiert.
+- Privates Cloudflare-Deployment muss die gemeinsamen Styles und kanonischen Dateien *separat* liefern. Public GitHub Pages ≠ Canonical-Domain. Kein automatischer öffentlicher Dateneinblick in Praxis- oder Eigentümerdaten.
