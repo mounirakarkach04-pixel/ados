@@ -1,0 +1,17 @@
+/* Shared PIGA ORTHO design invariants. Every module retains its semantic state palette. */
+:root{
+ --ortho-navy:#102e3d;--ortho-ocean:#174757;--ortho-teal:#20afa4;
+ --ortho-teal-soft:#c9f1ea;--ortho-gold:#c3a06b;
+ --ortho-radius-sm:10px;--ortho-radius-md:16px;--ortho-radius-lg:24px;
+ --ortho-shadow:0 14px 36px rgb(9 31 43 / .13);
+ font-feature-settings:"kern";text-rendering:optimizeLegibility;
+}
+:focus-visible{outline:3px solid #5bd9ce!important;outline-offset:3px}
+button,a,input,textarea,select{accent-color:#21aaa2}
+button{min-height:42px}
+input,select,textarea{font-size:max(16px,1em)}
+.piga-links{overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#417182 transparent}
+.piga-rail .piga-rail-foot{flex:none}
+.piga-rail .piga-link{min-height:42px}
+@media(max-width:740px){button,a.piga-link{touch-action:manipulation}.piga-bottom{padding-bottom:max(0px,env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}

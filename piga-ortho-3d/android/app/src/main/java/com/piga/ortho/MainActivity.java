@@ -5,6 +5,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
+import android.net.wifi.ScanResult;
+import android.location.LocationManager;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
@@ -44,6 +49,8 @@ public final class MainActivity extends Activity {
   private static final int CREATE_JSON=501;
   private static final int PICK_STL=502;
   private static final int BT_PERMISSION=503;
+  private static final int WIFI_LOCATION_PERMISSION=504;
+  private BroadcastReceiver wifiScanReceiver;
   private WebView web;
   private final ExecutorService jobs=Executors.newSingleThreadExecutor();
   private final Handler ui=new Handler(Looper.getMainLooper());
@@ -170,7 +177,18 @@ public final class MainActivity extends Activity {
         }catch(Exception ignored){}
       });
     }
-    /** Compose only; never send automatically or attach patient/health data. */
+
+    /** User-triggered Wi-Fi discovery. Lists visible SSIDs only; no auto-connect. */
+    @JavascriptInterface public void scanWifiNetworks(){
+      ui.post(()->{
+        if(Build.VERSION.SDK_INT>=23 &&
+          checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+          requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},WIFI_LOCATION_PERMISSION);return;
+        }
+        startWifiDiscovery();
+      });
+    }
+        /** Compose only; never send automatically or attach patient/health data. */
     @JavascriptInterface public void composeOwnerEmail(String subject,String body){
       if(subject==null||body==null||subject.length()>180||body.length()>2500
           ||!subject.startsWith("PIGA ORTHO 3D")||!body.contains("keine Patienten- oder Gesundheitsdaten"))return;
@@ -202,6 +220,69 @@ public final class MainActivity extends Activity {
       });
     }
   }
+  private void startWifiDiscovery(){
+    WifiManager wifi=(WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+    if(wifi==null){wifiScanDeliver("unavailable","WLAN-Hardware nicht verfügbar",null);return;}
+    if(!wifi.isWifiEnabled()){wifiScanDeliver("disabled","Bitte WLAN in den Systemeinstellungen einschalten",null);return;}
+    LocationManager location=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    if(location==null||!location.isLocationEnabled()){
+      wifiScanDeliver("location_off","Für Android-WLAN-Suche ist der Standortdienst erforderlich",null);return;
+    }
+    if(wifiScanReceiver!=null){
+      wifiScanDeliver("pending","Eine Netzwerksuche läuft bereits",null);return;
+    }
+    wifiScanReceiver=new BroadcastReceiver(){
+      @Override public void onReceive(Context context,Intent intent){
+        finishWifiReceiver();wifiScanRead(wifi,intent!=null&&intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED,false));
+      }
+    };
+    try{
+      IntentFilter filter=new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+      if(Build.VERSION.SDK_INT>=33)registerReceiver(wifiScanReceiver,filter,Context.RECEIVER_NOT_EXPORTED);
+      else registerReceiver(wifiScanReceiver,filter);
+      if(!wifi.startScan()){
+        finishWifiReceiver();wifiScanRead(wifi,false);
+      }else{
+        wifiScanDeliver("pending","Netzwerksuche gestartet",null);
+        ui.postDelayed(()->{
+          if(wifiScanReceiver!=null){finishWifiReceiver();wifiScanRead(wifi,false);}
+        },14000);
+      }
+    }catch(SecurityException e){finishWifiReceiver();wifiScanDeliver("permission_denied","Android-WLAN-Berechtigung fehlt",null);}
+     catch(Exception e){finishWifiReceiver();wifiScanDeliver("error","WLAN-Suchfehler",null);}
+  }
+  private void finishWifiReceiver(){
+    if(wifiScanReceiver==null)return;
+    try{unregisterReceiver(wifiScanReceiver);}catch(Exception ignored){}
+    wifiScanReceiver=null;
+  }
+  private void wifiScanRead(WifiManager wifi,boolean fresh){
+    try{
+      org.json.JSONArray result=new org.json.JSONArray();
+      java.util.Set<String> seen=new java.util.HashSet<>();
+      java.util.List<ScanResult> networks=wifi.getScanResults();
+      if(networks!=null){
+        for(ScanResult network:networks){
+          String ssid=network.SSID;
+          if(ssid==null||ssid.trim().isEmpty()||!seen.add(ssid)||result.length()>=30)continue;
+          result.put(new JSONObject().put("ssid",ssid).put("level",WifiManager.calculateSignalLevel(network.level,5)));
+        }
+      }
+      wifiScanDeliver(fresh?"complete":"cached",fresh?"Frische WLAN-Ergebnisse":"Android liefert zwischengespeicherte Ergebnisse (Scan-Drosselung möglich)",result);
+    }catch(SecurityException e){wifiScanDeliver("permission_denied","Zugriff auf WLAN-Suchergebnisse nicht erlaubt",null);}
+    catch(org.json.JSONException e){wifiScanDeliver("error","Android-WLAN-Ergebnis kann nicht serialisiert werden",null);}
+  }
+  private void wifiScanDeliver(String state,String message,org.json.JSONArray found){
+    ui.post(()->{
+      try{
+        JSONObject result=new JSONObject().put("state",state).put("message",message);
+        if(found!=null)result.put("networks",found);
+        String js="window.pigaWifiScanReceive&&window.pigaWifiScanReceive("+JSONObject.quote(result.toString())+");";
+        if(web!=null)web.evaluateJavascript(js,null);
+      }catch(Exception ignored){}
+    });
+  }
+
   private void execute(Session snap,String id,String method,String path,String body){
     HttpURLConnection c=null;
     try{
@@ -236,10 +317,11 @@ public final class MainActivity extends Activity {
   }
   @Override public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
     super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    if(requestCode==WIFI_LOCATION_PERMISSION){if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED)startWifiDiscovery();else wifiScanDeliver("permission_denied","Android-Standortberechtigung abgelehnt",null);}
     if(requestCode==BT_PERMISSION&&web!=null){
       web.evaluateJavascript("window.pigaDeviceRefresh&&window.pigaDeviceRefresh()",null);
     }
   }
   @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
-  @Override protected void onDestroy(){if(pendingStlSelection!=null){pendingStlSelection.onReceiveValue(null);pendingStlSelection=null;}session=null;jobs.shutdownNow();if(web!=null)web.destroy();super.onDestroy();}
+  @Override protected void onDestroy(){if(pendingStlSelection!=null){pendingStlSelection.onReceiveValue(null);pendingStlSelection=null;}finishWifiReceiver();session=null;jobs.shutdownNow();if(web!=null)web.destroy();super.onDestroy();}
 }

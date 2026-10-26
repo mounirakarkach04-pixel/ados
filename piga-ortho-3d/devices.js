@@ -23,6 +23,29 @@
  };
  window.pigaDeviceRefresh=detect;
  $('probe').onclick=detect;
+ window.pigaWifiScanReceive=raw=>{
+   let data;try{data=JSON.parse(raw)}catch{data={state:'error',message:'Ungültige Android-Rückmeldung'}};
+   const output=$('wifiNetworks');output.replaceChildren();
+   const label=document.createElement('p');label.textContent=String(data.message||data.state);output.append(label);
+   if(Array.isArray(data.networks)){
+     const list=document.createElement('ul');
+     for(const item of data.networks){
+       const li=document.createElement('li');
+       li.textContent=String(item.ssid||'Unbekannt').slice(0,80)+' · Signalstufe '+Math.max(0,Math.min(4,Number(item.level)||0))+'/4';
+       list.append(li);
+     }
+     if(list.childElementCount)output.append(list);
+     else output.append(document.createTextNode(' Keine sichtbaren Netze gemeldet.'));
+   }
+ };
+ $('wifiScan').onclick=()=>{
+   if(native&&typeof native.scanWifiNetworks==='function'){
+     $('wifiNetworks').textContent='Android-WLAN-Suche gestartet. Standortberechtigung und eingeschaltetes WLAN sind erforderlich.';
+     try{native.scanWifiNetworks()}catch{window.pigaWifiScanReceive(JSON.stringify({state:'error',message:'Android-Scanner hat die Anfrage abgelehnt'}))}
+   }else{
+     $('wifiNetworks').textContent='Der aktuelle Browser bzw. diese APK-Version unterstützt keine native WLAN-Suche. Installieren Sie die aktualisierte Android-Version oder öffnen Sie die WLAN-Einstellungen.';
+   }
+ };
  $('wifiSettings').onclick=()=>{if(native?.openWirelessSettings)native.openWirelessSettings('wifi');else log('WLAN-Einstellungen sind nur in der Android-App direkt erreichbar.','error')};
  $('btSettings').onclick=()=>{if(native?.openWirelessSettings)native.openWirelessSettings('bluetooth');else log('Bluetooth-Kopplung über die Systemeinstellungen Ihres Gerätes öffnen.','error')};
  $('btGrant').onclick=()=>{if(native?.requestBluetoothPermission)native.requestBluetoothPermission();else log('Bluetooth-Geräteberechtigung ist nur im Android-Build verfügbar.','error')};
