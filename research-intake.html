@@ -12,7 +12,7 @@ form{display:grid;gap:16px}label{display:grid;gap:6px;font-size:12px;font-weight
 @media(max-width:600px){.sidebar,.two{grid-template-columns:1fr}.main{padding-top:12px}.hero{padding:30px 0}.hero h1{font-size:37px}.paper{padding:18px;border-radius:17px}nav{gap:10px}.drop{padding:21px 10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style><link rel="stylesheet" href="quality/portfolio-polish.css">
-</head><body>
+<link rel="stylesheet" href="quality/piga-assistant-widget.css"></head><body>
 <a class="piga-skip-link" href="#start">Zum Inhalt springen</a><script>
 (() => {
 'use strict';
@@ -179,4 +179,4 @@ $('export').onclick=()=>{if(last)download('PIGA_'+C.app+'_EVIDENCE_PASSPORT.json
 $('exportCsv').onclick=()=>{if(last)download('PIGA_'+C.app+'_GAPS.csv',['id;item;question;weight',...last.gaps.map(g=>[g.id||'',g.label||'',g.question||'',g.weight||''].map(csv).join(';'))].join('\r\n'),'text/csv;charset=utf-8')};
 window.PIGA_SHARED_INTAKE_QA={app:C.app,version:'v1.0',gate2:'BLOCK',sample:()=>$('sample').click(),run:()=>document.getElementById('auditForm').requestSubmit(),report:()=>last};
 })();
-</script></body></html>
+</script><script type="module" src="quality/piga-assistant-widget.mjs" data-piga-app="ados-research" data-piga-lang="de"></script></body></html>
