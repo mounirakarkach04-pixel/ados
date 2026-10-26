@@ -59,7 +59,8 @@
     {
       "id": "ortho-preview",
       "profile": "ortho-practice",
-      "clientSurface": "generic_opt_in_nonclinical"
+      "clientSurface": "PENDING_SOURCE_ADAPTER_REVIEW",
+      "reason": "HTML adapter not yet committed; existing local app remains available."
     },
     {
       "id": "ortho-workspace",
@@ -89,7 +90,15 @@
     {
       "id": "la-preuve-lab",
       "profile": "research",
-      "clientSurface": "generic_opt_in_nonclinical"
+      "clientSurface": "PENDING_SOURCE_ADAPTER_REVIEW",
+      "reason": "HTML adapter not yet committed; existing local app remains available."
     }
-  ]
+  ],
+  "releaseAudit": {
+    "sourceOnly": true,
+    "serverStatus": "NOT_DEPLOYED_OR_NOT_VERIFIED",
+    "fullAppRuntime": "UNKNOWN",
+    "reconciliation": "current branch includes 7 new opt-in widgets, 2 established specialized UIs and 2 pending HTML adapters",
+    "gate2": "BLOCK"
+  }
 }
