@@ -61,7 +61,7 @@
    worker.postMessage({type:'RUN',limit:5});
   }catch(err){running=false;$('execute').disabled=false;say('workerStatus',err.message,true)}
  };
- const buf64=arr=>btoa(String.fromCharCode(...arr));
+ const buf64=arr=>{let out='';for(let i=0;i<arr.length;i+=8192)out+=String.fromCharCode(...arr.subarray(i,i+8192));return btoa(out)};
  const from64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
  const derive=async(pass,salt)=>{
   const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
