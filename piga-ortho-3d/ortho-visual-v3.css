@@ -145,3 +145,31 @@ body.ortho-visual-v3 .module-card:hover{border-color:#7fcddf!important;box-shado
  color:#fff!important;padding:11px 17px;border-radius:11px;font-size:12px;font-weight:830;text-decoration:none;margin-top:6px}
 .ops-promo-action:hover{background:linear-gradient(100deg,#0577a1,#078d9a)}
 @media(max-width:760px){.ops-promo{grid-template-columns:1fr;padding:17px 16px;gap:11px}.ops-promo img{height:135px}}
+
+/* Ergonomic focus mode: less chrome, larger tools, never a dead-end */
+.ortho-focus-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:34px;
+ padding:7px 12px!important;border-radius:10px!important;border:1px solid #7ccdde!important;
+ background:#e8faff!important;color:#087894!important;font-size:11px!important;font-weight:800;cursor:pointer}
+.ortho-focus-toggle:hover{background:#d4f3fc!important}
+.ortho-focus-exit{position:fixed;top:13px;right:15px;z-index:210;background:#0b8da5!important;color:white!important;
+ border:1px solid #007d9b!important;border-radius:12px!important;box-shadow:0 9px 25px #0755762f;
+ font-size:12px!important;font-weight:850!important;padding:12px 16px!important;cursor:pointer}
+.ortho-focus-exit[hidden]{display:none!important}
+body.ortho-focus-mode .ortho-v3-masthead{display:none!important}
+body.ortho-focus-mode .ortho-reference-brand{display:none!important}
+body.ortho-focus-mode .piga-rail{display:none!important}
+body.ortho-focus-mode .piga-bottom{display:none!important}
+body.ortho-focus-mode.piga-has-nav{padding-left:0!important}
+body.ortho-focus-mode.piga-has-nav>main{width:100%!important;max-width:none!important;
+ padding:clamp(14px,1.5vw,28px)!important;margin:0!important}
+body.ortho-focus-mode .shell>.hero{display:none!important}
+body.ortho-focus-mode .shell>.device-entry{display:none!important}
+body.ortho-focus-mode .shell>.shell-top{padding-right:188px}
+body.ortho-focus-mode .shell .module-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body.ortho-focus-mode #studio #mesh{min-height:min(70vh,850px)!important;width:100%!important}
+@media(max-width:900px){
+ body.ortho-focus-mode .shell .module-grid{grid-template-columns:1fr!important}
+ .ortho-focus-exit{top:auto;bottom:calc(16px + env(safe-area-inset-bottom));right:12px}
+ body.ortho-focus-mode.piga-has-nav>main{padding-bottom:84px!important}
+}
+@media print{.ortho-focus-toggle,.ortho-focus-exit{display:none!important}}
