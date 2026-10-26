@@ -32,7 +32,15 @@
    (j.resultSha256?' · SHA-256 '+j.resultSha256.slice(0,22)+'…':'')+
    (j.error?' · '+j.error:'')+(j.result?' · '+JSON.stringify(j.result).slice(0,260):''));
   if(!jobs.length)list(jobsRoot,'Noch keine Worker-Aufträge','Eine technische Prüfung auswählen und speichern.');
+  freshness();
  }
+ const freshness=()=>{const m=S.meta();
+  const exp=m.lastExport?new Date(m.lastExport).toLocaleString('de-DE'):'Noch keine verschlüsselte Sicherung erstellt';
+  const imp=m.lastImport?new Date(m.lastImport).toLocaleString('de-DE'):'Noch kein Import durchgeführt';
+  const changed=m.lastChange?new Date(m.lastChange).toLocaleString('de-DE'):'Keine Änderung protokolliert';
+  $('transferFreshness').textContent='Letzte Änderung: '+changed+' · Export angeboten/erstellt: '+exp+' · letzter Import: '+imp;
+ };
+ freshness();
  const queue=()=>S.enqueueJob($('workKind').value).then(()=>{
   say('workerStatus','Auftrag in der Gerätedatenbank gespeichert.');return refresh();
  });
@@ -72,10 +80,18 @@
   const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(u),1300);
  };
+ let shareCandidate=null;
+ $('share').onclick=async()=>{
+  if(!shareCandidate||!navigator.share||!(navigator.canShare?.({files:[shareCandidate]})))return say('transferStatus','Das Teilen von Dateien wird hier nicht unterstützt. Nutze die heruntergeladene verschlüsselte Sicherung.',true);
+  try{await navigator.share({files:[shareCandidate],title:'PIGA ORTHO 3D – verschlüsselte Datensicherung'});
+   say('transferStatus','System-Teilen wurde geöffnet. Datei und Kennwort getrennt und sicher übermitteln.');
+  }catch(e){if(e.name!=='AbortError')say('transferStatus','Teilen nicht abgeschlossen: '+e.message,true)}
+ };
  $('export').onclick=async()=>{
   const pass=$('secret').value;
   if(pass.length<12)return say('transferStatus','Mindestens 12 Zeichen für das Sicherungspasswort eingeben.',true);
   try{
+   await S.flush();
    const suite=await data('suite'),direct=await data('direct');
    const payload={format:'piga-ortho-device-payload-v1',exportedAt:new Date().toISOString(),suite,direct};
    const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
@@ -83,8 +99,13 @@
    const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(payload)));
    const envelope={format:'piga-ortho-encrypted-transfer-v1',kdf:'PBKDF2-SHA256',iterations:250000,cipher:'AES-256-GCM',
     salt:buf64(salt),iv:buf64(iv),ciphertext:buf64(new Uint8Array(ct))};
-   download('PIGA-ORTHO-DEVICE-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(envelope));
-   say('transferStatus','Verschlüsselte Sicherung erstellt. Kennwort getrennt von der Datei aufbewahren.');
+   const name='PIGA-ORTHO-DEVICE-'+new Date().toISOString().slice(0,10)+'.json';
+   const text=JSON.stringify(envelope);
+   download(name,text);S.markBackup();
+   shareCandidate=typeof File!=='undefined'?new File([text],name,{type:'application/json'}):null;
+   $('share').hidden=!(shareCandidate&&navigator.share&&navigator.canShare?.({files:[shareCandidate]}));
+   say('transferStatus','Verschlüsselter Export gestartet. Speicher die Datei sicher; auf geeigneten Geräten ist direktes Teilen möglich.');
+   freshness();
   }catch(e){say('transferStatus','Export fehlgeschlagen: '+String(e.message),true)}
  };
  const good=(name,thing)=>{
@@ -109,6 +130,7 @@
    if(!confirm('Wirklich die vorhandenen lokalen Testdaten dieses Geräts durch die Sicherung ersetzen? Vorher eigene Sicherung erstellen.'))return;
    if(o.suite)await S.replace('suite',o.suite);
    if(o.direct)await S.replace('direct',o.direct);
+   S.markImport();
    $('secret').value='';say('transferStatus','Sicherung erfolgreich eingelesen. Andere geöffnete Ortho-Tabs neu laden.');
    await refresh();
   }catch(e){say('transferStatus','Import fehlgeschlagen: Kennwort oder Datei prüfen. '+String(e.message),true)}
