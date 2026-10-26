@@ -1,0 +1,74 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eaf9fd">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D technische DICOM-/CBCT-Bildbetrachtung, Segmentierungsvorschau, STL-Abstandsprobe und geometrische Staging-Simulation.">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css"><link rel="stylesheet" href="./imaging.css">
+<title>Imaging Research Studio | PIGA ORTHO 3D</title></head><body><main class="imaging-app" id="content">
+<header class="imaging-header"><div><span class="eyebrow">PIGA ORTHO 3D / IMAGING RESEARCH</span>
+<h1>DICOM. CBCT. 3D. <em>Nachvollziehbar.</em></h1>
+<p>Ein technisches Labor für lokale Bildbetrachtung, Grauwertmasken, geometrische Abstandsproben und kontrollierte Zwischenstufen — unter PIGA-Freigaben und ohne Cloud.</p>
+<div class="imaging-header-actions"><a href="./studio.html#studio">4K-STL-Studio</a><a href="./handoff.html">Praxis → Labor</a><a href="./device-hub.html">Geräte-Worker</a><a href="./diagnostics.html">Systemtest</a></div></div>
+<img src="./visuals/ortho-hero.svg" alt="Illustratives, transparentes 3D-Alignermodell" width="1100" height="720"></header>
+<section class="imaging-notice" role="note"><b>Forschungsmodus, keine Medizinproduktefreigabe.</b> Nur synthetische/anonymisierte Testdaten verwenden. Der DICOM-Parser akzeptiert ausschließlich unkomprimierte Little-Endian-Monochromdaten. Segmentierung ist eine Grauwertschwelle; Clearance ist eine räumliche Punktprobe ohne Registrierung; Staging interpoliert nur Modellkoordinaten. Keine Diagnostik, Wurzelbewegung oder autonome Behandlungsplanung.</section>
+<section class="imaging-metrics" aria-label="Imaging Zustand">
+<div><small>Bilder / Frames</small><b id="imageCount">0</b></div>
+<div><small>Auflösung</small><b id="imageSize">—</b></div>
+<div><small>Datenverarbeitung</small><b id="imageStatus">LOCAL</b></div>
+<div><small>Gate 2</small><b>BLOCK</b></div></section>
+<div class="imaging-grid">
+<section class="imaging-panel imaging-viewer"><header class="imaging-panel-title"><span class="number">01</span><div><h2>DICOM-/CBCT-Bildbetrachtung</h2><p>Unkomprimierte Part-10-Dateien lokal laden; Serien als axialen Slice-Stack ansehen.</p></div></header>
+<div class="imaging-actions"><label class="imaging-button primary" for="dicomFiles">DICOM-Dateien wählen<input id="dicomFiles" type="file" accept=".dcm,.dicom,application/dicom" multiple hidden></label>
+<button id="syntheticDicom" type="button">Synthetisches Bild</button><button id="clearImages" type="button">Bilder verwerfen</button></div>
+<canvas id="dicomCanvas" width="768" height="768" aria-label="Lokale Graustufen-Bildansicht mit optionalem orangen Schwellenwertoverlay"></canvas>
+<div class="imaging-slider-line"><label for="sliceIndex">Schnittbild</label><input id="sliceIndex" type="range" min="0" max="0" value="0"><output id="sliceReadout">0 / 0</output></div>
+<div class="imaging-dual">
+<div><label for="windowCenter">Fensterzentrum (Rohwerte/HU falls kalibriert)</label><input id="windowCenter" type="number" value="300" min="-20000" max="20000" step="10"></div>
+<div><label for="windowWidth">Fensterbreite</label><input id="windowWidth" type="number" value="1800" min="1" max="50000" step="10"></div></div>
+<div id="dicomMessage" class="imaging-message" role="status">Keine Bilddaten geladen. Eine synthetische Vorschau ist ohne Anmeldung verfügbar.</div>
+</section>
+<section class="imaging-panel"><header class="imaging-panel-title"><span class="number">02</span><div><h2>Segmentierungsvorschau</h2><p>Nur technische Grauwertschwellwertmaske – keine automatische Zahntrennung.</p></div></header>
+<label class="imaging-checkbox"><input id="maskEnabled" type="checkbox"> Grauwertmaske als Overlay anzeigen</label>
+<label for="threshold">Grauwertschwelle</label><input id="threshold" type="range" min="-1500" max="3500" step="25" value="750">
+<output id="thresholdValue">≥ 750 (nur Forschungsmaske)</output>
+<div class="imaging-card"><b>Ausgewählte Pixel</b><strong id="maskPercent">—</strong><small>Pixelanteil oberhalb Schwelle, keine Gewebeklassifikation</small></div>
+<div class="imaging-card"><b>Segmentierung</b><strong>TECHNICAL ONLY</strong><small>Komplexe Knochen-/Zahnsegmentierung, anatomische Labels und Pathologien sind nicht validiert.</small></div>
+<div class="imaging-actions"><button type="button" id="exportSlice">Aktuelle Ansicht als PNG</button><button type="button" id="queueSlice">Analyse zur PIGA-Prüfung vormerken</button></div>
+</section>
+<section class="imaging-panel"><header class="imaging-panel-title"><span class="number">03</span><div><h2>Okklusions-Abstandsprobe</h2><p>Zwei STL-Meshes geometrisch vergleichen – nur nach externer Modellregistrierung interpretierbar.</p></div></header>
+<label for="upperStl">Modell A (STL)</label><input id="upperStl" type="file" accept=".stl,model/stl">
+<label for="lowerStl">Modell B (STL)</label><input id="lowerStl" type="file" accept=".stl,model/stl">
+<div class="imaging-actions"><button type="button" id="analyzeClearance" class="primary">Abstand technisch berechnen</button></div>
+<div id="clearanceMessage" class="imaging-message" role="status">Zwei synthetische oder vollständig anonymisierte Modelle wählen.</div>
+<p class="imaging-footnote">Das Ergebnis ist der kleinste Abstand zwischen abgetasteten Eckpunkten in unbekannten STL-Koordinateneinheiten. Weder Kontaktflächendruck noch Bisslage oder Okklusionsdiagnostik werden berechnet.</p></section>
+<section class="imaging-panel"><header class="imaging-panel-title"><span class="number">04</span><div><h2>Geometrische Staging-Simulation</h2><p>Interpolierte Modellmittelpunkte für rein technische Bewegungsvisualisierung.</p></div></header>
+<label for="stageCount">Zwischenstufen (2–30)</label><input id="stageCount" type="number" min="2" max="30" value="8">
+<div class="imaging-actions"><button type="button" id="analyzeStages" class="primary">Geometrische Zwischenstufen erzeugen</button></div>
+<div id="stageMessage" class="imaging-message">Noch keine technischen Zwischenstufen berechnet.</div>
+<div class="imaging-slider-line"><label for="stageSlider">Stufe</label><input id="stageSlider" type="range" min="0" max="8" value="0"><output id="stageReadout">0 / 8</output></div>
+<div class="imaging-stage"><div id="stageMarker"></div><div class="stage-axis"></div></div>
+<p class="imaging-footnote">Keine Zahnidentitäten, Zahnachsen, Knochenwiderstände, Kräfte, Wurzelgrenzen oder Aligner-Fertigung in dieser Simulation.</p></section>
+<section class="imaging-panel imaging-governance"><header class="imaging-panel-title"><span class="number">05</span><div><h2>PIGA Factory Control</h2><p>Begrenzter, ereignisgesteuerter Forschungszyklus mit Freigeben / Ablehnen / Pausieren.</p></div></header>
+<div class="imaging-gates"><div><small>Pre-inference Gate 1</small><b>DELAY · klinisch</b></div><div><small>Action Gate 2</small><b>BLOCK · Geräte</b></div><div><small>Worker-Umfang</small><b>Nur lokale Forschungsanalyse</b></div></div>
+<div class="imaging-actions"><button id="runFinite" class="primary" type="button">Finite Arbeitsfolge starten</button><button id="pausePipeline" type="button">Pausieren</button><button id="resetPipeline" type="button">Zyklus zurücksetzen</button></div>
+<div id="pipelineState" class="imaging-message" role="status">Bereit · maximal ein abgeschlossener technischer Forschungszyklus pro Start.</div>
+<div id="pipelineHistory" class="imaging-history" aria-live="polite"></div>
+<p class="imaging-footnote">Das als „infinite“ bezeichnete Konzept darf neue Arbeit nur durch kontrollierte Ereignisse initiieren. Ein Browser ist kein verlässlicher 24/7-Dienst. Für dauerhafte Ausführung ist der bestehende PIGA self-hosted Runner erforderlich.</p>
+</section>
+<section class="imaging-panel"><header class="imaging-panel-title"><span class="number">06</span><div><h2>Glassbox & 4K-Bildausgabe</h2><p>Nachvollziehbare technische Ergebnisse, lokale Exporte und große Arbeitsfläche.</p></div></header>
+<div class="imaging-card"><b>Bildausgabe</b><strong>HiDPI / 4K-Cap</strong><small>Auflösung entsprechend Quelldaten und Bildschirm. 4K vergrößert keine fehlenden anatomischen Details.</small></div>
+<div class="imaging-card"><b>Datenherkunft</b><strong>LOCAL-ONLY</strong><small>Keine Bilddateien im Web-Speicher, keine PACS-/Cloud-Uploads, keine Patientennamen im Audit.</small></div>
+<div class="imaging-actions"><button id="exportEvidence" type="button" class="primary">Glassbox-Befundexport (technisch)</button><a href="./diagnostics.html">Geräteprüfung öffnen</a></div>
+<div id="evidenceMessage" class="imaging-message" role="status">Noch keine technische Analyse exportiert.</div>
+</section>
+</div>
+<dialog id="pigaDecision" class="imaging-dialog" aria-labelledby="pigaDecisionTitle"><form method="dialog"><span class="eyebrow">PIGA / HUMAN APPROVAL</span><h2 id="pigaDecisionTitle">Forschungsanalyse prüfen</h2>
+<p id="decisionText">Ein technischer Arbeitsschritt benötigt deine Entscheidung.</p><div class="imaging-actions">
+<button value="approve" id="approveStep" class="primary">Technischen Schritt freigeben</button>
+<button value="reject" id="rejectStep">Ablehnen</button>
+<button value="pause" id="pauseStep">Pausieren</button></div></form>
+<p class="imaging-footnote">Diese Freigabe betrifft nur lokale technische Forschungsberechnungen und gewährt keine ärztliche oder physische Geräteautorität.</p></dialog>
+<footer class="imaging-footer">TECHNISCHE EVALUATION · 4K-RENDER CAP · NO PATIENT DATA · PIGA GATE 2 = BLOCK</footer>
+</main>
+<script src="./imaging-core.js" defer></script><script src="./imaging.js" defer></script>
+<script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
