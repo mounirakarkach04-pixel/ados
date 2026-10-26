@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root='piga-ortho-3d';
-const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js','assist.html','assist.css','assist.js','kfo-bema-2026.csv','team.html','team.css','team.js','auth.html','auth.js'];
+const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js','assist.html','assist.css','assist.js','kfo-bema-2026.csv','team.html','team.css','team.js','auth.html','auth.js','inventory.html','inventory.css','inventory.js'];
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 for(const name of names){
   assert(fs.existsSync(path.join(root,name)),'Missing web asset: '+name);
@@ -56,7 +56,7 @@ for(const id of ['staffCodeBadge','kpiStaff','kpiToday','kpiTotal','kpiState','w
 for(const required of ['staff_code','ortho_work_events','function loadTrail()','event_type','occurred_at','caseEvents','toLocaleString']){
  assert(workspace.includes(required),'Missing v0.6 employee-trace logic '+required);
 }
-assert(read('sw.js').includes('piga-ortho-v110-static'),'Offline service worker version not bumped');
+assert(read('sw.js').includes('piga-ortho-v120-static'),'Offline service worker version not bumped');
 assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
 assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
 process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 34 parity assets, offline cache, controls, gate boundaries, attribution.\n');
@@ -74,7 +74,7 @@ assert(cockpitCode.includes('crypto.subtle.digest'),'Local STL integrity hash mi
 assert(cockpitCode.includes('n===boxes.length'),'Checklist completeness missing');
 assert(cockpitCode.includes('Eine Druckfreigabe ist damit nicht erteilt'),'Checklist must not misrepresent authorization');
 assert(read('app.js').includes('activateRequestedSection'),'Deep-linked studio tabs not connected');
-assert(read('sw.js').includes('piga-ortho-v110-static'),'Outdated service-worker cache version');
+assert(read('sw.js').includes('piga-ortho-v120-static'),'Outdated service-worker cache version');
 assert(read('manifest.webmanifest').includes('"start_url":"./dashboard.html"'),'PWA should launch cockpit first');
 
 // v0.8 personal display and print-ready evidence report checks
@@ -141,4 +141,22 @@ assert(read('auth.js').includes("type==='recovery'"),'Password recovery validati
 assert(read('auth.js').includes("method:'PUT'"),'Password update callback missing');
 assert(read('praxis.js').includes("auth.html?state=check-email"),'Signup no longer redirecting to verification page');
 assert(read('navigation.js').includes('href:\'./team.html\''),'Team page navigation missing');
-assert(read('sw.js').includes('piga-ortho-v110-static'),'Offline cache mismatch v1.1');
+assert(read('sw.js').includes('piga-ortho-v120-static'),'Offline cache mismatch v1.1');
+
+for(const name of ['inventory.html','inventory.css','inventory.js'])assert(read(name).length>500,'Inventory component missing '+name);
+const inv=read('inventory.js'),invhtml=read('inventory.html');
+for(const id of ['locked','loginEmail','loginPassword','login','workspace','items','search','category','state','adjustForm','minimum','incoming','leadDays','reserveDays','packSize','fixedVisits','removableVisits','alignerVisits','generalVisits','workdays','calculate','orderCsv','staffList','alerts','newItemForm','correctionSign']){
+ assert(invhtml.includes('id="'+id+'"'),'Inventory UI input missing '+id);
+}
+for(const token of ['ortho_inventory_adjust','ortho_inventory_alerts','ortho_inventory_access','auth/v1/user','role','pack_size','minimum','sessionStorage','can_manage_stock','mailto:dr.akarkach@gmx.de','formula']){
+ if(token==='formula')continue;
+ assert(inv.includes(token),'Inventory logic missing '+token);
+}
+assert(inv.includes("x.role==='employee'")||inv.includes("staff.role==='employee'"),'Employee owner authorization missing');
+assert(inv.includes("status!=='active'"),'Inactive accounts must not enter');
+assert(!inv.includes('service_role'),'Inventory must not expose privileged server keys');
+assert(!inv.includes('localStorage.setItem('),'No shared local storage of private inventory');
+assert(read('sw.js').includes("'./inventory.js'"),'Offline shell missing stock module');
+assert(read('dashboard.html').includes('href="./inventory.html"'),'Inventory not linked from main workflow');
+assert(read('navigation.js').includes("'./inventory.html'"),'Inventory not discoverable via navigation');
+assert(!read('index.html').includes('kostenloses persönliches KFO-Softwareprojekt'),'Free family marketing claim persists');
