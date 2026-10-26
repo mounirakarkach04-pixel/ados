@@ -1,0 +1,71 @@
+/* PIGA ORTHO 3D · mobile non-clipping release
+ * Genuine mobile size-classes. Preserve document scroll and form legibility.
+ * Fix oversized panoramic dental art and controls even at 200% font scaling.
+ */
+html{width:100%;max-width:100%;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;max-width:100%;min-width:0!important;overflow-x:clip}
+body>main,body.piga-has-nav>main,body.ortho-visual-v3>main,
+.shell,.piga-control,.setup-app,.manager-app,.voice-app{
+ width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box
+}
+body>main *{min-width:0}
+img,svg,canvas,video{max-width:100%;height:auto}
+img{object-position:center}
+.hero,.hero-graphic,.ortho-v3-masthead,.pc-hero,.setup-hero,
+.handoff-promo,.ops-promo,.voice-hero,.manager-hero{
+ width:100%;max-width:100%;min-width:0;box-sizing:border-box
+}
+.hero-graphic img.ortho-hero-art,.ortho-v3-mast-art img,
+.setup-hero img,.pc-hero img,.handoff-promo img,.teeth img.hero-aligner{
+ max-width:100%;height:auto;object-fit:contain;aspect-ratio:1672/940;
+ border-radius:12px;filter:none;transform:none
+}
+.ortho-v3-mast-art{align-self:center;min-width:0;overflow:hidden}
+.ortho-v3-mast-art img{object-fit:cover}
+.hero-actions,.setup-hero-actions,.pc-hero-links,.ortho-v3-mast-actions{
+ flex-wrap:wrap;max-width:100%
+}
+.hero-actions a,.setup-hero-actions a,.pc-hero-links a,.ortho-v3-mast-actions a{
+ max-width:100%;overflow-wrap:anywhere
+}
+.ortho-focus-toggle{max-width:100%;white-space:normal!important}
+@media(max-width:800px){
+ body.ortho-visual-v3>main,.shell,.setup-app,.manager-app,.voice-app,.piga-control{
+  padding-left:12px!important;padding-right:12px!important
+ }
+ .hero,.pc-hero,.setup-hero,.handoff-promo,.ops-promo,.manager-hero,.voice-hero{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:14px!important;max-width:100%;padding:17px!important
+ }
+ .hero h1,.pc-hero h1,.setup-hero h1{font-size:clamp(24px,7vw,35px)!important;
+  line-height:1.12!important;overflow-wrap:anywhere}
+ .hero p,.setup-hero p,.pc-hero p{font-size:13px!important;line-height:1.55!important}
+ .hero-graphic{min-height:0!important;margin:0!important;padding:12px!important;overflow:hidden!important}
+ body.ortho-visual-v3 .hero-graphic .ortho-hero-art{
+  height:auto!important;min-height:0!important;max-height:min(52vw,360px)!important;
+  width:100%!important;object-fit:contain!important
+ }
+ .ortho-v3-masthead{grid-template-columns:minmax(0,1fr)!important;gap:10px!important;
+  padding:12px!important;min-height:0!important}
+ .ortho-v3-mast-art{display:none!important}
+ .ortho-v3-mast-title{font-size:clamp(22px,6vw,30px)!important;line-height:1.16}
+ .ortho-v3-mast-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .ortho-v3-mast-actions a,.ortho-v3-mast-actions button{
+  width:100%;min-width:0!important;max-width:100%;font-size:11px!important;
+  padding:11px 9px!important;line-height:1.35;white-space:normal!important
+ }
+ .setup-hero-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .setup-hero img{max-height:190px!important}
+ .metric-row,.module-grid,.journey,.tool-grid{grid-template-columns:minmax(0,1fr)!important}
+ .metric-row{gap:0}.metric-row>div{padding:16px;border-right:0;border-bottom:1px solid #d5e9ed}
+ .hero-actions a{flex:1 1 160px;text-align:center}
+ .piga-pocket-panel{max-width:calc(100vw - 22px)!important}
+}
+@media(max-width:400px){
+ .hero-graphic .graphic-top,.hero-graphic .graphic-bottom{font-size:9px;flex-wrap:wrap}
+ .setup-hero-actions{grid-template-columns:1fr}
+ .ortho-v3-mast-actions{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .ortho-v3-mast-art img,.hero img{animation:none!important;transition:none!important}
+}
