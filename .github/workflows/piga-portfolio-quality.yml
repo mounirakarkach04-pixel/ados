@@ -6,6 +6,7 @@ on:
       - 'quality/PORTFOLIO_DESIGN_RELEASE_STANDARD.md'
       - 'scripts/verify-portfolio-contract.mjs'
       - 'scripts/portfolio-live-readback.mjs'
+      - 'quality/test-portfolio-control-room.mjs'
       - '**/*.html'
       - '.github/workflows/piga-portfolio-quality.yml'
   push:
@@ -15,6 +16,7 @@ on:
       - 'quality/PORTFOLIO_DESIGN_RELEASE_STANDARD.md'
       - 'scripts/verify-portfolio-contract.mjs'
       - 'scripts/portfolio-live-readback.mjs'
+      - 'quality/test-portfolio-control-room.mjs'
       - '**/*.html'
       - '.github/workflows/piga-portfolio-quality.yml'
   workflow_dispatch:
@@ -38,3 +40,36 @@ jobs:
         run: |
           node --check scripts/portfolio-live-readback.mjs
           node scripts/portfolio-live-readback.mjs
+
+  portfolio-browser:
+    needs: source-contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned isolated Chromium test dependency
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.64.1
+          npx playwright install --with-deps chromium
+      - name: Start temporary localhost file server
+        run: |
+          python3 -m http.server 4179 --bind 127.0.0.1 > /tmp/piga-portfolio-server.log 2>&1 &
+          for i in 1 2 3 4 5 6 7 8; do
+            if curl --silent --fail http://127.0.0.1:4179/quality/portfolio-registry.json > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Run finite four-viewport responsive browser suite
+        run: node quality/test-portfolio-control-room.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: piga-portfolio-browser-screenshots
+          path: qa-artifacts/portfolio-browser/
+          if-no-files-found: ignore
+          retention-days: 7
