@@ -12,9 +12,11 @@
  {id:'devices',label:'Geräte',desc:'WLAN, Bluetooth, USB-Scanimport und technische Geräteprüfung',href:'./devices.html',icon:'printer'},
  {id:'printer',label:'Fertigung',desc:'OctoPrint mit Gate-2-Freigaben und Status-Readback',href:'./studio.html#printer',icon:'printer'},
  {id:'quality',label:'Glassbox',desc:'Audit, PIGA und A7SEM Reverse',href:'./studio.html#evidence',icon:'shield'},
+ {id:'devicehub',label:'Geräte-Datenbank',desc:'IndexedDB, lokale Worker, verschlüsselte Sicherung und mobiler Speicher',href:'./device-hub.html',icon:'database'},
  {id:'report',label:'Prüfakte / PDF',desc:'Druckfertiger PIGA und A7SEM-Nachweis mit lokaler Hashprüfung',href:'./report.html',icon:'document'}
  ];
  const icons={
+ database:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v7c0 2 4 4 9 4s9-2 9-4V5M3 12v7c0 2 4 4 9 4s9-2 9-4v-7"/>',
  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 15h3"/>',
  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
  users:'<circle cx="9" cy="8" r="3"/><path d="M3 21v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6M17 15a5 5 0 0 1 4 5"/>',
@@ -27,7 +29,7 @@
  };
  const svg=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[k]+'</svg>';
  const filename=location.pathname.split('/').pop()||'index.html';
- let selected=filename==='direct.html'?'cases':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
+ let selected=filename==='device-hub.html'?'devicehub':filename==='direct.html'?'cases':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
  if(filename==='studio.html'||filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
@@ -36,6 +38,18 @@
  const links=document.createElement('div');links.className='piga-links';paths.forEach(p=>links.append(a(p,'piga-link')));rail.append(links);
  const tools=document.createElement('div');tools.className='piga-rail-foot';
  const trigger=document.createElement('button');trigger.type='button';trigger.className='piga-search-btn';trigger.innerHTML=svg('search')+'<span>Schnellsuche · Ctrl K</span>';trigger.setAttribute('aria-label','Schnellsuche öffnen');tools.append(trigger);
+ const toggle=document.createElement('button');toggle.type='button';toggle.className='piga-search-btn piga-space-toggle';
+ toggle.setAttribute('aria-label','Arbeitsfläche verbreitern oder Navigation ausklappen');
+ const NAV_KEY='piga-ortho-wide-nav';
+ const compact=()=>{let pref='compact';try{pref=localStorage.getItem(NAV_KEY)||'compact'}catch{}return pref==='compact';};
+ const setCompact=enabled=>{
+  document.body.classList.toggle('piga-compact-nav',enabled);
+  toggle.innerHTML=svg('grid')+'<span>'+(enabled?'Navigation ausklappen':'Mehr Arbeitsfläche')+'</span>';
+  toggle.setAttribute('aria-pressed',String(enabled));
+ };
+ toggle.addEventListener('click',()=>{const enabled=!document.body.classList.contains('piga-compact-nav');try{localStorage.setItem(NAV_KEY,enabled?'compact':'wide')}catch{}setCompact(enabled);});
+ tools.append(toggle);
+ setCompact(compact());
  const info=document.createElement('span');info.className='piga-label';info.textContent='Technische Evaluation · keine klinische Freigabe';tools.append(info);
  const safe=document.createElement('span');safe.className='piga-safety';safe.innerHTML='<span class="piga-safety-dot"></span> PIGA GATE 1 / GATE 2';tools.append(safe);rail.append(tools);
  const bottom=document.createElement('nav');bottom.className='piga-bottom';bottom.setAttribute('aria-label','Mobile Hauptnavigation');
@@ -46,7 +60,7 @@
  const top=document.createElement('div');top.className='piga-command-head';top.insertAdjacentHTML('beforeend',svg('search'));const search=document.createElement('input');search.type='search';search.placeholder='Funktion suchen, z. B. Druck, Kosten, STL …';search.setAttribute('aria-label','Funktion suchen');top.append(search);const close=document.createElement('button');close.type='button';close.className='piga-command-close';close.textContent='Schließen';top.append(close);panel.append(top);
  const results=document.createElement('div');results.className='piga-results';panel.append(results);
  const foot=document.createElement('div');foot.className='piga-command-footer';foot.textContent='Nur freigegebene Module benutzen · keine echten Patientendaten';panel.append(foot);overlay.append(panel);
- const keywords={cases:'fälle kalender termine aufgaben lokal',dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
+ const keywords={devicehub:'lokale gerätedatenbank worker backup verschlüsselt smartphone tablet desktop ohne supabase sync sicherung',cases:'fälle kalender termine aufgaben lokal',dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
  function render(){results.textContent='';const q=search.value.trim().toLocaleLowerCase('de-DE');const found=paths.filter(p=>(p.label+' '+p.desc+' '+keywords[p.id]).toLocaleLowerCase('de-DE').includes(q));
   if(!found.length){const empty=document.createElement('p');empty.textContent='Keine passende Funktion gefunden.';empty.style.padding='15px';results.append(empty);return;}
   found.forEach(p=>{const item=document.createElement('a');item.href=p.href;const b=document.createElement('b');b.textContent=p.label;const sm=document.createElement('small');sm.textContent=p.desc;item.append(b,sm);results.append(item);});}
