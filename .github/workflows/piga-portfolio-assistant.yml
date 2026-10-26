@@ -1,0 +1,29 @@
+name: PIGA Portfolio · One Shared Assistant Contract
+on:
+  pull_request:
+    paths:
+      - 'quality/piga-assistant-*'
+      - 'quality/portfolio-registry.json'
+      - 'index.html'
+      - 'research-intake.html'
+      - 'nadias-bloom/index.html'
+      - 'piga-ortho-3d/*.html'
+      - 'cancer-system-state/*.html'
+      - 'la-preuve-avant-le-diagnostic/*.html'
+      - '.github/workflows/piga-portfolio-assistant.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert portfolio integration and scoped consent
+        run: node quality/piga-assistant-portfolio.test.mjs
+      - name: Validate JavaScript module syntax
+        run: node --check quality/piga-assistant-widget.mjs
