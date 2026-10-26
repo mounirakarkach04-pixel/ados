@@ -1,0 +1,66 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eff9fc"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D — Durchgängiger technischer Praxis-Labor-Testablauf mit STL-Dateiprüfung, Materialstatus und lokaler Arbeitsliste, ohne Supabase">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./handoff.css"><link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css">
+<title>Praxis → Labor · PIGA ORTHO 3D</title></head><body>
+<main class="handoff-app" id="content">
+<header class="handoff-intro"><span class="eyebrow">PIGA ORTHO 3D · CASE TO LAB</span><h1>Ein Auftrag. <em>Ein durchgängiger Ablauf.</em></h1>
+<p>Auftrag übernehmen, STL lokal prüfen, Material kontrollieren und die technische Übergabe dokumentieren — ohne doppelte Erfassung oder Supabase.</p>
+<div class="handoff-links"><a href="./dashboard.html">Dashboard</a><a href="./direct.html#cases">Fälle und Termine</a><a href="./studio.html#studio">3D-Studio</a><a href="./inventory.html">Materialverwaltung</a><a href="./report.html">Glassbox-Berichte</a></div></header>
+<div class="handoff-warning"><strong>Lokale technische Evaluation · Keine Patientendaten.</strong>
+Alle Beispiele bleiben auf diesem Gerät. Das System erteilt weder eine ärztliche Freigabe noch die Berechtigung zum 3D-Druck; PIGA Gate 2 bleibt <b>BLOCK</b>.</div>
+<section class="handoff-stats" aria-label="Arbeitsübersicht">
+<div class="handoff-stat"><span>Offene Testaufträge</span><strong id="countCases">–</strong><small>Lokal im selben Arbeitsbestand</small></div>
+<div class="handoff-stat"><span>Offene Aufgaben</span><strong id="countTasks">–</strong><small>Inklusive Praxis- und Laboraufgaben</small></div>
+<div class="handoff-stat"><span>Technisch vorbereitet</span><strong id="countReady">–</strong><small>Keine klinische Freigabe</small></div>
+<div class="handoff-stat"><span>Materialwarnungen</span><strong id="countWarnings">–</strong><small>Auf Basis erfasster Testbestände</small></div></section>
+<div class="handoff-grid">
+<section class="handoff-card">
+<div class="handoff-head"><span class="num">01</span><div><h2>Auftrag wählen oder anlegen</h2><p>Bestehende Fälle der App werden direkt übernommen.</p></div></div>
+<label for="caseSelect">Vorhandener Auftrag</label><select id="caseSelect" aria-label="Vorhandenen Testauftrag auswählen"><option value="">Aufträge laden …</option></select>
+<div id="caseState" class="handoff-inline">Noch kein Testauftrag ausgewählt.</div>
+<details class="handoff-details"><summary>Neuen technischen Testauftrag anlegen</summary>
+<form id="newCaseForm" class="handoff-form"><label for="newRef">Referenz ohne Patientendaten</label><input id="newRef" minlength="3" maxlength="32" pattern="[A-Za-z0-9_-]{3,32}" placeholder="LAB-2026-001" required>
+<label for="newLabel">Technische Beschreibung</label><input id="newLabel" maxlength="150" placeholder="Testmodell / Laborprüfung"><button type="submit" class="primary">Auftrag anlegen</button></form></details>
+<div class="handoff-actions"><button id="exampleCase" type="button">Synthetischen Beispieldurchlauf erstellen</button><button id="seedTasks" type="button" class="primary">Standard-Arbeitsplan anlegen</button></div>
+</section>
+<section class="handoff-card">
+<div class="handoff-head"><span class="num">02</span><div><h2>STL-Datei prüfen</h2><p>Keine Speicherung des Modells – ausschließlich Prüffakten und SHA-256.</p></div></div>
+<label class="handoff-file" for="handoffStl">STL-Datei auswählen <small>ASCII oder Binary · maximal 25 MiB</small></label>
+<input id="handoffStl" type="file" accept=".stl,model/stl" hidden>
+<div id="stlState" class="handoff-inline">Keine STL-Prüfung zugeordnet.</div>
+<div class="handoff-actions"><a href="./studio.html#studio">3D-Modell in Studio öffnen</a><a href="./devices.html">Scanner und WLAN prüfen</a></div></section>
+<section class="handoff-card">
+<div class="handoff-head"><span class="num">03</span><div><h2>Material und Laborbereitschaft</h2><p>Bestände werden aus der vorhandenen lokalen Inventur gelesen.</p></div></div>
+<form id="materialForm" class="handoff-form"><label for="materialCode">Erfasster Materialartikel</label><select id="materialCode"><option value="">Noch keine Testbestände</option></select>
+<label for="materialQuantity">Benötigte Testmenge</label><input id="materialQuantity" type="number" min="1" max="10000" step="1" value="1" required>
+<button type="submit" class="primary">Material dem Auftrag zuordnen</button></form>
+<div id="materialState" class="handoff-inline">Noch keine Materialprüfung.</div>
+<a class="handoff-text-link" href="./inventory.html">Zur vollständigen Lagerverwaltung</a></section>
+<section class="handoff-card">
+<div class="handoff-head"><span class="num">04</span><div><h2>Arbeitsplan und Übergabe</h2><p>Einmal anlegen, im selben Aufgabenbestand weiterführen.</p></div></div>
+<div id="steps" class="handoff-steps" aria-live="polite"><p>Bitte einen Auftrag auswählen.</p></div>
+<div class="handoff-gates"><div><span>PIGA Gate 1</span><b>DELAY</b><small>Keine medizinische Inferenzfreigabe</small></div>
+<div><span>PIGA Gate 2</span><b>BLOCK</b><small>Keine Geräteausführung</small></div></div>
+</section>
+<section class="handoff-card">
+<div class="handoff-head"><span class="num">05</span><div><h2>Termine ohne Doppeleingabe</h2><p>Auftragsreferenz wird automatisch in den lokalen Kalender übernommen.</p></div></div>
+<form id="reviewForm" class="handoff-form"><label for="reviewAt">Technischer Prüftermin</label><input id="reviewAt" type="datetime-local" required>
+<label for="reviewMins">Dauer</label><select id="reviewMins"><option value="15">15 Minuten</option><option value="30" selected>30 Minuten</option><option value="45">45 Minuten</option><option value="60">60 Minuten</option></select>
+<button type="submit">Prüftermin vormerken</button></form>
+<div id="reviewState" class="handoff-inline">Keine fachliche Behandlungsplanung.</div>
+</section>
+<section class="handoff-card">
+<div class="handoff-head"><span class="num">06</span><div><h2>Technische Übergabeakte</h2><p>Auftragsstatus und Herkunft transparent exportieren.</p></div></div>
+<div id="readiness" class="handoff-readiness" role="status">Prüfstatus wird ermittelt …</div>
+<div id="nextStep" class="handoff-inline">Bitte einen Auftrag auswählen.</div>
+<div class="handoff-actions"><button type="button" id="downloadReport" class="primary">Übergabeakte als JSON</button><button type="button" id="printReport">Druckansicht</button></div>
+<p class="handoff-caption">Der Export enthält einen SHA-256-Dateihash. Das ist keine digitale Signatur und kein manipulationssicheres Archiv.</p></section>
+</div>
+<div id="handoffNotice" class="handoff-toast" role="status" aria-live="polite">Bereit. Es werden ausschließlich Testdaten lokal verarbeitet.</div>
+<footer class="handoff-footer">TECHNISCHE EVALUATION · EVIDENZ VOR AUSWIRKUNG · KEINE KLINISCHE FREIGABE · KEIN UNBEAUFSICHTIGTER DRUCK</footer>
+</main>
+<script src="./device-store.js" defer></script><script src="./handoff-core.js" defer></script><script src="./handoff.js" defer></script>
+<script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script>
+</body></html>
