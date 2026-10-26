@@ -8,6 +8,7 @@
  handoff:{title:'Praxis-Labor-Übergabe',desc:'Eine Auftragsreferenz für STL-Grundprüfung, Materialkontrolle, Aufgaben, Prüftermine und technische Evidenz.',image:'ortho-hero.svg',num:'02',label:'CASE TO LAB'},
  operations:{title:'Arbeitscockpit & Prioritäten',desc:'Alle lokalen Testfälle, Aufgaben, Termine und Materialwarnungen in einer gemeinsamen Arbeitsansicht.',image:'ortho-dashboard.svg',num:'01',label:'OPERATIONS'},
  dashboard:{title:'Dein digitaler KFO-Arbeitsplatz',desc:'Übersicht, Prüfschritte und alle technischen Werkzeuge auf einem Bildschirm.',image:'ortho-dashboard.svg',num:'01',label:'DASHBOARD'},
+ imaging:{title:'DICOM / CBCT Imaging Research',desc:'Schnittbilder, technische Masken, Geometrieprobe und Freigabe-Zyklus mit Gate-Schutz.',image:'ortho-hero.svg',num:'03',label:'IMAGING'},
  studio:{title:'3D Studio & Model Viewer',desc:'Große Arbeitsfläche für STL-Geometrie, Ansichten und überprüfbare technische Prüfungen.',image:'ortho-hero.svg',num:'02',label:'3D / LAB'},
  praxis:{title:'Praxis & Operations',desc:'Auftragszeiten, technische Kosten und Arbeitsabläufe lokal organisieren.',image:'ortho-calendar.svg',num:'03',label:'PRAXIS'},
  team:{title:'Team & Payroll',desc:'Lokale Personal-Testprofile, Dienstplan und prüfbare Arbeitszeitentwürfe.',image:'ortho-team.svg',num:'04',label:'PERSONAL'},
