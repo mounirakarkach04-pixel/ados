@@ -123,3 +123,11 @@ body.ortho-visual-v3 .module-card:hover{border-color:#7fcddf!important;box-shado
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:600px){.ortho-help-head{display:block}.ortho-help-head button{margin-top:10px}.ortho-help-feed{padding:11px}
  .ortho-help-form{grid-template-columns:1fr}.ortho-help-form button{min-height:43px}}
+
+/* One-click install on supported browsers; truthful platform instructions elsewhere. */
+.ortho-v3-install{border:1px solid #0b9dc0!important;background:linear-gradient(100deg,#078ac1,#0dc4c0)!important;
+ color:#fff!important;border-radius:10px!important;padding:8px 13px!important;font:750 11px/1.4 system-ui,sans-serif;
+ cursor:pointer!important;box-shadow:0 6px 17px #0c99bd1b}
+.ortho-v3-install:disabled{opacity:.6;cursor:default!important}
+.ortho-v3-install-hint{margin:11px 0 0;max-width:650px;padding:11px 14px;background:#ecfafb;color:#226c84;
+ border:1px solid #c2e8ed;border-radius:10px;font-size:12px;line-height:1.6}
