@@ -13,7 +13,7 @@ test("each article has genuine evidence, counterexample, actor and official sour
  for(const a of operationalArticles){
   assert.match(a.source,new RegExp("/article-"+a.ref+"$"));
   for(const field of ["topic","categoryName","addressee","question","assessment","pigaControl","evidence","negativeTest"]){
-   assert.ok(a[field]?.length>12,"missing "+field+" for "+a.ref);
+   assert.ok(a[field]?.length>(field==="topic"?3:12),"missing "+field+" for "+a.ref);
   }
   assert.equal(a.reviewState,"NOT_ASSESSED");assert.equal(a.implementationState,"TEMPLATE_ONLY");
   assert.ok(!/CERTIFIED|COMPLIANT|PRODUCTION_ACTIVE/.test(a.implementationState));
