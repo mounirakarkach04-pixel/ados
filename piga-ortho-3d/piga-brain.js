@@ -5,6 +5,7 @@ window.PigaBrain=(()=>{
  const routes={
  setup:['Ersteinrichtung','./setup.html'],procurement:['Einkaufsvorschläge','./procurement.html'],
  research:['PIGA – 10 Rules (Zenodo)','https://zenodo.org/records/21390720'],
+ atlas:['KFO Fachatlas','./kfo-atlas.html'],
  sales:['PIGA ORTHO Produktübersicht','./sales.html'],privacy:['Datenschutz & Datenverarbeitung','./privacy.html'],
  overview:['Dashboard','./dashboard.html'],cases:['Fälle & Termine','./direct.html#cases'],
  praxis:['Praxis','./praxis.html'],team:['Personal','./team.html'],
@@ -15,6 +16,7 @@ window.PigaBrain=(()=>{
  governance:['PIGA Prozesse','./workflow.html'],diagnostics:['Systemtest','./diagnostics.html'],
  };
  const patterns=[
+  {rx:/(zahnspangenformen|zahnspangenarten|brackettypen|apparate|kieferorthopädisches wissen|kfo katalog|fachatlas|behandlungsformen|kieferfehlstellung|retainer|aligner)/i,kind:'GENERAL_HELP',route:'atlas',reply:'Der lokale PIGA-KFO-Fachatlas enthält durchsuchbare Befunde, Diagnostik, Apparaturen, Abrechnungshinweise und Praxisprozesse mit externen Primärquellen. Kein automatischer Befund, keine neue klinische Autorität.'},
   {rx:/(kfoshop24|warenkorb|bestellliste|einkaufsvorschlag|einkauf.*material)/i,kind:'INVENTORY_REVIEW',route:'procurement',
    reply:'PIGA prüft Mindestbestände und bereitet eine Einkaufsliste als CSV und einen technischen Freigabeentwurf vor. Für kfoshop24.de ist derzeit keine verifizierte Shop-API oder Artikelliste integriert; automatisches Einlegen in einen echten Warenkorb, Bestellen und Bezahlen sind NICHT aktiviert.'},
   {rx:/(erste.*(install|start)|einricht|konfigur|onboarding|anschlie.ss)/i,kind:'GENERAL_HELP',route:'setup',
