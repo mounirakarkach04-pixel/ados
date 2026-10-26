@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const root='piga-ortho-3d',read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const pages=['operations','dashboard','studio','praxis','team','inventory','devices','assist','workflow','report','direct','device-hub'];
-const js=['operations.js','ortho-ops-center.js','ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
+const js=['operations.js','ortho-ops-center.js','ortho-case-passport.js','ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
 let tests=0;const test=(title,fn)=>{fn();tests++;console.log('PASS '+title)};
 test('All active UI scripts parse',()=>js.forEach(file=>new vm.Script(read(file),{filename:file})));
 test('Every full app page contains unified wide theme + navigation',()=>pages.forEach(name=>{
@@ -216,5 +216,16 @@ test('Live dashboard renders saved local test workflow facts in a simulated DOM'
  assert.equal(elements.get('opsStock').textContent,'1');
  assert(elements.get('opsQueue').children.length>0,'Actionable queue empty');
  assert.equal(typeof elements.get('opsExport').onclick,'function');
+});
+test('Technical case passport is executable and cannot authorize clinical or printer effects',()=>{
+ const h=read('direct.html'),js=read('ortho-case-passport.js'),sw=read('sw.js');
+ for(const id of ['orthoCasePassport','passportCase','passportRefresh','passportExport','passportStatus'])assert(h.includes('id="'+id+'"'),id);
+ assert(h.includes('src="./ortho-case-passport.js"'));
+ assert(js.includes("pigaGate1:'UNKNOWN'")&&js.includes("pigaGate2:'BLOCK'"));
+ assert(js.includes("medicalDecision:'NOT_MADE'")&&js.includes("printerAction:'NOT_AUTHORIZED'"));
+ assert(js.includes('crypto.subtle.digest'));
+ assert(!js.includes('fetch('),'Local technical passport must never use network API');
+ for(const f of ['ortho-case-passport.css','ortho-case-passport.js'])
+  assert(sw.includes("'./"+f+"'"),'Missing offline passport asset '+f);
 });
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
