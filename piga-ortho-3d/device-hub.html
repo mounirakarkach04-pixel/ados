@@ -1,0 +1,47 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eff9fc"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D – lokale geräteeigene Datenbank, begrenzte Worker, verschlüsselte Datensicherung">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./device-hub.css"><link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css">
+<title>Geräte-Datenbank & Worker | PIGA ORTHO 3D</title></head>
+<body><main class="device-hub" id="content">
+<header class="hub-top"><div><p class="eyebrow">LOCAL FIRST · NO SUPABASE · DEVICE OWNED</p><h1>Dein Gerät. <em>Deine Datenbank.</em></h1>
+<p>Die bestehende Ortho-App nutzt die Datenbank dieses Smartphones, Tablets oder Computers. Der lokale Worker führt ausschließlich begrenzte technische Prüfaufträge aus.</p></div>
+<a href="./dashboard.html" class="hub-return">Zur App-Übersicht</a></header>
+<section class="hub-status" aria-label="Lokale Datenbank">
+<div class="hub-metric"><span>Datenbank</span><b id="dbStatus">Prüfung läuft</b><small>IndexedDB · dieses Gerät</small></div>
+<div class="hub-metric"><span>Speicher verwendet</span><b id="used">–</b><small id="limit">Größe wird ermittelt</small></div>
+<div class="hub-metric"><span>Speichererhalt</span><b id="persistent">Unbekannt</b><small>Vom Browser abhängig</small></div>
+<div class="hub-metric"><span>Worker-Warteschlange</span><b id="jobCount">–</b><small>Persistente Aufträge</small></div></section>
+<div class="hub-actions"><button id="refresh" type="button">Status aktualisieren</button><button id="keep" type="button" class="primary">Dauerhaften Speicher anfragen</button><a href="./direct.html#cases">Fälle & Termine</a><a href="./inventory.html">Materialverwaltung</a></div>
+<div class="hub-grid">
+<section class="hub-panel"><p class="eyebrow">01 / DEVICE DATA</p><h2>Lokale Datenbestände</h2>
+<p>Die vorhandenen Testdaten aus der älteren Browserspeicherung werden beim ersten Öffnen automatisch übernommen. Es wird nichts in die Cloud übertragen.</p>
+<div id="snapshotList" class="hub-list" aria-live="polite"><p>Datenbank wird geöffnet …</p></div>
+<p class="hub-note">Browserdaten können bei Geräteschaden, Zurücksetzen oder Löschen der Website-Daten verloren gehen. Verschlüsselte Sicherungen sind deshalb wichtig.</p></section>
+<section class="hub-panel"><p class="eyebrow">02 / BOUNDED EXECUTION</p><h2>Lokale Worker</h2>
+<p>Auftrag wählen, dauerhaft in IndexedDB hinterlegen und auf diesem Gerät ausführen. Keine Druckbefehle, Diagnosen oder externen Netzwerkaktionen.</p>
+<label for="workKind">Technischer Prüfauftrag</label><select id="workKind">
+<option value="HEALTH_CHECK">Geräte-Datenbank prüfen</option>
+<option value="WORKFLOW_SUMMARY">Arbeitsstand zusammenfassen</option>
+<option value="INVENTORY_FORECAST">Material-Mindestbestände prüfen</option></select>
+<div class="hub-actions"><button id="enqueue" class="primary" type="button">Auftrag speichern</button>
+<button id="execute" type="button">Bis zu 5 Aufträge ausführen</button></div>
+<div id="workerStatus" class="hub-feedback" role="status">Bereit.</div>
+<div id="jobs" class="hub-list" aria-live="polite"></div></section>
+<section class="hub-panel"><p class="eyebrow">03 / DEVICE TO DEVICE</p><h2>Verschlüsselter Datentransfer</h2>
+<p>Ohne Cloud: Auf Gerät A verschlüsselt exportieren, Datei sicher auf Gerät B übertragen, dort wieder importieren. Keine automatische Synchronisierung.</p>
+<label for="secret">Sicherungspasswort (mindestens 12 Zeichen)</label><input id="secret" type="password" autocomplete="new-password" minlength="12" placeholder="Nur für den Export/Import; wird nicht gespeichert">
+<div class="hub-actions"><button id="export" class="primary" type="button">Verschlüsselte Sicherung exportieren</button>
+<label class="file-button" for="backupFile">Sicherungsdatei auswählen<input id="backupFile" type="file" accept=".json,application/json" hidden></label>
+<button id="import" type="button">Sicherung importieren</button></div>
+<p id="transferStatus" class="hub-feedback" role="status">AES-GCM und PBKDF2-SHA256 · nur auf diesem Gerät entschlüsselt.</p>
+<p class="hub-note">Beim Import werden beide lokalen Testdatenbestände auf diesem Gerät ersetzt. Erst eine eigene aktuelle Sicherung erstellen.</p></section>
+<section class="hub-panel"><p class="eyebrow">04 / GOVERNANCE</p><h2>Grenzen der lokalen Architektur</h2>
+<ul><li>Smartphone, Tablet und Desktop verwenden denselben Web-Code, aber getrennte Gerätespeicher.</li>
+<li>Es gibt keine Berechtigungsverwaltung durch Supabase oder einen anderen Cloud-Anbieter.</li>
+<li>Worker arbeiten während einer aktiven Sitzung. Ein dauerhaft laufender Hintergrundprozess ist im Browser nicht garantiert.</li>
+<li>Keine echten Patientenakten oder vertraulichen Personalunterlagen in diese offene Evaluation eintragen.</li>
+<li>Synchronisierung mehrerer Geräte braucht später einen geprüften Transport, Konfliktbehandlung und Datenschutz.</li></ul></section>
+</div><footer>DEVICE FIRST · PIGA GATE 1 / GATE 2 · KEINE KLINISCHE FREIGABE</footer></main>
+<script src="./device-store.js" defer></script><script src="./device-hub.js" defer></script><script src="./navigation.js" defer></script></body></html>
