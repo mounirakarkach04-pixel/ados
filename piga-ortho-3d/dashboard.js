@@ -1,29 +1,7 @@
 'use strict';(()=>{
  const $=id=>document.getElementById(id);
  const input=$('quickStl'),result=$('stlResult');
- async function personalize(){
-  const el=$('personalGreeting');el.textContent='Guten Tag.';
-  let info=null;try{info=JSON.parse(sessionStorage.getItem('piga-ortho-auth-ephemeral')||'null');}catch{}
-  if(!info?.token||Date.now()>=Number(info.expiresAt)){sessionStorage.removeItem('piga-ortho-auth-ephemeral');return;}
-  const header={apikey:'sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ',Authorization:'Bearer '+info.token};
-  try{
-    const auth=await fetch('https://sanrkcovmkkhgdqydxfk.supabase.co/auth/v1/user',{headers:header,cache:'no-store',credentials:'omit'});
-    if(!auth.ok)throw Error('Invalid authenticated session');
-    const identity=await auth.json();
-    if(!identity?.id||!identity.email_confirmed_at)throw Error('Email not verified');
-    const row=await fetch('https://sanrkcovmkkhgdqydxfk.supabase.co/rest/v1/ortho_staff?select=email,full_name&user_id=eq.'+encodeURIComponent(identity.id),{headers:header,cache:'no-store',credentials:'omit'});
-    if(!row.ok)throw Error('No staff account');
-    const items=await row.json();if(!Array.isArray(items)||items.length!==1)throw Error('Invalid staff context');
-    const email=String(identity.email||'').toLowerCase(),staff=items[0];
-    if(email==='dr.akarkach@gmx.de'&&String(staff.email||'').toLowerCase()===email){
-      el.textContent='Guten Tag, Dr. Akarkach';
-    }else{
-      const display=String(staff.full_name||'').trim().slice(0,80);
-      el.textContent='Guten Tag'+(display?', '+display:'')+'.';
-    }
-  }catch{sessionStorage.removeItem('piga-ortho-auth-ephemeral');el.textContent='Guten Tag.';}
- }
- personalize();
+ const greeting=$('personalGreeting');if(greeting)greeting.textContent='Guten Tag.';
  const size=n=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(n/(1024*1024))+' MiB';
  async function hash(bytes){if(!crypto?.subtle)return 'In diesem Sicherheitskontext nicht verfügbar';const data=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(data)].map(b=>b.toString(16).padStart(2,'0')).join('');}
  function inspect(bytes){const n=bytes.byteLength,view=new DataView(bytes);if(n<30||n>25*1024*1024)throw Error('Datei muss zwischen 30 Byte und 25 MiB groß sein.');
