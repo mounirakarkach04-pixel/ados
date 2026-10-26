@@ -1,0 +1,26 @@
+name: PIGA Shared Voice / KFO Shop QA
+on:
+  pull_request:
+    paths:
+      - 'piga-ortho-3d/voice.js'
+      - 'piga-ortho-3d/supply.html'
+      - 'piga-ortho-3d/supply.css'
+      - 'piga-ortho-3d/kfo-shop-advisor.js'
+      - 'piga-ortho-3d/piga-voice-persona.js'
+      - 'piga-ortho-3d/sw.js'
+      - 'scripts/piga-unified-kfo-shop-qa.mjs'
+      - '.github/workflows/piga-unified-voice-kfo-shop.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-nonclinical-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify safe opt-in and female voice
+        run: node scripts/piga-unified-kfo-shop-qa.mjs && node scripts/piga-ortho-showroom-keyless-qa.mjs
