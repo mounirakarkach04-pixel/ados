@@ -35,6 +35,6 @@ assert(voice.includes("app:'ortho',message:q,consent:true"),'Ortho shares server
 assert(shop.includes("app:'kfo-shop',message:question,consent:true"),'KFO material specialist shares server core');
 assert(voice.includes("https://pigapocket.com/api/piga/assistant/v1/ask"));
 assert(shop.includes("https://pigapocket.com/api/piga/assistant/v1/ask"));
-assert(sw.includes("piga-ortho-v153-kfo-html-parity-shared-showroom"),'Versioned offline cache must be refreshed');
+assert(sw.includes("piga-ortho-v154-android-female-audio-check"),'Versioned offline cache must be refreshed');
 assert(!/GEMINI_API_KEY|OPENAI_API_KEY|service_role|AIza[0-9A-Za-z_-]{15,}/.test(sales+widget),'No private provider secret at client');
 console.log('PASS KFO HTML/offline parity: 18 real modules, original preview preserved, Showroom specialist profile, opt-in voice, fail-closed effects.');

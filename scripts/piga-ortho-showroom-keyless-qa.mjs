@@ -19,7 +19,7 @@ assert.ok(voice.includes("window.LanguageModel?.availability"),'local fallback i
 assert.ok(!/localStorage|AIza[0-9A-Za-z_-]+/.test(voice),'no key or conversation storage');
 for(const file of ['piga-voice.html','voice.js','piga-voice-persona.js','kfo-shop-advisor.js'])
  assert.ok(sw.includes("'./"+file+"'"),'missing SW asset '+file);
-assert.match(sw,/piga-ortho-v153-kfo-html-parity-shared-showroom/);
+assert.match(sw,/piga-ortho-v154-android-female-audio-check/);
 assert.match(read('setup.html'),/href="\.\/piga-voice\.html"/);
 assert.match(status,/keylessVoiceRouteReady/);
 assert.ok(persona.includes("geminiVoice:'Gacrux'"));

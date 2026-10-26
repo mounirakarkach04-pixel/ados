@@ -60,4 +60,5 @@ jobs:
           node scripts/piga-ortho-supply-atlas-qa.mjs
           node scripts/piga-ortho-onboarding-qa.mjs
           node scripts/piga-ortho-procurement-qa.mjs
+          node scripts/piga-ortho-android-audio-selftest-qa.mjs
           node quality/kfo-sales-parity.test.mjs

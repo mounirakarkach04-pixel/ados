@@ -38,7 +38,9 @@
    utterance.lang=PROFILE.language;utterance.rate=PROFILE.rate;
    utterance.pitch=PROFILE.pitch;utterance.volume=PROFILE.volume;
    utterance.voice=voice;
-   utterance.onerror=()=>onStatus?.('Sprachausgabe nicht abgeschlossen.');
+   utterance.onstart=()=>onStatus?.('Geräte-Sprachausgabe gestartet: '+voice.name+'. Bitte prüfen, ob die Stimme wirklich hörbar und weiblich klingt.');
+   utterance.onend=()=>onStatus?.('Geräte-Sprachausgabe beendet. Hörbarkeit und Stimmqualität können nur am Gerät bestätigt werden.');
+   utterance.onerror=()=>onStatus?.('Sprachausgabe nicht abgeschlossen – Audiotest fehlgeschlagen.');
    speechSynthesis.speak(utterance);
    return true;
   }catch{onStatus?.('Sprachausgabe auf diesem Gerät nicht verfügbar.');return false}
