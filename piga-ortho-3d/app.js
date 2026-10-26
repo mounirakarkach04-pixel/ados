@@ -58,7 +58,16 @@
       renderScheduled=false;const fast=interactivePreview;interactivePreview=false;draw(fast);
     });
   }
-  function draw(interactive=false){if(!canvas)return;resizeCanvas(interactive);const w=canvas.width,h=canvas.height;ctx.fillStyle='#e7faff';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#c4e9f2';for(let i=0;i<16;i++){let x=i*w/16;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}const m=state.model;if(!m){ctx.textAlign='center';ctx.fillStyle='#376d8b';ctx.font='18px sans-serif';ctx.fillText('STL MODELL ÖFFNEN',w/2,h/2);ctx.font='12px sans-serif';ctx.fillText('3D-Geometrie bleibt auf dem Gerät',w/2,h/2+30);return;}let center=m.min.map((x,i)=>(x+m.max[i])/2),size=Math.max(...m.bounds,1),scale=Math.min(w,h)*.62/size*state.zoom;const ax=state.angleX,ay=state.angleY,cx=Math.cos(ax),sx=Math.sin(ax),cy=Math.cos(ay),sy=Math.sin(ay);const project=v=>{let x=v[0]-center[0],y=v[1]-center[1],z=v[2]-center[2],p=x*cy+z*sy,q=-x*sy+z*cy,r=y*cx-q*sx,t=y*sx+q*cx;return [w/2+p*scale,h/2-r*scale,t];};const detail=interactive?Math.min(9000,state.mesh.length):state.mesh.length,step=Math.max(1,Math.ceil(state.mesh.length/detail));
+  function draw(interactive=false){if(!canvas)return;resizeCanvas(interactive);const w=canvas.width,h=canvas.height;ctx.fillStyle='#e7faff';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#c4e9f2';for(let i=0;i<16;i++){let x=i*w/16;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}const m=state.model;if(!m){window.PigaDentalWebGL?.hide?.();ctx.textAlign='center';ctx.fillStyle='#376d8b';ctx.font='18px sans-serif';ctx.fillText('STL MODELL ÖFFNEN',w/2,h/2);ctx.font='12px sans-serif';ctx.fillText('3D-Geometrie bleibt auf dem Gerät',w/2,h/2+30);return;}
+  if(window.PigaDentalWebGL?.render?.({model:m,angleX:state.angleX,angleY:state.angleY,
+      zoom:state.zoom,width:w,height:h})){
+    ctx.fillStyle='#27668c';ctx.font='11px sans-serif';ctx.textAlign='left';
+    ctx.fillText((m.synthetic?'SYNTHETIC ANATOMY · NOT CLINICAL':'LOCAL STL · SOURCE UNITS')+
+      ' · '+m.triangles.toLocaleString('de-DE')+' triangles',18,h-18);
+    return;
+  }
+  window.PigaDentalWebGL?.hide?.();
+  let center=m.min.map((x,i)=>(x+m.max[i])/2),size=Math.max(...m.bounds,1),scale=Math.min(w,h)*.62/size*state.zoom;const ax=state.angleX,ay=state.angleY,cx=Math.cos(ax),sx=Math.sin(ax),cy=Math.cos(ay),sy=Math.sin(ay);const project=v=>{let x=v[0]-center[0],y=v[1]-center[1],z=v[2]-center[2],p=x*cy+z*sy,q=-x*sy+z*cy,r=y*cx-q*sx,t=y*sx+q*cx;return [w/2+p*scale,h/2-r*scale,t];};const detail=interactive?Math.min(9000,state.mesh.length):state.mesh.length,step=Math.max(1,Math.ceil(state.mesh.length/detail));
    const projected=state.mesh.filter((_,i)=>i%step===0).map(tr=>({p:tr.map(project),material:tr.material||'scan'}));projected.sort((a,b)=>((a.p[0][2]+a.p[1][2]+a.p[2][2])-(b.p[0][2]+b.p[1][2]+b.p[2][2])));for(const item of projected){const tr=item.p;let aa=tr[0],bb=tr[1],cc=tr[2];const cross=(bb[0]-aa[0])*(cc[1]-aa[1])-(bb[1]-aa[1])*(cc[0]-aa[0]);const light=Math.max(.15,Math.min(.92,.58+cross/(scale*scale*21)));ctx.beginPath();ctx.moveTo(aa[0],aa[1]);ctx.lineTo(bb[0],bb[1]);ctx.lineTo(cc[0],cc[1]);ctx.closePath();ctx.fillStyle=item.material==='gingiva'?`rgb(${Math.round(136+light*82)},${Math.round(64+light*78)},${Math.round(83+light*69)})`:
   item.material==='enamel'?`rgb(${Math.round(188+light*65)},${Math.round(184+light*68)},${Math.round(170+light*73)})`:
   item.material==='occlusal'?`rgb(${Math.round(169+light*77)},${Math.round(168+light*80)},${Math.round(158+light*91)})`:
@@ -71,7 +80,15 @@
     $('renderQuality').value='ultra';
     draw(false);
     try{const a=document.createElement('a');a.download='PIGA-ORTHO-3D-'+
-      (state.model?.synthetic?'SYNTHETIC':'TECHNICAL')+'.png';a.href=canvas.toDataURL('image/png');a.click();
+      (state.model?.synthetic?'SYNTHETIC':'TECHNICAL')+'.png';const overlay=$('jawWebgl');
+      if(overlay&&!overlay.hidden){
+        const composited=document.createElement('canvas');
+        composited.width=canvas.width;composited.height=canvas.height;
+        const capture=composited.getContext('2d');
+        capture.drawImage(canvas,0,0);capture.drawImage(overlay,0,0);
+        a.href=composited.toDataURL('image/png');
+      }else a.href=canvas.toDataURL('image/png');
+      a.click();
       show('HiDPI-Modellansicht exportiert. Quelle und STL-Einheit bestimmen die Detailgenauigkeit.');
     }catch(e){show('Bildexport nicht möglich: '+String(e.message||e))}
     finally{$('renderQuality').value=selected;setTimeout(()=>scheduleDraw(),50)}
