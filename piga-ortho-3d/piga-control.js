@@ -140,7 +140,10 @@
   renderAudience();notice('Ansichtsmodus geändert – keine echte Inhaber-/Mitarbeiter-Authentifizierung.');
  });
  const reviewDialog=$('pcReviewDialog');
- reviewDialog?.addEventListener('close',async()=>{
+ for(const btn of document.querySelectorAll('#pcReviewDialog [data-review]')){
+  btn.addEventListener('click',()=>{if(reviewDialog?.open)reviewDialog.close(btn.dataset.review)});
+ }
+  reviewDialog?.addEventListener('close',async()=>{
   const outcome=reviewDialog.returnValue;
   if(!['ACK_TECHNICAL','PAUSE','REJECT'].includes(outcome))return;
   const key=reviewDialog.dataset.requestId;
