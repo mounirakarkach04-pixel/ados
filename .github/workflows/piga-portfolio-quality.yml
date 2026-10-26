@@ -1,0 +1,34 @@
+name: PIGA Portfolio — Shared UI & Navigation Contract
+on:
+  pull_request:
+    paths:
+      - 'quality/portfolio-**'
+      - 'quality/PORTFOLIO_DESIGN_RELEASE_STANDARD.md'
+      - 'scripts/verify-portfolio-contract.mjs'
+      - '**/*.html'
+      - '.github/workflows/piga-portfolio-quality.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'quality/portfolio-**'
+      - 'quality/PORTFOLIO_DESIGN_RELEASE_STANDARD.md'
+      - 'scripts/verify-portfolio-contract.mjs'
+      - '**/*.html'
+      - '.github/workflows/piga-portfolio-quality.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: piga-portfolio-quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check portfolio app metadata, accessibility and local assets
+        run: node scripts/verify-portfolio-contract.mjs
