@@ -3,11 +3,11 @@
    Never send browser data to Supabase or medical devices; no clinical diagnosis. */
 (async()=>{
 const $=id=>document.getElementById(id),KEY='piga-ortho-direct-v1';
-await window.PigaDeviceStore.initialize('direct');
+const restored=await window.PigaDeviceStore.initialize('direct');
 const defaults=()=>({version:1,cases:[],tasks:[],calendar:[],inventory:[],team:[],audit:[],switches:{cases:true,tasks:true,calendar:true,inventory:true,team:true,studio:true}});
 const safeList=(v,n=1000)=>Array.isArray(v)?v.filter(x=>x&&typeof x==='object'&&!Array.isArray(x)).slice(0,n):[];
 let state;
-try{let stored=JSON.parse(localStorage.getItem(KEY)||'null');state=stored&&stored.version===1?stored:defaults()}catch{state=defaults()}
+try{let stored=restored||JSON.parse(localStorage.getItem(KEY)||'null');state=stored&&stored.version===1?stored:defaults()}catch{state=defaults()}
 for(const key of ['cases','tasks','calendar','inventory','team','audit'])state[key]=safeList(state[key]);
 if(!state.switches||typeof state.switches!=='object')state.switches=defaults().switches;
 for(const k of Object.keys(defaults().switches))if(typeof state.switches[k]!=='boolean')state.switches[k]=true;
