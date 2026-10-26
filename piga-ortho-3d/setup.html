@@ -1,0 +1,58 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#effaff"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D — Einrichtungsassistent mit gerätelokalem Speicher, Netzwerk, Worker- und Sprachprüfung; App jederzeit zugänglich.">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css"><link rel="stylesheet" href="./setup.css">
+<title>PIGA einrichten · PIGA ORTHO 3D</title></head><body><main class="setup-app" id="content">
+<header class="setup-hero"><div><span class="eyebrow">PIGA ORTHO 3D / FIRST RUN</span><h1>Willkommen. <em>Richten wir deinen Praxisarbeitsplatz ein.</em></h1>
+<p>Sechs übersichtliche Schritte – direkt am verwendeten Smartphone, Tablet oder Desktop. Du kannst die App jederzeit öffnen, Schritte überspringen und die Einrichtung später fortsetzen.</p>
+<div class="setup-hero-actions"><a href="./dashboard.html">App sofort öffnen</a><a href="./piga-control.html">PIGA direkt fragen</a></div></div>
+<img src="./visuals/ortho-hero.svg" width="1100" height="720" alt="Illustratives KFO-3D-Gebiss"></header>
+<div class="setup-banner"><strong>Technische Evaluation ohne Login</strong> · Hier keine echten Patienten-, Personal-, Rechnungs- oder Gesundheitsdaten hinterlegen. Der Assistent richtet ausschließlich lokale Demo-Funktionen ein; keine medizinischen Berechtigungen werden automatisch erteilt.</div>
+<div class="setup-overview"><div class="setup-counter"><span id="setupPosition">1 / 6</span><div class="setup-track"><div id="setupProgress"></div></div></div><span id="setupStatus">Einrichtung noch nicht abgeschlossen</span></div>
+<div class="setup-layout"><aside class="setup-steps" aria-label="Einrichtungsschritte">
+<button data-step="0" type="button">01 <b>Willkommen & Rolle</b><small>App jederzeit öffnen</small></button>
+<button data-step="1" type="button">02 <b>Geräte-Datenbank</b><small>IndexedDB & Offline</small></button>
+<button data-step="2" type="button">03 <b>WLAN & Schnittstellen</b><small>Browserfähigkeiten prüfen</small></button>
+<button data-step="3" type="button">04 <b>PIGA Worker</b><small>Heartbeat & Testlauf</small></button>
+<button data-step="4" type="button">05 <b>Sprache & Wissen</b><small>Optional, ohne API-Key</small></button>
+<button data-step="5" type="button">06 <b>Schutz & Abschluss</b><small>Einrichtung zusammenfassen</small></button>
+</aside><section class="setup-panel" aria-live="polite">
+<article data-screen="0"><span class="setup-kicker">01 / DEIN GERÄT</span><h2>Ein Werkzeugkasten, der sich deinem Alltag anpasst.</h2>
+<p>Auf dem ersten Gerät startet PIGA mit der lokalen Datenbank. Für eine neue Installation auf einem weiteren Gerät kann später ein verschlüsselter Export importiert werden.</p>
+<label for="setupDeviceName">Bezeichnung dieses Geräts (keine personenbezogenen Daten)</label><input id="setupDeviceName" maxlength="40" placeholder="Beispiel: PRAXIS-TABLET-01">
+<div class="setup-info"><b>Was passiert automatisch?</b><p>Die App prüft technische Voraussetzungen. Worker-Aufträge sind begrenzt und werden wieder aufgenommen, wenn die App geöffnet wird. Eine geschlossene Web-App bietet keine garantierte 24/7-Verarbeitung.</p></div>
+</article>
+<article data-screen="1" hidden><span class="setup-kicker">02 / GERÄTEDATENBANK</span><h2>Lokaler Speicher und Offline-Bereitschaft</h2>
+<p>Die vorhandene IndexedDB speichert technische Testfälle und Worker-Aufträge. Der Offline-Cache erlaubt den Zugriff auf zuvor geladene Arbeitsbereiche.</p><button id="setupCheckStorage" type="button" class="setup-primary">Speicher und Offline prüfen</button>
+<div class="setup-statusline" id="setupStorageResult">Nicht geprüft</div>
+<div class="setup-info"><p>Über <a href="./device-hub.html">Geräte-Datenbank</a> kannst du einen verschlüsselten Export erstellen. Ohne automatische vertrauenswürdige Verbindung synchronisieren verschiedene Endgeräte nicht von selbst.</p></div>
+</article>
+<article data-screen="2" hidden><span class="setup-kicker">03 / VERBINDUNGEN</span><h2>WLAN und Geräte prüfen</h2>
+<p>Prüfe Netzwerkstatus und verfügbare Bluetooth-Schnittstellen. Der Browser kann nicht ohne Betriebssystemberechtigung WLAN-Netzwerke suchen oder Drucker verbinden.</p>
+<div class="setup-actions"><button id="setupScan" type="button" class="setup-primary">Netzwerkstatus prüfen</button><button id="setupBluetooth" type="button">Bluetooth-Gerät auswählen</button></div>
+<div class="setup-statusline" id="setupNetworkResult">Netzwerkstatus noch nicht geprüft.</div><div class="setup-statusline" id="setupBluetoothResult">Bluetooth-Kopplung optional.</div>
+<p><a href="./devices.html">Erweitertes Geräte-Center öffnen</a></p>
+</article>
+<article data-screen="3" hidden><span class="setup-kicker">04 / PIGA</span><h2>Lokale Worker und Heartbeat</h2>
+<p>Ein kleiner technischer Test-Worker zeigt, ob die App auf diesem Gerät rechnen kann. Produktive Worker haben einen eigenen begrenzten Auftrag, Zeitlimit und Ergebnisprotokoll.</p>
+<button id="setupRunWorker" type="button" class="setup-primary">Worker-Test starten</button>
+<div class="setup-statusline" id="setupWorkerResult">Noch kein Testlauf.</div>
+<div class="setup-info"><p>Für garantierte 24/7-Ausführung nach dem Schließen einer Browser-App ist ein separat laufender autorisierter Host oder nativer Hintergrunddienst nötig. Diese Einrichtung ersetzt ihn nicht.</p></div>
+</article>
+<article data-screen="4" hidden><span class="setup-kicker">05 / ASSISTENZ</span><h2>PIGA antwortet sofort – Sprach-KI ist optional.</h2>
+<p>Der lokale PIGA-Chat steht ohne Schlüssel zur Verfügung. Die Gerätestimme kann Antworten vorlesen. Spracheingabe benötigt Browserunterstützung und eine Mikrofonfreigabe.</p>
+<div class="setup-actions"><a href="./piga-control.html#brain" class="setup-primary">PIGA Chat öffnen</a><button id="setupVoice" type="button">Gerätestimme testen</button></div>
+<div class="setup-statusline" id="setupVoiceResult">Optional. Kein API-Schlüssel notwendig.</div>
+<details><summary>Gemini sicher in zwei Schritten vorbereiten</summary><p>1. <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a> öffnen und dort dein eigenes Projekt mit einem beschränkten API-Zugang konfigurieren. 2. Den Schlüssel **ausschließlich** in einem geschützten Backend/Proxy hinterlegen und Kostenkontrollen aktivieren. Erst nach authentifizierter Backend-Freigabe kann PIGA generative Online-Antworten nutzen. Niemals einen privaten Schlüssel in diesem öffentlichen HTML eingeben.</p></details>
+</article>
+<article data-screen="5" hidden><span class="setup-kicker">06 / ÜBERSICHT</span><h2>Einrichtung abgeschlossen – oder jederzeit fortsetzbar.</h2>
+<div id="setupSummary" class="setup-summary">Deine Prüfungen erscheinen hier.</div>
+<label class="setup-consent"><input id="setupConsent" type="checkbox"> Ich verstehe: lokaler Testmodus, keine echten Patienten- oder Mitarbeiterdaten; kein medizinischer Vollzugang und keine automatische Genehmigung.</label>
+<button id="setupFinish" type="button" class="setup-primary">Einrichtung auf diesem Gerät merken</button>
+<div class="setup-statusline" id="setupFinishResult">Die App ist unabhängig davon immer zugänglich.</div>
+</article>
+<div class="setup-bottom"><button type="button" id="setupBack">Zurück</button><button type="button" id="setupSkip">Später erledigen · App öffnen</button><button type="button" class="setup-primary" id="setupNext">Weiter →</button></div>
+</section></div><div id="setupNotice" role="status" aria-live="polite" class="setup-notice">Alle Schritte sind freiwillig.</div>
+<footer class="setup-footer">PIGA GATE 1 DELAY · GATE 2 BLOCK · LOCAL-FIRST · KEINE KLINISCHE PRODUKTFREIGABE</footer>
+</main><script src="./device-store.js" defer></script><script src="./setup.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
