@@ -6,7 +6,7 @@
 <title>Praxis Workspace · PIGA ORTHO 3D</title><link rel="stylesheet" href="./navigation.css"></head><body>
 <header class="appbar"><a class="logo" href="./studio.html"><span class="symbol">⊓</span><span><b>PIGA ORTHO 3D</b><small>PRAXIS WORKSPACE / v0.6</small></span></a><div class="appnav"><span class="tag">PIGA · GOVERNED</span><a href="./workflow.html">Prozessnavigator ↗</a><a href="./studio.html">3D Studio ↗</a></div></header>
 <main><section class="welcome"><div><p class="eyebrow">MODERN DENTAL OPERATIONS · PERSONAL EDITION</p><h1><span id="praxisGreeting">Guten Tag.</span><br><span>Alles im richtigen Ablauf.</span></h1><p>Erfasse Tätigkeiten strukturiert, dokumentiere Zeiten und überblicke die Fertigung — mit klar getrennten Mitarbeiter- und Inhaberrechten.</p><small>Speziell entwickelt von <b>Mounir Akarkach</b> für <b>Herrn Dr. med. dent. Ibrahim Akarkach</b>.</small></div><div class="health-card"><span>BETRIEBSMODUS</span><b>TECHNISCHE EVALUATION</b><p>Kein Patientenproduktivbetrieb. Eine echte PVS-/eGK-/KIM-Anbindung ist nicht aktiv.</p><div><i></i> Mitarbeiterzeit: Datenbank mit Rollenprüfung</div></div></section>
-<section class="auth-shell" id="authShell" aria-labelledby="authTitle">
+<section class="auth-shell" id="authShell" aria-labelledby="authTitle" style="display:none!important">
 <div class="auth-illustration"><span class="eyebrow">STAFF ACCESS</span><h2>Mein Arbeitsbereich.</h2><p>Sicherer Zugang über E-Mail und Passwort mit E-Mail-Bestätigung. Der Praxisinhaber aktiviert neue Mitarbeiter.</p><div class="orbit" aria-hidden="true"><span>01</span><span>02</span><span>03</span></div><div class="auth-points"><span>PERSONENBEZOGENE KONTEN</span><span>ROLLENBASIERTE FREIGABEN</span><span>KEIN KLINISCHER DATENIMPORT</span></div></div>
 <div class="auth-panel">
 <div class="tabs" role="group" aria-label="Kontozugang"><button type="button" data-auth="login" class="current">Anmelden</button><button type="button" data-auth="register">Registrieren</button><button type="button" data-auth="recover">Passwort vergessen</button></div>
@@ -18,15 +18,15 @@
 <button id="submitAuth" class="btn primary" type="submit">Anmelden</button>
 </form><p id="authMessage" class="message" role="status" aria-live="polite"></p>
 <p class="helptext">Die Registrierung erzeugt zunächst eine Zugangsanfrage. Die Anmeldung ist ohne E-Mail-Verifizierung und Freigabe noch kein aktiver Mitarbeiterzugang. Password-Reset-Links benötigen die korrekte Redirect-Konfiguration beim Auth-Anbieter.</p></div></section>
-<section class="dashboard" id="dashboard" hidden>
+<section class="dashboard" id="dashboard">
 <div class="dash-head"><div><span class="eyebrow">ACTIVE WORKSPACE</span><h2>Praxisübersicht</h2><p id="accountLabel"></p></div><div><span id="roleBadge" class="badge"></span><span class="employee-id" id="staffCodeBadge">PERSONALKENNUNG —</span><button id="logout" type="button" class="btn ghost">Abmelden</button></div></div>
-<div id="pending" class="notice" hidden><b>Freigabe steht aus</b><p>Die Registrierung wurde erfasst. Dr. Akarkach kann den Mitarbeiterzugang aktivieren. Bis dahin sind Arbeitszeiten und vertrauliche Kosten gesperrt.</p></div>
-<div class="kpi-grid" id="kpiStrip" hidden>
+<div id="pending" class="notice" hidden style="display:none!important"><b>Freigabe steht aus</b><p>Die Registrierung wurde erfasst. Dr. Akarkach kann den Mitarbeiterzugang aktivieren. Bis dahin sind Arbeitszeiten und vertrauliche Kosten gesperrt.</p></div>
+<div class="kpi-grid" id="kpiStrip">
  <div class="kpi-card"><small>MEINE PERSONALNUMMER</small><strong id="kpiStaff">—</strong><span>Fest mit dem Mitarbeiterkonto verknüpft</span></div>
  <div class="kpi-card"><small>HEUTE ERFASST</small><strong id="kpiToday">0 min</strong><span>Abgeschlossene Auftragstätigkeiten</span></div>
  <div class="kpi-card"><small>MEINE EINTRÄGE</small><strong id="kpiTotal">0</strong><span>Aktuell abrufbare Einträge</span></div>
  <div class="kpi-card accent"><small>AKTUELLER STATUS</small><strong id="kpiState">Bereit</strong><span>Serverbestätigter Tätigkeitsstatus</span></div>
- </div><div class="workspace-grid" id="activeTools" hidden>
+ </div><div class="workspace-grid" id="activeTools">
 <article class="tile time-tile"><div class="tilehead"><span class="eyebrow">01 / ZEITERFASSUNG</span><span class="pill">PERSONENBEZOGEN</span></div><h3>Arbeitszeit dokumentieren <span class="mini-code" id="workStaffCode">—</span></h3><p>Tätigkeit und pseudonyme Auftragskennung vor dem Start festlegen. Die Serverzeit bestimmt Beginn und Ende; jede Übergabe wird als Ereignis dokumentiert.</p>
 <div class="two-fields"><div><label for="workType">Arbeitsschritt</label><select id="workType"><option value="scan">3D-Scan</option><option value="cad">CAD / Modellierung</option><option value="review">Prüfung</option><option value="slicing">Slicing / CAM</option><option value="print">Druckvorbereitung</option><option value="postprocess">Nachbearbeitung</option><option value="qa">Qualitätskontrolle</option><option value="other">Sonstiges</option></select></div><div><label for="workCase">Auftragskennung (kein Patientenname)</label><input id="workCase" maxlength="48" pattern="[A-Za-z0-9_-]{3,48}" value="CASE-TEST-001"></div></div>
 <div class="stopwatch"><small>AKTUELLE TÄTIGKEIT</small><strong id="elapsed">00:00:00</strong><span id="shiftStatus">Keine laufende Tätigkeit</span></div>
@@ -39,7 +39,7 @@
 <div class="integration"><div><b>3D-Drucker</b><small>Optionaler OctoPrint-Adapter im Studio</small></div><a href="./studio.html#printer">STUDIO ↗</a></div>
 <h4>Patientenaufnahme</h4><p>Die spätere Maske umfasst Name, Geburtsdatum, Versicherungsnummer, Kostenträger und Einwilligungs-/Versorgungsbezug. <b>Die Eingabe echter Patientendaten ist hier derzeit deaktiviert.</b></p><div class="patient-mock"><span>BEISPIEL · KEINE ECHTDATEN</span><div><b>Patient</b><i>—</i></div><div><b>Krankenversichertennummer</b><i>GESPERRT</i></div><div><b>eGK-Prüfstatus</b><i>KEINE TI-VERBINDUNG</i></div></div>
 </article></div>
-<section id="ownerArea" class="owner-area" hidden><div class="sectionhead"><div><span class="eyebrow">OWNER ONLY · SERVER ENFORCED</span><h2>Vertrauliche Praxissteuerung</h2><p>Diese Daten werden vom Server ausschließlich für die bestätigte Inhaberrolle freigegeben. Berechnungen sind Kalkulationen, keine automatische Buchhaltung.</p></div><span class="owner-label">NUR DR. AKARKACH</span></div>
+<section id="ownerArea" class="owner-area"><div class="sectionhead"><div><span class="eyebrow">OWNER ONLY · SERVER ENFORCED</span><h2>Vertrauliche Praxissteuerung</h2><p>Diese Daten werden vom Server ausschließlich für die bestätigte Inhaberrolle freigegeben. Berechnungen sind Kalkulationen, keine automatische Buchhaltung.</p></div><span class="owner-label">NUR DR. AKARKACH</span></div>
 <div class="owner-grid"><article class="tile"><div class="tilehead"><span class="eyebrow">03 / PERSONAL</span></div><h3>Mitarbeiterfreigabe</h3><p>Neue Registrierungen müssen persönlich aktiviert werden.</p><div id="staffList" class="entries">Anmeldungen werden geladen.</div></article>
 <article class="tile"><div class="tilehead"><span class="eyebrow">04 / KOSTEN</span></div><h3>Interne Fertigungskalkulation</h3><p>Quellenbasierte Referenzwerte als Ausgangspunkt. Tatsächliche Praxispreise bitte durch Rechnungen, Lohn- und Maschinenkosten ersetzen.</p>
 <form id="costForm"><div class="costgrid">
