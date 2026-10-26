@@ -91,3 +91,26 @@ The website needs HTTPS to run its service worker and most browser cryptographic
 All the above works with browser-native features, no paid SaaS, and no
 mandatory Supabase account. Cloud file hosting of static PWA code is separate from
 storage of its local operational records.
+
+## 8. Automatic offer and native encrypted sharing (26 Oct 2026)
+
+- Global Ortho navigation loads `transfer-offer.js` on every application screen.
+- New browser/device without existing local test records: offers encrypted data import.
+- Existing device with unbacked-up records: offers an encrypted transfer / backup action.
+- After new local changes: the offer may reappear after a daily cooldown, never an
+  interruptive auto-upload. The user may always dismiss it.
+- `device-store.js` tracks metadata for last change, export and import; no passphrase
+  or clinic data is sent to a remote endpoint.
+- `device-hub.js` flushes queued IndexedDB writes before export, encrypts using
+  PBKDF2-SHA256 / AES-256-GCM, and reveals native `navigator.share` only after a
+  valid encrypted file exists and when the OS supports file sharing.
+- `worker-autoresume.js` resumes already-queued bounded read-only jobs when a PWA
+  tab becomes visible; no local infinite daemon or implicit external execution.
+- Existing Pocket Enterprise 24/7 needs the existing **external Windows self-hosted
+  runner**. See private `piga-pocket-enterprise/docs/piga-ortho-24x7-runner-and-sync.md`.
+  The host's availability cannot be inferred from browser-worker completion.
+
+**This release does not implement automatic encrypted real-time sync.** Browser
+portability is an offered, user-confirmed encrypted backup/import. An always-on,
+cross-device replication service requires separate approved pairing and network
+transport. Never use open/no-login mode for real clinical personal data.
