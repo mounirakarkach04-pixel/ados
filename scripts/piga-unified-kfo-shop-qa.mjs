@@ -28,7 +28,7 @@ assert.match(voice,/app:'ortho',message:q,consent:true/);
 assert.match(voicePage,/piga-voice-persona\.js/);
 assert.match(persona,/geminiVoice:'Gacrux'/);
 assert.match(persona,/rate:0\.87/);
-assert.match(sw,/piga-ortho-v151-shared-ai-kfo-shop/);
+assert.match(sw,/piga-ortho-v152-unified-female-kfo-advisor/);
 assert.match(sw,/kfo-shop-advisor\.js/);
 assert.match(sw,/piga-voice-persona\.js/);
 assert.match(styles,/@media\(max-width:480px\)/);
