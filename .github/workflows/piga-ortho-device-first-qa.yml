@@ -11,6 +11,7 @@ on:
       - 'scripts/piga-ortho-workspace-integrity-qa.mjs'
       - 'scripts/piga-ortho-imaging-qa.mjs'
       - 'scripts/piga-ortho-control-qa.mjs'
+      - 'scripts/piga-ortho-setup-qa.mjs'
       - 'scripts/piga-ortho-onboarding-qa.mjs'
       - '.github/workflows/piga-ortho-device-first-qa.yml'
   workflow_dispatch:
@@ -31,4 +32,5 @@ jobs:
           node scripts/piga-ortho-workspace-integrity-qa.mjs
           node scripts/piga-ortho-imaging-qa.mjs
           node scripts/piga-ortho-control-qa.mjs
+          node scripts/piga-ortho-setup-qa.mjs
           node scripts/piga-ortho-onboarding-qa.mjs
