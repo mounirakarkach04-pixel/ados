@@ -225,5 +225,9 @@ $('stlInput').onchange=async e=>{
 let promptEvent=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;$('install').hidden=false});
 $('install').onclick=async()=>{if(promptEvent){await promptEvent.prompt();promptEvent=null;$('install').hidden=true}};
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./direct-sw.js',{scope:'./'}).catch(()=>{});
-renderAll();panelOpen('overview');
+renderAll();
+const allowedPanels=new Set(['overview','cases','tasks','calendar','inventory','team','studio','reports','controls']);
+const navigateFromHash=()=>{const panel=decodeURIComponent(location.hash.slice(1));panelOpen(allowedPanels.has(panel)?panel:'overview');};
+window.addEventListener('hashchange',navigateFromHash);
+navigateFromHash();
 })();
