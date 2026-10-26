@@ -131,3 +131,17 @@ body.ortho-visual-v3 .module-card:hover{border-color:#7fcddf!important;box-shado
 .ortho-v3-install:disabled{opacity:.6;cursor:default!important}
 .ortho-v3-install-hint{margin:11px 0 0;max-width:650px;padding:11px 14px;background:#ecfafb;color:#226c84;
  border:1px solid #c2e8ed;border-radius:10px;font-size:12px;line-height:1.6}
+
+/* Operational value proposition on the real, populated dashboard */
+.ops-promo{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(210px,.65fr);align-items:center;gap:20px;
+ padding:22px clamp(18px,2.5vw,39px);background:linear-gradient(110deg,#faffff,#eaf9ff 58%,#dff6ff);
+ border:1px solid #bce3ef;border-radius:22px;margin:24px 0;box-shadow:0 10px 30px #0b769911;overflow:hidden}
+.ops-promo h2{color:#164568;font-size:clamp(20px,2.2vw,30px);letter-spacing:-.045em;line-height:1.16;margin:8px 0}
+.ops-promo h2 em{font-style:normal;color:#0b9fae}
+.ops-promo p{color:#5c7d90;font-size:13px;line-height:1.6;max-width:720px}
+.ops-promo img{display:block;width:100%;height:155px;object-fit:contain;border-radius:15px;
+ background:#fff9;border:1px solid #d5eefa}
+.ops-promo-action{display:inline-flex;align-items:center;background:linear-gradient(100deg,#078cbd,#0abab5);
+ color:#fff!important;padding:11px 17px;border-radius:11px;font-size:12px;font-weight:830;text-decoration:none;margin-top:6px}
+.ops-promo-action:hover{background:linear-gradient(100deg,#0577a1,#078d9a)}
+@media(max-width:760px){.ops-promo{grid-template-columns:1fr;padding:17px 16px;gap:11px}.ops-promo img{height:135px}}
