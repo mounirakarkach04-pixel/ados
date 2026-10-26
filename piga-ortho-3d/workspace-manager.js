@@ -3,7 +3,7 @@
    Pure presentation: DOM is not reparented and no business / Gate-2 action is changed. */
 (()=>{
  const STORE='piga-ortho-workspace-v1', PANELS=[
-  '.handoff-card','.hub-panel','.diag-section','.ops-panel','.ops-card',
+  '.pc-card','.handoff-card','.hub-panel','.diag-section','.ops-panel','.ops-card',
   '.transport','.stepper','.workbench','.workspace','.inspector',
   '.tool-card','.module-card','.panel','.tile','.paper'
  ];
@@ -31,7 +31,7 @@
  const status=document.createElement('span');status.className='piga-workspace-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  status.textContent='Großzügige Arbeitsflächen · lokal auf diesem Gerät';bar.append(status);
  // Place after a module heading, never inside a form or the 3D rendering canvas.
- const heading=main.querySelector('.ortho-v3-masthead,.shell-top,.hub-top,.handoff-intro,.diag-hero,.ops-note');
+ const heading=main.querySelector('.ortho-v3-masthead,.pc-hero,.shell-top,.hub-top,.handoff-intro,.diag-hero,.ops-note');
  if(heading)heading.insertAdjacentElement('afterend',bar);else main.prepend(bar);
  let chosen=null,maximized=null,returnFocus=null,shade=null,close=null,oldRole=null,oldLabel=null;
  const candidates=()=>[...main.querySelectorAll(PANELS.join(','))].filter(p=>{
