@@ -2,6 +2,7 @@
 (()=>{
  const paths=[
  {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./dashboard.html',icon:'grid'},
+ {id:'cases',label:'Fälle & Kalender',desc:'Lokale Testfälle, Aufgaben und Termine',href:'./direct.html#cases',icon:'calendar'},
  {id:'praxis',label:'Praxis',desc:'Mitarbeiter, Rollen, Zeiten, Auftragsverlauf und vertrauliche Kalkulation',href:'./praxis.html',icon:'users'},
  {id:'team',label:'Personal & Steuer',desc:'Unterweisung, Dienstplan, Urlaub, Krankmeldung und freigegebene Lohndaten',href:'./team.html',icon:'users'},
  {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./inventory.html',icon:'grid'},
@@ -14,6 +15,7 @@
  {id:'report',label:'Prüfakte / PDF',desc:'Druckfertiger PIGA und A7SEM-Nachweis mit lokaler Hashprüfung',href:'./report.html',icon:'document'}
  ];
  const icons={
+ calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 15h3"/>',
  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
  users:'<circle cx="9" cy="8" r="3"/><path d="M3 21v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6M17 15a5 5 0 0 1 4 5"/>',
  cube:'<path d="m12 2 9 5-9 5-9-5 9-5ZM3 7v10l9 5 9-5V7M12 12v10"/>',
@@ -25,8 +27,8 @@
  };
  const svg=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[k]+'</svg>';
  const filename=location.pathname.split('/').pop()||'index.html';
- let selected=filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
- if(filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
+ let selected=filename==='direct.html'?'cases':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
+ if(filename==='studio.html'||filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
  const brand=document.createElement('a');brand.className='piga-mark';brand.href='./dashboard.html';brand.innerHTML='<span class="piga-mark-icon">⊓</span><span><b>PIGA</b><small>ORTHO 3D</small></span>';rail.append(brand);
@@ -44,7 +46,7 @@
  const top=document.createElement('div');top.className='piga-command-head';top.insertAdjacentHTML('beforeend',svg('search'));const search=document.createElement('input');search.type='search';search.placeholder='Funktion suchen, z. B. Druck, Kosten, STL …';search.setAttribute('aria-label','Funktion suchen');top.append(search);const close=document.createElement('button');close.type='button';close.className='piga-command-close';close.textContent='Schließen';top.append(close);panel.append(top);
  const results=document.createElement('div');results.className='piga-results';panel.append(results);
  const foot=document.createElement('div');foot.className='piga-command-footer';foot.textContent='Nur freigegebene Module benutzen · keine echten Patientendaten';panel.append(foot);overlay.append(panel);
- const keywords={dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
+ const keywords={cases:'fälle kalender termine aufgaben lokal',dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
  function render(){results.textContent='';const q=search.value.trim().toLocaleLowerCase('de-DE');const found=paths.filter(p=>(p.label+' '+p.desc+' '+keywords[p.id]).toLocaleLowerCase('de-DE').includes(q));
   if(!found.length){const empty=document.createElement('p');empty.textContent='Keine passende Funktion gefunden.';empty.style.padding='15px';results.append(empty);return;}
   found.forEach(p=>{const item=document.createElement('a');item.href=p.href;const b=document.createElement('b');b.textContent=p.label;const sm=document.createElement('small');sm.textContent=p.desc;item.append(b,sm);results.append(item);});}
@@ -66,9 +68,9 @@
   }
  });
  document.body.classList.add('piga-has-nav');document.body.prepend(rail);document.body.append(bottom,overlay);
- const update=()=>{if(filename!=='index.html')return;let next='studio';if(location.hash==='#printer')next='printer';if(location.hash==='#evidence'||location.hash==='#governance')next='quality';[...rail.querySelectorAll('.piga-links a'),...bottom.querySelectorAll('a')].forEach(el=>{const dest=paths.find(p=>p.href===el.getAttribute('href'));if(dest?.id===next)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});};
+ const update=()=>{if(filename!=='studio.html'&&filename!=='index.html')return;let next='studio';if(location.hash==='#printer')next='printer';if(location.hash==='#evidence'||location.hash==='#governance')next='quality';[...rail.querySelectorAll('.piga-links a'),...bottom.querySelectorAll('a')].forEach(el=>{const dest=paths.find(p=>p.href===el.getAttribute('href'));if(dest?.id===next)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});};
  window.addEventListener('hashchange',update);update();
- if(filename==='index.html'){
+ if(filename==='studio.html'||filename==='index.html'){
    // Keep the global active nav synchronized with in-page studio tabs.
    document.querySelectorAll('.tabs button[data-tab]').forEach(button=>button.addEventListener('click',()=>{
      const tab=button.dataset.tab;
