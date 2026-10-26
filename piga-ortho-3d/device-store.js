@@ -89,5 +89,18 @@ window.PigaDeviceStore=(()=>{
   return {status:availability,usage:estimate?.usage??null,quota:estimate?.quota??null,persistent};
  };
  const persist=async()=>!!(await navigator.storage?.persist?.());
- return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush};
+ const saveImagingReview=async record=>{
+  if(!record||record.version!==1||!Array.isArray(record.steps)||!Array.isArray(record.history)||
+   record.steps.length>8||record.history.length>30||!['IDLE','PAUSED','REJECTED','TECHNICAL_READY','RUNNING','AWAITING_APPROVAL','BLOCK'].includes(record.status))
+   throw Error('Invalid bounded review record');
+  const data={version:1,status:record.status==='RUNNING'||record.status==='AWAITING_APPROVAL'?'PAUSED':record.status,
+   steps:record.steps.slice(0,8).map(x=>String(x).slice(0,90)),
+   index:Math.max(0,Math.min(Number(record.index)||0,8)),
+   history:record.history.slice(-30).map(x=>({at:String(x.at||'').slice(0,35),event:String(x.event||'').slice(0,170)})),
+   session:String(record.session||'').slice(0,80)};
+  if(JSON.stringify(data).length>14000)throw Error('Review metadata too large');
+  return put('imaging-review',data);
+ };
+ const loadImagingReview=async()=>{const row=await get('imaging-review');return row?.data||null};
+  return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush,saveImagingReview,loadImagingReview};
 })();
