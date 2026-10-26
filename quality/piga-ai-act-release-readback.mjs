@@ -11,7 +11,7 @@ const origin="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/
 const results=[];
 const sha256=bytes=>crypto.createHash("sha256").update(bytes).digest("hex");
 const record=(name,state,evidence)=>results.push({name,state,...evidence});
-const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","piga-act-bridge.js","styles.css","design-v3.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
+const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","piga-act-bridge.js","welcome-journey.mjs","styles.css","design-v3.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
 async function remote(path,{method="GET",headers={},body}={}){
  const response=await fetch(path,{method,headers,body,signal:AbortSignal.timeout(12000),redirect:"follow",cache:"no-store"});
  return response;
@@ -33,6 +33,22 @@ try{
  const missing=required.filter(x=>!manifest[x]);
  record("manifest_structure",missing.length?"BLOCK":"ALLOW",{missing});
 }catch(error){record("manifest_structure","BLOCK",{reason:String(error.message||error).slice(0,160)});}
+// Verify the newly published welcome journey is the actually reviewed customer experience.
+// This is a source/readback contract, NOT a conversion-rate or commercial Gate-2 claim.
+try{
+ const html=fs.readFileSync(root+"/index.html","utf8");
+ const welcome=fs.readFileSync(root+"/welcome-journey.mjs","utf8");
+ const expected={
+  welcome_headline:html.includes("Bevor Ihre KI entscheidet:"),
+  audience_selector:["provider","deployer","both"].every(role=>html.includes('data-audience="'+role+'"')),
+  free_preassessment:html.includes("Kostenfreie KI-Voranalyse starten"),
+  report_specific_cta:html.includes('id="result-guide-cta"'),
+  client_module_loaded:html.includes('src="welcome-journey.mjs"'),
+  demo_never_sells_directly:welcome.includes('if(isDemo)return')&&welcome.includes('destination:"assessment"')
+ };
+ const failed=Object.entries(expected).filter(([,ok])=>!ok).map(([name])=>name);
+ record("welcome_journey_contract",failed.length?"BLOCK":"ALLOW",{checks:expected,failed});
+}catch(error){record("welcome_journey_contract","BLOCK",{reason:"welcome_readback_source_error",message:String(error.message||error).slice(0,160)});}
 const sensitive=fs.readFileSync(root+"/app.bundle.js","utf8");
 record("client_secret_boundary",/(?:sk_live_|whsec_|SUPABASE_SERVICE_ROLE_KEY\s*[=:]\s*['"])/.test(sensitive)?"BLOCK":"ALLOW",{checked:"no Stripe live secret / no public service-role assignment"});
 try{
