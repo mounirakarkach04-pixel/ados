@@ -82,13 +82,13 @@ test('Automatic backup offer is unobtrusive and requires explicit transfer conse
  assert(o.includes("open.href='./device-hub.html#transfer'"));
  assert(hub.includes('navigator.share')&&hub.includes('S.flush()')&&hub.includes('S.markImport()'));
  assert(data.includes("stamp('lastChange')")&&data.includes("markBackup"));
- assert(!/fetch\\s*\\(/.test(o));
+ assert(!o.includes('fetch('));
 });
 test('Previously admitted local work may resume in foreground without an unlimited loop',()=>{
  const o=read('worker-autoresume.js'),n=read('navigation.js');
  assert(o.includes("state==='QUEUED'")&&o.includes("limit:5"));
  assert(o.includes("document.visibilityState==='hidden'"));
  assert(n.includes("s.src='./worker-autoresume.js'"));
- assert(!/setInterval\\s*\\(/.test(o));
+ assert(!o.includes('setInterval('));
 });
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
