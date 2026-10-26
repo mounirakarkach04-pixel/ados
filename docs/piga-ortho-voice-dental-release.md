@@ -1,0 +1,1 @@
+PIGA ORTHO 3D: An opt-in on-device language model with no user-entered API key and photorealistic synthetic 1672 × 940 dentition asset were added to the existing application. Gemini website login is not programmatic authorization. Full medical/financial actions remain blocked pending verified operator admission.
