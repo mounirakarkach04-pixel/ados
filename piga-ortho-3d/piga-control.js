@@ -87,7 +87,7 @@
     const popup=mk('button','Im Popup prüfen');popup.type='button';
     popup.addEventListener('click',()=>{
      const dlg=$('pcReviewDialog');if(!dlg?.showModal)return notice('Dieser Browser unterstützt keine Popup-Prüfansicht.',true);
-     dlg.dataset.requestId=r.id;
+     dlg.dataset.requestId=r.id;dlg.returnValue='CLOSE';
      $('pcReviewDescription').textContent=(kindLabel[r.kind]||r.kind)+' — '+r.description;
      dlg.showModal();
     });
