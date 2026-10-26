@@ -25,7 +25,7 @@ async function recover(){
  await transact('jobs','readwrite',store=>{
   const request=store.getAll();
   request.onsuccess=()=>{for(const job of request.result){
-   if(job.state==='RUNNING'&&Date.now()-Date.parse(job.startedAt||job.createdAt)>60000){
+   if(job.state==='RUNNING'&&(!Number.isFinite(Date.parse(job.startedAt||job.createdAt))||Date.now()-Date.parse(job.startedAt||job.createdAt)>60000)){
     job.state=job.attempts<3?'QUEUED':'FAILED';job.error='Unvollständige frühere Worker-Sitzung';store.put(job);
    }
   }};
@@ -91,10 +91,30 @@ async function compute(kind){
 }
 async function finish(job,result,error){
  const at=now(),checksum=result?await hash(result):null;
- await transact('jobs','readwrite',s=>s.put({...job,state:error?'FAILED':'DONE',endedAt:at,result:result||null,resultSha256:checksum,error:error||null}));
- const id=crypto.randomUUID();
- await transact('events','readwrite',s=>s.put({id,jobId:job.id,kind:job.kind,state:error?'FAILED':'DONE',at,sha256:checksum}));
- return {id:job.id,kind:job.kind,state:error?'FAILED':'DONE',sha256:checksum};
+ const state=error?'FAILED':'DONE',eventId=crypto.randomUUID();
+ const db=await open();
+ await new Promise((resolve,reject)=>{
+  // Job completion, evidence receipt and history compaction are a single
+  // IndexedDB transaction: no DONE job without its corresponding event.
+  const tr=db.transaction(['jobs','events'],'readwrite');
+  const jobs=tr.objectStore('jobs'),events=tr.objectStore('events');
+  jobs.put({...job,state,endedAt:at,result:result||null,resultSha256:checksum,error:error||null});
+  events.put({id:eventId,jobId:job.id,kind:job.kind,state,at,sha256:checksum});
+  const jobRead=jobs.getAll(),eventRead=events.getAll();
+  jobRead.onsuccess=()=>{
+   const old=jobRead.result.filter(row=>['DONE','FAILED'].includes(row.state))
+    .sort((a,b)=>String(b.endedAt||'').localeCompare(String(a.endedAt||''))).slice(250);
+   old.forEach(row=>jobs.delete(row.id));
+  };
+  eventRead.onsuccess=()=>{
+   const old=eventRead.result.sort((a,b)=>String(b.at||'').localeCompare(String(a.at||''))).slice(350);
+   old.forEach(row=>events.delete(row.id));
+  };
+  tr.oncomplete=()=>{db.close();resolve()};
+  tr.onerror=()=>{db.close();reject(tr.error||Error('Atomic receipt failed'))};
+  tr.onabort=()=>{db.close();reject(tr.error||Error('Receipt was rolled back'))};
+ });
+ return {id:job.id,kind:job.kind,state,sha256:checksum};
 }
 let busy=false;
 self.onmessage=async event=>{
