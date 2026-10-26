@@ -69,7 +69,7 @@ window.PigaBrain=(()=>{
  }
  function decide(record,decision,reviewerVerified=false){
   if(!record||record.status!=='AWAITING_REVIEW')throw Error('Request cannot be decided');
-  if(!['REJECT','PAUSE','APPROVE_DRAFT'].includes(decision))throw Error('Unsupported review outcome');
+  if(!['REJECT','PAUSE','ACK_TECHNICAL','APPROVE_DRAFT'].includes(decision))throw Error('Unsupported review outcome');
   if(decision==='APPROVE_DRAFT'&&!reviewerVerified)throw Error('Verified owner authority required for real approvals');
   const status=decision==='REJECT'?'REJECTED':decision==='PAUSE'?'PAUSED':'TECHNICALLY_REVIEWED';
   return {...record,status,decision,decisionAt:new Date().toISOString(),gate2:'BLOCK',
