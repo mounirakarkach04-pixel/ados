@@ -17,11 +17,30 @@
  direct:{title:'Fälle, Termine & Aufgaben',desc:'Lokale Testfallverwaltung, Kalender, Aufgaben und Exporte – ohne Anmeldung.',image:'ortho-calendar.svg',num:'10',label:'ORGANISATION'},
  'device-hub':{title:'Local Device Database',desc:'Dein Endgerät als Datenspeicher: verschlüsselte Sicherung und begrenzte Worker.',image:'ortho-inventory.svg',num:'11',label:'DEVICE FIRST'}
  };
+ function installFocus(target){
+  const KEY='piga-ortho-focus-mode-v1';
+  const toggle=document.createElement('button');toggle.type='button';toggle.className='ortho-focus-toggle';
+  const exit=document.createElement('button');exit.type='button';exit.className='ortho-focus-exit';
+  exit.textContent='Fokusmodus verlassen';exit.setAttribute('aria-label','Vollständige Navigation wieder einblenden');
+  const set=on=>{
+   document.body.classList.toggle('ortho-focus-mode',on);
+   toggle.textContent=on?'Fokusmodus verlassen':'Arbeitsfläche maximieren';
+   toggle.setAttribute('aria-pressed',String(on));exit.hidden=!on;
+   try{localStorage.setItem(KEY,on?'1':'0')}catch{}
+  };
+  toggle.addEventListener('click',()=>set(!document.body.classList.contains('ortho-focus-mode')));
+  exit.addEventListener('click',()=>set(false));
+  const tools=target.querySelector('.ortho-v3-mast-actions')||target.querySelector('.hero-actions')||target;
+  tools.append(toggle);document.body.append(exit);
+  let on=false;try{on=localStorage.getItem(KEY)==='1'}catch{}
+  set(on);
+ }
  const config=pages[page],main=document.querySelector('main');
  if(!config||!main)return;
  if(page==='dashboard'){
    // Dashboard already has the full brand and marketing-style main hero.
    document.body.classList.add('ortho-visual-v3');
+   installFocus(main);
    return;
  }
  const head=document.createElement('div');head.className='ortho-v3-masthead';
@@ -46,4 +65,5 @@
  art.append(picture);
  head.append(lead,art);main.prepend(head);
  document.body.classList.add('ortho-visual-v3','ortho-page-'+page);
+ installFocus(main);
 })();
