@@ -1,5 +1,6 @@
 'use strict';
-(()=>{
+(async()=>{
+ await window.OrthoLocalReady;
  const L=window.OrthoLocal,{db,$,value,number,text,visible,date,format,now,uuid,el,row,csv,save,showMsg}=L;
  L.banner();visible('workspace');visible('staffNav');visible('staffPermissions');visible('configuration');visible('addNewItem');
  text('hello','Materialverwaltung');text('identity','Lokaler Materialbestand · ohne Anmeldung');
