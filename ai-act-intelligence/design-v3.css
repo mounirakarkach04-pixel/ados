@@ -335,3 +335,36 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
   #view-results .report-gates{min-width:0}
   #view-results .report-gates>div{min-width:0}
 }
+
+/* Public PIGA 119-article practical controls: mobile first, accessible, unpaywalled. */
+.piga-law-controls{padding:clamp(16px,3vw,26px);border:1px solid #d4e6f8;border-radius:18px;background:linear-gradient(125deg,#f6fbff,#fff);margin:16px 0 22px}
+.piga-law-quick-stats{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;color:#57718e;font-size:12px}
+.piga-law-quick-stats b{color:#0872df;font-size:25px;letter-spacing:-1px}
+.piga-law-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.piga-law-filters label{color:#24476d;font-size:11px;font-weight:800;letter-spacing:.03em}
+.piga-law-filters select{width:100%;display:block;min-height:47px;padding:9px 12px;margin-top:7px;border-radius:10px;border:1px solid #c9dceb;background:#fff;color:#193d63;font:500 14px/1.4 inherit}
+.piga-law-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.piga-law-actions .btn{min-height:41px}
+.piga-law-disclaimer{margin:9px 0 0;font-size:12px;line-height:1.6;color:#59718b}
+.piga-article-result-count{color:#537292;font-size:12px;font-weight:700;margin:0 0 14px}
+.piga-article-guide{border:1px solid #dae7f5;border-radius:15px;margin:0 0 12px;background:#fff;overflow:hidden;min-width:0}
+.piga-article-guide>summary{display:flex;align-items:center;gap:15px;cursor:pointer;padding:17px 18px;list-style:none}
+.piga-article-guide>summary::-webkit-details-marker{display:none}
+.piga-article-guide[open]>summary{background:#f3f8fe;border-bottom:1px solid #dfeaf6}
+.piga-article-num{font-size:12px;font-weight:850;color:#0c6fca;background:#eaf4fe;border-radius:9px;padding:10px;white-space:nowrap}
+.piga-article-name{flex:1;min-width:0;overflow-wrap:break-word}
+.piga-article-name b{font-size:15px;color:#14375e;display:block;line-height:1.5}
+.piga-article-name small{font-size:11px;color:#6b829a;display:block;margin-top:4px}
+.piga-article-open{font-size:11px;color:#3d779f;font-weight:800;white-space:nowrap}
+.piga-article-guide-body{padding:19px 20px 21px;font-size:13px;color:#3e5d79;line-height:1.7}
+.piga-article-duty{margin:0 0 17px}
+.piga-article-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.piga-article-guide-grid>div{min-width:0;border-radius:11px;background:#f7faff;border:1px solid #e5effa;padding:13px}
+.piga-article-guide-grid b{color:#17558c;font-size:12px}
+.piga-article-guide-grid p{margin:6px 0;color:#4b6480}
+.piga-article-guide-grid small{color:#6582a2}
+.piga-guide-next{border-top:1px solid #e3edf7;margin-top:18px;padding-top:13px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
+.piga-guide-next p{color:#6c7f93;font-size:11px;max-width:66ch;margin:0}
+.piga-guide-next a{font-weight:800;color:#0969d9}
+@media(max-width:740px){.piga-law-filters{grid-template-columns:1fr}.piga-article-guide-grid{grid-template-columns:1fr}.piga-article-guide>summary{padding:14px 12px;gap:9px;align-items:flex-start}.piga-article-name b{font-size:13px}.piga-article-num{font-size:10px;padding:8px}.piga-article-open{font-size:0}.piga-article-open::after{content:"+";font-size:15px}.piga-article-guide-body{padding:15px 12px}.piga-law-quick-stats b{font-size:22px}}
+@media print{.piga-law-controls,.piga-article-guide{display:none!important}}
