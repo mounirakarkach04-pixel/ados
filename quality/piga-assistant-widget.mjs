@@ -22,6 +22,10 @@ if(profile){
  form.addEventListener("submit",async event=>{
   event.preventDefault();if(send.disabled||!confirm.checked)return void(status.textContent=translated[2]);
   const question=field.value.trim();if(question.length<2||question.length>650)return;
+  // Deliberately conservative only. Never claims reliable detection of all personal information.
+  if(/(?:[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}|\b(?:password|passwort|kennwort|api.?key|auth.?token|patientenakte|versichertennummer|iban|medical record|health record|patient record|mot de passe)\b)/i.test(question)){
+   status.textContent=translated[2];return;
+  }
   send.disabled=true;speak.disabled=true;status.textContent="PIGA …";
   const c=new AbortController(),timer=setTimeout(()=>c.abort(),11000);
   try{
