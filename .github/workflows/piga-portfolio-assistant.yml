@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'quality/piga-assistant-*'
+      - 'quality/kfo-sales-parity.test.mjs'
       - 'quality/portfolio-registry.json'
       - 'index.html'
       - 'research-intake.html'
@@ -27,3 +28,5 @@ jobs:
         run: node quality/piga-assistant-portfolio.test.mjs
       - name: Validate JavaScript module syntax
         run: node --check quality/piga-assistant-widget.mjs
+      - name: Verify KFO HTML/offline parity and unchanged Showroom integration
+        run: node quality/kfo-sales-parity.test.mjs
