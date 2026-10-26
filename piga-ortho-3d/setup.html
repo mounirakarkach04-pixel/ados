@@ -41,7 +41,8 @@
 <div class="setup-info"><p>Für garantierte 24/7-Ausführung nach dem Schließen einer Browser-App ist ein separat laufender autorisierter Host oder nativer Hintergrunddienst nötig. Diese Einrichtung ersetzt ihn nicht.</p></div>
 </article>
 <article data-screen="4" hidden><span class="setup-kicker">05 / ASSISTENZ</span><h2>Deinen PIGA-Assistenten verbinden.</h2>
-<p>PIGA hilft bereits ohne Anmeldung bei lokalen Arbeitsschritten. Die optionale Online-KI wird über unseren bestehenden PIGA-Server verbunden – auf diesem Smartphone ist kein API-Schlüssel erforderlich.</p>
+<p>Starte PIGA ohne Anmeldung. Für freie KI-Antworten kann dein Gerät nach deiner Zustimmung ein lokales Sprachmodell laden. Alternativ bleibt eine spätere, gesicherte Gemini-Serveranbindung möglich. Du musst keinen geheimen Schlüssel am Smartphone eintippen.</p>
+<div class="setup-actions"><a class="setup-primary" href="./piga-voice.html">PIGA Sprach-KI ohne API-Schlüssel öffnen</a></div>
 <div class="setup-ai-card">
 <div><strong>KI-Verbindung</strong><span id="setupAiBadge" class="setup-ai-badge">Noch nicht geprüft</span></div>
 <p id="setupAiResult" class="setup-statusline" role="status" aria-live="polite">Prüfe mit einer Berührung, ob der sichere Server vorbereitet ist. Die Prüfung erzeugt keine KI-Kosten.</p>
@@ -49,7 +50,7 @@
 </div>
 <div class="setup-actions"><a href="./piga-control.html#brain" class="setup-primary">PIGA Chat öffnen</a><button id="setupVoice" type="button">Gerätestimme testen</button></div>
 <div class="setup-statusline" id="setupVoiceResult">Die Sprachausgabe ist optional.</div>
-<details class="setup-admin-details"><summary>Für den Betreiber: einmalige Einrichtung des sicheren Proxys</summary>
+<details class="setup-admin-details"><summary>Nur optional: Gemini über sicheren Betreiber-Proxy</summary>
 <p><b>Der Proxy ist der bestehende PIGA-Cloudflare-Worker</b> unter <code>pigapocket.com/piga-ortho-3d/ai/status</code>. Er wird nicht auf dem Smartphone installiert.</p>
 <ol><li>Cloudflare Dashboard öffnen, den vorhandenen Worker <code>piga-pocket-enterprise</code> für <code>pigapocket.com</code> auswählen und unter <b>Settings → Variables and Secrets</b> den <b>verschlüsselten Secret</b>-Eintrag <code>GEMINI_API_KEY</code> anlegen. Nicht in einen Chat oder GitHub kopieren.</li>
 <li>Separat eine ausdrücklich genehmigte Kostenobergrenze, eine sichere Betreiber-/Mitarbeiteranmeldung und serverseitige Praxischrechte einrichten. Erst nach erfolgreichem Sicherheitstest wird die Online-Chatfunktion freigegeben.</li></ol>
