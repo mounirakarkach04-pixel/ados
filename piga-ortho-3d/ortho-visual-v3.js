@@ -4,6 +4,7 @@
  const page=(location.pathname.split('/').pop()||'dashboard.html').replace('.html','');
  if(['sales','index','auth'].includes(page))return;
  const pages={
+ diagnostics:{title:'Systemtest & Funktionsstatus',desc:'Echte Funktionstests für IndexedDB, Kryptografie, Worker, STL, Offline und Geräteverfügbarkeit.',image:'ortho-dashboard.svg',num:'00',label:'DIAGNOSTICS'},
  handoff:{title:'Praxis-Labor-Übergabe',desc:'Eine Auftragsreferenz für STL-Grundprüfung, Materialkontrolle, Aufgaben, Prüftermine und technische Evidenz.',image:'ortho-hero.svg',num:'02',label:'CASE TO LAB'},
  operations:{title:'Arbeitscockpit & Prioritäten',desc:'Alle lokalen Testfälle, Aufgaben, Termine und Materialwarnungen in einer gemeinsamen Arbeitsansicht.',image:'ortho-dashboard.svg',num:'01',label:'OPERATIONS'},
  dashboard:{title:'Dein digitaler KFO-Arbeitsplatz',desc:'Übersicht, Prüfschritte und alle technischen Werkzeuge auf einem Bildschirm.',image:'ortho-dashboard.svg',num:'01',label:'DASHBOARD'},
