@@ -19,7 +19,7 @@ const checks=[
  ['No authenticated request interception',()=>assert.match(sw,/request\.headers\.has\("authorization"\)/)],
  ['Only explicitly enumerated public shell assets',()=>assert.match(sw,/!shellURLs\.has\(url\.href\)/)],
  ['Offline navigation has no arbitrary homepage fallback',()=>assert.doesNotMatch(sw,/catch\([^)]*=>\s*caches\.match\("\.\/index\.html"\)/)],
- ['No secrets in public cache list',()=>assert.doesNotMatch(sw,/SHELL\s*=\s*\[[\s\S]*?\]/g, 'unused')],
+ ['No private evidence paths in shell',()=>assert.doesNotMatch(sw,/\"\.\/(?:storage|auth|private|evidence)\//i)],
 ];
 let failures=0;
 for(const [name,fn] of checks){try{fn();console.log('PASS',name)}catch(e){failures++;console.error('FAIL',name,e.message)}}
