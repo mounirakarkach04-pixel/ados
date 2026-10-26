@@ -29,15 +29,20 @@
 <button id="execute" type="button">Bis zu 5 Aufträge ausführen</button></div>
 <div id="workerStatus" class="hub-feedback" role="status">Bereit.</div>
 <div id="jobs" class="hub-list" aria-live="polite"></div></section>
-<section class="hub-panel"><p class="eyebrow">03 / DEVICE TO DEVICE</p><h2>Verschlüsselter Datentransfer</h2>
+<section class="hub-panel"><p class="eyebrow">03 / DEVICE TO DEVICE</p><h2>Verschlüsselter Datentransfer</h2><p><strong>Jetzt automatisch angeboten:</strong> Auf einem neuen Gerät erscheint ein Import-Hinweis. Nach Änderungen erinnert die App an eine neue Sicherung. Ein echtes automatisches Kopieren zwischen zwei Geräten erfordert eine sichere Verbindung und deren Freigabe.</p>
 <p>Ohne Cloud: Auf Gerät A verschlüsselt exportieren, Datei sicher auf Gerät B übertragen, dort wieder importieren. Keine automatische Synchronisierung.</p>
 <label for="secret">Sicherungspasswort (mindestens 12 Zeichen)</label><input id="secret" type="password" autocomplete="new-password" minlength="12" placeholder="Nur für den Export/Import; wird nicht gespeichert">
-<div class="hub-actions"><button id="export" class="primary" type="button">Verschlüsselte Sicherung exportieren</button>
+<div class="hub-actions"><button id="export" class="primary" type="button">Verschlüsselte Sicherung exportieren</button><button id="share" type="button" hidden>Datei mit Gerät teilen</button>
 <label class="file-button" for="backupFile">Sicherungsdatei auswählen<input id="backupFile" type="file" accept=".json,application/json" hidden></label>
 <button id="import" type="button">Sicherung importieren</button></div>
-<p id="transferStatus" class="hub-feedback" role="status">AES-GCM und PBKDF2-SHA256 · nur auf diesem Gerät entschlüsselt.</p>
+<p id="transferStatus" class="hub-feedback" role="status">AES-GCM und PBKDF2-SHA256 · nur auf diesem Gerät entschlüsselt.</p><p id="transferFreshness" class="hub-note">Sicherungsstatus wird geladen …</p>
 <p class="hub-note">Beim Import werden beide lokalen Testdatenbestände auf diesem Gerät ersetzt. Erst eine eigene aktuelle Sicherung erstellen.</p></section>
-<section class="hub-panel"><p class="eyebrow">04 / GOVERNANCE</p><h2>Grenzen der lokalen Architektur</h2>
+<section class="hub-panel" id="enterprise-runtime"><p class="eyebrow">04 / POCKET ENTERPRISE</p><h2>24/7-Ausführung über bestehenden Runner</h2>
+<p>Die bestehenden PIGA Pocket-Enterprise-Worker sind von lokalen Ortho-Browser-Workern getrennt. Ihre Ereignisverarbeitung benötigt einen dauerhaft erreichbaren selbst gehosteten Rechner oder einen autorisierten externen Host. Kein Smartphone-Browser kann diese Verfügbarkeit garantieren.</p>
+<div class="hub-feedback" id="enterpriseStatus">Externer Runner: Online-Zustand nicht verifiziert. Browser-PWA kann den geschützten Runner nicht ohne Authentifizierung steuern.</div>
+<div class="hub-actions"><a href="https://github.com/mounirakarkach04-pixel/piga-pocket-enterprise/blob/main/.github/workflows/piga-own-execution-runner.yml" target="_blank" rel="noopener noreferrer">Vorhandenen Pocket-Enterprise-Runner ansehen</a></div>
+<p class="hub-note">Die App startet weder Remote-Worker noch druckt sie automatisch. Externe Aktionen bleiben an die bestehenden Gate-1-/Gate-2-Freigaben gebunden. Ein Rechner, der ausgeschaltet oder offline ist, führt keine Jobs aus.</p></section>
+<section class="hub-panel"><p class="eyebrow">05 / GOVERNANCE</p><h2>Grenzen der lokalen Architektur</h2>
 <ul><li>Smartphone, Tablet und Desktop verwenden denselben Web-Code, aber getrennte Gerätespeicher.</li>
 <li>Es gibt keine Berechtigungsverwaltung durch Supabase oder einen anderen Cloud-Anbieter.</li>
 <li>Worker arbeiten während einer aktiven Sitzung. Ein dauerhaft laufender Hintergrundprozess ist im Browser nicht garantiert.</li>
