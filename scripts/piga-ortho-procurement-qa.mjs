@@ -25,7 +25,7 @@ test('UI offers owner review rather than executing shop API',()=>{
  const h=read('procurement.html'),js=read('procurement.js');
  for(const id of ['buyRefresh','buyExport','buyApproval','buyItems','buyResult','buyCount'])
  assert(h.includes('id="'+id+'"')&&js.includes("'"+id+"'"),id);
- assert(h.includes('https://kfoshop24.de/'));
+ assert(h.includes('https://kfoshop24.com/'));
  assert(js.includes('S.savePigaControl'));assert(js.includes("'INVENTORY_REVIEW'"));
  assert(!/\bfetch\s*\(|XMLHttpRequest|\.submit\(\)/.test(js));
 });
