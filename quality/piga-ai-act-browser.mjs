@@ -253,6 +253,17 @@ try{
   // Offline-first PWA: static shell and bibliographic index must remain available without network.
   await mobilePage.evaluate(async()=>{await navigator.serviceWorker.ready;});
   await mobilePage.waitForFunction(()=>navigator.serviceWorker.controller!==null,{timeout:15000});
+  const cacheEvidence=await mobilePage.evaluate(async()=>{
+   const names=await caches.keys();
+   const current="piga-aiact-shell-v17-mobile-report";
+   const cache=await caches.open(current);
+   const response=await cache.match("./design-v3.css");
+   const css=response?await response.text():"";
+   return {names,cssContainsMobileRepair:css.includes("#view-results .report-overview")&&css.includes("@media screen and (max-width:880px)")};
+  });
+  assert.ok(cacheEvidence.names.includes("piga-aiact-shell-v17-mobile-report"),"Old mobile CSS cache not invalidated: "+JSON.stringify(cacheEvidence));
+  assert.ok(!cacheEvidence.names.some(x=>x.startsWith("piga-aiact-shell-")&&x!=="piga-aiact-shell-v17-mobile-report"),"Old shell cache survived activation: "+JSON.stringify(cacheEvidence));
+  assert.equal(cacheEvidence.cssContainsMobileRepair,true,"Cached CSS does not contain mobile report fix");
   await mobile.setOffline(true);
   await mobilePage.goto("http://127.0.0.1:4173/ai-act-intelligence/",{waitUntil:"domcontentloaded",timeout:20000});
   await mobilePage.waitForURL(/#home$/,{timeout:15000});
