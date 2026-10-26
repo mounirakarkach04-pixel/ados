@@ -1,9 +1,9 @@
 // Public application shell only. Never intercept cross-origin, authenticated API or private evidence.
-const CACHE = "piga-aiact-shell-v15-scoped-offline";
+const CACHE = "piga-aiact-shell-v16-welcome-evidence";
 const SHELL = [
   "./", "./index.html", "./styles.css", "./design-v3.css", "./app.bundle.js",
   "./engine.js", "./portfolio.js", "./publications.js", "./journey.js",
-  "./piga-act-bridge.js", "./icon.svg", "./manifest.webmanifest",
+  "./piga-act-bridge.js", "./welcome-journey.mjs", "./icon.svg", "./manifest.webmanifest",
   "./privacy.html", "./terms.html"
 ];
 const shellURLs = new Set(SHELL.map(path => new URL(path, self.registration.scope).href));
