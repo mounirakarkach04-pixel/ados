@@ -269,3 +269,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
 /* Keyboard accessibility: visible skip navigation, CSP-compatible (no inline JS). */
 .skip-link{position:absolute;left:12px;top:-90px;z-index:9999;padding:12px 16px;background:#fff;color:#0b2450;border:2px solid #1477df;border-radius:8px}
 .skip-link:focus{top:12px}
+
+/* Accessibility refinements: consistent focus, reduced-motion support and resilient layouts. */
+:where(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #146fe8;outline-offset:3px}
+#main-content:focus{outline:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(max-width:420px){.shell,.main,main,.view{min-width:0}.panel,.feature,.card{overflow-wrap:anywhere}}
