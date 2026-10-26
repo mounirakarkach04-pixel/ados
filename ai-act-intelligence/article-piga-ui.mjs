@@ -30,7 +30,7 @@ function csv(){
 }
 function card(x){
  return '<details class="piga-article-guide" data-article="'+html(x.article)+'"><summary>'+
-   '<span class="piga-article-num">ART. '+html(x.article)+'</span><span class="piga-article-name"><b>'+html(x.title)+'</b><small>Kapitel '+html(x.chapter)+' · '+html(x.group)+'</small></span>'+
+   '<span class="piga-article-num">Art. '+html(x.article)+'</span><span class="piga-article-name"><b>'+html(x.title)+'</b><small>Kapitel '+html(x.chapter)+' · '+html(x.group)+'</small></span>'+
    '<span class="piga-article-open" aria-hidden="true">Details +</span></summary>'+
    '<div class="piga-article-guide-body">'+
    '<p class="piga-article-duty"><strong>Relevanz und Rechtsbezug:</strong> '+html(x.focus)+'</p>'+
