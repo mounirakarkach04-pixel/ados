@@ -323,3 +323,14 @@ body>main .more-links a:hover{background:#d9f2f6!important}
  .device-hub .hub-status{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .device-hub .hub-grid{grid-template-columns:1fr!important}
 }
+
+/* Device-first status strip: one focused action, no distracting fake KPIs */
+.device-entry{display:flex;justify-content:space-between;align-items:center;gap:22px;margin:23px 0 25px;
+ background:linear-gradient(105deg,#e7f9fb,#f0f9ff);border:1px solid #c7eaf0;border-radius:20px;padding:22px 27px;
+ box-shadow:0 7px 25px #1c71840b}
+.device-entry h2{font-size:clamp(19px,2vw,26px);margin:7px 0;color:#194658;letter-spacing:-.035em}
+.device-entry p{font-size:13px;color:#567f8b;max-width:760px;margin:4px 0}
+.device-entry>a{background:#fff;border:1px solid #c0e3ea;border-radius:12px;padding:14px 18px;color:#117a8d;
+ font-weight:750;font-size:13px;text-align:center;text-decoration:none;white-space:normal;flex-shrink:0}
+.device-entry>a:hover{background:#d9f4f8}
+@media(max-width:760px){.device-entry{flex-direction:column;align-items:stretch;padding:18px 17px}.device-entry>a{width:100%}}
