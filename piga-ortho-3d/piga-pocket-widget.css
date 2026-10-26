@@ -1,0 +1,31 @@
+/* Global PIGA assistant quickdock, deliberately above app bottom nav and below true modal decisions */
+.piga-pocket-widget{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;position:fixed;
+ right:clamp(13px,2.2vw,32px);bottom:clamp(15px,2vw,33px);z-index:490;max-width:calc(100vw - 20px)}
+.piga-pocket-launch{border-radius:28px!important;min-height:49px!important;padding:11px 18px!important;
+ background:linear-gradient(118deg,#067fae,#04b8bd)!important;color:#fff!important;
+ border:1px solid #3ecbd1!important;font-size:12px!important;font-weight:850!important;
+ box-shadow:0 9px 26px #0c568658!important;cursor:pointer!important;letter-spacing:.03em}
+.piga-pocket-launch:hover{transform:translateY(-2px)}
+.piga-pocket-panel{width:min(360px,calc(100vw - 24px));max-height:min(580px,74vh);overflow-y:auto;background:#fff;
+ border:1px solid #b4e4ee;border-radius:19px;padding:15px;box-shadow:0 19px 60px #0e435b42;
+ position:absolute;right:0;bottom:calc(100% + 9px);color:#1b5c78}
+.piga-pocket-panel[hidden]{display:none!important}
+.piga-pocket-top{display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(110deg,#edfcff,#e6f9fc);
+ border-radius:10px;padding:9px 11px}.piga-pocket-top strong{font-size:13px;color:#156480}
+.piga-pocket-close{border:0!important;background:transparent!important;color:#376b7e!important;
+ font-size:27px!important;cursor:pointer!important}
+.piga-pocket-status{margin:11px 0;color:#0e839b;font-size:11px;line-height:1.5}
+.piga-pocket-answer{min-height:120px;max-height:250px;overflow-y:auto;padding:15px;border-radius:11px;
+ background:#f3fbfe;border:1px solid #deebf1;color:#486f84;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.piga-pocket-answer a{display:block;margin-top:12px;color:#058cab;font-weight:780;text-decoration:underline}
+.piga-pocket-form{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:12px}
+.piga-pocket-input{width:100%;min-width:0;border:1px solid #c7e2ed!important;border-radius:10px!important;
+ min-height:43px!important;background:#fff!important;color:#26556d!important;padding:8px 10px!important;font-size:12px!important}
+.piga-pocket-form button{border:1px solid #148db1!important;background:#0aa1b5!important;
+ color:white!important;border-radius:10px!important;padding:8px 11px!important;cursor:pointer;font-size:12px!important}
+.piga-pocket-more{display:block;margin-top:12px;color:#078bb0!important;text-align:center;font-size:12px;font-weight:800;
+ text-decoration:none;padding:10px;border:1px solid #d3edf2;border-radius:10px;background:#ecfbff}
+@media(max-width:760px){.piga-pocket-widget{right:11px;bottom:calc(77px + env(safe-area-inset-bottom))}
+ .piga-pocket-launch{min-height:42px!important;padding:9px 12px!important;font-size:11px!important}
+ .piga-pocket-panel{max-height:calc(100dvh - 183px)}}
+@media print{.piga-pocket-widget{display:none!important}}
