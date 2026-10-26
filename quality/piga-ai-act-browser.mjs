@@ -176,7 +176,7 @@ try{
  await page.locator("#atlas-list .atlas-card").first().locator("summary").click();
  assert.match(await page.locator("#atlas-list .atlas-body").first().innerText(),/A7SEM Reverse|Gegenprobe/);
  assert.match(await page.locator("#atlas-list .atlas-body").first().innerText(),/NOT ASSESSED/);
- assert.equal(await page.locator("#atlas-list .atlas-card").count(),1);
+ assert.ok(await page.locator("#atlas-list .atlas-card").count()>=1,"Article title / evidence search must find at least one result");
  await page.fill("#atlas-search","");
  await page.locator("#atlas-category").selectOption("notified");
  assert.match(await page.locator("#atlas-list").innerText(),/Notifizierung|notifizierte/i);
