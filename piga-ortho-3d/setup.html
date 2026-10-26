@@ -1,5 +1,5 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#effaff"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="theme-color" content="#effaff"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src https://pigapocket.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
 <meta name="description" content="PIGA ORTHO 3D — Einrichtungsassistent mit gerätelokalem Speicher, Netzwerk, Worker- und Sprachprüfung; App jederzeit zugänglich.">
 <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css"><link rel="stylesheet" href="./setup.css">
@@ -40,11 +40,21 @@
 <div class="setup-statusline" id="setupWorkerResult">Noch kein Testlauf.</div>
 <div class="setup-info"><p>Für garantierte 24/7-Ausführung nach dem Schließen einer Browser-App ist ein separat laufender autorisierter Host oder nativer Hintergrunddienst nötig. Diese Einrichtung ersetzt ihn nicht.</p></div>
 </article>
-<article data-screen="4" hidden><span class="setup-kicker">05 / ASSISTENZ</span><h2>PIGA antwortet sofort – Sprach-KI ist optional.</h2>
-<p>Der lokale PIGA-Chat steht ohne Schlüssel zur Verfügung. Die Gerätestimme kann Antworten vorlesen. Spracheingabe benötigt Browserunterstützung und eine Mikrofonfreigabe.</p>
+<article data-screen="4" hidden><span class="setup-kicker">05 / ASSISTENZ</span><h2>Deinen PIGA-Assistenten verbinden.</h2>
+<p>PIGA hilft bereits ohne Anmeldung bei lokalen Arbeitsschritten. Die optionale Online-KI wird über unseren bestehenden PIGA-Server verbunden – auf diesem Smartphone ist kein API-Schlüssel erforderlich.</p>
+<div class="setup-ai-card">
+<div><strong>KI-Verbindung</strong><span id="setupAiBadge" class="setup-ai-badge">Noch nicht geprüft</span></div>
+<p id="setupAiResult" class="setup-statusline" role="status" aria-live="polite">Prüfe mit einer Berührung, ob der sichere Server vorbereitet ist. Die Prüfung erzeugt keine KI-Kosten.</p>
+<button type="button" id="setupCheckAi" class="setup-primary">KI-Verbindung prüfen</button>
+</div>
 <div class="setup-actions"><a href="./piga-control.html#brain" class="setup-primary">PIGA Chat öffnen</a><button id="setupVoice" type="button">Gerätestimme testen</button></div>
-<div class="setup-statusline" id="setupVoiceResult">Optional. Kein API-Schlüssel notwendig.</div>
-<details><summary>Gemini sicher in zwei Schritten vorbereiten</summary><p>1. <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a> öffnen und dort dein eigenes Projekt mit einem beschränkten API-Zugang konfigurieren. 2. Den Schlüssel **ausschließlich** in einem geschützten Backend/Proxy hinterlegen und Kostenkontrollen aktivieren. Erst nach authentifizierter Backend-Freigabe kann PIGA generative Online-Antworten nutzen. Niemals einen privaten Schlüssel in diesem öffentlichen HTML eingeben.</p></details>
+<div class="setup-statusline" id="setupVoiceResult">Die Sprachausgabe ist optional.</div>
+<details class="setup-admin-details"><summary>Für den Betreiber: einmalige Einrichtung des sicheren Proxys</summary>
+<p><b>Der Proxy ist der bestehende PIGA-Cloudflare-Worker</b> unter <code>pigapocket.com/piga-ortho-3d/ai/status</code>. Er wird nicht auf dem Smartphone installiert.</p>
+<ol><li>Cloudflare Dashboard öffnen, den Worker für <code>pigapocket.com</code> auswählen und unter <b>Settings → Variables and Secrets</b> den <b>verschlüsselten Secret</b>-Eintrag <code>GEMINI_API_KEY</code> anlegen. Nicht in einen Chat oder GitHub kopieren.</li>
+<li>Separat eine ausdrücklich genehmigte Kostenobergrenze, eine sichere Betreiber-/Mitarbeiteranmeldung und serverseitige Praxischrechte einrichten. Erst nach erfolgreichem Sicherheitstest wird die Online-Chatfunktion freigegeben.</li></ol>
+<p><b>Bereits öffentlich geteilte API-Schlüssel ersetzen.</b> Für den Betreiber genügt die einmalige sichere Hinterlegung; Mitarbeitende müssen den Schlüssel nicht kennen.</p>
+</details>
 </article>
 <article data-screen="5" hidden><span class="setup-kicker">06 / ÜBERSICHT</span><h2>Einrichtung abgeschlossen – oder jederzeit fortsetzbar.</h2>
 <div id="setupSummary" class="setup-summary">Deine Prüfungen erscheinen hier.</div>
@@ -55,4 +65,4 @@
 <div class="setup-bottom"><button type="button" id="setupBack">Zurück</button><button type="button" id="setupSkip">Später erledigen · App öffnen</button><button type="button" class="setup-primary" id="setupNext">Weiter →</button></div>
 </section></div><div id="setupNotice" role="status" aria-live="polite" class="setup-notice">Alle Schritte sind freiwillig.</div>
 <footer class="setup-footer">PIGA GATE 1 DELAY · GATE 2 BLOCK · LOCAL-FIRST · KEINE KLINISCHE PRODUKTFREIGABE</footer>
-</main><script src="./device-store.js" defer></script><script src="./setup.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
+</main><script src="./device-store.js" defer></script><script src="./setup.js" defer></script><script src="./ortho-ai-status.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
