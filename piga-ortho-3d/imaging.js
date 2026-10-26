@@ -141,7 +141,15 @@
  }
  $('analyzeStages').onclick=()=>{try{simulate()}catch(e){note('stageMessage',e.message)}};
  $('stageSlider').oninput=e=>showStage(Number(e.target.value));
- // Session-bounded state machine. No unbounded background work, no remote execution.
+ // Session-bounded state machine. Persist only review metadata; files and pixel arrays stay in RAM.
+ let reviewWrite=Promise.resolve();
+ function persistReview(){
+  const save=window.PigaDeviceStore?.saveImagingReview;
+  if(typeof save!=='function')return;
+  const snap={version:1,status:pipeline.status,steps:pipeline.steps.slice(0,8),index:pipeline.index,
+    history:pipeline.history.slice(-30).map(x=>({...x})),session:pipeline.session};
+  reviewWrite=reviewWrite.catch(()=>{}).then(()=>save(snap)).catch(()=>{note('pipelineState','Lokale Prüfakte konnte nicht dauerhaft gespeichert werden – Export zur Sicherung verwenden.')});
+ }
  function record(text){
   pipeline.history.push({at:new Date().toISOString(),event:text});
   pipeline.history=pipeline.history.slice(-30);
@@ -150,6 +158,7 @@
    const p=document.createElement('p');p.textContent=new Date(row.at).toLocaleTimeString('de-DE')+' · '+row.event;root.append(p);
   }
   note('pipelineState','Zustand: '+pipeline.status+' · Schritt '+pipeline.index+'/'+pipeline.steps.length);
+  persistReview();
  }
  function prompt(step){
   return new Promise(resolve=>{
@@ -164,10 +173,11 @@
   const resolve=dialogResolve;dialogResolve=null;
   if(resolve)resolve(['approve','reject','pause'].includes(d.returnValue)?d.returnValue:'pause');
  });
- async function runPipeline(session){
+ async function runPipeline(session,startAt=0,continuing=false){
   const steps=['Synthetische DICOM-Vorschau prüfen','Grauwertmaskierung berechnen','Technische Modellprüfung dokumentieren','PIGA-Glassbox-Evidenz zusammenstellen'];
-  pipeline={status:'RUNNING',steps,index:0,history:[],session};record('FINITES FORSCHUNGSTICKET aufgenommen');
-  for(let i=0;i<steps.length;i++){
+  if(continuing){pipeline.status='RUNNING';record('VORHER PAUSIERTEN Forschungszyklus fortgesetzt');}
+  else{pipeline={status:'RUNNING',steps,index:0,history:[],session};record('FINITES FORSCHUNGSTICKET aufgenommen');}
+  for(let i=startAt;i<steps.length;i++){
    if(pipeline.session!==session||pipeline.status!=='RUNNING')break;
    pipeline.index=i+1;
    pipeline.status='AWAITING_APPROVAL';record('Freigabe wartet: '+steps[i]);
@@ -192,9 +202,16 @@
   if(['AWAITING_APPROVAL','RUNNING'].includes(pipeline.status))return;
   $('runFinite').disabled=true;void runPipeline(crypto.randomUUID());
  };
+ $('resumePipeline').onclick=()=>{
+  if(pipeline.status!=='PAUSED'||!pipeline.steps.length)
+   return record('Kein pausierter Forschungsauftrag zum Fortsetzen');
+  if(dialogResolve)return;
+  $('runFinite').disabled=true;
+  void runPipeline(pipeline.session,Math.max(0,pipeline.index-1),true);
+ };
  $('pausePipeline').onclick=()=>{
   if(d.open)d.close('pause');
-  if(pipeline.status==='RUNNING')pipeline.status='PAUSED';
+  if(pipeline.status==='RUNNING'||pipeline.status==='AWAITING_APPROVAL')pipeline.status='PAUSED';
   record('Pausieren angefordert');
  };
  $('resetPipeline').onclick=()=>{
@@ -226,5 +243,17 @@
    note('evidenceMessage','Technisches Protokoll exportiert · SHA-256 '+sha.slice(0,18)+'…');
   }catch(e){note('evidenceMessage','Export fehlgeschlagen: '+e.message)}
  };
- render();showStage(0);
+ async function restoreReview(){
+  try{
+   const store=window.PigaDeviceStore;
+   if(!store?.loadImagingReview)return;
+   const saved=await store.loadImagingReview();
+   if(!saved?.steps?.length||!Array.isArray(saved.history))return;
+   pipeline={status:['RUNNING','AWAITING_APPROVAL'].includes(saved.status)?'PAUSED':saved.status,
+     steps:saved.steps.slice(0,8),index:Math.max(0,Math.min(saved.index,saved.steps.length)),
+     history:saved.history.slice(-30),session:crypto.randomUUID()};
+   record('Review-Status aus lokaler Gerätedatenbank übernommen; keine automatische Freigabe');
+  }catch{note('pipelineState','Lokaler Review-Status nicht verfügbar.');}
+ }
+ render();showStage(0);void restoreReview();
 })();
