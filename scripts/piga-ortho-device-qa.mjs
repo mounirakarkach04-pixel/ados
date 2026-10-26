@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const root='piga-ortho-3d',read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const pages=['operations','dashboard','studio','praxis','team','inventory','devices','assist','workflow','report','direct','device-hub'];
-const js=['operations.js','ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
+const js=['operations.js','ortho-ops-center.js','ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
 let tests=0;const test=(title,fn)=>{fn();tests++;console.log('PASS '+title)};
 test('All active UI scripts parse',()=>js.forEach(file=>new vm.Script(read(file),{filename:file})));
 test('Every full app page contains unified wide theme + navigation',()=>pages.forEach(name=>{
@@ -169,5 +169,52 @@ test('Daily operations cockpit reads real local records and never claims clinica
   assert(sw.includes("'./"+file+"'"),file);
  assert(nav.includes("href:'./operations.html'"));
  assert(read('dashboard.html').includes('class="ops-promo"'));
+});
+test('Dashboard local work overview is wired, with real-derived counts and focus mode',()=>{
+ const h=read('dashboard.html'),ops=read('ortho-ops-center.js'),css=read('ortho-visual-v3.css'),
+  v=read('ortho-visual-v3.js'),sw=read('sw.js');
+ for(const id of ['orthoOpsCenter','opsCases','opsTasks','opsCalendar','opsStock','opsTeam','opsAgenda','opsQueue','opsRecent','opsRefresh','opsExport']){
+  assert(h.includes('id="'+id+'"'),'Dashboard missing '+id);
+ }
+ for(const f of ['ortho-ops-center.css','ortho-ops-center.js'])
+  assert(sw.includes("'./"+f+"'"),'Offline asset missing '+f);
+ assert(h.includes('href="./operations.html"'),'Full day cockpit not linked');
+ assert(ops.includes("DS?.get(name)")&&ops.includes("DS?.listJobs?.()"),'Must read local device snapshots and worker records');
+ assert(ops.includes("pigaGate2:'BLOCK'"),'No action admission bypass');
+ assert(ops.includes('containsNames:false'),'Aggregated export must not contain case labels');
+ assert(!ops.includes('fetch('),'No network effect');
+ assert(v.includes('installFocus(main)')&&v.includes('ortho-focus-mode'),'Missing ergonomic focus toggle');
+ assert(css.includes('.ortho-focus-exit[hidden]'),'Focus must remain reversible');
+});
+test('Live dashboard renders saved local test workflow facts in a simulated DOM',async()=>{
+ const ids=['orthoOpsCenter','opsDate','opsCases','opsTasks','opsCalendar','opsStock','opsTeam','opsAgenda',
+ 'opsQueue','opsRecent','opsStatus','opsRefresh','opsExport'];
+ class FakeNode {
+  constructor(name='div'){this.name=name;this.children=[];this.textContent='';this.style={};this.attributes={};this.href='';this.onclick=null}
+  append(...x){this.children.push(...x)}
+  replaceChildren(...x){this.children=x}
+  setAttribute(n,v){this.attributes[n]=v}
+ }
+ const elements=new Map(ids.map(x=>[x,new FakeNode()]));
+ const now=new Date(),d=new Date(now.getFullYear(),now.getMonth(),now.getDate(),14,0).toISOString();
+ const docs={getElementById:id=>elements.get(id)||null,
+   createElement:name=>new FakeNode(name),addEventListener:()=>{},body:new FakeNode('body')};
+ const W={PigaDeviceStore:{
+   get:async n=>({data:n==='direct'?{version:1,cases:[{id:'a',ref:'T-001',state:'open'}],
+     tasks:[{id:'t',caseId:'a',title:'Local material review',status:'open'}],
+     calendar:[{title:'STL test',start:d,minutes:30}],audit:[],inventory:[],team:[]}:
+     {version:1,inventory:[{sku:'R-1',quantity:2,minimum:5}],staff:[],shifts:[]}}),
+   listJobs:async()=>[]},addEventListener:()=>{}};
+ const context={document:docs,window:W,BroadcastChannel:undefined,
+   localStorage:{getItem:()=>null},Date,Intl,Promise,Blob,URL,console,
+   setTimeout:()=>0,clearTimeout:()=>{}};
+ vm.runInNewContext(read('ortho-ops-center.js'),context,{filename:'ortho-ops-center.js'});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(elements.get('opsCases').textContent,'1');
+ assert.equal(elements.get('opsTasks').textContent,'1');
+ assert.equal(elements.get('opsCalendar').textContent,'1');
+ assert.equal(elements.get('opsStock').textContent,'1');
+ assert(elements.get('opsQueue').children.length>0,'Actionable queue empty');
+ assert.equal(typeof elements.get('opsExport').onclick,'function');
 });
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
