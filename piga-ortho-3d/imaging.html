@@ -48,6 +48,13 @@
 <div class="imaging-slider-line"><label for="stageSlider">Stufe</label><input id="stageSlider" type="range" min="0" max="8" value="0"><output id="stageReadout">0 / 8</output></div>
 <div class="imaging-stage"><div id="stageMarker"></div><div class="stage-axis"></div></div>
 <p class="imaging-footnote">Keine Zahnidentitäten, Zahnachsen, Knochenwiderstände, Kräfte, Wurzelgrenzen oder Aligner-Fertigung in dieser Simulation.</p></section>
+<section class="imaging-panel imaging-4k-viewer"><header class="imaging-panel-title"><span class="number">4K</span><div>
+<h2>Jaw Studio · GPU Full Detail</h2><p>Ober- und Unterkiefer aus der STL-Quelle mit GPU-Beleuchtung, Drehung, Zoom und tatsächlichem 3840 × 2160-Pixel-PNG-Export auf geeigneter Hardware.</p></div></header>
+<div class="imaging-4k-canvas-wrap"><canvas id="jaw4kCanvas" width="1280" height="720" aria-label="GPU-Gebissmodell mit rotierbarer detaillierter 3D-Darstellung"></canvas></div>
+<div class="imaging-actions"><button type="button" id="jawReset">3D-Ansicht zurücksetzen</button><button type="button" class="primary" id="jaw4kExport">4K-Modellansicht exportieren</button></div>
+<div id="jaw4kStatus" class="imaging-message">STL-Modelle A und B oben wählen; lokale GPU wird geprüft.</div>
+<p class="imaging-footnote">Die Modelle werden nicht hochgeladen. Ein 4K-PNG bedeutet 3840 × 2160 Ausgabepixel; es fügt fehlender STL-Geometrie keine anatomischen Details hinzu. Kein kalibrierter Biss, keine Diagnose oder Aligner-Erstellung.</p>
+</section>
 <section class="imaging-panel imaging-governance"><header class="imaging-panel-title"><span class="number">05</span><div><h2>PIGA Factory Control</h2><p>Begrenzter, ereignisgesteuerter Forschungszyklus mit Freigeben / Ablehnen / Pausieren.</p></div></header>
 <div class="imaging-gates"><div><small>Pre-inference Gate 1</small><b>DELAY · klinisch</b></div><div><small>Action Gate 2</small><b>BLOCK · Geräte</b></div><div><small>Worker-Umfang</small><b>Nur lokale Forschungsanalyse</b></div></div>
 <div class="imaging-actions"><button id="runFinite" class="primary" type="button">Finite Arbeitsfolge starten</button><button id="pausePipeline" type="button">Pausieren</button><button id="resetPipeline" type="button">Zyklus zurücksetzen</button></div>
@@ -70,5 +77,5 @@
 <p class="imaging-footnote">Diese Freigabe betrifft nur lokale technische Forschungsberechnungen und gewährt keine ärztliche oder physische Geräteautorität.</p></dialog>
 <footer class="imaging-footer">TECHNISCHE EVALUATION · 4K-RENDER CAP · NO PATIENT DATA · PIGA GATE 2 = BLOCK</footer>
 </main>
-<script src="./imaging-core.js" defer></script><script src="./imaging.js" defer></script>
+<script src="./imaging-core.js" defer></script><script src="./imaging.js" defer></script><script src="./imaging-gpu.js" defer></script>
 <script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
