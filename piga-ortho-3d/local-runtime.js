@@ -28,7 +28,7 @@ window.OrthoLocal=(()=>{
  }
  function uuid(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)}
  const $=id=>document.getElementById(id);
- const value=id=>$(id)?.value?.trim()??'';
+ const value=id=>String($(id)?.value??'').trim();
  const number=id=>{const v=Number(value(id));return Number.isFinite(v)?v:0};
  const text=(id,v)=>{if($(id))$(id).textContent=String(v??'');};
  const visible=(id,yes=true)=>{if($(id))$(id).hidden=!yes;};
