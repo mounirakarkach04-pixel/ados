@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root='piga-ortho-3d';
-const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js','assist.html','assist.css','assist.js','kfo-bema-2026.csv'];
+const names=['index.html','app.js','style.css','sw.js','icon.svg','manifest.webmanifest','privacy.html','README.txt','workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js','assist.html','assist.css','assist.js','kfo-bema-2026.csv','team.html','team.css','team.js','auth.html','auth.js'];
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 for(const name of names){
   assert(fs.existsSync(path.join(root,name)),'Missing web asset: '+name);
@@ -15,7 +15,7 @@ const css=read('workflow.css');
 const js=read('workflow.js');
 const sw=read('sw.js');
 assert(main.includes('href="./workflow.html"'),'Main entry to navigator missing');
-for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js','assist.html','assist.css','assist.js','kfo-bema-2026.csv'])assert(sw.includes(name),'Offline SW cache missing '+name);
+for(const name of ['workflow.html','workflow.css','workflow.js','praxis.html','praxis.css','praxis.js','dashboard.html','dashboard.css','dashboard.js','navigation.css','navigation.js','report.html','report.css','report.js','devices.html','devices.css','devices.js','assist.html','assist.css','assist.js','kfo-bema-2026.csv','team.html','team.css','team.js','auth.html','auth.js'])assert(sw.includes(name),'Offline SW cache missing '+name);
 for(const name of ['workflow.css','workflow.js'])assert(html.includes('./'+name),'Workflow asset link missing '+name);
 assert(!/https?:\/\//i.test(html),'External URLs forbidden in local UI');
 assert(read('praxis.css').includes('@media(max-width:600px)'),'Mobile staff UI missing');
@@ -56,10 +56,10 @@ for(const id of ['staffCodeBadge','kpiStaff','kpiToday','kpiTotal','kpiState','w
 for(const required of ['staff_code','ortho_work_events','function loadTrail()','event_type','occurred_at','caseEvents','toLocaleString']){
  assert(workspace.includes(required),'Missing v0.6 employee-trace logic '+required);
 }
-assert(read('sw.js').includes('piga-ortho-v100-static'),'Offline service worker version not bumped');
+assert(read('sw.js').includes('piga-ortho-v110-static'),'Offline service worker version not bumped');
 assert(!workspace.includes("localStorage.setItem("),'Never persist sensitive staff session in localStorage');
 assert(praxis.includes('Keine Patientennamen oder Krankenkassennummern'),'Patient-health-data exclusion missing in owner trace');
-process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 29 parity assets, offline cache, controls, gate boundaries, attribution.\n');
+process.stdout.write('PIGA ORTHO design QA PASS: 12 stages, 34 parity assets, offline cache, controls, gate boundaries, attribution.\n');
 
 const cockpit=read('dashboard.html');const navScript=read('navigation.js');const cockpitCode=read('dashboard.js');
 for(const name of ['index.html','praxis.html','workflow.html','dashboard.html']){
@@ -74,7 +74,7 @@ assert(cockpitCode.includes('crypto.subtle.digest'),'Local STL integrity hash mi
 assert(cockpitCode.includes('n===boxes.length'),'Checklist completeness missing');
 assert(cockpitCode.includes('Eine Druckfreigabe ist damit nicht erteilt'),'Checklist must not misrepresent authorization');
 assert(read('app.js').includes('activateRequestedSection'),'Deep-linked studio tabs not connected');
-assert(read('sw.js').includes('piga-ortho-v100-static'),'Outdated service-worker cache version');
+assert(read('sw.js').includes('piga-ortho-v110-static'),'Outdated service-worker cache version');
 assert(read('manifest.webmanifest').includes('"start_url":"./dashboard.html"'),'PWA should launch cockpit first');
 
 // v0.8 personal display and print-ready evidence report checks
@@ -126,3 +126,19 @@ assert(read('assist.js').includes('composeOwnerEmail'),'Owner-controlled safe me
 assert(read('kfo-bema-2026.csv').includes('"117"'),'BEMA 2026 reference missing');
 assert(read('devices.js').includes("selectedDemo='standard'"),'Three demo variants unavailable');
 for(const kind of ['standard','crowding','spacing'])assert(read('devices.html').includes('data-model="'+kind+'"'),'Synthetic model '+kind+' missing');
+
+for(const id of ['loginForm','clockIn','clockOut','breakStart','breakEnd','absenceForm','manualReader','ackForm','signedPdf','ownerArea','accountantArea','ownerManuals','ownerPayroll'])assert(read('team.html').includes('id="'+id+'"'),'Missing role/HR control '+id);
+assert(read('team.js').includes("staff.role==='accountant'"),'Accountant role enforcement missing');
+assert(read('team.js').includes("staff.role==='owner'"),'Owner role enforcement missing');
+assert(read('team.js').includes("sessionStorage.removeItem('piga-ortho-auth-ephemeral')"),'Logout must clear session');
+assert(read('team.js').includes("ortho-training-archive"),'Private PDF archiving missing');
+assert(read('team.js').includes("includes_diagnosis:false"),'Payroll diagnosis exclusion missing');
+assert(read('team.js').includes("status:'draft'"),'Payroll must start as private draft');
+assert(read('team.js').includes("status:'shared'"),'Owner-controlled sharing missing');
+assert(read('team.js').includes("ortho_hr_time_events"),'Separate daily clock system missing');
+assert(read('team.js').includes("auth/v1/resend"),'Email verification resend missing');
+assert(read('auth.js').includes("type==='recovery'"),'Password recovery validation missing');
+assert(read('auth.js').includes("method:'PUT'"),'Password update callback missing');
+assert(read('praxis.js').includes("auth.html?state=check-email"),'Signup no longer redirecting to verification page');
+assert(read('navigation.js').includes('href:\'./team.html\''),'Team page navigation missing');
+assert(read('sw.js').includes('piga-ortho-v110-static'),'Offline cache mismatch v1.1');

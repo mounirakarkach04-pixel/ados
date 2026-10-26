@@ -29,6 +29,8 @@ jobs:
           node --check piga-ortho-3d/report.js
           node --check piga-ortho-3d/devices.js
           node --check piga-ortho-3d/assist.js
+          node --check piga-ortho-3d/team.js
+          node --check piga-ortho-3d/auth.js
       - name: Verify interactive workflow, gates and APK asset source parity
         run: node scripts/piga-ortho-workflow-qa.mjs
       - name: Execute synthetic scan-to-PDF engine with SHA-256 readback
