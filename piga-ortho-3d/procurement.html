@@ -1,0 +1,22 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#effaff"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css"><link rel="stylesheet" href="./procurement.css">
+<title>Materialnachbestellung · PIGA ORTHO 3D</title></head><body>
+<main class="buy-app" id="content">
+<header class="buy-hero"><div><span class="eyebrow">PIGA · INVENTAR & MATERIAL</span><h1>Fehlbestand erkennen. <em>Bestellung vorbereiten.</em></h1>
+<p>Die lokale Bestandsprüfung erstellt eine nachvollziehbare Einkaufsliste. Mengen und Artikel lassen sich vor dem Kauf kontrollieren; Bestellungen und Zahlungen erfolgen nur nach ausdrücklicher Freigabe außerhalb der App.</p>
+<div class="buy-actions"><a href="./inventory.html">Inventur bearbeiten</a><a href="./piga-control.html#approvals">PIGA Freigabe-Inbox</a><a href="./setup.html">Geräte einrichten</a></div></div>
+<img src="./visuals/ortho-inventory.svg" alt="Illustrative Materialplanung" width="650" height="320"></header>
+<div class="buy-alert"><strong>Keine automatische Shopanbindung bestätigt.</strong> Die Adresse <code>kfoshop24.de</code> wurde als gewünschter Shop angegeben; die Warenkorb-API, Produktzuordnungen, Preise und Zugangsrechte sind nicht verifiziert. Diese Seite kauft nichts, ruft keinen Shop-Warenkorb auf und löst keine Kosten aus.</div>
+<section class="buy-metrics"><div><span>Artikel unter Mindestbestand</span><b id="buyCount">–</b></div>
+<div><span>Kaufstatus</span><b>NICHT BESTELLT</b></div><div><span>Freigabestufe</span><b>GATE 2 BLOCK</b></div></section>
+<section class="buy-panel"><header><div><h2>Nachbestellvorschläge aus deiner Inventur</h2><p>Artikel, lokale Menge und Packungsgrößen werden aus dem vorhandenen Gerätespeicher gelesen.</p></div>
+<div class="buy-actions"><button type="button" id="buyRefresh" class="buy-primary">Bestände prüfen</button><button id="buyExport" type="button">CSV-Einkaufsliste exportieren</button></div></header>
+<div id="buyItems" class="buy-list" aria-live="polite">Bestände werden gelesen …</div>
+<div id="buyResult" class="buy-result" role="status">Noch kein lokaler Einkaufsvorschlag erstellt.</div>
+<div class="buy-actions"><button id="buyApproval" type="button">Einkaufsprüfung als PIGA Entwurf vormerken</button>
+<a href="https://kfoshop24.de/" target="_blank" rel="noopener noreferrer">KFO Shop im neuen Tab öffnen</a></div>
+<p class="buy-note">Produkte und Mengen müssen von einem autorisierten Mitarbeiter auf der richtigen Händlerseite abgeglichen werden. Eine echte Warenkorbbefüllung darf erst nach gesicherter Händler-API, Artikel-Mapping, Rollenprüfung und expliziter Einwilligung implementiert werden.</p></section>
+</main>
+<script src="./device-store.js" defer></script><script src="./procurement-core.js" defer></script><script src="./procurement.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
