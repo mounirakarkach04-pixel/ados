@@ -10,6 +10,55 @@
  const library='https://esm.run/@mlc-ai/web-llm@0.2.86';
  const context='Du bist PIGA, ein freundlicher technischer KFO-Praxisassistent. Antworte in der Sprache der Frage, bevorzugt Deutsch. Gib Unsicherheit ehrlich an. Erfinde keine rechtlichen oder medizinischen Diagnosen, Preise, Integrationen oder Live-Daten. Nie eigenmächtig Bestellungen, Medikamente, Patientenbehandlungen, Rechnungen oder Hardwareaktionen genehmigen. PIGA Gate 2 BLOCK für reale Effekte. Beschränke dich auf Orientierung und technische Lernhilfe.';
  let capability='unavailable',engine=null,modelType='rule',busy=false,lastAnswer='',recognizer=null,history=[];
+ let showroomReady=false,showroomEnabled=false;
+ const SHOWROOM_STATUS='https://pigapocket.com/piga-ortho-3d/ai/status';
+ const SHOWROOM_ASK='https://pigapocket.com/piga-ortho-3d/ai/ask';
+ const showroomState=text=>A('voiceShowroomState',text);
+ async function checkShowroom(){
+  showroomState('Prüfe das vorhandene PIGA-Cloudflare-AI-Binding …');
+  $('voiceShowroomCheck').disabled=true;
+  const stop=new AbortController(),timer=setTimeout(()=>stop.abort(),7000);
+  try{
+   const response=await fetch(SHOWROOM_STATUS,{method:'GET',credentials:'omit',mode:'cors',
+    cache:'no-store',referrerPolicy:'no-referrer',signal:stop.signal});
+   const data=await response.json();
+   showroomReady=response.ok&&data?.schema==='piga-ortho-ai-status.v1'&&data?.keylessVoiceRouteReady===true;
+   $('voiceShowroomEnable').disabled=!showroomReady;
+   showroomState(showroomReady?
+    'Der bestehende Cloudflare-Worker ist für begrenzte, governede Fragen bereit. Keine Gemini-Schlüssel auf dem Gerät nötig.':
+    data?.showroomWorkersAIConfigured?
+      'Das vorhandene Workers-AI-Binding ist erkannt. Die Betreiberfreigabe für den Ortho-Antwortweg fehlt noch. PIGA bleibt lokal nutzbar.':
+      'Showroom-KI ist für PIGA ORTHO noch nicht serverseitig freigegeben. PIGA bleibt lokal nutzbar.');
+  }catch{
+   showroomReady=false;$('voiceShowroomEnable').disabled=true;
+   showroomState('Cloudflare-Ortho-Status derzeit nicht erreichbar. Die lokale PIGA-Sprach-KI bleibt unabhängig verfügbar.');
+  }finally{clearTimeout(timer);$('voiceShowroomCheck').disabled=false;}
+ }
+ $('voiceShowroomCheck').addEventListener('click',()=>{void checkShowroom()});
+ $('voiceShowroomEnable').addEventListener('click',()=>{
+  if(!showroomReady)return;showroomEnabled=true;
+  $('voiceShowroomEnable').disabled=true;$('voiceShowroomDisable').disabled=false;
+  A('voiceAnswerState','Showroom-KI');showroomState('Cloudflare-Workers-AI-Antwortweg ausgewählt. Keine Patientendaten oder Praxisaktionen.');
+ });
+ $('voiceShowroomDisable').addEventListener('click',()=>{
+  showroomEnabled=false;$('voiceShowroomDisable').disabled=true;
+  $('voiceShowroomEnable').disabled=!showroomReady;
+  A('voiceAnswerState',engine?'Lokales Modell':'Lokales Wissen');
+  showroomState('Showroom-KI deaktiviert. Das Gerät verwendet wieder den lokalen PIGA-Antwortweg.');
+ });
+ async function showroomAsk(q){
+  const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),11000);
+  try{
+   const response=await fetch(SHOWROOM_ASK,{method:'POST',credentials:'omit',mode:'cors',cache:'no-store',
+    headers:{'content-type':'application/json'},referrerPolicy:'no-referrer',
+    body:JSON.stringify({message:q}),signal:abort.signal});
+   const data=await response.json();
+   if(!response.ok||data?.status!=='ANSWER'||typeof data.answer!=='string')throw Error(String(data.reason||'Governance / Anbieter nicht bereit'));
+   if(data.gate2!=='BLOCK'||data.externalEffects!==0)throw Error('Unerwartete PIGA-Action-Admission');
+   return {text:data.answer.slice(0,2300),mode:'PIGA Showroom · '+String(data.model||'Workers AI').slice(0,60)+' · A7SEM Reverse'};
+  }finally{clearTimeout(timer);}
+ }
+
  const messages=(role,content)=>({role,content:String(content).slice(0,1300)});
  function append(role,text,mode){
   const node=document.createElement('div');node.className='voice-bubble '+(role==='user'?'user':'piga');
@@ -87,6 +136,13 @@
  }
  async function answer(q){
   const sensitive=/(patient(?:in|en)?|geburtsdatum|versichertennummer|diagnose.*patient|rezept|antibiotika|behandlung.*durchführen)/i.test(q);
+  if(showroomEnabled&&!sensitive){
+   try{return await showroomAsk(q);}
+   catch(error){
+    showroomState('Showroom-Antwort gerade nicht verfügbar ('+String(error?.message||error).slice(0,95)+'). Fallback auf das Gerät.');
+    // Never replay or resend the same query without user action.
+   }
+  }
   if(engine&&!sensitive){
    if(modelType==='builtin'){
     const response=await engine.prompt(q);return {text:String(response).slice(0,3000),mode:'Lokales Browser-Sprachmodell · generativ'};
@@ -151,4 +207,5 @@
  });
  window.addEventListener('pagehide',()=>{try{recognizer?.stop();speechSynthesis?.cancel()}catch{}});
  void check();
+ // No implicit network connection or model download on app boot.
 })();
