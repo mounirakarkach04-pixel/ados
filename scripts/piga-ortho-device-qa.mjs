@@ -64,7 +64,7 @@ test('Service worker includes all new assets with new release cache',()=>{
  const sw=read('sw.js');
  for(const file of ['device-store.js','device-hub.html','device-hub.css','device-hub.js','device-worker.js','ortho-light.css','transfer-offer.js','worker-autoresume.js'])
   assert(sw.includes("'./"+file+"'"),file);
- assert(sw.includes('v132-operations'));
+ assert(/piga-ortho-v\\d+-/.test(sw),'release cache version must remain explicit');
 });
 test('No broken local relative links for all active UI pages',()=>{
  for(const page of pages){
