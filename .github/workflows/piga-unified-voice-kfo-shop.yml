@@ -9,6 +9,7 @@ on:
       - 'piga-ortho-3d/piga-voice-persona.js'
       - 'piga-ortho-3d/sw.js'
       - 'scripts/piga-unified-kfo-shop-qa.mjs'
+      - 'scripts/piga-female-persona-qa.mjs'
       - '.github/workflows/piga-unified-voice-kfo-shop.yml'
   workflow_dispatch:
 permissions:
@@ -23,4 +24,4 @@ jobs:
         with:
           node-version: '22'
       - name: Verify safe opt-in and female voice
-        run: node scripts/piga-unified-kfo-shop-qa.mjs && node scripts/piga-ortho-showroom-keyless-qa.mjs
+        run: node scripts/piga-unified-kfo-shop-qa.mjs && node scripts/piga-ortho-showroom-keyless-qa.mjs && node scripts/piga-female-persona-qa.mjs
