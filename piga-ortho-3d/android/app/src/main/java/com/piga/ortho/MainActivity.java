@@ -53,6 +53,7 @@ public final class MainActivity extends Activity {
 
   @Override public void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
+    OrthoLocalRunnerJob.schedule(getApplicationContext());
     web=new WebView(this);
     WebSettings settings=web.getSettings();
     settings.setJavaScriptEnabled(true);
@@ -96,6 +97,9 @@ public final class MainActivity extends Activity {
   private static final class Session {final String origin,key;Session(String u,String k){origin=u;key=k;}}
   private volatile Session session;
   final class PrinterBridge {
+    /** Native runner ledger contains only technical metadata, never browser patient data. */
+    @JavascriptInterface public String localRunnerStatus(){return OrthoLocalRunnerJob.status(getApplicationContext());}
+    @JavascriptInterface public boolean enqueueLocalCheck(String kind){return OrthoLocalRunnerJob.enqueueCheck(getApplicationContext(),kind);}
     @JavascriptInterface public boolean configure(String rawUrl,String key){
       try{URL url=new URL(rawUrl);String proto=url.getProtocol();String path=url.getPath();if(!("http".equals(proto)||"https".equals(proto))||!privateIPv4(url.getHost())||url.getUserInfo()!=null||!(path.isEmpty()||"/".equals(path))||url.getQuery()!=null||url.getRef()!=null||key==null||key.length()<8||key.length()>200){session=null;return false;}
         session=new Session(url.getProtocol()+"://"+url.getAuthority(),key);return true;
