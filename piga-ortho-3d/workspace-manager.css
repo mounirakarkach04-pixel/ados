@@ -23,7 +23,7 @@ body.piga-density-compact :where(.panel,.tile,.tool-card,.module-card,.handoff-c
 body.piga-density-compact :where(.core-grid,.module-grid,.tool-grid,.handoff-grid,.hub-grid,.diag-checks){gap:10px!important}
 body.piga-density-compact :where(.panel,.tile,.handoff-card,.hub-panel,.diag-section){min-height:unset!important}
 body.piga-font-large :where(main input,main select,main textarea,main button,main a,main label,main small,main td,main th,main p,main li){
- font-size:max(14px,1em)!important}
+ font-size:max(15px,1.08em)!important}
 body.piga-font-large :where(main h2,main h3){font-size:clamp(20px,1.55vw,27px)!important}
 body.piga-font-large .piga-workspace-control{font-size:14px!important}
 .piga-panel-action{position:absolute!important;right:12px;top:11px;z-index:1;
