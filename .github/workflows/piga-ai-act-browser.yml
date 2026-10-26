@@ -1,6 +1,14 @@
 name: PIGA AI Act Chromium E2E
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'ai-act-intelligence/**'
+      - 'quality/piga-ai-act-browser.mjs'
+      - 'quality/piga-ai-act-engine.test.mjs'
+      - 'quality/piga-ai-act-security.test.mjs'
+      - '.github/workflows/piga-ai-act-browser.yml'
+      - '.github/workflows/piga-ai-act-quality.yml'
   push:
     paths:
       - 'ai-act-intelligence/**'
