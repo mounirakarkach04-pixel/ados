@@ -28,17 +28,21 @@ window.OrthoHandoffCore=(()=>{
   if(!c)throw Error('Bitte einen offenen lokalen Testauftrag auswählen.');
   if(db.switches?.tasks===false)throw Error('Aufgabenmodul wurde in der Inhabersteuerung pausiert.');
   const existing=tasksFor(db,id);let added=0;
+  if(db.tasks.length>2990)throw Error('Das lokale Aufgabenlimit ist erreicht.');
   for(const step of STEPS){
    if(existing.some(t=>t.handoffKey===step.key))continue;
    db.tasks.push({id:uid(),caseId:id,handoffKey:step.key,title:step.label,staffId:'',status:'open',created:iso(),note:''});added++;
   }return added;
  }
  function materialOptions(direct,suite){
-  const raw=Array.isArray(suite?.inventory)&&suite.inventory.length?suite.inventory.map(x=>({
-   code:clipped(x.sku,32).toUpperCase(),label:clipped(x.label,120),qty:Number(x.quantity)||0,unit:clipped(x.unit||'Stück',24),source:'suite'})):
-   (direct.inventory||[]).map(x=>({code:clipped(x.code,32).toUpperCase(),label:clipped(x.name,120),
+  const suiteItems=(Array.isArray(suite?.inventory)?suite.inventory:[]).map(x=>({
+   code:clipped(x.sku,32).toUpperCase(),label:clipped(x.label,120),qty:Number(x.quantity)||0,unit:clipped(x.unit||'Stück',24),source:'suite'}));
+  const directItems=(Array.isArray(direct.inventory)?direct.inventory:[]).map(x=>({
+   code:clipped(x.code,32).toUpperCase(),label:clipped(x.name,120),
    qty:Number(x.count)||0,unit:'Stück',source:'direct'}));
-  return raw.filter(x=>x.code&&Number.isFinite(x.qty)).sort((a,b)=>a.label.localeCompare(b.label,'de'));
+  const merged=new Map();
+  for(const item of [...directItems,...suiteItems])if(item.code&&Number.isFinite(item.qty))merged.set(item.code,item);
+  return [...merged.values()].sort((a,b)=>a.label.localeCompare(b.label,'de'));
  }
  function assess(direct,suite,id){
   const c=direct.cases.find(x=>x.id===id);
@@ -99,7 +103,7 @@ window.OrthoHandoffCore=(()=>{
  }
  function stlFormat(buffer){
   const n=buffer.byteLength;
-  if(n<84||n>25*1024*1024)throw Error('STL-Datei muss zwischen 84 Byte und 25 MiB groß sein.');
+  if(n<30||n>25*1024*1024)throw Error('STL-Datei muss zwischen 30 Byte und 25 MiB groß sein.');
   const v=new DataView(buffer);
   let triangles=0,form='binary';
   if(n>=84){
