@@ -25,7 +25,7 @@
 <form id="pcChatForm" class="pc-compose"><label class="sr-only" for="pcChatInput">PIGA fragen</label><textarea id="pcChatInput" rows="2" maxlength="500" placeholder="Frag PIGA: Wie prüfe ich ein STL-Modell? / Urlaub beantragen / Material prüfen …" required></textarea>
 <div><button type="button" id="pcListen" title="Spracheingabe mit Geräteberechtigung">Mikrofon</button><button type="button" id="pcSpeak" title="Letzte Antwort vorlesen">Vorlesen</button><button class="pc-primary-button" type="submit">PIGA fragen</button></div></form>
 <div class="pc-shortcuts" id="pcShortcuts"><button type="button" data-query="Wie funktionieren PIGA Gate 1 und Gate 2?">PIGA erklären</button><button type="button" data-query="Wie kann ich Urlaub beantragen?">Urlaub</button><button type="button" data-query="Wie funktioniert der 4K STL Viewer?">3D / 4K</button><button type="button" data-query="Wie prüfe ich BEMA Ziffern?">BEMA</button><button type="button" data-query="Was ist der Worker-Status?">Worker</button></div>
-<div class="pc-chat-boundary">Der sofortige Chat ist **regelbasiert und lokal**, kein generatives LLM und kein Live-Web-Rechercheagent. Er kann Fragen zu bekannten Modulen beantworten und kontrollierte Aufträge vorbereiten; unbekannte Fragen werden als solche gekennzeichnet.</div>
+<div class="pc-chat-boundary">Der sofortige Chat ist regelbasiert und lokal, kein generatives LLM und kein Live-Web-Rechercheagent. Er kann Fragen zu bekannten Modulen beantworten und kontrollierte Aufträge vorbereiten; unbekannte Fragen werden als solche gekennzeichnet.</div>
 </section>
 <section class="pc-card pc-review" id="approvals"><header><span class="pc-number">02</span><div><h2>PIGA Admission Inbox</h2><p>Entwürfe annehmen, ablehnen oder pausieren; geschützte Aktionen bleiben gesperrt.</p></div></header>
 <form id="pcRequestForm" class="pc-request"><label for="pcRequestKind">Art des Auftrags</label><select id="pcRequestKind">
@@ -46,7 +46,7 @@
 <div class="pc-worker-actions"><button id="pcRun" class="pc-primary-button" type="button">Worker jetzt ausführen</button><button id="pcAuto" type="button" aria-pressed="false">Auto bei geöffnetem Tab: AUS</button><button id="pcPauseWorker" type="button">Automatik pausieren</button><button id="pcWake" type="button" aria-pressed="false">Bildschirm aktiv halten: AUS</button></div>
 <div class="pc-worker-actions"><button type="button" data-job="HEALTH_CHECK">Datenbank prüfen</button><button type="button" data-job="INVENTORY_FORECAST">Material analysieren</button><button type="button" data-job="WORKFLOW_SUMMARY">Aufträge zusammenfassen</button></div>
 <div class="pc-worker-events" id="pcEvents" aria-live="polite"><p>Keine Worker-Ereignisse geladen.</p></div>
-<div class="pc-footnote">Foreground-Heartbeat alle ca. 10 Sekunden, nur bei sichtbarer Seite. Browser werden vom Betriebssystem pausiert oder beendet; das ist **kein garantierter 24/7-Prozess**. Eine native Android-Foreground-Ausführung oder ein externer dauerhaft laufender Host ist dafür separat erforderlich.</div>
+<div class="pc-footnote">Foreground-Heartbeat alle ca. 10 Sekunden, nur bei sichtbarer Seite. Browser werden vom Betriebssystem pausiert oder beendet; das ist kein garantierter 24/7-Prozess. Eine native Android-Foreground-Ausführung oder ein externer dauerhaft laufender Host ist dafür separat erforderlich.</div>
 </section>
 <section class="pc-card pc-team" id="teamchat"><header><span class="pc-number">04</span><div><h2>Teamchat · auf diesem Gerät</h2><p>Technische Testnachrichten zwischen Tabs desselben Browserprofils. Kein übergreifender Messenger.</p></div></header>
 <div id="pcTeamFeed" class="pc-teamfeed" role="log" aria-live="polite"></div>
@@ -66,11 +66,11 @@
 </section>
 </div></section>
 <dialog id="pcReviewDialog" class="pc-approval-dialog" aria-labelledby="pcReviewTitle">
- <form method="dialog"><span class="eyebrow">PIGA · MANUELLE TECHNISCHE SICHTUNG</span><h2 id="pcReviewTitle">Auftrag prüfen</h2>
+ <div><span class="eyebrow">PIGA · MANUELLE TECHNISCHE SICHTUNG</span><h2 id="pcReviewTitle">Auftrag prüfen</h2>
  <p id="pcReviewDescription"></p><p class="pc-review-warning">Ohne nachgewiesene Inhaber- und fachliche Autorität ist eine rechtswirksame oder medizinische Freigabe hier NICHT verfügbar. PIGA Gate 2 bleibt BLOCK.</p>
- <div class="pc-dialog-actions"><button type="submit" value="ACK_TECHNICAL" class="pc-primary-button">Technisch gesichtet</button>
- <button type="submit" value="PAUSE">Pausieren</button><button type="submit" value="REJECT">Ablehnen</button>
- <button type="submit" value="CLOSE">Schließen</button></div></form></dialog>
+ <div class="pc-dialog-actions"><button type="button" data-review="ACK_TECHNICAL" class="pc-primary-button">Technisch gesichtet</button>
+ <button type="button" data-review="PAUSE">Pausieren</button><button type="button" data-review="REJECT">Ablehnen</button>
+ <button type="button" data-review="CLOSE">Schließen</button></div></div></dialog>
 <div id="pcNotice" class="pc-notice" role="status" aria-live="polite">PIGA lokal initialisiert. Keine echte Medizin-, Urlaubs- oder Druckfreigabe.</div>
 <footer class="pc-footer">PIGA · GATE 1 DELAY · GATE 2 BLOCK · A7SEM / A7SEM REVERSE · LOCAL-FIRST · HUMAN CONTROL</footer>
 </main>
