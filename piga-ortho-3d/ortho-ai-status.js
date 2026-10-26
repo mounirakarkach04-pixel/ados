@@ -23,7 +23,11 @@
    if(!response.ok)throw Error('Der Server meldet HTTP '+response.status);
    const data=await response.json();
    if(data.schema!=='piga-ortho-ai-status.v1')throw Error('Noch kein gültiger PIGA-Ortho-Proxy-Status');
-   if(!data.providerSecretConfigured){
+   if(data.keylessVoiceRouteReady===true){
+    show('PIGA Showroom-Sprach-KI ist über das vorhandene Cloudflare-AI-Binding vorbereitet. Kein Gemini-Schlüssel auf diesem Gerät nötig. Öffne PIGA Sprach-KI für Fragen.','good');
+   }else if(data.showroomWorkersAIConfigured===true){
+    show('Das bestehende Cloudflare-AI-Binding ist gefunden. Für den begrenzten Ortho-Sprachpfad fehlt noch die Betreiberfreigabe; lokal kannst du PIGA schon verwenden.','warn');
+   }else if(!data.providerSecretConfigured){
     show('Der PIGA-Server ist vorhanden, aber der Betreiber muss einen neuen Schlüssel im geschützten Cloudflare-Secret GEMINI_API_KEY hinterlegen. Die App selbst braucht keinen Schlüssel.','warn');
    }else if(!data.operatorCostApproval||!data.featureReleaseConfigured){
     show('Server-Schlüssel ist hinterlegt. Kostenfreigabe oder geschützter Produktzugang fehlen noch. PIGA funktioniert weiterhin lokal.','warn');
