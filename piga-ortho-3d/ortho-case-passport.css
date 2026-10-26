@@ -1,0 +1,16 @@
+/* Read-only technical case handoff, clear Gate 2 boundary */
+.ortho-case-passport{margin:22px 0 15px;padding:20px;border:1px solid #bedfe9;border-radius:19px;
+ background:linear-gradient(140deg,#f8feff,#e8f9fc);box-shadow:0 8px 24px #217fa00d}
+.ortho-case-passport h3{font-size:20px;color:#154b68;margin:0 0 7px}
+.ortho-case-passport p{font-size:12px;line-height:1.6;color:#577b8d;max-width:940px}
+.ortho-passport-form{display:flex;flex-wrap:wrap;align-items:end;gap:10px;margin:15px 0}
+.ortho-passport-form label{display:grid;gap:6px;flex:1 1 180px;font-size:11px;font-weight:700;color:#396c80}
+.ortho-passport-form select{min-height:42px;padding:9px 12px;border:1px solid #c6e4e9;border-radius:10px;background:white;color:#194b62}
+.ortho-passport-form button{min-height:42px;border-radius:10px;border:1px solid #b6dce6;background:#fff;color:#136d8b;
+ padding:11px 14px;font-weight:760;font-size:12px;cursor:pointer}
+.ortho-passport-form button.primary{background:linear-gradient(110deg,#079bc1,#05b8b7);color:white;border-color:#098fa9}
+.ortho-passport-form button:disabled{opacity:.45;cursor:not-allowed}
+#passportStatus{font-size:11px;line-height:1.6;color:#477c8c}
+#passportStatus[data-state=error]{color:#aa4b4b}
+.ortho-case-passport .passport-block{display:block;padding:9px 12px;border-radius:10px;background:#fff7eb;
+ border:1px solid #ead6b7;color:#8a622a;font-size:11px;line-height:1.5;margin-top:12px}
