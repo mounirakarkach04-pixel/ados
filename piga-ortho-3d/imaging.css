@@ -69,3 +69,14 @@
 .imaging-gates{grid-template-columns:1fr}.imaging-slider-line{grid-template-columns:65px minmax(0,1fr) auto;gap:6px}
 .imaging-dual{grid-template-columns:1fr}}
 @media print{.imaging-actions,.imaging-header-actions,.piga-rail,.piga-bottom,.imaging-dialog{display:none!important}}
+
+/* Detailed jaws, true pixel-sized GPU output and maximizable comparison viewport */
+.imaging-4k-viewer{grid-column:1/-1;background:linear-gradient(175deg,#fff,#f7fdff)}
+.imaging-4k-canvas-wrap{border:1px solid #aedce6;background:radial-gradient(ellipse at 40% 35%,#fff,#d9f4fd);
+ border-radius:18px;overflow:hidden;min-height:340px;display:flex;position:relative}
+#jaw4kCanvas{display:block;width:100%;height:auto;aspect-ratio:16/9;max-height:76vh;
+ touch-action:none;cursor:grab;background:linear-gradient(150deg,#fafefe,#e7f7ff)}
+#jaw4kCanvas:active{cursor:grabbing}
+.imaging-4k-viewer .imaging-actions{margin-top:9px}
+@media(min-width:1450px){.imaging-4k-viewer{grid-column:1/-1}#jaw4kCanvas{max-height:850px}}
+@media(max-width:760px){.imaging-4k-canvas-wrap{min-height:200px}#jaw4kCanvas{max-height:55vh}}
