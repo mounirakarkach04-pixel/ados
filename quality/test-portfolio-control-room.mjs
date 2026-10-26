@@ -35,7 +35,12 @@ for(const v of targets){
  assert.equal(await page.locator('#cards .links a').count(),registry.apps.length+registry.apps.filter(x=>x.canonical).length);
  assert.equal(await page.locator('#status').innerText(),'11 von 11 Einträgen angezeigt. Keine Live-Funktionszusage.');
  const layout=await page.evaluate(()=>({width:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
- assert.ok(layout.scrollWidth<=layout.width+1,v.name+' horizontal overflow: '+layout.scrollWidth+'/'+layout.width);
+ if(layout.scrollWidth>layout.width+1){
+   const offenders=await page.evaluate(()=>[...document.body.querySelectorAll('*')]
+     .map(el=>({element:el.tagName.toLowerCase()+(el.className && typeof el.className==='string'?'.'+el.className.replaceAll(' ','.'):''),right:Math.round(el.getBoundingClientRect().right)}))
+     .filter(x=>x.right>window.innerWidth+1).slice(0,12));
+   assert.fail(v.name+' horizontal overflow: '+layout.scrollWidth+'/'+layout.width+' offenders: '+JSON.stringify(offenders));
+ }
  await page.locator('#search').fill('Nadia');
  assert.equal(await page.locator('#cards .card').count(),1,v.name+': Nadia search');
  await page.locator('#search').fill('');
