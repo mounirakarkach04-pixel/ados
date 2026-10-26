@@ -29,7 +29,7 @@
  form.addEventListener('submit',async event=>{
   event.preventDefault();if(busy)return;
   const question=String($('kfoAdvisorQuestion')?.value||'').trim();
-  if(question.length<2||question.length>600){tell('Bitte eine kurze Frage mit höchstens 600 Zeichen eingeben.');return;}
+  if(question.length<2||question.length>420){tell('Bitte eine kurze Frage mit höchstens 420 Zeichen eingeben.');return;}
   if(blocked(question)){tell('Bitte keine personenbezogenen Patienten-, Konto- oder Behandlungsdaten senden.');return;}
   busy=true;send.disabled=true;speak.disabled=true;currentAnswer='';
   tell('PIGA prüft deine KFO-Materialfrage. Keine Bestellung wird ausgelöst.');
