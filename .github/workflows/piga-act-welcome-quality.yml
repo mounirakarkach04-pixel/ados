@@ -1,0 +1,22 @@
+name: PIGA ACT · Welcome Experience QA
+on:
+  pull_request:
+    paths:
+      - 'ai-act-intelligence/**'
+      - '.github/workflows/piga-act-welcome-quality.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bounded-welcome-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Accessibility, caching and experience contract
+        run: node ai-act-intelligence/quality-accessibility.mjs && node ai-act-intelligence/welcome-integration.test.mjs
+      - name: Deterministic recommendation boundaries
+        run: node ai-act-intelligence/welcome-journey.test.mjs
