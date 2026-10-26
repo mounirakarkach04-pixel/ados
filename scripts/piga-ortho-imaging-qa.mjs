@@ -90,14 +90,32 @@ check('Full app navigation, preview and PWA offline cache contain the imaging la
  assert(v.includes("imaging:{title:"));
  assert(html.includes('href="./imaging.html"'));
  assert(html.includes('id="export4k"')&&html.includes('id="renderQuality"'));
- for(const f of ['imaging.html','imaging.css','imaging-core.js','imaging.js'])assert(sw.includes("'./"+f+"'"),f);
+ for(const f of ['imaging.html','imaging.css','imaging-core.js','imaging.js','imaging-gpu.js'])assert(sw.includes("'./"+f+"'"),f);
 });
 check('All imaging and STL scripts compile and HTML references match files',()=>{
- for(const f of ['imaging-core.js','imaging.js','app.js','navigation.js','sw.js'])
+ for(const f of ['imaging-core.js','imaging.js','imaging-gpu.js','app.js','navigation.js','sw.js'])
   new vm.Script(read(f),{filename:f});
  const h=read('imaging.html');
  for(const match of h.matchAll(/(?:href|src)="\.\/([^"#?]+)/g)){
   if(match[1])assert(fs.existsSync(base+match[1]),'missing '+match[1]);
  }
+});
+check('High-resolution GPU jaw rendering is substantive and bounded',()=>{
+ const js=read('imaging-gpu.js'),h=read('imaging.html');
+ for(const id of ['jaw4kCanvas','jaw4kExport','jawReset','upperStl','lowerStl'])
+  assert(h.includes('id="'+id+'"'),id);
+ assert(js.includes('gl.drawArrays(gl.TRIANGLES'));
+ assert(js.includes('canvas.width=3840;canvas.height=2160'));
+ assert(js.includes('gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)'));
+ assert(!js.includes('fetch('));
+});
+check('Durable local review resumes paused and does not grant clinical authority',()=>{
+ const js=read('imaging.js'),store=read('device-store.js'),h=read('imaging.html');
+ assert(h.includes('id="resumePipeline"'));
+ assert(js.includes('loadImagingReview')&&js.includes('saveImagingReview'));
+ assert(js.includes("Math.max(0,pipeline.index-1)"));
+ assert(store.includes("put('imaging-review',data)"));
+ assert(store.includes("'PAUSED'"));
+ assert(!/\.post\s*\(|fetch\s*\(/.test(js));
 });
 console.log('PIGA ORTHO Imaging, STL and gate QA PASS: '+passes+' suites');
