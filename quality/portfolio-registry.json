@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-26",
+  "scope": "public GitHub Pages artifacts; not proof of canonical Cloudflare deployment",
+  "releasePolicy": {
+    "fiveEngines": [
+      "intake",
+      "queue",
+      "govern",
+      "evidence",
+      "decision"
+    ],
+    "gate1": "required before consequential inference",
+    "gate2": "separate before external effects",
+    "clinicalUse": "BLOCK until independently admitted",
+    "cost": "no new paid services",
+    "liveVerification": "required per deployment"
+  },
+  "apps": [
+    {
+      "id": "ados-portal",
+      "name": "ADOS Buchportal",
+      "path": "index.html",
+      "lang": "de",
+      "area": "research",
+      "canonical": "https://pigapocket.com/ados/",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "ados-research",
+      "name": "ADOS Evidenz-Intake",
+      "path": "research-intake.html",
+      "lang": "de",
+      "area": "research",
+      "canonical": "https://pigapocket.com/ados/research-intake.html",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "ai-act",
+      "name": "PIGA AI Act Intelligence",
+      "path": "ai-act-intelligence/index.html",
+      "lang": "de",
+      "area": "governance",
+      "canonical": "https://pigapocket.com/ai-act-intelligence/",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "nadias-bloom",
+      "name": "Nadia’s Bloom",
+      "path": "nadias-bloom/index.html",
+      "lang": "de",
+      "area": "family",
+      "canonical": "https://pigapocket.com/nadias-bloom/",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "ortho-preview",
+      "name": "PIGA ORTHO 3D Vorschau",
+      "path": "piga-ortho-3d/sales.html",
+      "lang": "de",
+      "area": "ortho",
+      "canonical": "https://pigapocket.com/piga-ortho-3d/",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "ortho-workspace",
+      "name": "PIGA ORTHO 3D Technik-Evaluation",
+      "path": "piga-ortho-3d/dashboard.html",
+      "lang": "de",
+      "area": "ortho",
+      "canonical": null,
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "ortho-shop",
+      "name": "PIGA ORTHO KFO Shop",
+      "path": "piga-ortho-3d/supply.html",
+      "lang": "de",
+      "area": "ortho",
+      "canonical": null,
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "cancer-research",
+      "name": "Cancer System State Forschungsapp",
+      "path": "cancer-system-state/index.html",
+      "lang": "en",
+      "area": "research",
+      "canonical": "https://pigapocket.com/cancer-system-state/",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "cancer-intake",
+      "name": "Cancer Evidence Intake",
+      "path": "cancer-system-state/intake.html",
+      "lang": "en",
+      "area": "research",
+      "canonical": "https://pigapocket.com/cancer-system-state/intake",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "la-preuve",
+      "name": "La Preuve Buchportal",
+      "path": "la-preuve-avant-le-diagnostic/index.html",
+      "lang": "fr",
+      "area": "research",
+      "canonical": "https://pigapocket.com/la-preuve-avant-le-diagnostic/",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    },
+    {
+      "id": "la-preuve-lab",
+      "name": "LA PREUVE LAB",
+      "path": "la-preuve-avant-le-diagnostic/app.html",
+      "lang": "fr",
+      "area": "research",
+      "canonical": "https://pigapocket.com/la-preuve-avant-le-diagnostic/app.html",
+      "releaseStatus": "SOURCE_ONLY_UNTIL_LIVE_READBACK"
+    }
+  ]
+}
