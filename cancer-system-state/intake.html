@@ -16,7 +16,7 @@
 @media(max-width:620px){.dropbox{padding:15px 9px}}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:23px}.hero-actions .button{min-height:46px}.hero-actions button{cursor:pointer}#filePreview{padding:13px;background:#f4faf6;border:1px solid #d7e6dc;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:140px;overflow:auto}#start,#result{scroll-margin-top:90px}@media(max-width:600px){.hero-actions .button{width:100%}.hero-actions{gap:8px}}
 </style><link rel="stylesheet" href="../quality/portfolio-polish.css">
-</head><body>
+<link rel="stylesheet" href="../quality/piga-assistant-widget.css"></head><body>
 <a class="piga-skip-link" href="#start">Skip to main content</a>
 <header><div class="container"><a class="brand" href="/cancer-system-state/book">CANCER <em>· EVIDENCE FIRST</em></a><nav aria-label="Research navigation"><a href="#start">Start</a><a href="#result">Evidence result</a><a href="#ai-act">EU AI Act</a><a href="/cancer-system-state/evidence">Workbench ↗</a></nav></div></header>
 <section class="hero"><div class="container"><span class="eyebrow">Start here · PIGA Gate 1 + A7SEM + A7SEM Reverse</span><h1>Your data. <em>Better questions.</em><br>No unsupported diagnosis.</h1><p>Paste your research evidence or choose a document. A transparent local audit identifies provenance gaps, contradictions, unanswered questions and the boundaries of justified inference — before any clinical claim.</p><div class="pill-row"><span class="pill">01 · Upload or enter values</span><span class="pill">02 · Evidence and governance check</span><span class="pill">03 · Export research passport</span><span class="pill">No account · Browser-side processing</span></div>
@@ -191,4 +191,4 @@ $('export').onclick=()=>{if(report)download('PIGA_CANCER_EVIDENCE_PASSPORT_'+new
 $('exportCsv').onclick=()=>{if(report)download('PIGA_CANCER_GAPS.csv',['id;item;question;weight',...report.gaps.map(x=>[x.id,x.label,x.question,x.weight].map(escapeCSV).join(';'))].join('\r\n'),'text/csv;charset=utf-8')};
 window.PIGA_CANCER_INTAKE_QA={version:'v1.1-vbr-multifile',gate2:'BLOCK_CLINICAL',loadSynthetic:()=>{$('sample').click()},submit:()=>{$('evidenceForm').requestSubmit()},getReport:()=>report};
 })();
-</script></body></html>
+</script><script type="module" src="../quality/piga-assistant-widget.mjs" data-piga-app="cancer-intake" data-piga-lang="en"></script></body></html>
