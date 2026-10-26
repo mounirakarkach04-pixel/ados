@@ -1,0 +1,21 @@
+name: PIGA 25x3 Registry QA
+on:
+  pull_request:
+    paths:
+      - 'quality/piga-24h-factory-registry.json'
+      - 'scripts/piga-factory-25x3-tick.mjs'
+      - 'templates/piga-app-5engine/**'
+      - '.github/workflows/piga-factory-24h.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/piga-factory-25x3-tick.mjs --qa
