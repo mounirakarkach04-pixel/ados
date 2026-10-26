@@ -8,3 +8,10 @@
 .quality-chooser select{min-height:40px;padding:8px 12px;border-radius:10px;border:1px solid #b3dce8;color:#145d79;background:#f4fdff}
 #export4k{border:1px solid #a4d5e5;border-radius:10px;background:#e6faff;color:#116d8c;padding:10px 13px;cursor:pointer}
 #studio #mesh{display:block;width:100%;height:auto;aspect-ratio:780/500;touch-action:none;background:#e7faff;border-radius:15px;border:1px solid #c9e6ef}
+
+/* GPU and Canvas2D share precisely the same calibrated pixel viewport. */
+.mesh-stage{position:relative;width:100%;isolation:isolate;overflow:hidden;border-radius:9px}
+.mesh-stage #mesh{width:100%;max-width:100%;display:block}
+.mesh-stage #jawWebgl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:1}
+.mesh-stage #jawWebgl[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.mesh-stage *{scroll-behavior:auto!important}}
