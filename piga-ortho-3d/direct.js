@@ -1,8 +1,9 @@
 'use strict';
 /* PIGA ORTHO 3D direct mode: persistent local workflows, no authentication, no network calls.
    Never send browser data to Supabase or medical devices; no clinical diagnosis. */
-(()=>{
+(async()=>{
 const $=id=>document.getElementById(id),KEY='piga-ortho-direct-v1';
+await window.PigaDeviceStore.initialize('direct');
 const defaults=()=>({version:1,cases:[],tasks:[],calendar:[],inventory:[],team:[],audit:[],switches:{cases:true,tasks:true,calendar:true,inventory:true,team:true,studio:true}});
 const safeList=(v,n=1000)=>Array.isArray(v)?v.filter(x=>x&&typeof x==='object'&&!Array.isArray(x)).slice(0,n):[];
 let state;
@@ -15,7 +16,7 @@ const iso=()=>new Date().toISOString();
 const stamp=v=>v?new Date(v).toLocaleString('de-DE'):'–';
 const short=(s,max=160)=>String(s||'').slice(0,max);
 const msg=(s,err=false)=>{$('notice').textContent=String(s);$('notice').style.color=err?'#bd5148':'#1e8278'};
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{msg('Gerätespeicher voll oder nicht verfügbar. Bitte JSON-Export sichern.',true);return false}};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));window.PigaDeviceStore.save('direct',state).catch(err=>{msg('Gerätedatenbank: '+err.message,true)});return true}catch{msg('Gerätespeicher voll oder nicht verfügbar. Bitte JSON-Export sichern.',true);return false}};
 const audit=(type,detail)=>{state.audit.unshift({id:uid(),type,detail:short(detail,160),at:iso()});state.audit=state.audit.slice(0,1200)};
 const commit=(type,detail)=>{audit(type,detail);save();renderAll();msg(detail)};
 const el=(tag,t='')=>{const n=document.createElement(tag);n.textContent=t;return n};
