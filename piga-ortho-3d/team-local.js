@@ -1,5 +1,6 @@
 'use strict';
-(()=>{
+(async()=>{
+ await window.OrthoLocalReady;
  const L=window.OrthoLocal,{db,$,value,text,visible,date,format,now,uuid,el,button,row,csv,save,showMsg}=L;
  L.banner();
  ['workspace','employeeTools','ownerArea','accountantArea','ownerNav','accountantNav'].forEach(id=>visible(id));
