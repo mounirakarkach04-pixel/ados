@@ -14,3 +14,19 @@
 .kfo-advisor-boundary{font-size:11px!important;line-height:1.7;color:#6c8b99;margin:16px 0 0!important}
 @media(max-width:480px){.kfo-advisor-panel{padding:17px 14px}.kfo-advisor-form .supply-actions button{flex:1 1 100%}.kfo-advisor-form textarea{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.kfo-advisor-panel *{scroll-behavior:auto}}
+
+/* Regression: 761–1160px compact navigation subtracts 74px from the layout.
+ * The nested report/advisor panel previously overflowed the tablet viewport
+ * by its own padding when main width exceeded the remaining content box. */
+body.piga-has-nav>main.supply-shell{box-sizing:border-box!important;min-width:0!important}
+@media(min-width:761px) and (max-width:1160px){
+ body.piga-has-nav>main.supply-shell{
+   width:calc(100vw - 74px)!important;
+   max-width:calc(100vw - 74px)!important;
+   padding-left:clamp(12px,2vw,24px)!important;
+   padding-right:clamp(12px,2vw,24px)!important;
+ }
+ .supply-shell>.supply-panel,.supply-shell>.supply-grid,
+ .supply-shell>.supply-hero,.supply-shell>.kfo-advisor-panel{min-width:0;max-width:100%}
+}
+@media(max-width:760px){body.piga-has-nav>main.supply-shell{width:100%!important;max-width:100%!important}}
