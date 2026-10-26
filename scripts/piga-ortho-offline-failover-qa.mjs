@@ -13,7 +13,7 @@ function simulation({fails=[],initialOld=false,offline=false}={}){
  const handlers={},history=new Map(),calls=[],dead=new Set(fails.map(asUrl));
  const status={skipWaiting:0,claimed:0,activeFetch:0,maxFetch:0};
  if(initialOld)history.set('piga-ortho-v145-previous',new Map([['original','safe']]));
- const self={location:site+'sw.js',addEventListener:(n,f)=>handlers[n]=f,skipWaiting:async()=>{status.skipWaiting++},
+ const self={location:new URL(site+'sw.js'),addEventListener:(n,f)=>handlers[n]=f,skipWaiting:async()=>{status.skipWaiting++},
    clients:{claim:async()=>{status.claimed++}}};
  const caches={open:async name=>{
    if(!history.has(name))history.set(name,new Map());
