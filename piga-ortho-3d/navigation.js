@@ -79,4 +79,7 @@
      });
    }));
  }
+
+ // All Ortho pages use the same worker; avoid the separate direct-worker taking over this scope.
+ if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});}
 })();
