@@ -44,6 +44,37 @@
  const queue=()=>S.enqueueJob($('workKind').value).then(()=>{
   say('workerStatus','Auftrag in der Gerätedatenbank gespeichert.');return refresh();
  });
+ let lastIntegrity=null;
+ $('checkIntegrity').onclick=async()=>{
+  const button=$('checkIntegrity');button.disabled=true;
+  $('integrityStatus').textContent='Lokale Testdaten werden ausschließlich lesend geprüft …';
+  $('exportIntegrity').disabled=true;
+  try{
+   await S.flush();
+   if(!window.PigaOrthoIntegrity)throw Error('Integritätsmodul konnte nicht geladen werden.');
+   lastIntegrity=await window.PigaOrthoIntegrity.audit(await data('suite'),await data('direct'));
+   const v=lastIntegrity.summary,root=$('integrityIssues');root.replaceChildren();
+   for(const item of lastIntegrity.issues.slice(0,40)){
+    list(root,item.severity+' · '+item.code,item.section+' · '+item.description);
+   }
+   if(!lastIntegrity.issues.length)list(root,'Keine Strukturauffälligkeit','Technische Konsistenzprüfung ohne Befund.');
+   const hint=v.errors?'Bitte Datenbestand vor weiterer Bearbeitung kontrollieren.':
+    v.warnings?'Einige Testeinträge benötigen eine manuelle Kontrolle.':
+    'Keine strukturellen Fehler in den geprüften Testdaten.';
+   $('integrityStatus').textContent='Ergebnis: '+lastIntegrity.summary.status+' · '+v.errors+' Fehler · '+
+     v.warnings+' Hinweise · '+v.information+' Informationsmeldungen. '+hint;
+   $('integrityStatus').dataset.state=v.errors?'error':'ok';
+   $('exportIntegrity').disabled=false;
+  }catch(e){
+   lastIntegrity=null;say('integrityStatus','Strukturprüfung nicht möglich: '+String(e.message||e),true);
+  }finally{button.disabled=false}
+ };
+ $('exportIntegrity').onclick=()=>{
+  if(!lastIntegrity)return say('integrityStatus','Bitte zuerst die lokale Datenprüfung ausführen.',true);
+  const payload=JSON.stringify(lastIntegrity,null,2);
+  download('PIGA-ORTHO-INTEGRITY-'+new Date().toISOString().slice(0,10)+'.json',payload);
+  say('integrityStatus','Anonymisiertes Integritätsprotokoll als JSON exportiert.');
+ };
  $('enqueue').onclick=()=>{queue().catch(e=>say('workerStatus',String(e.message),true));};
  $('refresh').onclick=()=>{refresh().catch(e=>say('workerStatus',String(e.message),true));};
  $('keep').onclick=async()=>{
