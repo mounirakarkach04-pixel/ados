@@ -187,7 +187,7 @@ try{
  assert.match(atlasFile.suggestedFilename(),/119-artikel-kontrollatlas/);
  await page.locator(".atlas-original > summary").click();
  await page.fill("#article-search","50");
- assert.match(await page.locator("#article-table").innerText(),/Art\\. 50/);
+ assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
  await page.locator("#nav > [data-view='portfolio']").click();
  await page.locator("#view-portfolio").waitFor({state:"visible",timeout:10000});
  assert.equal((await page.locator("#stat-portfolio-canonical").innerText()).trim(),"13");
