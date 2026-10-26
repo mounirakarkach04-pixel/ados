@@ -1,6 +1,7 @@
 'use strict';
 (()=>{
  const paths=[
+ {id:'setup',label:'Einrichtungsassistent',desc:'Erste Schritte, WLAN, Gerätespeicher, Worker und Sprache',href:'./setup.html',icon:'shield'},
  {id:'piga',label:'PIGA Control & Chat',desc:'Lokaler PIGA Assistent, Worker-Herzschlag, Freigabe-Inbox, Teamchat und Sprachoption',href:'./piga-control.html',icon:'activity'},
  {id:'teamchat',label:'Teamchat',desc:'Lokal testbare technische Teamnachrichten, ohne echte Mitarbeiterkonten',href:'./piga-control.html#teamchat',icon:'users'},
  {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./dashboard.html',icon:'grid'},
@@ -117,6 +118,8 @@
  }
 
 
+ // First-run guide offered without preventing access.
+ const setUp=document.createElement('script');setUp.src='./setup-offer.js';setUp.defer=true;document.head.append(setUp);
  // PIGA quick assistant and local ticker on every existing app page.
  const brain=()=>{if(!window.PigaBrain){
    const b=document.createElement('script');b.src='./piga-brain.js';b.defer=true;
