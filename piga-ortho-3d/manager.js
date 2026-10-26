@@ -44,9 +44,8 @@
   const button=$('managerRun');button.disabled=true;show('managerLatest','Lokale Prüfungen laufen. Keine Netzwerk- oder Gerätewirkungen.');
   let worker,timer;
   try{
-   const jobs=await S.listJobs().catch(()=>[]);
    for(const kind of ['HEALTH_CHECK','DATA_INTEGRITY_AUDIT','IMPROVEMENT_BACKLOG'])
-    if(!jobs.some(j=>j.kind===kind&&['QUEUED','RUNNING'].includes(j.state)))await S.enqueueJob(kind);
+    await S.enqueueUniqueJob(kind);
    const result=await new Promise((resolve,reject)=>{
     worker=new Worker('./device-worker.js');
     timer=setTimeout(()=>reject(Error('Worker nach 12 Sekunden gestoppt')),12000);
