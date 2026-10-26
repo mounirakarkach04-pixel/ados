@@ -124,7 +124,8 @@
   try{
    await S.flush();
    const suite=await data('suite'),direct=await data('direct');
-   const payload={format:'piga-ortho-device-payload-v1',exportedAt:new Date().toISOString(),suite,direct};
+   const pigaControl=await S.loadPigaControl().catch(()=>null);
+   const payload={format:'piga-ortho-device-payload-v1',exportedAt:new Date().toISOString(),suite,direct,pigaControl};
    const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
    const key=await derive(pass,salt);
    const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(payload)));
@@ -145,6 +146,9 @@
   const fields=name==='suite'?['staff','shifts','inventory','movements','clock','schedule']:['cases','tasks','calendar','inventory','team','audit'];
   return fields.every(f=>Array.isArray(thing[f])&&thing[f].length<=10000);
  };
+ const goodControl=o=>o===null||o===undefined||(!!o&&o.schema===1&&Array.isArray(o.messages)&&
+  Array.isArray(o.requests)&&Array.isArray(o.teamMessages)&&o.messages.length<=100&&
+  o.requests.length<=100&&o.teamMessages.length<=100&&JSON.stringify(o).length<155000);
  $('import').onclick=async()=>{
   const file=$('backupFile').files?.[0],pass=$('secret').value;
   if(!file||pass.length<12)return say('transferStatus','Verschlüsselte JSON-Datei und Sicherungspasswort erforderlich.',true);
@@ -156,11 +160,13 @@
    const salt=from64(envelope.salt),iv=from64(envelope.iv);if(salt.length!==16||iv.length!==12)throw Error('Ungültige Verschlüsselungsparameter');
    const key=await derive(pass,salt),content=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,from64(envelope.ciphertext));
    const o=JSON.parse(new TextDecoder().decode(content));
-   if(o.format!=='piga-ortho-device-payload-v1'||!good('suite',o.suite)||!good('direct',o.direct))throw Error('Sicherungsinhalt ungültig');
-   if(!o.suite&&!o.direct)throw Error('Sicherung enthält keine Testdaten');
+   if(o.format!=='piga-ortho-device-payload-v1'||!good('suite',o.suite)||!good('direct',o.direct)||
+    !goodControl(o.pigaControl))throw Error('Sicherungsinhalt ungültig');
+   if(!o.suite&&!o.direct&&!o.pigaControl)throw Error('Sicherung enthält keine Testdaten');
    if(!confirm('Wirklich die vorhandenen lokalen Testdaten dieses Geräts durch die Sicherung ersetzen? Vorher eigene Sicherung erstellen.'))return;
    if(o.suite)await S.replace('suite',o.suite);
    if(o.direct)await S.replace('direct',o.direct);
+   if(o.pigaControl)await S.savePigaControl(o.pigaControl);
    S.markImport();
    $('secret').value='';say('transferStatus','Sicherung erfolgreich eingelesen. Andere geöffnete Ortho-Tabs neu laden.');
    await refresh();
