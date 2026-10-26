@@ -36,7 +36,7 @@ try{
  assert.equal(assistantCalls,0,"Unsolicited PIGA model call before user click");
  assert.equal(await page.locator("#aiact-piga-read").isDisabled(),true);
  await page.locator("#aiact-piga-check").click();
- await page.locator("#aiact-piga-status").waitFor({state:"visible"});
+ await page.waitForFunction(()=>document.querySelector("#aiact-piga-status")?.textContent?.includes("nicht freigegeben"),null,{timeout:8000});
  assert.match(await page.locator("#aiact-piga-status").innerText(),/nicht freigegeben/i);
  await page.locator("#aiact-piga-question").fill("Welche Nachweise empfiehlt PIGA für Artikel 14?");
  await page.locator("#aiact-piga-send").click();
