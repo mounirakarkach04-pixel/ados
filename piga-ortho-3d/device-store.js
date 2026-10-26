@@ -81,6 +81,26 @@ window.PigaDeviceStore=(()=>{
   const id=crypto.randomUUID(),job={id,kind,state:'QUEUED',createdAt:new Date().toISOString(),attempts:0};
   await tx('jobs','readwrite',s=>s.add(job));return job;
  };
+ // Atomic idempotent enqueue across overlapping tabs: the read and conditional
+ // write are performed in one IndexedDB readwrite transaction.
+ const enqueueUniqueJob=async kind=>{
+  if(!allowed.has(kind))throw Error('Nicht zugelassener lokaler Worker-Auftrag');
+  const db=await open();
+  return new Promise((resolve,reject)=>{
+   let chosen=null;
+   const tr=db.transaction('jobs','readwrite'),store=tr.objectStore('jobs');
+   const query=store.getAll();
+   query.onsuccess=()=>{
+    const active=query.result.find(job=>job.kind===kind&&['QUEUED','RUNNING'].includes(job.state));
+    if(active){chosen=active;return;}
+    chosen={id:crypto.randomUUID(),kind,state:'QUEUED',createdAt:new Date().toISOString(),attempts:0};
+    store.add(chosen);
+   };
+   tr.oncomplete=()=>{db.close();resolve(chosen)};
+   tr.onerror=()=>{db.close();reject(tr.error||Error('Worker-Queue nicht verfügbar'))};
+   tr.onabort=()=>{db.close();reject(tr.error||Error('Worker-Queue abgebrochen'))};
+  });
+ };
  const listJobs=async()=>{const jobs=await tx('jobs','readonly',s=>s.getAll());return jobs.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).slice(0,60)};
  const listEvents=async()=>{const events=await tx('events','readonly',s=>s.getAll());return events.sort((a,b)=>b.at.localeCompare(a.at)).slice(0,60)};
  const storageInfo=async()=>{
@@ -123,5 +143,5 @@ window.PigaDeviceStore=(()=>{
   return safe;
  };
  const loadPigaControl=async()=>{const row=await get('piga-control');return row?.data||null};
-  return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush,saveImagingReview,loadImagingReview,savePigaControl,loadPigaControl};
+  return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,enqueueUniqueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush,saveImagingReview,loadImagingReview,savePigaControl,loadPigaControl};
 })();
