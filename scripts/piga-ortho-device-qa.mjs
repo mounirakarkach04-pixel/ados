@@ -4,8 +4,8 @@ import path from 'node:path';
 import vm from 'node:vm';
 
 const root='piga-ortho-3d',read=name=>fs.readFileSync(path.join(root,name),'utf8');
-const pages=['dashboard','studio','praxis','team','inventory','devices','assist','workflow','report','direct','device-hub'];
-const js=['ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
+const pages=['operations','dashboard','studio','praxis','team','inventory','devices','assist','workflow','report','direct','device-hub'];
+const js=['operations.js','ortho-install.js','ortho-visual-v3.js','assist-help.js','device-store.js','device-worker.js','device-hub.js','navigation.js','local-runtime.js','praxis-local.js','team-local.js','inventory-local.js','direct.js','dashboard.js','transfer-offer.js','worker-autoresume.js','sw.js'];
 let tests=0;const test=(title,fn)=>{fn();tests++;console.log('PASS '+title)};
 test('All active UI scripts parse',()=>js.forEach(file=>new vm.Script(read(file),{filename:file})));
 test('Every full app page contains unified wide theme + navigation',()=>pages.forEach(name=>{
@@ -64,7 +64,7 @@ test('Service worker includes all new assets with new release cache',()=>{
  const sw=read('sw.js');
  for(const file of ['device-store.js','device-hub.html','device-hub.css','device-hub.js','device-worker.js','ortho-light.css','transfer-offer.js','worker-autoresume.js'])
   assert(sw.includes("'./"+file+"'"),file);
- assert(sw.includes('v131-installable-html'));
+ assert(sw.includes('v132-operations'));
 });
 test('No broken local relative links for all active UI pages',()=>{
  for(const page of pages){
@@ -154,5 +154,20 @@ test('The installable HTML PWA offers real install or platform-specific instruct
  assert(install.includes("Zum Home-Bildschirm"));
  assert(navigation.includes("install.src='./ortho-install.js'"));
  assert(worker.includes("'./ortho-install.js'"));
+});
+test('Daily operations cockpit reads real local records and never claims clinical action',()=>{
+ const c=read('operations.js'),h=read('operations.html'),sw=read('sw.js'),nav=read('navigation.js');
+ for(const id of ['opsTasks','opsToday','opsStock','opsWorkers','opsAttention','opsAgenda','opsExport','opsPrint'])
+  assert(h.includes('id="'+id+'"'),id);
+ for(const field of ['direct.tasks','direct.calendar','suite.inventory','store.listJobs()','store.meta()','backupRecommended'])
+  assert(c.includes(field),field);
+ assert(c.includes('clinicalAuthority:false'));
+ assert(c.includes('externalEffects:0'));
+ assert(c.includes('store.initialize(\'suite\')')&&c.includes('store.initialize(\'direct\')'));
+ assert(!c.includes('fetch('));
+ for(const file of ['operations.html','operations.css','operations.js'])
+  assert(sw.includes("'./"+file+"'"),file);
+ assert(nav.includes("href:'./operations.html'"));
+ assert(read('dashboard.html').includes('class="ops-promo"'));
 });
 console.log('PIGA ORTHO 3D device-first QA PASS · '+tests+' structural and syntax suites.');
