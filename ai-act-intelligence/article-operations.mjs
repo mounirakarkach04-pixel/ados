@@ -24,6 +24,18 @@ function download(name,items){
  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)+"\n"],{type:"application/json;charset=utf-8"}));
  const link=document.createElement("a");link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
+function downloadCsv(){
+ const cols=["ref","topic","categoryName","addressee","scope","question","assessment","pigaControl","evidence","negativeTest","reviewState","implementationState","source"];
+ const neutral=v=>{
+  const raw=String(v??"");
+  // Prevent Excel formula injection if catalogue data is ever sourced externally.
+  return /^[=+@\-\t\r]/.test(raw.trimStart())?"'"+raw:raw;
+ };
+ const csv=["# PIGA AI Act · 119 Kontrollentwürfe · Keine Konformitätsbescheinigung",cols.join(";"),
+  ...operationalArticles.map(x=>cols.map(k=>'"'+neutral(x[k]).replace(/"/g,'""')+'"').join(";"))].join("\r\n")+"\r\n";
+ const url=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}));
+ const link=document.createElement("a");link.href=url;link.download="piga-aiact-119-kontrollatlas.csv";link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
 function activateAtlas(){
  const input=$("atlas-search"),filter=$("atlas-category"),list=$("atlas-list"),counter=$("atlas-count"),more=$("atlas-more"),downloadAll=$("atlas-export-all");
  if(!input||!filter||!list||!counter||!more||!downloadAll)return;
@@ -45,6 +57,7 @@ function activateAtlas(){
   if(a)download("piga-aiact-artikel-"+a.ref+"-kontrollauftrag.json",[a]);
  });
  downloadAll.addEventListener("click",()=>download("piga-aiact-119-artikel-kontrollatlas.json",operationalArticles));
+ $("atlas-export-csv")?.addEventListener("click",downloadCsv);
  render();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",activateAtlas,{once:true});else activateAtlas();
