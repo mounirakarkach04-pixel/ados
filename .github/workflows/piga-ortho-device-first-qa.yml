@@ -38,6 +38,7 @@ jobs:
           node scripts/piga-ortho-offline-failover-qa.mjs
           node scripts/piga-ortho-webgl-qa.mjs
           node scripts/piga-ortho-render-voice-qa.mjs
+          node scripts/piga-ortho-showroom-keyless-qa.mjs
           node scripts/piga-ortho-manager-qa.mjs
           node scripts/piga-ortho-operations-runtime-qa.mjs
           node scripts/piga-ortho-handoff-qa.mjs
