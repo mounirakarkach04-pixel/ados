@@ -152,7 +152,7 @@ for(const token of ['ortho_inventory_adjust','ortho_inventory_alerts','ortho_inv
  if(token==='formula')continue;
  assert(inv.includes(token),'Inventory logic missing '+token);
 }
-assert(inv.includes("x.role==='employee'")||inv.includes("staff.role==='employee'"),'Employee owner authorization missing');
+assert(inv.includes("staff.role!=='employee'")&&inv.includes('can_manage_stock'),'Employee inventory access logic missing');
 assert(inv.includes("status!=='active'"),'Inactive accounts must not enter');
 assert(!inv.includes('service_role'),'Inventory must not expose privileged server keys');
 assert(!inv.includes('localStorage.setItem('),'No shared local storage of private inventory');
