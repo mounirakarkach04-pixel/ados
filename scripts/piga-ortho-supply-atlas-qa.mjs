@@ -69,7 +69,7 @@ atlas.get('atlasSearch').value='Kreuzbiss';
 atlas.get('atlasSearch').handlers.input();
 assert.equal(atlas.get('atlasCards').children.length,1,'deterministic search');
 filters.find(x=>x.dataset.atlasGroup==='Apparaturen').handlers.click();
-assert(atlas.get('atlasCards').children.every(card=>card.children[0]?.textContent==='Apparaturen'),'topic filter must restrict categories even when search matches a description');
+assert(atlas.get('atlasCards').children.every(card=>card.className==='atlas-empty'||card.children[0]?.textContent==='Apparaturen'),'topic filter must restrict categories or show explicit empty result');
 atlas.get('atlasReset').handlers.click();
 assert.equal(atlas.get('atlasCards').children.length,before,'reset restores atlas');
 console.log('PIGA ORTHO SUPPLY + ATLAS QA PASS: real local stock math, draft-only purchase gate, 45+ searchable topics, navigation and offline.');
