@@ -1,5 +1,5 @@
 // Public application shell only. Never intercept cross-origin, authenticated API or private evidence.
-const CACHE = "piga-aiact-shell-v16-welcome-evidence";
+const CACHE = "piga-aiact-shell-v17-mobile-report";
 const SHELL = [
   "./", "./index.html", "./styles.css", "./design-v3.css", "./app.bundle.js",
   "./engine.js", "./portfolio.js", "./publications.js", "./journey.js",
