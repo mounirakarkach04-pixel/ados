@@ -1,1 +1,71 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0; url=./direct.html#overview"><meta name="theme-color" content="#133a49"><title>PIGA ORTHO 3D · Praxisübersicht</title></head><body><main style="font:16px system-ui,sans-serif;max-width:650px;margin:8vh auto;padding:20px"><h1>Praxisübersicht</h1><p>Die Ortho-App ist jetzt ohne Anmeldung erreichbar.</p><p><a href="./direct.html#overview">Arbeitsbereich direkt öffnen</a></p></main></body></html>
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c1b2a"><meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://sanrkcovmkkhgdqydxfk.supabase.co; base-uri 'none'; object-src 'none'; form-action 'none'; frame-ancestors 'none'">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./praxis.css">
+<title>Praxis Workspace · PIGA ORTHO 3D</title><link rel="stylesheet" href="./navigation.css"></head><body>
+<header class="appbar"><a class="logo" href="./studio.html"><span class="symbol">⊓</span><span><b>PIGA ORTHO 3D</b><small>PRAXIS WORKSPACE / v0.6</small></span></a><div class="appnav"><span class="tag">PIGA · GOVERNED</span><a href="./workflow.html">Prozessnavigator ↗</a><a href="./studio.html">3D Studio ↗</a></div></header>
+<main><section class="welcome"><div><p class="eyebrow">MODERN DENTAL OPERATIONS · PERSONAL EDITION</p><h1><span id="praxisGreeting">Guten Tag.</span><br><span>Alles im richtigen Ablauf.</span></h1><p>Erfasse Tätigkeiten strukturiert, dokumentiere Zeiten und überblicke die Fertigung — mit klar getrennten Mitarbeiter- und Inhaberrechten.</p><small>Speziell entwickelt von <b>Mounir Akarkach</b> für <b>Herrn Dr. med. dent. Ibrahim Akarkach</b>.</small></div><div class="health-card"><span>BETRIEBSMODUS</span><b>TECHNISCHE EVALUATION</b><p>Kein Patientenproduktivbetrieb. Eine echte PVS-/eGK-/KIM-Anbindung ist nicht aktiv.</p><div><i></i> Mitarbeiterzeit: Datenbank mit Rollenprüfung</div></div></section>
+<section class="auth-shell" id="authShell" aria-labelledby="authTitle">
+<div class="auth-illustration"><span class="eyebrow">STAFF ACCESS</span><h2>Mein Arbeitsbereich.</h2><p>Sicherer Zugang über E-Mail und Passwort mit E-Mail-Bestätigung. Der Praxisinhaber aktiviert neue Mitarbeiter.</p><div class="orbit" aria-hidden="true"><span>01</span><span>02</span><span>03</span></div><div class="auth-points"><span>PERSONENBEZOGENE KONTEN</span><span>ROLLENBASIERTE FREIGABEN</span><span>KEIN KLINISCHER DATENIMPORT</span></div></div>
+<div class="auth-panel">
+<div class="tabs" role="group" aria-label="Kontozugang"><button type="button" data-auth="login" class="current">Anmelden</button><button type="button" data-auth="register">Registrieren</button><button type="button" data-auth="recover">Passwort vergessen</button></div>
+<h2 id="authTitle">Willkommen zurück</h2><p id="authIntro">Melde dich mit deinem persönlichen Praxiskonto an.</p>
+<form id="authForm">
+<div id="nameWrap" hidden><label for="fullName">Vor- und Nachname</label><input id="fullName" maxlength="100" autocomplete="name" placeholder="Mitarbeitername"></div>
+<label for="email">E-Mail-Adresse</label><input id="email" type="email" autocomplete="email" maxlength="254" placeholder="name@praxis.de" required>
+<div id="passwordWrap"><label for="password">Passwort</label><input id="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" placeholder="Mindestens 12 Zeichen" required></div>
+<button id="submitAuth" class="btn primary" type="submit">Anmelden</button>
+</form><p id="authMessage" class="message" role="status" aria-live="polite"></p>
+<p class="helptext">Die Registrierung erzeugt zunächst eine Zugangsanfrage. Die Anmeldung ist ohne E-Mail-Verifizierung und Freigabe noch kein aktiver Mitarbeiterzugang. Password-Reset-Links benötigen die korrekte Redirect-Konfiguration beim Auth-Anbieter.</p></div></section>
+<section class="dashboard" id="dashboard" hidden>
+<div class="dash-head"><div><span class="eyebrow">ACTIVE WORKSPACE</span><h2>Praxisübersicht</h2><p id="accountLabel"></p></div><div><span id="roleBadge" class="badge"></span><span class="employee-id" id="staffCodeBadge">PERSONALKENNUNG —</span><button id="logout" type="button" class="btn ghost">Abmelden</button></div></div>
+<div id="pending" class="notice" hidden><b>Freigabe steht aus</b><p>Die Registrierung wurde erfasst. Dr. Akarkach kann den Mitarbeiterzugang aktivieren. Bis dahin sind Arbeitszeiten und vertrauliche Kosten gesperrt.</p></div>
+<div class="kpi-grid" id="kpiStrip" hidden>
+ <div class="kpi-card"><small>MEINE PERSONALNUMMER</small><strong id="kpiStaff">—</strong><span>Fest mit dem Mitarbeiterkonto verknüpft</span></div>
+ <div class="kpi-card"><small>HEUTE ERFASST</small><strong id="kpiToday">0 min</strong><span>Abgeschlossene Auftragstätigkeiten</span></div>
+ <div class="kpi-card"><small>MEINE EINTRÄGE</small><strong id="kpiTotal">0</strong><span>Aktuell abrufbare Einträge</span></div>
+ <div class="kpi-card accent"><small>AKTUELLER STATUS</small><strong id="kpiState">Bereit</strong><span>Serverbestätigter Tätigkeitsstatus</span></div>
+ </div><div class="workspace-grid" id="activeTools" hidden>
+<article class="tile time-tile"><div class="tilehead"><span class="eyebrow">01 / ZEITERFASSUNG</span><span class="pill">PERSONENBEZOGEN</span></div><h3>Arbeitszeit dokumentieren <span class="mini-code" id="workStaffCode">—</span></h3><p>Tätigkeit und pseudonyme Auftragskennung vor dem Start festlegen. Die Serverzeit bestimmt Beginn und Ende; jede Übergabe wird als Ereignis dokumentiert.</p>
+<div class="two-fields"><div><label for="workType">Arbeitsschritt</label><select id="workType"><option value="scan">3D-Scan</option><option value="cad">CAD / Modellierung</option><option value="review">Prüfung</option><option value="slicing">Slicing / CAM</option><option value="print">Druckvorbereitung</option><option value="postprocess">Nachbearbeitung</option><option value="qa">Qualitätskontrolle</option><option value="other">Sonstiges</option></select></div><div><label for="workCase">Auftragskennung (kein Patientenname)</label><input id="workCase" maxlength="48" pattern="[A-Za-z0-9_-]{3,48}" value="CASE-TEST-001"></div></div>
+<div class="stopwatch"><small>AKTUELLE TÄTIGKEIT</small><strong id="elapsed">00:00:00</strong><span id="shiftStatus">Keine laufende Tätigkeit</span></div>
+<div class="row-actions"><button type="button" id="startShift" class="btn primary">Arbeit starten</button><button type="button" id="stopShift" class="btn gold" disabled>Arbeit beenden</button></div>
+<div id="shiftMsg" class="message" role="status" aria-live="polite"></div><h4>Meine letzten Zeiteinträge</h4><p class="note-inline">Die Kennung ist ein Zuordnungsmerkmal, kein Passwort. Auftragszeiten ersetzen keine vollständige gesetzliche Personalzeiterfassung mit Pausen.</p><div id="myShifts" class="entries"><p>Nach dem Anmelden verfügbar.</p></div></article>
+<article class="tile integrations"><div class="tilehead"><span class="eyebrow">02 / INTEGRATIONEN</span><span class="pill muted">SICHERHEITSGRENZE</span></div><h3>Praxissoftware und Versicherung</h3><p>Vorbereitete Schnittstellenkarte, keine aktive Verbindung mit der Telematikinfrastruktur.</p>
+<div class="integration"><div><b>PVS / Zahnärztliche Verwaltungssoftware</b><small>VDDS / Herstelleradapter</small></div><span>NICHT VERBUNDEN</span></div>
+<div class="integration"><div><b>eGK / Versichertenstammdaten</b><small>Nur über zugelassene TI-Komponenten</small></div><span>NICHT VERBUNDEN</span></div>
+<div class="integration"><div><b>EBZ / KFO-Anträge</b><small>Über PVS und KIM</small></div><span>NICHT VERBUNDEN</span></div>
+<div class="integration"><div><b>3D-Drucker</b><small>Optionaler OctoPrint-Adapter im Studio</small></div><a href="./studio.html#printer">STUDIO ↗</a></div>
+<h4>Patientenaufnahme</h4><p>Die spätere Maske umfasst Name, Geburtsdatum, Versicherungsnummer, Kostenträger und Einwilligungs-/Versorgungsbezug. <b>Die Eingabe echter Patientendaten ist hier derzeit deaktiviert.</b></p><div class="patient-mock"><span>BEISPIEL · KEINE ECHTDATEN</span><div><b>Patient</b><i>—</i></div><div><b>Krankenversichertennummer</b><i>GESPERRT</i></div><div><b>eGK-Prüfstatus</b><i>KEINE TI-VERBINDUNG</i></div></div>
+</article></div>
+<section id="ownerArea" class="owner-area" hidden><div class="sectionhead"><div><span class="eyebrow">OWNER ONLY · SERVER ENFORCED</span><h2>Vertrauliche Praxissteuerung</h2><p>Diese Daten werden vom Server ausschließlich für die bestätigte Inhaberrolle freigegeben. Berechnungen sind Kalkulationen, keine automatische Buchhaltung.</p></div><span class="owner-label">NUR DR. AKARKACH</span></div>
+<div class="owner-grid"><article class="tile"><div class="tilehead"><span class="eyebrow">03 / PERSONAL</span></div><h3>Mitarbeiterfreigabe</h3><p>Neue Registrierungen müssen persönlich aktiviert werden.</p><div id="staffList" class="entries">Anmeldungen werden geladen.</div></article>
+<article class="tile"><div class="tilehead"><span class="eyebrow">04 / KOSTEN</span></div><h3>Interne Fertigungskalkulation</h3><p>Quellenbasierte Referenzwerte als Ausgangspunkt. Tatsächliche Praxispreise bitte durch Rechnungen, Lohn- und Maschinenkosten ersetzen.</p>
+<form id="costForm"><div class="costgrid">
+<label>Stundenkostensatz (€)<input type="number" id="hourly" min="0" max="1000" step=".01" required></label>
+<label>Resin-Preis je Liter (€)<input type="number" id="resinLiter" min="0" max="100000" step=".01" required></label>
+<label>Material je Auftrag (ml)<input type="number" id="resinMl" min="0" max="10000" step=".01" required></label>
+<label>Maschine je Stunde (€)<input type="number" id="machineHour" min="0" max="1000" step=".01" required></label>
+<label>Maschinenlaufzeit (h)<input type="number" id="machineHours" min="0" max="720" step=".01" required></label>
+<label>Weitere Kosten je Auftrag (€)<input type="number" id="overhead" min="0" max="100000" step=".01" required></label>
+<label>Zielverkaufspreis (€)<input type="number" id="targetPrice" min="0" max="100000" step=".01" required></label>
+<label>Auftragskennung<input id="costCase" maxlength="48" value="CASE-TEST-001" pattern="[A-Za-z0-9_-]{3,48}"></label></div>
+<div class="row-actions"><button class="btn primary" type="submit">Kalkulationssätze speichern</button><button class="btn ghost" type="button" id="reloadCost">Zeiten & Zahlen aktualisieren</button></div></form>
+<div class="calc" id="calc"><span>Kalkulation wird geladen.</span></div>
+<p class="cost-note">Referenz Oktober 2026: Mindestlohn 13,90 € brutto/h laut BMAS; Formlabs Model Resin V3 ab 178,50 € inkl. MwSt./l. Diese Beträge sind weder tatsächliche Mitarbeiter-Gesamtkosten noch die Materialkosten der konkreten Praxis. Maschine, Nachbearbeitung, Ausschuss, Gemeinkosten und reale Verkaufspreise werden nicht erfunden.</p></article></div>
+ <section class="timeline-card" id="handoffPanel">
+  <div class="timeline-head">
+    <div><span class="eyebrow">05 / HANDOVER LEDGER · NUR INHABER</span><h3>Wer hat wann an welchem Auftrag gearbeitet?</h3>
+    <p>START und ENDE je Mitarbeiterkennung · sortiert nach serverseitig gespeicherten Ereigniszeiten · nur pseudonyme Auftragscodes.</p></div>
+    <div class="timeline-actions"><label for="traceCase">Auftragskennung</label><input id="traceCase" maxlength="48" value="CASE-TEST-001" pattern="[A-Za-z0-9_-]{3,48}" autocomplete="off" aria-label="Pseudonyme Auftragskennung">
+      <button id="traceLoad" class="btn primary" type="button">Verlauf abrufen</button><button id="traceCsv" class="btn ghost" type="button" disabled>CSV exportieren</button></div>
+  </div>
+  <div class="trace-summary" id="traceSummary" role="status">Bitte eine pseudonyme Auftragskennung auswählen.</div>
+  <div id="traceIntervals" class="interval-board" aria-label="Zusammengefasste Mitarbeiterintervalle"></div>
+  <div class="trace-list" id="traceList"><p>Noch keine Ereignisse geladen.</p></div>
+  <p class="note-inline">Ereignisse können von angemeldeten Mitarbeitenden nicht verändert oder gelöscht werden. Diese technische Protokollierung ist noch keine unabhängig zertifizierte revisionssichere Archivierung. Keine Patientennamen oder Krankenkassennummern eingeben.</p>
+ </section></section>
+</section>
+<footer>AUTHORITY BEFORE INFERENCE. EVIDENCE BEFORE EFFECT. <span>PIGA ORTHO 3D · NO CLINICAL RELEASE · NO PRODUCTION PVS/TI</span></footer>
+</main><script src="./praxis.js" defer></script><script src="./navigation.js" defer></script><script src="./no-auth-access.js" defer></script></body></html>
