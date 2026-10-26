@@ -51,7 +51,7 @@
   try{
    const response=await fetch(SHOWROOM_ASK,{method:'POST',credentials:'omit',mode:'cors',cache:'no-store',
     headers:{'content-type':'application/json'},referrerPolicy:'no-referrer',
-    body:JSON.stringify({app:'ortho',message:q}),signal:abort.signal});
+    body:JSON.stringify({app:'ortho',message:q,consent:true}),signal:abort.signal});
    const data=await response.json();
    if(!response.ok||data?.status!=='ANSWER'||typeof data.answer!=='string')throw Error(String(data.reason||'Governance / Anbieter nicht bereit'));
    if(data.app!=='ortho'||data.gate2!=='BLOCK'||data.externalEffects!==0)throw Error('Unerwartete PIGA-Action-Admission');

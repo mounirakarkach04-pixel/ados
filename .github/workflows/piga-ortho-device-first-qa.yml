@@ -1,5 +1,11 @@
 name: PIGA ORTHO 3D — Device-first QA
 on:
+  pull_request:
+    paths:
+      - 'piga-ortho-3d/**'
+      - 'scripts/piga-ortho-showroom-keyless-qa.mjs'
+      - 'scripts/piga-unified-kfo-shop-qa.mjs'
+      - '.github/workflows/piga-ortho-device-first-qa.yml'
   push:
     branches: [main]
     paths:
@@ -39,6 +45,7 @@ jobs:
           node scripts/piga-ortho-webgl-qa.mjs
           node scripts/piga-ortho-render-voice-qa.mjs
           node scripts/piga-ortho-showroom-keyless-qa.mjs
+          node scripts/piga-unified-kfo-shop-qa.mjs
           node scripts/piga-ortho-manager-qa.mjs
           node scripts/piga-ortho-operations-runtime-qa.mjs
           node scripts/piga-ortho-handoff-qa.mjs

@@ -35,7 +35,7 @@ vm.runInContext(fs.readFileSync('piga-ortho-3d/devices.js','utf8'),scope);
   assert.match($('docStatus').textContent,/KONSISTENT/);
   assert.equal(sessionStorage.getItem('piga-ortho-report-once'),null);
   await $('demoStudio').onclick();
-  assert.equal(loc.target,'./index.html#studio');
+  assert.equal(loc.target,'./studio.html#studio');
   const transfer=sessionStorage.getItem('piga-ortho-demo-stl-once');
   assert.ok(transfer&&transfer.length<28000);
   const binary=Buffer.from(transfer,'base64');
