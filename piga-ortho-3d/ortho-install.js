@@ -22,6 +22,16 @@
  };
  let button;
  function update(){if(button)button.textContent=pending?'App jetzt installieren':'App auf Gerät installieren'}
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{button=make();update()},{once:true});
- else{button=make();update()}
+ const activate=()=>{
+   if(button)return;
+   button=make();
+   if(button)update();
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',activate,{once:true});
+ else activate();
+ if(!button&&typeof MutationObserver!=='undefined'){
+   const observer=new MutationObserver(()=>{if(button){observer.disconnect();return}activate();if(button)observer.disconnect()});
+   observer.observe(document.body,{childList:true,subtree:true});
+   window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+ }
 })();
