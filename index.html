@@ -76,4 +76,4 @@ box.innerHTML="Offline-Dateiansicht: Verweise zu anderen ADOS-Seiten oder Downlo
 (document.querySelector("header")||document.body.firstElementChild)?.insertAdjacentElement("afterend",box);
 })();</script>
 <script id="ados-pwa-offline-register">(function(){if(location.protocol!=="https:"||!("serviceWorker" in navigator))return;var m=document.createElement("link");m.rel="manifest";m.href="./manifest.webmanifest";document.head.appendChild(m);window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(function(e){console.warn("ADOS offline unavailable",String(e))})});})();</script>
-</body></html>
+<link rel="stylesheet" href="quality/piga-assistant-widget.css"><script type="module" src="quality/piga-assistant-widget.mjs" data-piga-app="ados-portal" data-piga-lang="de"></script></body></html>
