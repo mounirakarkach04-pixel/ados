@@ -193,3 +193,16 @@ body.ortho-focus-mode #studio #mesh{min-height:min(70vh,850px)!important;width:1
  color:#0a7893!important;border:1px solid #b0dfe7;border-radius:10px;padding:9px 12px;
  font-size:12px;font-weight:750;white-space:normal}
 .handoff-case-link:hover{background:#d2f2f6;color:#08708b!important}
+
+/* PIGA Brain / nervous system hero in the central dashboard */
+.pc-home-promo{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(160px,.7fr);align-items:center;gap:20px;
+ padding:clamp(20px,2.5vw,35px);margin:21px 0 24px;border:1px solid #aee0e9;background:linear-gradient(110deg,#fff,#e2faff 67%,#dfeeff);
+ border-radius:23px;box-shadow:0 12px 31px #237fa01c}
+.pc-home-promo h2{font-size:clamp(23px,2.45vw,38px);line-height:1.15;margin:10px 0 7px;color:#174765;letter-spacing:-.045em}
+.pc-home-promo h2 em{font-style:normal;color:#029fb4}
+.pc-home-promo p{font-size:13px;color:#567c8e;line-height:1.7;margin:6px 0 18px;max-width:720px}
+.pc-home-promo img{width:100%;max-height:220px;object-fit:contain;filter:drop-shadow(0 10px 15px #1376a524)}
+.pc-home-go{display:inline-flex;align-items:center;padding:12px 17px;color:#fff!important;text-decoration:none;
+ background:linear-gradient(110deg,#087baa,#07bdbc);border-radius:11px;font-size:12px;font-weight:830}
+.pc-home-promo small{display:block;color:#7093a0;font-size:10px;margin-top:11px}
+@media(max-width:760px){.pc-home-promo{grid-template-columns:1fr;gap:5px}.pc-home-promo img{max-height:140px}.pc-home-promo h2{font-size:25px}}
