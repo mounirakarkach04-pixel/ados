@@ -1,0 +1,95 @@
+{
+  "schema": "piga.shared-assistant.portfolio.v1",
+  "updated": "2026-10-26",
+  "policy": "One server-side PIGA intelligence and five existing governance engines. Every app specializes the trusted profile, not the key.",
+  "gateway": {
+    "base": "https://pigapocket.com",
+    "health": "/api/piga/assistant/v1/status",
+    "ask": "/api/piga/assistant/v1/ask",
+    "credentialsInClient": false,
+    "modelRunsOnClient": false,
+    "noNewPaidProvider": true,
+    "releaseStatus": "PENDING_SERVER_GATE2_AND_COST"
+  },
+  "voice": {
+    "displayGender": "female",
+    "maturity": "adult",
+    "style": "calm, warm, expert, slow",
+    "deviceDependent": true,
+    "manualChoice": true
+  },
+  "coreEngines": [
+    "intake",
+    "queue",
+    "govern",
+    "evidence",
+    "decision"
+  ],
+  "defaults": {
+    "consentPerMessage": true,
+    "patientAndFinancialData": false,
+    "externalEffects": false,
+    "gate2": "BLOCK",
+    "rateLimitedServer": true,
+    "noAutomatedSend": true,
+    "backgroundHostNotAssumed": true,
+    "globalCostCeilingEur": 0
+  },
+  "apps": [
+    {
+      "id": "ados-portal",
+      "profile": "research",
+      "clientSurface": "generic_opt_in"
+    },
+    {
+      "id": "ados-research",
+      "profile": "research",
+      "clientSurface": "generic_opt_in"
+    },
+    {
+      "id": "ai-act",
+      "profile": "ai-act",
+      "clientSurface": "specialized_live_ui"
+    },
+    {
+      "id": "nadias-bloom",
+      "profile": "wellbeing",
+      "clientSurface": "generic_opt_in_no_family_data"
+    },
+    {
+      "id": "ortho-preview",
+      "profile": "ortho-practice",
+      "clientSurface": "generic_opt_in_nonclinical"
+    },
+    {
+      "id": "ortho-workspace",
+      "profile": "ortho-practice",
+      "clientSurface": "generic_opt_in_nonclinical"
+    },
+    {
+      "id": "ortho-shop",
+      "profile": "kfo-shop",
+      "clientSurface": "specialized_live_ui"
+    },
+    {
+      "id": "cancer-research",
+      "profile": "research",
+      "clientSurface": "generic_opt_in_nonclinical"
+    },
+    {
+      "id": "cancer-intake",
+      "profile": "research",
+      "clientSurface": "generic_opt_in_nonclinical"
+    },
+    {
+      "id": "la-preuve",
+      "profile": "research",
+      "clientSurface": "generic_opt_in_nonclinical"
+    },
+    {
+      "id": "la-preuve-lab",
+      "profile": "research",
+      "clientSurface": "generic_opt_in_nonclinical"
+    }
+  ]
+}
