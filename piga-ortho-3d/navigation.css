@@ -56,3 +56,15 @@ body.piga-has-nav>main{max-width:1600px}
 /* v0.9 keep selected device destination plainly visible */
 .piga-links a[aria-current="page"]{box-shadow:inset 3px 0 0 #7edbd9}
 @media(max-height:640px) and (min-width:761px){.piga-rail{overflow-y:auto}.piga-rail-foot{margin-top:14px}}
+
+/* First-install guide: compact and never blocks use. */
+.piga-setup-offer{position:fixed;z-index:390;right:20px;bottom:20px;width:min(375px,calc(100vw - 32px));
+ background:linear-gradient(130deg,#fff,#e6faff);border:1px solid #a9dae8;border-radius:17px;
+ box-shadow:0 17px 48px #052c4b30;padding:18px;color:#184f68;font-family:system-ui}
+.piga-setup-offer strong{font-size:14px;display:block;line-height:1.4}
+.piga-setup-offer p{font-size:12px;color:#547c8c;line-height:1.55;margin:9px 0}
+.piga-setup-offer div{display:flex;gap:8px;flex-wrap:wrap}
+.piga-setup-offer a,.piga-setup-offer button{border:1px solid #9bd7e5;border-radius:10px;display:inline-flex;align-items:center;
+ justify-content:center;font-size:12px;font-weight:800;padding:9px 12px;text-decoration:none;min-height:40px;cursor:pointer}
+.piga-setup-offer a{background:#0a99bb;color:#fff}.piga-setup-offer button{color:#16738e;background:#fff}
+@media(max-width:760px){.piga-setup-offer{right:10px;bottom:calc(83px + env(safe-area-inset-bottom));padding:14px}}
