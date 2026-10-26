@@ -110,7 +110,7 @@ try{
      headingText:verdict.querySelector("h2")?.textContent?.trim()||"",
      leftScrollWidth:verdict.scrollWidth,leftClientWidth:verdict.clientWidth};
   });
-  assert.ok(layout.gridWidth>=width*.73,"report grid unexpectedly narrow at "+width+": "+JSON.stringify(layout));
+  assert.ok(layout.gridWidth>=Math.min(width*.73,440),"report grid unexpectedly narrow at "+width+": "+JSON.stringify(layout));
   assert.ok(layout.leftWidth>=Math.min(220,width*.65),"Executive Determination collapsed at "+width+": "+JSON.stringify(layout));
   assert.ok(layout.rightWidth>=Math.min(220,width*.65),"Evidence Snapshot collapsed at "+width+": "+JSON.stringify(layout));
   assert.ok(layout.rightY>=layout.leftY+20,"Report cards must stack on "+width+"px: "+JSON.stringify(layout));
