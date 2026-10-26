@@ -100,3 +100,6 @@
  .pc-notice{bottom:calc(84px + env(safe-area-inset-bottom))}}
 @media print{.pc-hero-links,.pc-compose,.pc-shortcuts,.pc-worker-actions,.pc-request,.piga-rail,.piga-bottom,.pc-notice{display:none!important}
  .pc-card{break-inside:avoid;box-shadow:none}.pc-conversation{height:auto;overflow:visible}}
+
+body[data-piga-audience=staff] .pc-workers{display:none!important}
+body[data-piga-audience=staff] .pc-primary{grid-column:auto}
