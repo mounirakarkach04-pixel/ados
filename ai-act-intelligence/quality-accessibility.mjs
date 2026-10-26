@@ -19,6 +19,7 @@ const checks=[
  ['No authenticated request interception',()=>assert.match(sw,/request\.headers\.has\("authorization"\)/)],
  ['Only explicitly enumerated public shell assets',()=>assert.match(sw,/!shellURLs\.has\(url\.href\)/)],
  ['Offline navigation has no arbitrary homepage fallback',()=>assert.doesNotMatch(sw,/catch\([^)]*=>\s*caches\.match\("\.\/index\.html"\)/)],
+ ['Service worker refetches public assets bypassing stale HTTP cache',()=>assert.match(sw,/cache\.addAll\(SHELL\.map\(path => new Request\(path, \{cache:"reload"\}\)\)\)/)],
  ['Cache version forces CSS refresh for existing installations',()=>assert.match(sw,/piga-aiact-shell-v17-mobile-report/)],
  ['Fixed mobile layout is included in cache refresh',()=>{assert.match(css,/@media screen and \(max-width:880px\)/);assert.match(css,/#view-results \.report-overview/)}],
  ['No private evidence paths in shell',()=>assert.doesNotMatch(sw,/\"\.\/(?:storage|auth|private|evidence)\//i)],
