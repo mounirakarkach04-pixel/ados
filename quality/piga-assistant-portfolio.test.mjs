@@ -41,7 +41,13 @@ for(const item of assistant.apps){
   pending++;
  }
 }
-assert.equal(active,7);
+assert.equal(active,8);
 assert.equal(special,2);
-assert.equal(pending,2);
-console.log("PASS common PIGA portfolio: 11 mapped; 7 generic opt-in, 2 specialized, 2 pending; no external effects");
+assert.equal(pending,1);
+assert.equal(assistant.apps.find(a=>a.id==="ortho-preview").profile,"ortho");
+assert.equal(assistant.apps.find(a=>a.id==="ortho-workspace").profile,"ortho");
+assert.match(model,/field\.maxLength=420/);
+assert.match(model,/confirm\.checked=false/);
+assert.match(model,/answer\.app!==profile/);
+assert.match(model,/data-piga-mount/);
+console.log("PASS PIGA portfolio: 11 mapped; 8 generic opt-in, 2 specialized, 1 pending; bounded Showroom profiles, no external effects");

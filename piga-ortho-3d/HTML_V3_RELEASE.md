@@ -35,3 +35,11 @@ The Stripe Ortho product remains inactive (commercial HOLD). Protect production 
 
 ## HTML installation
 Navigate to the GitHub Pages app in a secure browser. Choose “App auf Gerät installieren” and accept the browser's install prompt where supported; otherwise follow the displayed browser-specific instructions. The service worker caches the visual and UI assets for previously visited pages. Offline access depends on the browser and stored resources.
+
+## 27 October 2026 — Landing-page / offline-feature parity & preserved Showroom PIGA KI
+- `sales.html` retains the original six illustrated product panels, pricing and licensing text unchanged, but adds direct launch and 18 real existing HTML module deep links: dashboard, local practice, STL, imaging, devices, encrypted device hub, KFO Atlas, shared PIGA voice, guided workflow, 12-stage navigator, team, handoff, inventory, supply, procurement, reports, diagnostics, and setup.
+- The `ortho-preview` assistant on sales and `ortho-workspace` on dashboard now bind to the already established server-trusted `ortho` profile of `/api/piga/assistant/v1/ask`, not the incompatible legacy `ortho-practice` client string. The existing showroom implementation is not modified, replaced, redeployed or given additional authority.
+- Unified generic PIGA widget enforces maximum 420 characters, one-use opt-in consent, exact profile/app answer matching and female-voice-only device speech. The shared Cloudflare Workers AI service can still be delayed or blocked by its independent runtime/quotas; no provider key is bundled. Offline local modules remain useful even if remote inference is unavailable.
+- Service worker cache advances to `piga-ortho-v153-kfo-html-parity-shared-showroom` for updated public static assets; preexisting offline state in IndexedDB is not rewritten by this change.
+- Validation contract: `node quality/piga-assistant-portfolio.test.mjs`, `node quality/kfo-sales-parity.test.mjs` and `node scripts/piga-ortho-device-qa.mjs`. GitHub Actions/build/readback must separately pass before claiming LIVE.
+- No printer activation, automatic purchase, payroll or clinical authorization. Production patient data remain excluded. Actual Android APK asset parity and canonical pigapocket.com Cloudflare delivery are separate gates.
