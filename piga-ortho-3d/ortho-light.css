@@ -229,3 +229,10 @@ footer{color:#72909d!important;border-color:#e0edef!important}
  .paper{box-shadow:none!important}
  body>header:not(.piga-rail){background:#fff!important}
 }
+
+/* Refinements: compact navigation and header contrast */
+.piga-rail{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#bcdde5 transparent}
+.piga-links a,.piga-search-btn{min-height:41px!important;padding-top:10px!important;padding-bottom:10px!important}
+body>main>.hero .heroactions button{background:#078a99;color:#fff;border-color:#078a99}
+footer{background:#f4fafc!important;color:#6d8998!important;border-top:1px solid #d9e8ed!important}
+@media(max-width:760px){footer{padding-bottom:18px!important}}
