@@ -64,6 +64,19 @@ try {
  record("mobile_report_grid_contract",missing.length?"BLOCK":"ALLOW",{checks:expected,missing,
   chromium_evidence:"https://github.com/mounirakarkach04-pixel/ados/actions/runs/40377211740"});
 }catch(error){record("mobile_report_grid_contract","BLOCK",{reason:"mobile_css_contract_error",message:String(error.message||error).slice(0,160)});}
+// Previously installed Android PWAs must not keep the old CSS indefinitely.
+try {
+ const sw=fs.readFileSync(root+"/sw.js","utf8");
+ const current="piga-aiact-shell-v17-mobile-report";
+ const checks={
+  cache_version_bumped:sw.includes(current),
+  reload_http_cache:sw.includes('new Request(path, {cache:"reload"})'),
+  old_piga_shells_expired:sw.includes('key.startsWith("piga-aiact-shell-") && key !== CACHE'),
+  public_css_precached:sw.includes('"./design-v3.css"')
+ };
+ const missing=Object.entries(checks).filter(([,ok])=>!ok).map(([key])=>key);
+ record("sw_cache_refresh_contract",missing.length?"BLOCK":"ALLOW",{checks,missing});
+}catch(error){record("sw_cache_refresh_contract","BLOCK",{reason:"cache_version_readback_error",message:String(error.message||error).slice(0,150)});}
 const sensitive=fs.readFileSync(root+"/app.bundle.js","utf8");
 record("client_secret_boundary",/(?:sk_live_|whsec_|SUPABASE_SERVICE_ROLE_KEY\s*[=:]\s*['"])/.test(sensitive)?"BLOCK":"ALLOW",{checked:"no Stripe live secret / no public service-role assignment"});
 try{
