@@ -118,13 +118,23 @@
   const response=message('assistant',result.reply);response.href=result.href;
   lastAnswer=result.reply;state.messages.push(response);
   let requested=false;
+  // PIGA inference admission: an explicit user instruction may start one of the three
+  // already whitelisted read-only technical workers; never infer external authority.
+  const command=/^(?:(?:bitte|piga)\s+)?(?:prüfe|checke|analysiere|starte|fasse)\b/i.test(q);
+  let localJob=null;
+  if(audience==='owner'&&command){
+   if(/(?:datenbank|datenspeicher|systemcheck|gesundheitscheck)/i.test(q))localJob='HEALTH_CHECK';
+   else if(/(?:material|inventur|bestand|lager)/i.test(q))localJob='INVENTORY_FORECAST';
+   else if(/(?:aufträg|fälle|workflow|aufgaben|arbeitsablauf)/i.test(q))localJob='WORKFLOW_SUMMARY';
+  }
   const verbs=/\b(ich beantrage|beantrage|ich möchte beantragen|bitte anlegen|beauftrage|bitte prüfen|starte|lege an|erzeuge auftrag)\b/i;
   const actionable=['LEAVE_REQUEST','PRINT_REVIEW','INVENTORY_REVIEW','BILLING_REVIEW','CLINICAL_REVIEW','TEAM_REVIEW','GEOMETRY_REVIEW','IMAGING_REVIEW'];
-  if(verbs.test(q)&&actionable.includes(result.kind)){
+  if(!localJob&&verbs.test(q)&&actionable.includes(result.kind)){
    state.requests.push(B.request(result.kind,q,audience));requested=true;
   }
   state.messages=state.messages.slice(-100);state.requests=state.requests.slice(-100);
   renderFeed();renderRequests();await save();
+  if(localJob){await enqueue(localJob);return;}
   if(requested)notice('PIGA hat einen technischen Entwurf im Freigabeeingang vorgemerkt. Keine Freigabe oder Ausführung.');
   else notice(result.source+' · '+result.routeTitle+' · keine externen Effekte');
  }
@@ -212,6 +222,22 @@
   });
   try{
    const execute=async()=>{const list=await process();await info();
+    if(list.length){
+     let details=[];
+     try{const recent=await S.listJobs();
+      for(const row of list){
+       const job=recent.find(x=>x.id===row.id);
+       if(!job)continue;
+       if(row.state==='FAILED'){details.push(job.kind+': fehlgeschlagen.');continue}
+       const p=job.result||{};
+       if(job.kind==='HEALTH_CHECK')details.push('Datenbank: Praxis '+(p.hasSuite?'vorhanden':'leer')+', Fälle '+(p.hasDirect?'vorhanden':'leer')+'.');
+       if(job.kind==='INVENTORY_FORECAST')details.push('Material: '+Number(p.articles||0)+' Artikel, '+Number(p.lowStock||0)+' unter Mindestbestand. Keine Bestellung ausgelöst.');
+       if(job.kind==='WORKFLOW_SUMMARY')details.push('Abläufe: '+Number(p.cases||0)+' Fälle, '+Number(p.tasks||0)+' Aufgaben, '+Number(p.openTasks||0)+' offen.');
+      }
+     }catch{}
+     state.messages.push(message('assistant',details.join(' ')||list.length+' abgeschlossene technische Worker-Prüfungen.'));
+     state.messages=state.messages.slice(-100);renderFeed();await save();
+    }
     notice(list.length?list.length+' technisch lesende Worker-Aufträge abgeschlossen.':'Keine wartenden Worker-Aufträge.');
    };
    if(navigator.locks?.request)await navigator.locks.request('piga-ortho-local-job-run',{mode:'exclusive'},execute);
