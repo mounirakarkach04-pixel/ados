@@ -11,8 +11,8 @@
  const context='Du bist PIGA, ein freundlicher technischer KFO-Praxisassistent. Antworte in der Sprache der Frage, bevorzugt Deutsch. Gib Unsicherheit ehrlich an. Erfinde keine rechtlichen oder medizinischen Diagnosen, Preise, Integrationen oder Live-Daten. Nie eigenmächtig Bestellungen, Medikamente, Patientenbehandlungen, Rechnungen oder Hardwareaktionen genehmigen. PIGA Gate 2 BLOCK für reale Effekte. Beschränke dich auf Orientierung und technische Lernhilfe.';
  let capability='unavailable',engine=null,modelType='rule',busy=false,lastAnswer='',recognizer=null,history=[];
  let showroomReady=false,showroomEnabled=false;
- const SHOWROOM_STATUS='https://pigapocket.com/piga-ortho-3d/ai/status';
- const SHOWROOM_ASK='https://pigapocket.com/piga-ortho-3d/ai/ask';
+ const SHOWROOM_STATUS='https://pigapocket.com/api/piga/assistant/v1/status?app=ortho';
+ const SHOWROOM_ASK='https://pigapocket.com/api/piga/assistant/v1/ask';
  const showroomState=text=>A('voiceShowroomState',text);
  async function checkShowroom(){
   showroomState('Prüfe das vorhandene PIGA-Cloudflare-AI-Binding …');
@@ -22,12 +22,12 @@
    const response=await fetch(SHOWROOM_STATUS,{method:'GET',credentials:'omit',mode:'cors',
     cache:'no-store',referrerPolicy:'no-referrer',signal:stop.signal});
    const data=await response.json();
-   showroomReady=response.ok&&data?.schema==='piga-ortho-ai-status.v1'&&data?.keylessVoiceRouteReady===true;
+   showroomReady=response.ok&&data?.schema==='piga.shared.voice.v1'&&data?.app==='ortho'&&data?.ready===true;
    $('voiceShowroomEnable').disabled=!showroomReady;
    showroomState(showroomReady?
-    'Der bestehende Cloudflare-Worker ist für begrenzte, governede Fragen bereit. Keine Gemini-Schlüssel auf dem Gerät nötig.':
-    data?.showroomWorkersAIConfigured?
-      'Das vorhandene Workers-AI-Binding ist erkannt. Die Betreiberfreigabe für den Ortho-Antwortweg fehlt noch. PIGA bleibt lokal nutzbar.':
+    'Der gemeinsame PIGA-Showroom-Dienst ist für freigegebene Fragen bereit. Keine Gemini-Schlüssel auf dem Gerät nötig.':
+    data?.sharedGateway?
+      'Der gemeinsame PIGA-Dienst ist gefunden. Die kontrollierte Betreiber- und Kostenfreigabe für alle Apps fehlt noch. PIGA bleibt lokal nutzbar.':
       'Showroom-KI ist für PIGA ORTHO noch nicht serverseitig freigegeben. PIGA bleibt lokal nutzbar.');
   }catch{
    showroomReady=false;$('voiceShowroomEnable').disabled=true;
@@ -51,11 +51,11 @@
   try{
    const response=await fetch(SHOWROOM_ASK,{method:'POST',credentials:'omit',mode:'cors',cache:'no-store',
     headers:{'content-type':'application/json'},referrerPolicy:'no-referrer',
-    body:JSON.stringify({message:q}),signal:abort.signal});
+    body:JSON.stringify({app:'ortho',message:q}),signal:abort.signal});
    const data=await response.json();
    if(!response.ok||data?.status!=='ANSWER'||typeof data.answer!=='string')throw Error(String(data.reason||'Governance / Anbieter nicht bereit'));
-   if(data.gate2!=='BLOCK'||data.externalEffects!==0)throw Error('Unerwartete PIGA-Action-Admission');
-   return {text:data.answer.slice(0,2300),mode:'PIGA Showroom · '+String(data.model||'Workers AI').slice(0,60)+' · A7SEM Reverse'};
+   if(data.app!=='ortho'||data.gate2!=='BLOCK'||data.externalEffects!==0)throw Error('Unerwartete PIGA-Action-Admission');
+   return {text:data.answer.slice(0,2300),mode:'PIGA Showroom · '+String(data.provider||'Governed AI').slice(0,60)+' · A7SEM Reverse'};
   }finally{clearTimeout(timer);}
  }
 
@@ -199,11 +199,8 @@
  });
  $('voiceSpeak').addEventListener('click',()=>{
   if(!lastAnswer){A('voiceStatus','Noch keine PIGA-Antwort vorhanden.');return;}
-  if(!window.speechSynthesis){A('voiceStatus','Gerätestimme nicht verfügbar.');return;}
-  speechSynthesis.cancel();
-  const spoken=new SpeechSynthesisUtterance(lastAnswer.slice(0,1200));
-  spoken.lang='de-DE';spoken.rate=.98;
-  speechSynthesis.speak(spoken);
+  if(!window.PigaVoicePersona?.speak){A('voiceStatus','Sprachprofil nicht geladen.');return;}
+  window.PigaVoicePersona.speak(lastAnswer,message=>A('voiceStatus',message));
  });
  window.addEventListener('pagehide',()=>{try{recognizer?.stop();speechSynthesis?.cancel()}catch{}});
  void check();
