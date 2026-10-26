@@ -197,6 +197,16 @@
   A('voiceMicState','Mikrofon aktiv · Browserdienst möglicherweise online');
   try{recognizer.start()}catch{recognizer=null;A('voiceMicState','Nicht verfügbar')}
  });
+ $('voiceAudioCheck').addEventListener('click',()=>{
+  const report=message=>A('voiceAudioResult',message);
+  const persona=window.PigaVoicePersona;
+  if(!persona?.choose||!persona?.speak){report('Audiotest nicht verfügbar: Sprachmodul fehlt.');return;}
+  const selected=persona.choose();
+  if(!selected){report('BLOCK: Keine eindeutig weibliche deutsche Gerätestimme gefunden. Android-Sprachpaket installieren oder einstellen; kein Ersatz durch eine unbekannte Stimme.');return;}
+  report('Teste auf diesem Gerät die Stimme '+selected.name+'. Bitte Lautstärke prüfen.');
+  const spoken=persona.speak('Guten Tag. Ich bin PIGA, deine ruhige Kieferorthopädie-Assistentin. Bitte bestätige, ob du meine Stimme hören kannst.',report);
+  if(!spoken)report('Der Audiotest wurde nicht gestartet.');
+ });
  $('voiceSpeak').addEventListener('click',()=>{
   if(!lastAnswer){A('voiceStatus','Noch keine PIGA-Antwort vorhanden.');return;}
   if(!window.PigaVoicePersona?.speak){A('voiceStatus','Sprachprofil nicht geladen.');return;}
