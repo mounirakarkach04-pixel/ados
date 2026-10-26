@@ -2,12 +2,12 @@
 /* PIGA ORTHO 3D v1.2 browser-local backend, no Supabase or user authentication.
    Evaluation only: no clinical records, no sensitive payroll/real employee records. */
 window.OrthoLocalReady=(async()=>{
- await window.PigaDeviceStore.initialize('suite');
+ const restored=await window.PigaDeviceStore.initialize('suite');
  window.OrthoLocal=(()=>{
  const STORE='piga-ortho-v12-local';
  const initial=()=>({version:1,staff:[],shifts:[],clock:[],absences:[],schedule:[],manuals:[],acks:[],payroll:[],inventory:[],movements:[],costs:{},notices:[]});
  const defaults=initial();
- let db;try{db=JSON.parse(localStorage.getItem(STORE)||'null')}catch{}
+ let db=restored;if(!db){try{db=JSON.parse(localStorage.getItem(STORE)||'null')}catch{}}
  if(!db||db.version!==1||typeof db!=='object')db=initial();
  for(const key of Object.keys(defaults)){if(Array.isArray(defaults[key])&&!Array.isArray(db[key]))db[key]=[];}
  if(!db.costs||typeof db.costs!=='object')db.costs={};
