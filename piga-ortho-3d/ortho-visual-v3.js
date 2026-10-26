@@ -43,7 +43,11 @@
  }
  const config=pages[page],main=document.querySelector('main');
  if(!config||!main)return;
- if(page==='piga-control'){document.body.classList.add('ortho-visual-v3','ortho-page-piga-control');return;}
+ if(['piga-control','setup','procurement'].includes(page)){
+   // These pages already carry large premium hero layouts; avoid duplicate mastheads.
+   document.body.classList.add('ortho-visual-v3','ortho-page-'+page);
+   installFocus(main);return;
+ }
   if(page==='dashboard'){
    // Dashboard already has the full brand and marketing-style main hero.
    document.body.classList.add('ortho-visual-v3');
