@@ -11,7 +11,7 @@ const origin="https://mounirakarkach04-pixel.github.io/ados/ai-act-intelligence/
 const results=[];
 const sha256=bytes=>crypto.createHash("sha256").update(bytes).digest("hex");
 const record=(name,state,evidence)=>results.push({name,state,...evidence});
-const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","piga-act-bridge.js","welcome-journey.mjs","styles.css","design-v3.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
+const STATIC=["index.html","app.bundle.js","engine.js","portfolio.js","publications.js","piga-act-bridge.js","welcome-journey.mjs","article-operational-map.js","article-operations.mjs","styles.css","design-v3.css","sw.js","manifest.webmanifest","privacy.html","terms.html"];
 async function remote(path,{method="GET",headers={},body}={}){
  const response=await fetch(path,{method,headers,body,signal:AbortSignal.timeout(12000),redirect:"follow",cache:"no-store"});
  return response;
@@ -67,7 +67,7 @@ try {
 // Previously installed Android PWAs must not keep the old CSS indefinitely.
 try {
  const sw=fs.readFileSync(root+"/sw.js","utf8");
- const current="piga-aiact-shell-v17-mobile-report";
+ const current="piga-aiact-shell-v18-operational-atlas";
  const checks={
   cache_version_bumped:sw.includes(current),
   reload_http_cache:sw.includes('new Request(path, {cache:"reload"})'),
@@ -77,6 +77,19 @@ try {
  const missing=Object.entries(checks).filter(([,ok])=>!ok).map(([key])=>key);
  record("sw_cache_refresh_contract",missing.length?"BLOCK":"ALLOW",{checks,missing});
 }catch(error){record("sw_cache_refresh_contract","BLOCK",{reason:"cache_version_readback_error",message:String(error.message||error).slice(0,150)});}
+// Public operational mapping release: all 119 references must be published with a
+// correctly scoped control template and no claim of customer-system certification.
+try {
+ const catalog=fs.readFileSync(root+"/article-operational-map.js","utf8");
+ const entry=fs.readFileSync(root+"/article-operations.mjs","utf8");
+ const html=fs.readFileSync(root+"/index.html","utf8");
+ const ok={catalogCompleteGuard:catalog.includes('ids.length!==119'),legalScope:catalog.includes('NOT_ASSESSED'),
+  clientAtlasLoaded:html.includes('src="article-operations.mjs"'),articleExplorer:html.includes('id="atlas-list"'),
+  boundedPublicDelivery:entry.includes('PAGE_SIZE=12'),noAutoOrder:!entry.includes('client.functions.invoke')};
+ const failures=Object.entries(ok).filter(([,pass])=>!pass).map(([k])=>k);
+ record("all_articles_operational_atlas",failures.length?"BLOCK":"ALLOW",{checks:ok,failures,count:119,
+ source:"https://ai-act-service-desk.ec.europa.eu/en/ai-act-explorer",status:"CONTROL_TEMPLATES_NOT_CASE_CERTIFICATIONS"});
+}catch(error){record("all_articles_operational_atlas","BLOCK",{reason:String(error?.message||error).slice(0,160)});}
 const sensitive=fs.readFileSync(root+"/app.bundle.js","utf8");
 record("client_secret_boundary",/(?:sk_live_|whsec_|SUPABASE_SERVICE_ROLE_KEY\s*[=:]\s*['"])/.test(sensitive)?"BLOCK":"ALLOW",{checked:"no Stripe live secret / no public service-role assignment"});
 try{
