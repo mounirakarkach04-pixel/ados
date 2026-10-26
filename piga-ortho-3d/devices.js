@@ -23,9 +23,32 @@
  };
  window.pigaDeviceRefresh=detect;
  $('probe').onclick=detect;
- $('wifiSettings').onclick=()=>{if(native?.openWirelessSettings)native.openWirelessSettings('wifi');else log('WLAN-Einstellungen sind nur in der Android-App direkt erreichbar.','error')};
- $('btSettings').onclick=()=>{if(native?.openWirelessSettings)native.openWirelessSettings('bluetooth');else log('Bluetooth-Kopplung über die Systemeinstellungen Ihres Gerätes öffnen.','error')};
- $('btGrant').onclick=()=>{if(native?.requestBluetoothPermission)native.requestBluetoothPermission();else log('Bluetooth-Geräteberechtigung ist nur im Android-Build verfügbar.','error')};
+ const explain=(title,message)=>{
+   const el=$('connectionHelp');if(!el)return;
+   el.replaceChildren();
+   const b=document.createElement('strong'),p=document.createElement('p');
+   b.textContent=title;p.textContent=message;el.append(b,p);
+   el.hidden=false;el.scrollIntoView({behavior:'smooth',block:'nearest'});
+ };
+ $('wifiSettings').onclick=()=>{
+   if(native?.openWirelessSettings){native.openWirelessSettings('wifi');return;}
+   explain('WLAN am Gerät öffnen','Android: Schnelleinstellungen → Internet/WLAN. iPhone/iPad: Einstellungen → WLAN. Windows: Schnelleinstellungen → WLAN. macOS: Menüleiste → WLAN. Browser dürfen WLAN-Netze nicht auflisten oder Systemeinstellungen direkt öffnen. Danach Status aktualisieren.');
+ };
+ $('btSettings').onclick=()=>{
+   if(native?.openWirelessSettings){native.openWirelessSettings('bluetooth');return;}
+   explain('Bluetooth koppeln','Öffne die Systemeinstellungen des Geräts, aktiviere Bluetooth und kopple die Peripherie. Wo Web Bluetooth unterstützt wird, kann der Browser eine explizite Geräteauswahl anbieten.');
+ };
+ $('btGrant').onclick=async()=>{
+   if(native?.requestBluetoothPermission){native.requestBluetoothPermission();return;}
+   if(navigator.bluetooth?.requestDevice){
+     try{const dev=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:[]});
+       explain('Bluetooth-Gerät ausgewählt',String(dev.name||'Unbenanntes Gerät')+' wurde im Browser ausgewählt. Noch keine Datenübertragung oder Geräteausführung.');
+     }catch(error){explain('Bluetooth-Auswahl',error.name==='NotFoundError'?'Kein Gerät gewählt.':'Auswahl nicht möglich: '+String(error.message).slice(0,160));}
+     return;
+   }
+   explain('Bluetooth nicht verfügbar','Web Bluetooth ist in diesem Browser nicht verfügbar. Für die nativen Android-Funktionen wird die aktuelle Android-Version mit Betriebssystemberechtigung benötigt.');
+ };
+ window.addEventListener('online',detect);window.addEventListener('offline',detect);
  async function sha(bytes){if(!crypto?.subtle)return null;const result=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(result),b=>b.toString(16).padStart(2,'0')).join('');}
  function inspect(buffer){
    if(buffer.byteLength<30)throw Error('STL-Datei zu klein.');
