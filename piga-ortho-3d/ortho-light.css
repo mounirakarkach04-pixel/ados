@@ -334,3 +334,20 @@ body>main .more-links a:hover{background:#d9f2f6!important}
  font-weight:750;font-size:13px;text-align:center;text-decoration:none;white-space:normal;flex-shrink:0}
 .device-entry>a:hover{background:#d9f4f8}
 @media(max-width:760px){.device-entry{flex-direction:column;align-items:stretch;padding:18px 17px}.device-entry>a{width:100%}}
+
+/* Device sync offer: quiet, accessible and always dismissible */
+.piga-transfer-invite{position:fixed;right:18px;bottom:24px;z-index:205;width:min(380px,calc(100vw - 28px));
+ background:linear-gradient(140deg,#fff,#f0fafc);color:#184757;border:1px solid #bfe2e9;border-radius:20px;
+ padding:21px 20px 17px;box-shadow:0 17px 55px #143a4b26;font:13px/1.55 system-ui,sans-serif}
+.piga-transfer-invite>small:first-of-type{display:block;color:#078899;letter-spacing:.1em;font-size:10px;font-weight:850;margin-bottom:8px}
+.piga-transfer-invite>strong{display:block;font-size:17px;line-height:1.35;padding-right:25px;color:#183b51}
+.piga-transfer-invite p{margin:10px 0 14px;color:#4e7384;font-size:13px;line-height:1.6}
+.piga-transfer-invite>small:last-child{display:block;margin-top:11px;color:#78919e;font-size:10px}
+.piga-transfer-close{position:absolute;right:10px;top:8px;border:0;background:transparent!important;color:#648494!important;cursor:pointer;font-size:26px;line-height:1;width:34px;height:34px;padding:0}
+.piga-transfer-buttons{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.piga-transfer-buttons>a{display:inline-flex;align-items:center;text-decoration:none;border-radius:10px;
+ background:#078da0;color:#fff;padding:11px 13px;font-size:12px;font-weight:800}
+.piga-transfer-buttons>a:hover{background:#087c8e}
+.piga-transfer-later{border:1px solid #d0e3e8!important;background:#fff!important;color:#527584!important;border-radius:10px!important;padding:11px 13px!important;font-weight:700;font-size:12px!important}
+@media(max-width:760px){.piga-transfer-invite{right:10px;bottom:calc(87px + env(safe-area-inset-bottom));width:calc(100vw - 20px);padding:17px}}
+@media print{.piga-transfer-invite{display:none!important}}
