@@ -1,0 +1,32 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eff9fc"><meta name="description" content="PIGA ORTHO 3D Operations-Cockpit: lokale Aufgaben, Termine, Material, Arbeiteraufträge und Nachweise gebündelt">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./operations.css"><link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css">
+<title>Operations-Cockpit | PIGA ORTHO 3D</title></head><body><main class="ops-root" id="content">
+<section class="ops-note" role="note">LOKALES EVALUATIONSWERKZEUG · KEINE ECHTEN PATIENTEN- ODER PERSONALDATEN · KEINE KLINISCHE ENTSCHEIDUNG</section>
+<section class="ops-bar"><div><span class="ops-eyebrow">OPERATIONS / LIVE LOCAL READBACK</span><h2>Heute zählt, was wirklich ansteht.</h2><p>Fälle, Aufgaben, Termine, Material und Worker-Prüfungen aus deinem Gerätespeicher – an einer Stelle.</p></div><div class="ops-bar-actions"><button type="button" id="opsReload">Daten aktualisieren</button><button type="button" id="opsPrint">Tagesbrief drucken / PDF</button><button type="button" id="opsExport" class="ops-primary">Tagesbrief als JSON</button></div></section>
+<section class="ops-stats" aria-label="Tagesüberblick">
+<div class="ops-stat"><span>Offene Aufgaben</span><strong id="opsTasks">–</strong><small id="opsTasksHelp">Nur gespeicherte Testdaten</small></div>
+<div class="ops-stat"><span>Termine heute</span><strong id="opsToday">–</strong><small id="opsTodayHelp">Gerätelokaler Kalender</small></div>
+<div class="ops-stat"><span>Material prüfen</span><strong id="opsStock">–</strong><small id="opsStockHelp">Mindestbestand / Ablaufdatum</small></div>
+<div class="ops-stat"><span>Worker-Aufträge</span><strong id="opsWorkers">–</strong><small id="opsWorkersHelp">QUEUED / RUNNING / FAILED</small></div>
+</section>
+<div class="ops-columns">
+<section class="ops-panel"><div class="ops-heading"><span class="ops-num">01</span><div><h3>Handlungsbedarf</h3><p>Transparente Regeln, keine KI-Scheinbewertung.</p></div></div><div id="opsAttention" class="ops-records" aria-live="polite"></div></section>
+<section class="ops-panel"><div class="ops-heading"><span class="ops-num">02</span><div><h3>Termine & Aufgaben</h3><p>Chronologisch geordnet, direkt zum Quellmodul.</p></div></div>
+<div class="ops-tabline"><button type="button" data-ops-tab="today" aria-pressed="true">Heute</button><button type="button" data-ops-tab="week" aria-pressed="false">Nächste 7 Tage</button><button type="button" data-ops-tab="tasks" aria-pressed="false">Offene Aufgaben</button></div>
+<div id="opsAgenda" class="ops-records" aria-live="polite"></div></section>
+<section class="ops-panel"><div class="ops-heading"><span class="ops-num">03</span><div><h3>Ein Arbeitsweg</h3><p>Ohne Umwege zum nächsten technischen Schritt.</p></div></div><nav class="ops-workflow" aria-label="Arbeitsfolge">
+<a href="./direct.html#cases"><b>1</b><span><strong>Fall vorbereiten</strong><small>Pseudonym, Aufgabe & Termin</small></span></a>
+<a href="./devices.html"><b>2</b><span><strong>Scan technisch prüfen</strong><small>WLAN-/USB-/STL-Vorprüfung</small></span></a>
+<a href="./studio.html#studio"><b>3</b><span><strong>3D-Modell kontrollieren</strong><small>Geometrie, Hash & Evidenz</small></span></a>
+<a href="./inventory.html"><b>4</b><span><strong>Material bereitstellen</strong><small>Bestand und Prognose</small></span></a>
+<a href="./workflow.html"><b>5</b><span><strong>PIGA-Prüfgates</strong><small>Kein automatischer klinischer oder Geräteentscheid</small></span></a>
+<a href="./report.html"><b>6</b><span><strong>Nachweis exportieren</strong><small>Glassbox & technische Prüfakte</small></span></a>
+</nav></section>
+<section class="ops-panel"><div class="ops-heading"><span class="ops-num">04</span><div><h3>Betrieb & Nachweise</h3><p>Geräteorientiert, ohne Supabase-Abhängigkeit.</p></div></div><div id="opsHealth" class="ops-records"></div>
+<div class="ops-bar-actions"><a href="./device-hub.html#transfer">Verschlüsselte Sicherung</a><a href="./device-hub.html">Worker-Center</a><a href="./report.html">Prüfakte öffnen</a></div></section>
+</div>
+<footer class="ops-footer">PIGA GATE 1: INFERENCE ADMISSION · PIGA GATE 2: ACTION ADMISSION · Arbeitscockpit zeigt Testdaten, erteilt keine Freigabe.</footer>
+</main><script src="./device-store.js" defer></script><script src="./operations.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script></body></html>
