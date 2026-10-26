@@ -52,7 +52,7 @@
 <div id="pcTeamFeed" class="pc-teamfeed" role="log" aria-live="polite"></div>
 <form id="pcTeamForm"><label for="pcTeamName">Anzeigename (Pseudonym)</label><input id="pcTeamName" maxlength="32" value="TEAM-01" pattern="[a-zA-Z0-9_-]{3,32}" required>
 <label for="pcTeamMessage">Nachricht ohne Gesundheits- oder Personaldaten</label><textarea id="pcTeamMessage" maxlength="500" rows="2" required placeholder="Welche STL-Prüfung steht an?"></textarea><button class="pc-primary-button" type="submit">Nachricht lokal senden</button></form>
-<div class="pc-footnote">Keine Verschlüsselung zwischen Geräten, keine serverseitige Übertragung und keine Mitarbeiter-Authentifizierung. Für echten Mehrgeräte-Praxischat wird ein sicherer Backend-Dienst benötigt.</div>
+<button type="button" id="pcNotifyTeam">Lokale Team-Popup-Benachrichtigungen aktivieren</button><div class="pc-footnote">Keine Verschlüsselung zwischen Geräten, keine serverseitige Übertragung und keine Mitarbeiter-Authentifizierung. Für echten Mehrgeräte-Praxischat wird ein sicherer Backend-Dienst benötigt.</div>
 </section>
 <section class="pc-card pc-internet" id="voice"><header><span class="pc-number">05</span><div><h2>Sprache & Internet optional</h2><p>Zuerst ohne API-Schlüssel nutzbar. Sprach-KI-Dienste erst nach eigener sicherer Anbindung.</p></div></header>
 <details><summary>Sprachsteuerung in zwei Schritten</summary>
@@ -65,6 +65,12 @@
 <div class="pc-footnote">Öffnet nur eine öffentliche Suchseite. Ergebnisse werden ohne zugelassenen Backend-Connector nicht automatisch vom PIGA-Chat gelesen. Keine Patientendaten als Suchbegriff verwenden.</div>
 </section>
 </div></section>
+<dialog id="pcReviewDialog" class="pc-approval-dialog" aria-labelledby="pcReviewTitle">
+ <form method="dialog"><span class="eyebrow">PIGA · MANUELLE TECHNISCHE SICHTUNG</span><h2 id="pcReviewTitle">Auftrag prüfen</h2>
+ <p id="pcReviewDescription"></p><p class="pc-review-warning">Ohne nachgewiesene Inhaber- und fachliche Autorität ist eine rechtswirksame oder medizinische Freigabe hier NICHT verfügbar. PIGA Gate 2 bleibt BLOCK.</p>
+ <div class="pc-dialog-actions"><button type="submit" value="ACK_TECHNICAL" class="pc-primary-button">Technisch gesichtet</button>
+ <button type="submit" value="PAUSE">Pausieren</button><button type="submit" value="REJECT">Ablehnen</button>
+ <button type="submit" value="CLOSE">Schließen</button></div></form></dialog>
 <div id="pcNotice" class="pc-notice" role="status" aria-live="polite">PIGA lokal initialisiert. Keine echte Medizin-, Urlaubs- oder Druckfreigabe.</div>
 <footer class="pc-footer">PIGA · GATE 1 DELAY · GATE 2 BLOCK · A7SEM / A7SEM REVERSE · LOCAL-FIRST · HUMAN CONTROL</footer>
 </main>
