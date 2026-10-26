@@ -25,22 +25,23 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
-      - name: Build offline evaluation APK
+      - name: Build current offline device-first APK
         working-directory: piga-ortho-3d/android
         run: gradle --no-daemon :app:assembleDebug
-      - name: Verify exact offline assets inside built APK (PIGA A7SEM Reverse)
+      - name: Verify newest Ortho assets and native scheduled runner inside APK
         run: |
           set -euo pipefail
-          grep -Fq "(!state.key&&!state.nativeReady)" piga-ortho-3d/web/app.js
-          grep -Fq '"id":"./"' piga-ortho-3d/web/manifest.webmanifest
-          for f in index.html app.js style.css sw.js icon.svg manifest.webmanifest privacy.html README.txt workflow.html workflow.css workflow.js praxis.html praxis.css praxis.js dashboard.html dashboard.css dashboard.js navigation.css navigation.js report.html report.css report.js devices.html devices.css devices.js assist.html assist.css assist.js kfo-bema-2026.csv team.html team.css team.js auth.html auth.js inventory.html inventory.css inventory.js; do
-            cmp "piga-ortho-3d/$f" "piga-ortho-3d/web/$f"
-            unzip -p "piga-ortho-3d/android/app/build/outputs/apk/debug/app-debug.apk" "assets/$f" | cmp - "piga-ortho-3d/web/$f"
-            echo "Verified offline APK asset: $f"
+          grep -Fq 'OrthoLocalRunnerJob.schedule' piga-ortho-3d/android/app/src/main/java/com/piga/ortho/MainActivity.java
+          grep -Fq 'BIND_JOB_SERVICE' piga-ortho-3d/android/app/src/main/AndroidManifest.xml
+          grep -Fq "(!state.key&&!state.nativeReady)" piga-ortho-3d/app.js
+          for f in index.html dashboard.html studio.html app.js dental-anatomy.js device-resilience.js device-worker.js device-store.js device-hub.html resilience-status.js navigation.js sw.js setup.html setup.js ortho-ai-status.js manifest.webmanifest visuals/ortho-hero.svg; do
+            test -s "piga-ortho-3d/$f"
+            unzip -p "piga-ortho-3d/android/app/build/outputs/apk/debug/app-debug.apk" "assets/$f" | cmp - "piga-ortho-3d/$f"
+            echo "PASS Android asset: $f"
           done
       - name: Publish build artifact, not a clinical release
         uses: actions/upload-artifact@v4
         with:
-          name: PIGA-ORTHO-3D-EVALUATION-debug-APK
+          name: PIGA-ORTHO-3D-DEVICE-FIRST-debug-APK
           path: piga-ortho-3d/android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
