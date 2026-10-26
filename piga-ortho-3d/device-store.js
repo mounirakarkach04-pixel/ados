@@ -102,5 +102,26 @@ window.PigaDeviceStore=(()=>{
   return put('imaging-review',data);
  };
  const loadImagingReview=async()=>{const row=await get('imaging-review');return row?.data||null};
-  return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush,saveImagingReview,loadImagingReview};
+ const savePigaControl=async data=>{
+  if(!data||data.schema!==1||!Array.isArray(data.messages)||!Array.isArray(data.requests)||!Array.isArray(data.teamMessages))
+   throw Error('Invalid PIGA control state');
+  const clean=m=>({id:String(m.id||'').slice(0,75),from:String(m.from||'').slice(0,35),
+   content:String(m.content||'').slice(0,850),at:String(m.at||'').slice(0,35)});
+  const request=r=>({id:String(r.id||'').slice(0,75),kind:String(r.kind||'').slice(0,40),
+   description:String(r.description||'').slice(0,250),requestedBy:String(r.requestedBy||'').slice(0,40),
+   requestedAt:String(r.requestedAt||'').slice(0,35),status:String(r.status||'').slice(0,35),
+   decision:r.decision?String(r.decision).slice(0,25):null,
+   decisionAt:r.decisionAt?String(r.decisionAt).slice(0,35):null,
+   expiresAt:String(r.expiresAt||'').slice(0,35),ttlHours:24,
+   clinicalAuthority:'NOT_ASSIGNED',gate1:'DELAY',gate2:'BLOCK',effects:0});
+  const safe={schema:1,messages:data.messages.slice(-100).map(clean),
+   teamMessages:data.teamMessages.slice(-100).map(clean),
+   requests:data.requests.slice(-100).map(request)};
+  if(JSON.stringify(safe).length>150000)throw Error('PIGA control state too large');
+  await put('piga-control',safe);
+  try{broadcast?.postMessage({name:'piga-control'})}catch{}
+  return safe;
+ };
+ const loadPigaControl=async()=>{const row=await get('piga-control');return row?.data||null};
+  return {initialize,save:enqueueWrite,get,snapshots,replace,status,enqueueJob,listJobs,listEvents,storageInfo,persist,keys:KEYS,meta,markBackup,markImport,flush,saveImagingReview,loadImagingReview,savePigaControl,loadPigaControl};
 })();
