@@ -1,4 +1,14 @@
 plugins { id 'com.android.application' }
+
+// APK packages the CURRENT PIGA ORTHO source assets, not the old /web snapshot.
+def orthoRoot=file('../..')
+def stagedAssets=layout.buildDirectory.dir('generated/orthoAssets')
+tasks.register('stageCurrentOrthoAssets', Copy) {
+    from(orthoRoot) {
+        include '*.html', '*.css', '*.js', '*.json', '*.webmanifest', '*.svg', '*.txt', '*.csv', 'visuals/**'
+    }
+    into stagedAssets
+}
 android {
     namespace 'com.piga.ortho'
     compileSdk 35
@@ -6,10 +16,11 @@ android {
         applicationId 'com.piga.ortho'
         minSdk 26
         targetSdk 35
-        versionCode 2
-        versionName '0.2.0-evaluation'
+        versionCode 3
+        versionName '0.3.0-device-first'
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
-    sourceSets { main { assets.srcDirs += file('../../web') } }
+    sourceSets { main { assets.srcDirs = [stagedAssets.get().asFile] } }
 }
+tasks.named('preBuild') { dependsOn tasks.named('stageCurrentOrthoAssets') }
 dependencies { implementation 'androidx.webkit:webkit:1.11.0' }
