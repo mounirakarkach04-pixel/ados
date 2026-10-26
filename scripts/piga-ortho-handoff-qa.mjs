@@ -42,7 +42,7 @@ test('Read two inventory sources without reserving or mutating physical stock',(
  let before=JSON.stringify(suite);
  let options=C.materialOptions(db,suite);
  assert.equal(options.length,2);
- assert.deepEqual(options.map(x=>x.code).sort(),['MAT-1','MAT-2']);
+ assert.equal(JSON.stringify(options.map(x=>x.code).sort()),JSON.stringify(['MAT-1','MAT-2']));
  C.assignMaterial(db,caseId,'MAT-1',3);
  assert.equal(JSON.stringify(suite),before);
  C.markTask(db,caseId,'intake',true,'Checked by tester');
