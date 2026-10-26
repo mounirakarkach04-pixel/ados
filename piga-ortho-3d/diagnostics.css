@@ -1,0 +1,42 @@
+.diagnostic-app{width:100%;max-width:none;padding:clamp(16px,2.4vw,37px) clamp(14px,2.5vw,42px) 55px}
+.diag-hero{display:grid;grid-template-columns:1.5fr .75fr;gap:24px;align-items:center;padding:clamp(20px,2.5vw,40px);
+ border:1px solid #c2e5ee;border-radius:24px;background:linear-gradient(115deg,#fff,#e4faff 66%,#dff1ff);box-shadow:0 11px 35px #196f9411}
+.diag-hero h1{font-size:clamp(26px,3.2vw,47px);line-height:1.1;margin:7px 0;color:#183f60;letter-spacing:-.045em}
+.diag-hero h1 em{color:#039bae;font-style:normal}
+.diag-hero p{font-size:14px;color:#547a8b;line-height:1.7;max-width:850px}
+.diag-hero img{width:100%;max-height:210px;object-fit:contain}
+.diag-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+.diag-actions button{border-radius:11px;border:1px solid #b7dfeb;padding:12px 16px;min-height:46px;
+ background:white;color:#116b8a;font-size:13px;font-weight:800;cursor:pointer}
+.diag-actions .diag-primary{background:linear-gradient(110deg,#058dc2,#0bc0b9);color:white;border:0}
+.diag-actions button:disabled{opacity:.45;cursor:not-allowed}
+.diag-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:22px 0}
+.diag-stats>div{border:1px solid #d0e6f0;background:white;border-radius:16px;padding:20px;box-shadow:0 6px 18px #1e66960a}
+.diag-stats span{display:block;color:#628094;font-size:12px}.diag-stats strong{display:block;color:#15587d;font-size:clamp(21px,2.3vw,28px);margin-top:5px}
+.diag-section{padding:clamp(19px,2.1vw,30px);background:white;border:1px solid #d2e8ee;border-radius:20px;margin:20px 0;box-shadow:0 8px 27px #1d729314}
+.diag-section h2{font-size:clamp(22px,2vw,30px);color:#204c66;letter-spacing:-.035em;margin:0}
+.diag-section header p{font-size:13px;color:#70909e;margin:7px 0 20px}
+.diag-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.diag-item{display:flex;align-items:start;gap:11px;border:1px solid #e0edf1;background:#f9fdff;border-radius:12px;padding:13px 15px;color:#51758a;font-size:13px;line-height:1.5}
+.diag-item>div{flex:1;min-width:0}.diag-item strong{display:block;color:#245d75;font-size:13px}
+.diag-item small{display:block;color:#708b98;font-size:11px;margin-top:4px;overflow-wrap:anywhere}
+.diag-pill{font-size:10px;font-weight:850;padding:5px 8px;border-radius:9px;border:1px solid #d5e8ee;white-space:nowrap;background:#eef7f9}
+.diag-pill.pass{color:#147b67;border-color:#bfe7d9;background:#e9faf2}
+.diag-pill.fail{color:#a34440;border-color:#f2c7c5;background:#fff1ef}
+.diag-pill.unknown{color:#9a6b40;border-color:#eddcbb;background:#fff9ef}
+.diag-links{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.diag-links a{display:flex;flex-direction:column;gap:8px;min-height:98px;background:#f1fbff;border:1px solid #d0eaf3;
+ border-radius:13px;padding:16px;text-decoration:none;color:#176780}
+.diag-links a:hover{background:#def7fd;border-color:#a9e0ee}
+.diag-links b{font-size:13px}.diag-links small{font-size:11px;color:#7d99a6;line-height:1.35}
+.diag-limits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.diag-limits>div{background:#f2fbfd;border:1px solid #dbeef2;border-radius:13px;padding:16px}
+.diag-limits strong{color:#22647a;font-size:14px}.diag-limits p{color:#6d8b9a;font-size:12px;line-height:1.65;margin-bottom:0}
+.diag-message{border:1px solid #c3e6eb;background:#e9f9fc;color:#246f83;border-radius:12px;padding:14px 19px;margin:20px 0;font-size:13px}
+.diagnostic-app footer{font-size:10px;color:#7796a5;margin-top:33px;letter-spacing:.06em}
+@media(max-width:1400px){.diag-links{grid-template-columns:repeat(3,minmax(0,1fr))}.diag-limits{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:950px){.diag-hero{grid-template-columns:1fr 200px}.diag-checks{grid-template-columns:1fr}.diag-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.diag-hero{grid-template-columns:1fr}.diag-hero img{max-height:140px}.diag-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .diag-limits{grid-template-columns:1fr}.diag-stats{gap:8px}.diag-stats>div{padding:15px}.diagnostic-app{padding-bottom:115px}}
+@media(max-width:400px){.diag-links{grid-template-columns:1fr}.diag-actions button{width:100%}}
+@media print{.diag-actions,.piga-rail,.piga-bottom{display:none!important}.diag-section{box-shadow:none;break-inside:avoid}}
