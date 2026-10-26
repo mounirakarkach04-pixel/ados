@@ -48,6 +48,10 @@ check('Local chat and worker fabric cannot silently call internet or LLM provide
  assert(!/\bfetch\s*\(/.test(core+ui+widget));
  assert(!/gemini.*api.?key\s*=/i.test(ui+core));
  assert(ui.includes("S.enqueueJob(kind)"));
+ for(const job of ['HEALTH_CHECK','INVENTORY_FORECAST','WORKFLOW_SUMMARY'])
+  assert(ui.includes('localJob=\''+job+'\''),job);
+ assert(ui.includes("await enqueue(localJob)"));
+ assert(ui.includes("job.result||{}"));
  assert(ui.includes("new Worker('./device-worker.js')"));
  assert(ui.includes('navigator.locks.request'));
  assert(ui.includes("document.visibilityState==='hidden'"));
