@@ -8,7 +8,7 @@
  if(window.PigaOrthoResilience)return;
  const S=window.PigaDeviceStore,KEY='piga-ortho-local-review-schedule-v1';
  const JOBS=['HEALTH_CHECK','DATA_INTEGRITY_AUDIT','IMPROVEMENT_BACKLOG'];
- const INTERVAL=15*60*1000,LEASE=60*1000;
+ const INTERVAL=15*60*1000;
  let busy=false,live=true,runCount=0,lastError=null,lastRun=null,mode='DEVICE_ONLY';
  const now=()=>Date.now();
  const emit=()=>document.dispatchEvent(new CustomEvent('piga-ortho-resilience-state',{detail:status()}));
@@ -34,11 +34,7 @@
    const work=async lock=>{
     if(!lock)return false;
     if(now()-Number(lockStorage().at||0)<INTERVAL-1000)return false;
-    const jobs=await S.listJobs();
-    for(const kind of JOBS){
-     if(jobs.some(j=>j.kind===kind&&['QUEUED','RUNNING'].includes(j.state)))continue;
-     await S.enqueueJob(kind);
-    }
+    for(const kind of JOBS)await S.enqueueUniqueJob(kind);
     record();
     const result=await new Promise((resolve,reject)=>{
      if(typeof Worker==='undefined'){reject(Error('Worker API fehlt'));return;}
