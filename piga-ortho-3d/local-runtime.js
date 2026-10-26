@@ -1,7 +1,9 @@
 'use strict';
 /* PIGA ORTHO 3D v1.2 browser-local backend, no Supabase or user authentication.
    Evaluation only: no clinical records, no sensitive payroll/real employee records. */
-window.OrthoLocal=(()=>{
+window.OrthoLocalReady=(async()=>{
+ await window.PigaDeviceStore.initialize('suite');
+ window.OrthoLocal=(()=>{
  const STORE='piga-ortho-v12-local';
  const initial=()=>({version:1,staff:[],shifts:[],clock:[],absences:[],schedule:[],manuals:[],acks:[],payroll:[],inventory:[],movements:[],costs:{},notices:[]});
  const defaults=initial();
@@ -40,7 +42,7 @@ window.OrthoLocal=(()=>{
  const button=(label,callback)=>{const b=el('button',label);b.type='button';b.addEventListener('click',callback);return b};
  const showMsg=(id,msg,fail=false)=>{text(id,msg);const e=$(id);if(e){e.style.color=fail?'#b13f41':'#20746b';}};
  const clear=id=>{if($(id))$(id).replaceChildren()};
- const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(db));window.dispatchEvent(new Event('ortho-local-change'));return true}catch{alert('Gerätespeicher voll oder gesperrt. Bitte eine Datensicherung exportieren.');return false}};
+ const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(db));window.PigaDeviceStore.save('suite',db).catch(err=>{console.warn('Gerätedatenbank nicht gespeichert:',err.message)});window.dispatchEvent(new Event('ortho-local-change'));return true}catch{alert('Gerätespeicher voll oder gesperrt. Bitte eine Datensicherung exportieren.');return false}};
  const row=(container,title,detail,actions=[])=>{
   if(!container)return;const root=el('div',undefined,'record local-entry');
   const info=el('div');info.append(el('b',title),el('small',detail||''));root.append(info);
@@ -65,4 +67,6 @@ window.OrthoLocal=(()=>{
   $('logout')?.remove();$('signoutPending')?.remove();
  };
  return {db,$,value,number,text,visible,date,format,euro,now,uuid,el,button,showMsg,clear,save,row,download,csv,backup,banner};
+})();
+ return window.OrthoLocal;
 })();
