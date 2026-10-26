@@ -115,7 +115,7 @@
  const workspace=document.createElement('script');workspace.src='./workspace-manager.js';workspace.defer=true;document.head.append(workspace);
 
  // Run only previously queued, bounded local analyses on PWA foreground.
- const resume=()=>{const s=document.createElement('script');s.src='./worker-autoresume.js';s.defer=true;document.head.append(s);};
+ const resume=()=>{const s=document.createElement('script');s.src='./worker-autoresume.js';s.defer=true;document.head.append(s);const r=document.createElement('script');r.src='./device-resilience.js';r.defer=true;document.head.append(r);};
  if(window.PigaDeviceStore)resume();else{
    const s=document.createElement('script');s.src='./device-store.js';s.defer=true;s.onload=resume;document.head.append(s);
  }
