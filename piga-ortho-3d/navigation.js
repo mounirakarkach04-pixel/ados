@@ -1,6 +1,7 @@
 'use strict';
 (()=>{
  const paths=[
+ {id:'manager',label:'PIGA Praxismanager',desc:'Systemstatus, Geräte-Failover, lokale Worker, Optimierung und Sicherungen',href:'./manager.html',icon:'activity'},
  {id:'setup',label:'Einrichtungsassistent',desc:'Erste Schritte, WLAN, Gerätespeicher, Worker und Sprache',href:'./setup.html',icon:'shield'},
  {id:'piga',label:'PIGA Control & Chat',desc:'Lokaler PIGA Assistent, Worker-Herzschlag, Freigabe-Inbox, Teamchat und Sprachoption',href:'./piga-control.html',icon:'activity'},
  {id:'teamchat',label:'Teamchat',desc:'Lokal testbare technische Teamnachrichten, ohne echte Mitarbeiterkonten',href:'./piga-control.html#teamchat',icon:'users'},
@@ -39,7 +40,7 @@
  };
  const svg=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[k]+'</svg>';
  const filename=location.pathname.split('/').pop()||'index.html';
- let selected=filename==='setup.html'?'setup':filename==='procurement.html'?'procurement':filename==='kfo-atlas.html'?'atlas':filename==='supply.html'?'supply':filename==='operations.html'?'operations':filename==='piga-control.html'?(location.hash==='#teamchat'?'teamchat':'piga'):filename==='imaging.html'?'imaging':filename==='diagnostics.html'?'diagnostics':filename==='handoff.html'?'handoff':filename==='device-hub.html'?'devicehub':filename==='direct.html'?'cases':filename==='imaging.html'?'imaging':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
+ let selected=filename==='manager.html'?'manager':filename==='setup.html'?'setup':filename==='procurement.html'?'procurement':filename==='kfo-atlas.html'?'atlas':filename==='supply.html'?'supply':filename==='operations.html'?'operations':filename==='piga-control.html'?(location.hash==='#teamchat'?'teamchat':'piga'):filename==='imaging.html'?'imaging':filename==='diagnostics.html'?'diagnostics':filename==='handoff.html'?'handoff':filename==='device-hub.html'?'devicehub':filename==='direct.html'?'cases':filename==='imaging.html'?'imaging':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
  if(filename==='studio.html'||filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
