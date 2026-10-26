@@ -6,6 +6,7 @@ on:
       - 'piga-ortho-3d/**'
       - 'scripts/piga-ortho-device-qa.mjs'
       - 'scripts/piga-ortho-autonomy-qa.mjs'
+      - 'scripts/piga-ortho-offline-failover-qa.mjs'
       - 'scripts/piga-ortho-manager-qa.mjs'
       - 'scripts/piga-ortho-pc-runner.mjs'
       - 'scripts/piga-ortho-operations-runtime-qa.mjs'
@@ -33,6 +34,7 @@ jobs:
         run: |
           node scripts/piga-ortho-device-qa.mjs
           node scripts/piga-ortho-autonomy-qa.mjs
+          node scripts/piga-ortho-offline-failover-qa.mjs
           node scripts/piga-ortho-manager-qa.mjs
           node scripts/piga-ortho-operations-runtime-qa.mjs
           node scripts/piga-ortho-handoff-qa.mjs
