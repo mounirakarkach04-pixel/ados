@@ -96,6 +96,9 @@
    }));
  }
 
+ // Offer local encrypted transfer without blocking app workflows or storing credentials.
+ const offer=document.createElement('script');offer.src='./transfer-offer.js';offer.defer=true;document.head.append(offer);
+
  // All Ortho pages use the same worker; avoid the separate direct-worker taking over this scope.
  if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});}
 })();
