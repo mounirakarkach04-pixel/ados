@@ -42,11 +42,17 @@
   let queue=0;
   try{queue=(await window.PigaDeviceStore?.listJobs?.()||[]).filter(j=>j.state==='QUEUED'||j.state==='RUNNING').length}catch{}
   const time=new Date().toLocaleTimeString('de-DE');
-  status.textContent='Seiten-Herzschlag '+time+' · '+queue+' lokale Jobs offen';
+  const online=navigator.onLine?'NETZ ONLINE':'NETZ OFFLINE';
+  // Browser exposes only coarse connectivity; do not claim WLAN scanning or discovery.
+  const cn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  const transport=cn?.type==='wifi'?'WLAN gemeldet':cn?.effectiveType?'Verbindung '+cn.effectiveType:'Netztyp unbekannt';
+  status.textContent='Seiten-Herzschlag '+time+' · '+online+' · '+transport+' · '+queue+' lokale Jobs offen';
   launch.textContent='PIGA · '+(queue?queue+' Jobs':'Lokal ●');
  };
  void refresh();
  const timer=setInterval(()=>{void refresh()},15000);
  window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
  document.addEventListener('visibilitychange',()=>{void refresh()});
+ window.addEventListener('online',()=>{void refresh()});
+ window.addEventListener('offline',()=>{void refresh()});
 })();
