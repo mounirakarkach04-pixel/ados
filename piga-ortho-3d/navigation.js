@@ -1,6 +1,8 @@
 'use strict';
 (()=>{
  const paths=[
+ {id:'piga',label:'PIGA Control & Chat',desc:'Lokaler PIGA Assistent, Worker-Herzschlag, Freigabe-Inbox, Teamchat und Sprachoption',href:'./piga-control.html',icon:'activity'},
+ {id:'teamchat',label:'Teamchat',desc:'Lokal testbare technische Teamnachrichten, ohne echte Mitarbeiterkonten',href:'./piga-control.html#teamchat',icon:'users'},
  {id:'dashboard',label:'Übersicht',desc:'Zentraler Start, Schnellsuche, STL-Check und Freigabe-Checklisten',href:'./dashboard.html',icon:'grid'},
  {id:'diagnostics',label:'Funktionstest',desc:'Verfügbare und nicht verfügbare Module direkt auf deinem Gerät testen',href:'./diagnostics.html',icon:'shield'},
  {id:'handoff',label:'Praxis → Labor',desc:'Ein durchgängiger Testauftrag mit STL-Prüfung, Material, Arbeitsplan, Kalender und Evidenz',href:'./handoff.html',icon:'flow'},
@@ -34,7 +36,7 @@
  };
  const svg=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[k]+'</svg>';
  const filename=location.pathname.split('/').pop()||'index.html';
- let selected=filename==='operations.html'?'operations':filename==='imaging.html'?'imaging':filename==='diagnostics.html'?'diagnostics':filename==='handoff.html'?'handoff':filename==='device-hub.html'?'devicehub':filename==='direct.html'?'cases':filename==='imaging.html'?'imaging':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
+ let selected=filename==='operations.html'?'operations':filename==='piga-control.html'?(location.hash==='#teamchat'?'teamchat':'piga'):filename==='imaging.html'?'imaging':filename==='diagnostics.html'?'diagnostics':filename==='handoff.html'?'handoff':filename==='device-hub.html'?'devicehub':filename==='direct.html'?'cases':filename==='imaging.html'?'imaging':filename==='studio.html'?'studio':filename==='team.html'?'team':filename==='auth.html'?'team':filename==='praxis.html'?'praxis':filename==='workflow.html'?'workflow':filename==='dashboard.html'?'dashboard':filename==='report.html'?'report':filename==='inventory.html'?'inventory':filename==='devices.html'?'devices':filename==='assist.html'?'assistant':'studio';
  if(filename==='studio.html'||filename==='index.html'){if(location.hash==='#printer')selected='printer';if(location.hash==='#evidence'||location.hash==='#governance')selected='quality';}
  const a=(p,cls)=>{const link=document.createElement('a');link.href=p.href;link.className=cls;link.innerHTML=svg(p.icon)+'<span>'+p.label+'</span>';link.title=p.desc;if(p.id===selected)link.setAttribute('aria-current','page');return link;};
  const rail=document.createElement('nav');rail.className='piga-rail';rail.setAttribute('aria-label','PIGA ORTHO Hauptnavigation');
@@ -65,7 +67,7 @@
  const top=document.createElement('div');top.className='piga-command-head';top.insertAdjacentHTML('beforeend',svg('search'));const search=document.createElement('input');search.type='search';search.placeholder='Funktion suchen, z. B. Druck, Kosten, STL …';search.setAttribute('aria-label','Funktion suchen');top.append(search);const close=document.createElement('button');close.type='button';close.className='piga-command-close';close.textContent='Schließen';top.append(close);panel.append(top);
  const results=document.createElement('div');results.className='piga-results';panel.append(results);
  const foot=document.createElement('div');foot.className='piga-command-footer';foot.textContent='Nur freigegebene Module benutzen · keine echten Patientendaten';panel.append(foot);overlay.append(panel);
- const keywords={imaging:'dicom cbct 4k hochauflösende gebisse kiefer segmentierung okklusion staging finite piga review',imaging:'cbct dicom slice segmentierung staging okklusion abstand bildgebung 4k analyse forschung piga genehmigen ablehnen pause',diagnostics:"funktionen aktiv prüfen gerät online test datenbank sicherheit bluetooth wifi hardware",handoff:"praxis labor übergabe auftrag scan stl material arbeitsplan evidenz testfall",operations:'tagescockpit termine offene aufgaben priorisierung materialwarnungen zentral täglich arbeitsstand arbeitswege briefing',devicehub:'lokale gerätedatenbank worker backup verschlüsselt smartphone tablet desktop ohne supabase sync sicherung',cases:'fälle kalender termine aufgaben lokal',dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
+ const keywords={piga:'piga chat worker herzschlag nervensystem freigabe sprache assistant',teamchat:'team nachrichten mitarbeiter chat hilfe',imaging:'dicom cbct 4k hochauflösende gebisse kiefer segmentierung okklusion staging finite piga review',imaging:'cbct dicom slice segmentierung staging okklusion abstand bildgebung 4k analyse forschung piga genehmigen ablehnen pause',diagnostics:"funktionen aktiv prüfen gerät online test datenbank sicherheit bluetooth wifi hardware",handoff:"praxis labor übergabe auftrag scan stl material arbeitsplan evidenz testfall",operations:'tagescockpit termine offene aufgaben priorisierung materialwarnungen zentral täglich arbeitsstand arbeitswege briefing',devicehub:'lokale gerätedatenbank worker backup verschlüsselt smartphone tablet desktop ohne supabase sync sicherung',cases:'fälle kalender termine aufgaben lokal',dashboard:'start dashboard tools checkliste modell datei hash navigation',praxis:'mitarbeiter personal arbeitsauftrag kalender zeiten kosten organisation',studio:'stl import modell volumen geometrie 3d',workflow:'user route ergebnis weg phasen',printer:'octoprint gerät slicer druck',team:'personal mitarbeiter steuerberater dienstplan hygiene handbuch abwesenheit arbeitszeit urlaub krankmeldung lohn',quality:'evidenz audit export hash gates qualität',report:'pdf druckfertig dokument pass prüfakte piga a7sem reverse audit',inventory:'material inventur bestand lager bestellen kalkulation nachbestellen',devices:'wlan wifi bluetooth usb scanner verbinden geraet drucker scan'};
  function render(){results.textContent='';const q=search.value.trim().toLocaleLowerCase('de-DE');const found=paths.filter(p=>(p.label+' '+p.desc+' '+keywords[p.id]).toLocaleLowerCase('de-DE').includes(q));
   if(!found.length){const empty=document.createElement('p');empty.textContent='Keine passende Funktion gefunden.';empty.style.padding='15px';results.append(empty);return;}
   found.forEach(p=>{const item=document.createElement('a');item.href=p.href;const b=document.createElement('b');b.textContent=p.label;const sm=document.createElement('small');sm.textContent=p.desc;item.append(b,sm);results.append(item);});}
@@ -115,6 +117,14 @@
  }
 
 
- // All Ortho pages use the same worker; avoid the separate direct-worker taking over this scope.
+ // PIGA quick assistant and local ticker on every existing app page.
+ const brain=()=>{if(!window.PigaBrain){
+   const b=document.createElement('script');b.src='./piga-brain.js';b.defer=true;
+   b.onload=()=>{const w=document.createElement('script');w.src='./piga-pocket-widget.js';w.defer=true;document.head.append(w)};
+   document.head.append(b);
+ }else{const w=document.createElement('script');w.src='./piga-pocket-widget.js';w.defer=true;document.head.append(w)}};
+ const wd=document.createElement('link');wd.rel='stylesheet';wd.href='./piga-pocket-widget.css';document.head.append(wd);
+ if(!location.pathname.endsWith('/piga-control.html'))brain();
+  // All Ortho pages use the same worker; avoid the separate direct-worker taking over this scope.
  if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});}
 })();
