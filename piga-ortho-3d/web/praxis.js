@@ -37,11 +37,11 @@ $('authForm').addEventListener('submit',async e=>{
   if(authMode==='register'){
     const name=$('fullName').value.trim();
     if(name.length<2||pass.length<12)throw Error('Name und mindestens 12 Zeichen Passwort erforderlich.');
-    await req('/auth/v1/signup','POST',{email,password:pass,data:{full_name:name}},false);
-    notice('authMessage','Registrierung übermittelt. Bitte dein Postfach auf die Bestätigungs-E-Mail prüfen und dich danach anmelden. Der Zugang bleibt bis zur Inhaberfreigabe gesperrt.');
+    await req('/auth/v1/signup?redirect_to='+encodeURIComponent(new URL('./auth.html',location.href).href),'POST',{email,password:pass,data:{full_name:name}},false);
+    $('password').value='';location.assign('./auth.html?state=check-email');return;
   }else if(authMode==='recover'){
-    await req('/auth/v1/recover','POST',{email},false);
-    notice('authMessage','Wenn das Konto existiert, wurde eine Wiederherstellungs-E-Mail angefordert. Die Weiterleitung muss beim Auth-Anbieter korrekt konfiguriert sein.');
+    await req('/auth/v1/recover?redirect_to='+encodeURIComponent(new URL('./auth.html',location.href).href),'POST',{email},false);
+    $('password').value='';location.assign('./auth.html?state=check-email');return;
   }else{
     const data=await req('/auth/v1/token?grant_type=password','POST',{email,password:pass},false);
     if(!data?.access_token||!data?.user?.id)throw Error('Anmeldung nicht bestätigt.');

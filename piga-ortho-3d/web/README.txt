@@ -82,3 +82,10 @@ RELEASE V0.9 — DEVICE CENTER / FIXED ANDROID AUTH STORAGE
 5. Android WebView DOM Storage enabled (required by v0.8 browser Auth) and no true persistent session guarantee. All authentication and permission flows must be tested against signed-in role identities, independently and on real Android devices.
 
 V1.0: 5-step swipeable clinician-review assistant, three synthetic typodonts, 36-entry offline BEMA catalogue. No patient data or autonomous medical diagnosis.
+
+V1.1 HR STAFF & ACCOUNTANT PORTAL (CONTROLLED EVALUATION)
+- New team.html gives three server-gated roles: employee, owner, accountant. Accountant may only read owner-shared monthly payroll packages, never raw medical data or handbook acknowledgements. New signups pending, owner approves roles explicitly. E-mail delivery via default Supabase service is restricted and SMTP/redirect allowlist must be validated before real onboarding.
+- Annual handbook versions: two draft manuals prepared but NOT published until Dr. Akarkach checks/adapts and approves. Employee confirms review, uploads personally signed PDF to private 5MB PDF-only storage and creates version/year keyed record. This does not replace actual in-person hygiene/safety instruction or a qualified electronic signature.
+- HR time events, vacations/sickness without diagnosis, staff shift scheduling, in-app owner alerts and accountant-visible payroll EXPORT previews are implemented with RLS; not validated for payroll accounting completeness.
+- Authentication recovery callback auth.html supports verified token_hash or fragment access_token. Supabase must allow callback URL and have reliable SMTP sending, otherwise registration delivery cannot be called working.
+- Owner postal email push, DATEV API and clinical patient data are NOT connected. No real medical data in this evaluation app.
