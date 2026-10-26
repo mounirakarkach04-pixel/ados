@@ -1,0 +1,33 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eff9fc"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; worker-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D – überprüfbarer lokaler Funktions- und Gerätetest für Desktop, Smartphone und Tablet.">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./ortho-light.css"><link rel="stylesheet" href="./ortho-visual-v3.css"><link rel="stylesheet" href="./diagnostics.css">
+<title>Funktionsprüfung · PIGA ORTHO 3D</title></head><body><main class="diagnostic-app" id="content">
+<section class="diag-hero"><div><span class="eyebrow">PIGA ORTHO 3D · SYSTEM READINESS</span><h1>Jede Funktion. <em>Ein überprüfbarer Status.</em></h1>
+<p>Diese Tests laufen direkt auf deinem Gerät – ohne Supabase, ohne Patientendaten und ohne externe Eingriffe. Sie unterscheiden funktionierende lokale Technik von noch nicht angeschlossener Hardware.</p>
+<div class="diag-actions"><button id="runDiagnostics" type="button" class="diag-primary">Jetzt alle Funktionen prüfen</button><button id="exportDiagnostics" type="button">Testprotokoll herunterladen</button></div></div>
+<img src="./visuals/ortho-dashboard.svg" width="650" height="320" alt="Illustrative technische Systemübersicht"></section>
+<div class="diag-stats"><div><span>Erfolgreich</span><strong id="passed">–</strong></div><div><span>Nicht verfügbar</span><strong id="unavailable">–</strong></div><div><span>Fehler</span><strong id="failed">–</strong></div><div><span>Systemzustand</span><strong id="overall">Nicht geprüft</strong></div></div>
+<section class="diag-section"><header><h2>Browser und lokale Ausführung</h2><p>Jeder Eintrag enthält ein technisch nachvollziehbares Ergebnis.</p></header><div id="technicalChecks" class="diag-checks"><div class="diag-item">Test starten, um Ergebnisse anzuzeigen.</div></div></section>
+<section class="diag-section"><header><h2>Praxis- und Laborwerkzeuge</h2><p>Funktionale Arbeitsbereiche direkt öffnen und selbst überprüfen.</p></header>
+<div class="diag-links">
+<a href="./dashboard.html"><b>Dashboard</b><small>Startseite und Status</small></a>
+<a href="./handoff.html"><b>Praxis → Labor</b><small>Auftrag bis technische Übergabe</small></a>
+<a href="./studio.html#studio"><b>STL / 3D Studio</b><small>Geometrie und Modellansicht</small></a>
+<a href="./direct.html#cases"><b>Fälle & Aufgaben</b><small>Lokale Vorgänge</small></a>
+<a href="./operations.html"><b>Tagescockpit</b><small>Aufgaben und Materialwarnungen</small></a>
+<a href="./inventory.html"><b>Material & Lager</b><small>Bestände und Bedarf</small></a>
+<a href="./devices.html"><b>WLAN / Bluetooth</b><small>Gerätestatus und Kopplung</small></a>
+<a href="./assist.html"><b>Assistent</b><small>Geführte technische Hilfe</small></a>
+<a href="./report.html"><b>Prüfakte</b><small>Lokaler Export / Druckansicht</small></a>
+<a href="./device-hub.html"><b>Datenbank & Worker</b><small>Lokale Ausführung und Sicherung</small></a></div></section>
+<section class="diag-section"><header><h2>Hardware und Freigabegrenzen</h2><p>Ein Browser kann weder Betriebssystemrechte erzwingen noch medizinische oder physische Gerätefreigaben ersetzen.</p></header>
+<div class="diag-limits"><div><strong>WLAN</strong><p>Online-/Offline-Status ist prüfbar. Die WLAN-Verbindungsart erkennt die native Brücke; Browser zeigen eine Anleitung zum Öffnen der Systemeinstellungen.</p></div>
+<div><strong>Bluetooth</strong><p>Web Bluetooth nur auf unterstützten Browsern. Koppeln benötigt eine bestätigte Geräteauswahl und später das passende Geräteprotokoll.</p></div>
+<div><strong>3D-Druck</strong><p>Technische Schnittstelle im Studio vorhanden; echte Druckbefehle bleiben bis Gate-2-Zulassung und Geräteprüfung gesperrt.</p></div>
+<div><strong>Klinische Funktionen</strong><p>Keine diagnostische oder therapeutische Vollautomation. Freigabe, Patientendaten und kommerzielle Rechte sind gesonderte Voraussetzungen.</p></div></div></section>
+<div id="diagMessage" class="diag-message" role="status">Bereit zur Geräteprüfung.</div>
+<footer>LOCAL-FIRST · PRÜFBARE FUNKTIONEN · GATE 2 BLOCK · KEINE KLINISCHE FREIGABE</footer></main>
+<script src="./diagnostics.js" defer></script><script src="./navigation.js" defer></script><script src="./ortho-visual-v3.js" defer></script>
+</body></html>
