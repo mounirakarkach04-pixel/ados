@@ -185,6 +185,10 @@ try{
  await page.locator("#atlas-export-all").click();
  const atlasFile=await atlasDownload;
  assert.match(atlasFile.suggestedFilename(),/119-artikel-kontrollatlas/);
+ const csvDownload=page.waitForEvent("download");
+ await page.locator("#atlas-export-csv").click();
+ const csvFile=await csvDownload;
+ assert.match(csvFile.suggestedFilename(),/119-kontrollatlas\.csv/);
  await page.locator(".atlas-original > summary").click();
  await page.fill("#article-search","50");
  assert.match(await page.locator("#article-table").innerText(),/Art\. 50/);
