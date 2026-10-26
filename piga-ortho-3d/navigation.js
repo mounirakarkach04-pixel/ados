@@ -98,6 +98,7 @@
 
  // Offer local encrypted transfer without blocking app workflows or storing credentials.
  const offer=document.createElement('script');offer.src='./transfer-offer.js';offer.defer=true;document.head.append(offer);
+ const install=document.createElement('script');install.src='./ortho-install.js';install.defer=true;document.head.append(install);
  // Run only previously queued, bounded local analyses on PWA foreground.
  const resume=()=>{const s=document.createElement('script');s.src='./worker-autoresume.js';s.defer=true;document.head.append(s);};
  if(window.PigaDeviceStore)resume();else{
