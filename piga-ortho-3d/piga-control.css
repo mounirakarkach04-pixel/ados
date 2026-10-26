@@ -103,3 +103,16 @@
 
 body[data-piga-audience=staff] .pc-workers{display:none!important}
 body[data-piga-audience=staff] .pc-primary{grid-column:auto}
+
+/* Explicit human review in a real modal dialog, never a web form submission */
+.pc-approval-dialog{width:min(550px,calc(100vw - 26px));max-height:85vh;overflow:auto;border:1px solid #9bdde9;
+ border-radius:21px;padding:clamp(20px,2vw,30px);background:linear-gradient(140deg,#fff,#f0fbff);
+ box-shadow:0 24px 90px #082e4f59;color:#255873}
+.pc-approval-dialog::backdrop{background:#102e49a6;backdrop-filter:blur(5px)}
+.pc-approval-dialog h2{font-size:clamp(24px,2.4vw,31px);color:#165274;margin:11px 0}
+.pc-approval-dialog p{color:#607f92;font-size:13px;line-height:1.7}
+.pc-review-warning{padding:13px;background:#fff6e8;border:1px solid #efdac2;border-radius:11px}
+.pc-dialog-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.pc-dialog-actions button{border:1px solid #badddf;border-radius:11px;background:white;color:#18708c;
+ padding:11px 13px;font-size:12px;font-weight:770;cursor:pointer}
+.pc-dialog-actions button.pc-primary-button{background:linear-gradient(115deg,#078ab8,#0bc3c0);color:#fff}
