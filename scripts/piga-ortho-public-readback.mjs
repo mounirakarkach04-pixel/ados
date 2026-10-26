@@ -4,7 +4,7 @@ const sites={
  landing:"https://pigapocket.com/piga-ortho-3d/",
  orthoVoice:"https://pigapocket.com/piga-ortho-3d/piga-voice.html"
 };
-const outcomes={schema:"piga.ortho-public-read-only-evidence.v1",recordedAt:new Date().toISOString(),tests:[],modelRequests:0,externalEffects:0};
+const outcomes={schema:"piga.ortho-public-read-only-evidence.v1",recordedAt:new Date().toISOString(),canonicalSourceCommit:"5b218be10890e148e9ca8d1f1d12fc49aeb8cb4f",tests:[],modelRequests:0,externalEffects:0};
 for(const [type,url] of Object.entries(sites)){
  const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),9000);
  let result={type,url,admitted:false,state:"UNKNOWN",reason:"NOT_RUN"};
@@ -13,7 +13,7 @@ for(const [type,url] of Object.entries(sites)){
   const text=await response.text();result={...result,httpStatus:response.status,contentType:response.headers.get("content-type"),reason:"HTTP_READBACK",state:response.ok?"REACHABLE":"NOT_READY"};
   if(type==="status"){
    let data;try{data=JSON.parse(text)}catch{data=null}
-   result={...result,schemaObserved:data?.schema||null,appObserved:data?.app||null,ready:data?.ready===true,mode:data?.inferenceMode||null,
+   result={...result,schemaObserved:data?.schema||null,appObserved:data?.app||null,ready:data?.ready===true,mode:data?.inferenceMode||null,serverState:data?.state||null,
      modelWasInvoked:data?.modelRequestPerformed===true,
      admitted:response.ok&&data?.schema==="piga.shared.voice.v1"&&data?.app==="ortho"&&data?.ready===true,
      state:response.ok&&data?.schema==="piga.shared.voice.v1"?(data.ready===true?"READY_BINDING_ONLY":"NOT_READY"):"MISSING_OR_WRONG_SCHEMA"};
