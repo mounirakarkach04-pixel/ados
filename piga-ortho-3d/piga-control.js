@@ -5,7 +5,7 @@
  const S=window.PigaDeviceStore,B=window.PigaBrain,$=id=>document.getElementById(id);
  if(!S||!B){$('pcNotice').textContent='PIGA-Basis nicht geladen. App aktualisieren.';return;}
  const defaults=()=>({schema:1,messages:[],teamMessages:[],requests:[]});
- let state=defaults(),audience='owner',busy=false,automatic=false,lastAnswer='',lastPulse=0,activeWorker=null,autoTimer=null,interval=null,channel=null;
+ let state=defaults(),audience='owner',busy=false,automatic=false,lastAnswer='',lastPulse=0,activeWorker=null,autoTimer=null,interval=null,channel=null,wakeLock=null;
  const stamp=()=>new Date().toISOString(),short=(v,n=300)=>String(v??'').trim().slice(0,n);
  const notice=(m,error=false)=>{const el=$('pcNotice');el.textContent=m;el.dataset.error=String(error)};
  const mk=(tag,txt,cls)=>{const el=document.createElement(tag);if(txt!==undefined)el.textContent=String(txt);if(cls)el.className=cls;return el};
@@ -71,19 +71,20 @@
     ' · '+new Date(r.requestedAt).toLocaleString('de-DE')+' · Gate 2 BLOCK'));
    if(r.status==='AWAITING_REVIEW'&&!expired&&audience==='owner'){
     const row=mk('div','','pc-review-buttons');
-    const approve=mk('button','Freigeben · Identität erforderlich');approve.type='button';approve.disabled=true;
+    const reviewed=mk('button','Technisch gesichtet');reviewed.type='button';
+    const approve=mk('button','Echte Freigabe · gesperrt');approve.type='button';approve.disabled=true;
     approve.title='Keine verifizierte Betreiberidentität. Echte Genehmigungen bleiben gesperrt.';
     const reject=mk('button','Ablehnen');reject.type='button';
     const pause=mk('button','Pausieren');pause.type='button';
-    for(const [button,result] of [[reject,'REJECT'],[pause,'PAUSE']]){
+    for(const [button,result] of [[reviewed,'ACK_TECHNICAL'],[reject,'REJECT'],[pause,'PAUSE']]){
      button.addEventListener('click',async()=>{
       try{const index=state.requests.findIndex(q=>q.id===r.id);if(index<0)return;
        state.requests[index]=B.decide(state.requests[index],result,false);await save();renderRequests();
-       notice('Entwurf '+(result==='REJECT'?'abgelehnt':'pausiert')+'. Keine reale Aktion ausgelöst.');
+       notice('Technischer Entwurf '+(result==='REJECT'?'abgelehnt':result==='PAUSE'?'pausiert':'gesichtet')+'. Keine reale Aktion ausgelöst.');
       }catch(e){notice(short(e.message),true)}
      });
     }
-    row.append(approve,reject,pause);block.append(row);
+    row.append(reviewed,reject,pause,approve);block.append(row);
    }
    root.append(block);
   }
@@ -96,6 +97,7 @@
    'Inhaberansicht ist ohne sichere Anmeldung keine echte Autorisierung.';
   document.body.dataset.pigaAudience=audience;
   $('pcRequestKind').value=staff?'LEAVE_REQUEST':'INVENTORY_REVIEW';
+  $('pcRequestKind').disabled=staff;
   for(const el of document.querySelectorAll('[data-job]'))el.disabled=staff;
   for(const id of ['pcRun','pcAuto','pcPauseWorker'])$(id).disabled=staff;
   renderRequests();
@@ -203,7 +205,17 @@
  };
  $('pcPauseWorker').onclick=()=>{automatic=false;$('pcAuto').textContent='Auto bei geöffnetem Tab: AUS';
   $('pcAuto').setAttribute('aria-pressed','false');notice('Automatische Worker-Wiederaufnahme pausiert. Ein laufender endlicher Job wird kontrolliert abgeschlossen.')};
- function heartbeat(){
+ const releaseWake=async()=>{if(wakeLock){try{await wakeLock.release()}catch{}wakeLock=null;}const btn=$('pcWake');btn.textContent='Bildschirm aktiv halten: AUS';btn.setAttribute('aria-pressed','false')};
+ $('pcWake').onclick=async()=>{
+  if(wakeLock){await releaseWake();return notice('Bildschirm-Wake-Lock beendet.')}
+  if(!navigator.wakeLock?.request)return notice('Dieser Browser bietet keinen Screen Wake Lock. Keine 24/7-Garantie.',true);
+  try{wakeLock=await navigator.wakeLock.request('screen');
+   $('pcWake').textContent='Bildschirm aktiv halten: AN';$('pcWake').setAttribute('aria-pressed','true');
+   wakeLock.addEventListener('release',()=>{wakeLock=null;$('pcWake').textContent='Bildschirm aktiv halten: AUS';$('pcWake').setAttribute('aria-pressed','false')});
+   notice('Wake Lock aktiv, solange Browser und Betriebssystem es zulassen. Energieverbrauch beachten.');
+  }catch(e){notice('Bildschirm-Wake-Lock nicht verfügbar: '+short(e.message),true)}
+ };
+  function heartbeat(){
   if(document.visibilityState!=='visible'){
    $('pcRuntime').textContent='PAUSIERT';$('pcRuntimeHint').textContent='Browser im Hintergrund; kein verlässlicher Worker';
    return;
@@ -237,12 +249,13 @@
   if(/\b(patient|krankenkasse|versichertennummer|geburtsdatum|diagnose eines)\b/i.test(q))
    return notice('Keine patientenbezogenen Suchbegriffe im offenen Internet verwenden.',true);
   const url='https://www.google.com/search?q='+encodeURIComponent(q);
-  const w=window.open(url,'_blank','noopener,noreferrer');
-  if(!w)notice('Pop-up blockiert. Bitte Browserfreigabe für externe öffentliche Suche prüfen.',true);
-  else notice('Öffentliche Suche im Browser geöffnet. PIGA hat keine Ergebnisse heimlich ausgelesen.');
+  const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';
+  document.body.append(a);a.click();a.remove();
+  notice('Öffentliche Suche an den Browser übergeben. Ob der neue Tab angezeigt wird, entscheidet der Browser.');
  };
  document.addEventListener('visibilitychange',()=>{
   heartbeat();
+  if(document.visibilityState!=='visible')void releaseWake();
   if(document.visibilityState==='visible'){void info();void load().then(()=>{renderTeam();renderRequests()})}
  });
  window.addEventListener('pageshow',heartbeat);
@@ -256,5 +269,5 @@
  try{await S.initialize('direct');await load();}catch(e){notice('Lokale Datenbank: '+short(e.message),true)}
  renderFeed();renderTeam();renderAudience();await info();heartbeat();
  interval=setInterval(()=>{heartbeat();void info()},10000);
- window.addEventListener('pagehide',()=>{clearInterval(interval);if(activeWorker)activeWorker.terminate();channel?.close()},{once:true});
+ window.addEventListener('pagehide',()=>{clearInterval(interval);if(activeWorker)activeWorker.terminate();void releaseWake();channel?.close()},{once:true});
 })();
