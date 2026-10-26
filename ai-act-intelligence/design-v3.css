@@ -304,3 +304,34 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #0b
 @media(max-width:980px){.audience-options{grid-template-columns:1fr}.audience-choice{min-height:0;padding:17px}.welcome-direction{align-items:stretch;flex-direction:column}.welcome-direction .btn{width:100%}.result-guided-path{grid-template-columns:1fr}}
 @media(max-width:460px){.welcome-orientation{padding:20px 16px;border-radius:17px}.welcome-intro h2{font-size:23px}.audience-choice{gap:7px}.result-guided-path{padding:20px 16px;gap:18px}}
 @media(prefers-reduced-motion:reduce){.audience-choice{transition:none}}
+
+/* Mobile report grid regression — the v3 desktop minimum of 290px previously
+   overrode styles.css's narrower-screen single-column rule. On phones this
+   squeezed the Executive Determination card into a one-character-wide track.
+   Scoped to the screen so the existing A4/print grid stays unchanged. */
+@media screen and (max-width:880px){
+  #view-results .report-overview,
+  #view-results .results-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:16px;
+    width:100%;
+    max-width:100%;
+  }
+  #view-results .report-overview>.panel,
+  #view-results .results-grid>.panel{
+    min-width:0;
+    max-width:100%;
+    width:100%;
+    overflow-wrap:break-word;
+    word-break:normal;
+  }
+}
+@media screen and (max-width:480px){
+  #view-results .report-cover-grid,
+  #view-results .result-guided-path{
+    grid-template-columns:minmax(0,1fr);
+  }
+  #view-results .report-gates{min-width:0}
+  #view-results .report-gates>div{min-width:0}
+}
