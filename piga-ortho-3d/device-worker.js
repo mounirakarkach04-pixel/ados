@@ -61,6 +61,32 @@ async function compute(kind){
   return {articles:items.length,lowStock:low.length,criticalSkus:low.slice(0,50).map(i=>String(i.sku||'').slice(0,32)),
  note:'Hinweis zur manuellen Bestandsprüfung, kein Bestellauftrag.',networkEffects:0,deviceActions:0};
  }
+ if(kind==='DATA_INTEGRITY_AUDIT'){
+  const cases=Array.isArray(direct.cases)?direct.cases:[],tasks=Array.isArray(direct.tasks)?direct.tasks:[],
+   stock=Array.isArray(suite.inventory)?suite.inventory:[];
+  const ids=new Set(),duplicates=[];
+  for(const c of cases.slice(0,5000)){const id=String(c.id||'');if(id&&ids.has(id))duplicates.push('DUPLICATE_CASE_ID');
+   if(id)ids.add(id);}
+  const orphanTasks=tasks.filter(t=>t.caseId&&!ids.has(String(t.caseId))).length;
+  const badStock=stock.filter(x=>!Number.isFinite(Number(x.quantity))||Number(x.quantity)<0).length;
+  return {checkedAt:now(),caseCount:cases.length,duplicateCaseIds:duplicates.length,
+   orphanTasks,badStockQuantities:badStock,recommendation:duplicates.length||orphanTasks||badStock?
+   'Manuelle Bestands- und Datenintegritätsprüfung einplanen':'Keine strukturellen Warnungen in geprüften lokalen Datensätzen.',
+   actionsPerformed:0,clinicalAuthority:false,networkEffects:0,deviceActions:0};
+ }
+ if(kind==='IMPROVEMENT_BACKLOG'){
+  const inventory=Array.isArray(suite.inventory)?suite.inventory:[],tasks=Array.isArray(direct.tasks)?direct.tasks:[],
+   cases=Array.isArray(direct.cases)?direct.cases:[];
+  const suggestions=[];
+  if(inventory.some(x=>x.minimum==null||Number(x.minimum)<0))suggestions.push('Mindestbestände für Materialpositionen prüfen');
+  if(tasks.filter(t=>t.status!=='done'&&t.status!=='closed').length>0)suggestions.push('Offene lokale Aufgaben nach Fälligkeit überprüfen');
+  if(!cases.length)suggestions.push('Erste synthetische Testfälle für den End-to-End-Prozess anlegen');
+  if(!inventory.length)suggestions.push('Synthetisches Inventar und Lieferzeiten konfigurieren');
+  if(!suggestions.length)suggestions.push('Regulären Qualitäts- und Sicherungscheck fortsetzen');
+  return {checkedAt:now(),suggestions:suggestions.slice(0,6),status:'PROPOSAL_ONLY',
+   nextAdmission:'OWNER_REVIEW_REQUIRED_FOR_MUTATIONS',gate2:'BLOCK',
+   actionsPerformed:0,clinicalAuthority:false,networkEffects:0,deviceActions:0};
+ }
  throw Error('Nicht zugelassene Worker-Aufgabe');
 }
 async function finish(job,result,error){
