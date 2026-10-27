@@ -72,6 +72,7 @@ if(within){
 mkdirSync("qa-reports",{recursive:true});
 const path=join("qa-reports","piga-factory-25x3-"+(qa?"qa":"hourly")+".json");
 writeFileSync(path,JSON.stringify(snapshot,null,2)+"\n");
+if(within && snapshot.summary.gaps.length) console.log("PIGA_REVIEW_GAPS "+JSON.stringify(snapshot.summary.gaps));
 console.log(JSON.stringify({schema:snapshot.schema,at:ts,cycle:snapshot.cycle,withinWindow:within,
  workers:snapshot.summary.visitedWorkers,supervisors:snapshot.supervisors.length,sourceGaps:snapshot.summary.sourceGaps??null,
  phoneHeartbeat:snapshot.phoneHeartbeat.state,remoteEffects:0,modelCalls:0,a7semReverse:"PASS_SOURCE_ONLY",evidence:path}));
