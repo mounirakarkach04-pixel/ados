@@ -21,7 +21,9 @@ for(const file of ['piga-voice.html','voice.js','piga-voice-persona.js','kfo-sho
  assert.ok(sw.includes("'./"+file+"'"),'missing SW asset '+file);
 assert.match(sw,/piga-ortho-v154-android-female-audio-check/);
 assert.match(read('setup.html'),/href="\.\/piga-voice\.html"/);
-assert.match(status,/keylessVoiceRouteReady/);
+assert.ok(status.includes('/api/piga/assistant/v1/status?app=ortho'));
+assert.ok(status.includes('data.ready===true'));
+assert.ok(!status.includes('keylessVoiceRouteReady') && !status.includes('neuen Schlüssel') && !status.includes('/piga-ortho-3d/ai/status'));
 assert.ok(persona.includes("geminiVoice:'Gacrux'"));
 assert.ok(persona.includes('rate:0.87'));
 console.log('PASS legacy KFO voice + shared server + female persona + offline checks');

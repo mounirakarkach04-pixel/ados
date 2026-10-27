@@ -27,9 +27,9 @@ class El{
 const ids=new Map(['setupAiBadge','setupAiResult','setupCheckAi'].map(x=>[x,new El()]));
 let hits=0;
 const request=async(url,init)=>{
- hits++;assert.equal(url,'https://pigapocket.com/piga-ortho-3d/ai/status');
+ hits++;assert.equal(url,'https://pigapocket.com/api/piga/assistant/v1/status?app=ortho');
  assert.equal(init.method,'GET');assert.equal(init.credentials,'omit');
- return {ok:true,json:async()=>({schema:'piga-ortho-ai-status.v1',providerSecretConfigured:false,operatorCostApproval:false,featureReleaseConfigured:false})};
+ return {ok:true,json:async()=>({schema:'piga.shared.voice.v1',app:'ortho',ready:false,state:'WORKERS_AI_OR_QUOTA_UNAVAILABLE'})};
 };
 const context={document:{getElementById:id=>ids.get(id)||null},fetch:request,
  AbortController:class{constructor(){this.signal={}}abort(){}},setTimeout,clearTimeout};
@@ -37,7 +37,8 @@ vm.runInNewContext(script,context,{filename:'ortho-ai-status.js'});
 assert.equal(hits,0,'status check only on intentional button click');
 await ids.get('setupCheckAi').handlers.click();
 assert.equal(hits,1);
-assert.match(ids.get('setupAiResult').textContent,/Cloudflare-Secret GEMINI_API_KEY/);
+assert.match(ids.get('setupAiResult').textContent,/Gemeinsame PIGA-KI noch nicht bereit/);
+assert.match(ids.get('setupAiResult').textContent,/WORKERS_AI_OR_QUOTA_UNAVAILABLE/);
 assert.equal(ids.get('setupAiBadge').dataset.state,'warn');
 assert.equal(ids.get('setupCheckAi').disabled,false);
 console.log('PIGA ORTHO AI onboarding QA PASS: explicit status read, no leaked key or provider call, responsive compact UI.');
