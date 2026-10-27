@@ -1,6 +1,6 @@
 // General-purpose optional PIGA assistant. No automatic reads from hosting apps.
 const el=document.querySelector("script[data-piga-app]");
-const roles={"ados-portal":"showroom","ados-research":"showroom","nadias-bloom":"nadias_bloom","ortho-preview":"ortho","ortho-workspace":"ortho","cancer-research":"cancer","cancer-intake":"cancer","la-preuve":"la_preuve","la-preuve-lab":"la_preuve"};
+const roles={"ados-portal":"showroom","ados-research":"showroom","nadias-bloom":"nadias_bloom","ortho-preview":"ortho","ortho-workspace":"ortho","ortho-shop":"kfo-shop","ai-act":"ai_act","cancer-research":"cancer","cancer-intake":"cancer","la-preuve":"la_preuve","la-preuve-lab":"la_preuve","barakah":"barakah"};
 const id=el?.dataset.pigaApp,profile=roles[id];
 const lang=el?.dataset.pigaLang||document.documentElement.lang||"de";
 const translated=lang.startsWith("fr")?["Interroger PIGA","Votre question générale","Pas de données privées, médicales ou confidentielles.","Envoyer","Aucune réponse disponible. Fonctions locales intactes."]:lang.startsWith("en")?["Ask PIGA","General question","No private, medical or confidential information.","Send","No answer available. Local features still work."]:["PIGA fragen","Allgemeine Fachfrage","Keine persönlichen, medizinischen oder vertraulichen Daten senden.","Senden","Keine Antwort verfügbar. Die App bleibt nutzbar."];
