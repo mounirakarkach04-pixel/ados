@@ -1,0 +1,40 @@
+{
+  "schema": "piga.app.blueprint.v1",
+  "id": "replace-with-unique-app-id",
+  "name": "PIGA App",
+  "engines": [
+    "intake",
+    "queue",
+    "govern",
+    "evidence",
+    "decision"
+  ],
+  "lenses": [
+    "PIGA Gate 1",
+    "PIGA Gate 2",
+    "A7SEM",
+    "A7SEM Reverse"
+  ],
+  "runtime": {
+    "offlineFirst": true,
+    "cloudInferenceDefault": false,
+    "phoneHostRequired": false,
+    "noBackgroundExecutionClaim": true
+  },
+  "voice": {
+    "sharedBackend": "https://pigapocket.com/api/piga/assistant/v1/ask",
+    "trustedAppProfileRequired": true,
+    "explicitConsentPerTurn": true,
+    "deviceFemaleVoiceOnlyIfAvailable": true
+  },
+  "limits": {
+    "newCostEur": 0,
+    "externalEffectAttempts": 0
+  },
+  "release": {
+    "sourceTestsRequired": true,
+    "canonicalReadbackRequired": true,
+    "humanReviewRequired": true,
+    "clinicalUse": "BLOCK"
+  }
+}

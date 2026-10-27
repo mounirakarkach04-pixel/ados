@@ -1,0 +1,439 @@
+{
+  "schema": "piga.factory.25x3.v1",
+  "version": "2026-10-27",
+  "environment": "github-public-evidence-only",
+  "window": {
+    "startUTC": "2026-10-27T00:00:00Z",
+    "endUTC": "2026-10-28T00:00:00Z",
+    "requestedHours": 24
+  },
+  "ownerIntent": "18 KFO modules first; expand and improve all public apps by evidence; no phone claim when offline",
+  "exactEngines": [
+    "intake",
+    "queue",
+    "govern",
+    "evidence",
+    "decision"
+  ],
+  "supervisors": [
+    {
+      "id": "PIGA-S01",
+      "name": "Admission & Governance",
+      "role": "A7SEM/Gate1 cost/identity preconditions; gate2 denied without signed ticket",
+      "lanes": [
+        "intake",
+        "queue"
+      ],
+      "maxActionAttempts": 0
+    },
+    {
+      "id": "PIGA-S02",
+      "name": "Heartbeat & Self-Healing",
+      "role": "Check source/CI/uptime evidence, repair proposals only, bounded backoff",
+      "lanes": [
+        "govern",
+        "evidence"
+      ],
+      "maxActionAttempts": 0
+    },
+    {
+      "id": "PIGA-S03",
+      "name": "Glassbox Reverse & Release",
+      "role": "A7SEM Reverse receipt, reproducible quality findings, no direct deploy",
+      "lanes": [
+        "decision"
+      ],
+      "maxActionAttempts": 0
+    }
+  ],
+  "workers": [
+    {
+      "id": "PIGA-W01",
+      "area": "kfo",
+      "name": "dashboard",
+      "target": "piga-ortho-3d/dashboard.html",
+      "engine": "intake",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W02",
+      "area": "kfo",
+      "name": "praxis-local",
+      "target": "piga-ortho-3d/direct.html",
+      "engine": "queue",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W03",
+      "area": "kfo",
+      "name": "3d-studio",
+      "target": "piga-ortho-3d/studio.html",
+      "engine": "govern",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W04",
+      "area": "kfo",
+      "name": "imaging",
+      "target": "piga-ortho-3d/imaging.html",
+      "engine": "evidence",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W05",
+      "area": "kfo",
+      "name": "devices",
+      "target": "piga-ortho-3d/devices.html",
+      "engine": "decision",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W06",
+      "area": "kfo",
+      "name": "device-hub",
+      "target": "piga-ortho-3d/device-hub.html",
+      "engine": "intake",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W07",
+      "area": "kfo",
+      "name": "kfo-atlas",
+      "target": "piga-ortho-3d/kfo-atlas.html",
+      "engine": "queue",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W08",
+      "area": "kfo",
+      "name": "piga-voice",
+      "target": "piga-ortho-3d/piga-voice.html",
+      "engine": "govern",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W09",
+      "area": "kfo",
+      "name": "assistant",
+      "target": "piga-ortho-3d/assist.html",
+      "engine": "evidence",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W10",
+      "area": "kfo",
+      "name": "workflow",
+      "target": "piga-ortho-3d/workflow.html",
+      "engine": "decision",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W11",
+      "area": "kfo",
+      "name": "team",
+      "target": "piga-ortho-3d/team.html",
+      "engine": "intake",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W12",
+      "area": "kfo",
+      "name": "handoff",
+      "target": "piga-ortho-3d/handoff.html",
+      "engine": "queue",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W13",
+      "area": "kfo",
+      "name": "inventory",
+      "target": "piga-ortho-3d/inventory.html",
+      "engine": "govern",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W14",
+      "area": "kfo",
+      "name": "kfo-shop",
+      "target": "piga-ortho-3d/supply.html",
+      "engine": "evidence",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W15",
+      "area": "kfo",
+      "name": "procurement",
+      "target": "piga-ortho-3d/procurement.html",
+      "engine": "decision",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W16",
+      "area": "kfo",
+      "name": "glassbox-report",
+      "target": "piga-ortho-3d/report.html",
+      "engine": "intake",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W17",
+      "area": "kfo",
+      "name": "diagnostics",
+      "target": "piga-ortho-3d/diagnostics.html",
+      "engine": "queue",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W18",
+      "area": "kfo",
+      "name": "setup",
+      "target": "piga-ortho-3d/setup.html",
+      "engine": "govern",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ]
+    },
+    {
+      "id": "PIGA-W19",
+      "area": "portfolio",
+      "name": "portfolio-navigation",
+      "target": "index.html",
+      "engine": "evidence",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-source-only"
+    },
+    {
+      "id": "PIGA-W20",
+      "area": "portfolio",
+      "name": "shared-voice",
+      "target": "piga-ortho-3d/piga-voice.html",
+      "engine": "decision",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-source-only"
+    },
+    {
+      "id": "PIGA-W21",
+      "area": "portfolio",
+      "name": "nadias-bloom",
+      "target": "nadias-bloom/index.html",
+      "engine": "intake",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-source-only"
+    },
+    {
+      "id": "PIGA-W22",
+      "area": "portfolio",
+      "name": "ai-act",
+      "target": "ai-act-intelligence/index.html",
+      "engine": "queue",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-source-only"
+    },
+    {
+      "id": "PIGA-W23",
+      "area": "portfolio",
+      "name": "cancer",
+      "target": "cancer-system-state/index.html",
+      "engine": "govern",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-source-only"
+    },
+    {
+      "id": "PIGA-W24",
+      "area": "portfolio",
+      "name": "la-preuve",
+      "target": "la-preuve-avant-le-diagnostic/app.html",
+      "engine": "evidence",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-source-only"
+    },
+    {
+      "id": "PIGA-W25",
+      "area": "portfolio",
+      "name": "command-center-contract",
+      "target": "quality/portfolio-registry.json",
+      "engine": "decision",
+      "checks": [
+        "source-exists",
+        "html-title",
+        "mobile-viewport",
+        "semantic-lang",
+        "no-embedded-secret"
+      ],
+      "access": "public-registry-evidence-only; private actual command center separately gated"
+    }
+  ],
+  "runtime": {
+    "tick": "hourly-ephemeral-GitHub-Actions",
+    "parallelProcesses": 1,
+    "logicalWorkerCount": 25,
+    "supervisorCount": 3,
+    "phoneExecutionActive": false,
+    "deviceHeartbeatActive": false,
+    "workerMutatesCode": false,
+    "writeScope": "run-artifact-only",
+    "reportEmailActive": false
+  },
+  "limits": {
+    "newPaidProviders": 0,
+    "newExternalCostsEur": 0,
+    "maxModelCalls": 0,
+    "maxExternalEffects": 0,
+    "maxRepairAttempts": 0,
+    "maxRuntimeSeconds": 120,
+    "maxWorkersPerRound": 25,
+    "maxSupervisorsPerRound": 3,
+    "githubActionsCronMayDelay": true
+  },
+  "governance": {
+    "gate1": "source observation only",
+    "gate2": "BLOCK",
+    "a7sem": "OBSERVE/CHECK/RISK",
+    "reverse": "readback source and report evidence",
+    "noSixthEngine": true,
+    "proofBeforeRelease": true,
+    "privacy": "no real patient/personnel data"
+  }
+}
