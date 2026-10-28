@@ -22,7 +22,10 @@ check('Exactly 15 locale declarations',(/const NB_LANGS=(\{[^;]+\});/.exec(html)
 check('Dutch manual selection is present',html.includes('"nl":"Nederlands"')&&html.includes('id="nb-lang-setting"'));
 check('Independent explicit country selection',html.includes('id="nb-country-setting"')&&html.includes('nbInGermany()'));
 check('Country-specific civil dates gated',html.includes('if(nbInGermany())for(const [date,title] of nbHolidayDates(y))'));
-check('Original BARAKAH cover referenced on home and book',html.split('src="barakah-home-2027-original-cover.png"').length===3);
+check('Original BARAKAH cover appears twice with optimized rendition',html.split('data-nb-original-cover="1"').length===3&&html.includes('barakah-home-2027-cover-480.webp'));
+const coverWebp=fs.readFileSync(path.join(root,'barakah-home-2027-cover-480.webp'));
+check('Real owner cover compressed to a proper small WebP file',coverWebp.subarray(0,4).toString()==='RIFF'&&coverWebp.subarray(8,12).toString()==='WEBP'&&coverWebp.length<240000);
+check('PNG fallback stays available if optimized cover cannot load',html.includes("img.dataset.nbCoverFallback='1'")&&html.includes("new URL('./barakah-home-2027-original-cover.png',location.href)"));
 check('Owner-authored cover is genuine PNG',cover.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])));
 check('Cover is not empty or placeholder',cover.length>100000&&cover.readUInt32BE(16)>600&&cover.readUInt32BE(20)>800);
 const blobSha=crypto.createHash('sha1').update('blob '+cover.length+'\0').update(cover).digest('hex');
@@ -43,7 +46,10 @@ check('No inference or email during safety test',result.modelCalls===0&&result.e
 check('PWA is installable without browser chrome',manifest.display==='standalone'&&manifest.scope==='./'&&manifest.start_url==='./');
 check('Apple and Android icon links',html.includes('rel="apple-touch-icon"')&&manifest.icons.some(x=>x.sizes==='192x192')&&manifest.icons.some(x=>x.sizes==='512x512'));
 check('PWA service worker does not intercept auth callbacks',sw.includes('if(url.search||url.hash||req.headers.has')&&sw.includes('CACHEABLE.has(url.pathname)'));
-check('Cover can be cached as public static asset',sw.includes('barakah-home-2027-original-cover.png'));
+check('Fast WebP cover is cached as a static offline asset',sw.includes('COVER_WEBP')&&sw.includes('cache.put(COVER_WEBP,response)')&&sw.includes("barakah-home-2027-cover-480.webp"));
+check('Original PNG does not block core PWA install',!(/const CORE=\[[^\]]*barakah-home-2027-original-cover.png/.test(sw)));
+check('Clean offline export embeds compressed actual cover, no family state',html.includes("const cleanSource=await shell.text()")&&html.includes("copy.querySelectorAll('img[data-nb-original-cover]')")&&!html.includes("const copy=document.documentElement.outerHTML"));
+check('Auth credentials are separated by provider and default to primary',html.includes("nadias-bloom-auth-session-v1-failover")&&html.includes("nbAuthSwitchProvider")&&html.includes("let nbAuthProviderId='primary'"));
 check('No service-role credentials in browser',!html.includes('sb_secret_')&&!html.includes('service_role'));
 check('Existing auth recovery UI remains',html.includes('id="nb-auth-reset-panel"')&&html.includes('function nbAuthCallback'));
 console.log(JSON.stringify({verdict:'PASS_PIGA_NADIA_V28_MARKET_GATE_LOCAL',passed,total:results.length,aipc:result.status,aipcChecks:result.passed,coverGitBlobSha:blobSha,emailsSent:0,modelCalls:0,paidServicesCreated:0,verificationScope:'source and synthetic only',checks:results},null,2));
