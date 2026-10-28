@@ -1307,8 +1307,13 @@ const NB_AUTH_CONFIG={
  failover:{url:'https://sanrkcovmkkhgdqydxfk.supabase.co',key:"sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ"}
 };
 const NB_AUTH_PROVIDER_PREF='nadias-bloom-auth-provider-choice-v1';
-let nbAuthProviderId='primary';
-try{if(localStorage.getItem(NB_AUTH_PROVIDER_PREF)==='failover')nbAuthProviderId='failover'}catch{}
+// For first-time users, choose the existing, independently healthy provider; preserve old sessions and explicit choices.
+let nbAuthProviderId='failover';
+try{
+ const saved=localStorage.getItem(NB_AUTH_PROVIDER_PREF);
+ if(saved==='primary'||saved==='failover')nbAuthProviderId=saved;
+ else if(sessionStorage.getItem('nadias-bloom-auth-session-v1'))nbAuthProviderId='primary';
+}catch{}
 let NB_SUPABASE_URL=NB_AUTH_CONFIG[nbAuthProviderId].url;
 let NB_SUPABASE_KEY=NB_AUTH_CONFIG[nbAuthProviderId].key;
 let NB_AUTH_SESSION_KEY=nbAuthProviderId==='failover'?'nadias-bloom-auth-session-v1-failover':'nadias-bloom-auth-session-v1';
@@ -1403,6 +1408,7 @@ finally{for(const id of buttons)$(id).disabled=false}
 for(const id of ['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password'])$(id).addEventListener('click',()=>void nbAuthAction(id));
 function nbAuthSwitchProvider(provider){
  if(!Object.prototype.hasOwnProperty.call(NB_AUTH_CONFIG,provider))return;
+ if(nbAuthProviderId!==provider){$('nb-auth-password').value='';$('nb-auth-otp').value='';}
  nbAuthProviderId=provider;
  NB_SUPABASE_URL=NB_AUTH_CONFIG[provider].url;
  NB_SUPABASE_KEY=NB_AUTH_CONFIG[provider].key;
