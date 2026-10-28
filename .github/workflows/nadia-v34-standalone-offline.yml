@@ -1,0 +1,29 @@
+name: Nadia v34 Standalone Offline Acceptance
+on:
+  pull_request:
+    branches: [main]
+    paths: ['nadias-bloom/**','scripts/test_nadia_standalone_offline_v34.cjs','.github/workflows/nadia-v34-standalone-offline.yml']
+  push:
+    branches: [main, release/nadia-v34-standalone-offline-20261028]
+    paths: ['nadias-bloom/**','scripts/test_nadia_standalone_offline_v34.cjs','.github/workflows/nadia-v34-standalone-offline.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nadia-v34-standalone-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  airplane-mode:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated chromium
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Prove single-file local family planner works without network
+        run: node scripts/test_nadia_standalone_offline_v34.cjs
