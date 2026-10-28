@@ -3,7 +3,7 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 (async()=>{
 const root=path.resolve('nadias-bloom');
-const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),name=url.pathname.replace(/^\/nadias-bloom\/?/,'')||'index.html';if(!['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png'].includes(name)){res.writeHead(404);return res.end('404')}const f=path.join(root,name);try{res.writeHead(200,{'Content-Type':name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'text/javascript':name.endsWith('.png')?'image/png':'application/octet-stream'});res.end(fs.readFileSync(f))}catch(e){res.writeHead(404);res.end('Missing')}});
+const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),name=url.pathname.replace(/^\/nadias-bloom\/?/,'')||'index.html';if(!['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png','barakah-home-2027-original-cover.png','barakah-home-2027-cover-480.webp'].includes(name)){res.writeHead(404);return res.end('404')}const f=path.join(root,name);try{res.writeHead(200,{'Content-Type':name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'text/javascript':name.endsWith('.png')?'image/png':name.endsWith('.webp')?'image/webp':'application/octet-stream'});res.end(fs.readFileSync(f))}catch(e){res.writeHead(404);res.end('Missing')}});
 await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const port=server.address().port;
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
@@ -13,6 +13,8 @@ let n=0;const check=(good,m)=>{assert(good,label+' / '+m);n++};let requests=[],e
 const context=await browser.newContext({viewport,serviceWorkers:'block'});
 const page=await context.newPage();
 page.on('pageerror',e=>errors.push(e.message));
+// Pure local response from the real compressed, owner-approved cover; no CDN dependence in QA.
+await page.route('https://mounirakarkach04-pixel.github.io/ados/nadias-bloom/barakah-home-2027-cover-480.webp',route=>route.fulfill({status:200,contentType:'image/webp',body:fs.readFileSync(path.join(root,'barakah-home-2027-cover-480.webp'))}));
 await page.route('https://qjvopzschqukitvudgfz.supabase.co/auth/v1/**',async route=>{
 const req=route.request(),u=new URL(req.url());requests.push({path:u.pathname,method:req.method()});
 let body={};try{body=req.postDataJSON()||{}}catch{}
@@ -79,9 +81,14 @@ check((await page.locator('#nb-prayer-source').innerText()).includes('Automatisc
 check(await page.locator('#view-happy').count()===0,'unverified Happy entirely withdrawn');
 check(await page.locator('img[src*="happy-avatar"]').count()===0,'no face image');
 check(await page.locator('[data-view="happy"]').count()===0,'no Happy navigation');
-check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v29'),'feminine v29 design loaded');
+check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v32'),'v32 fast original-cover family studio loaded');
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
 check(await page.locator('#nb-auth-card').isVisible(),'optional auth card present');
+const picture=page.locator('img[data-nb-original-cover]').first();
+await picture.scrollIntoViewIfNeeded();
+await page.waitForFunction(()=>{const i=document.querySelector('img[data-nb-original-cover]');return i?.complete&&i?.naturalWidth>0});
+check(await picture.evaluate(img=>img.naturalWidth)>=400,'authentic WebP cover successfully decoded on screen');
+check(await page.locator('#nb-auth-provider option').count()===2,'primary and separate optional failover realms visible');
 check(!(await page.locator('#nb-auth-logged-out').isHidden()),'no forced login');
 await page.locator('#nb-auth-check').click();
 await page.waitForFunction(()=>document.querySelector('#nb-auth-status').textContent.includes('Anmeldedienst erreichbar')||document.querySelector('#nb-auth-status').textContent.includes('gestört'));
@@ -108,6 +115,11 @@ check((await page.locator('#nb-auth-status').innerText()).includes('erfolgreich'
 check(await page.locator('#nb-auth-reset-panel').isHidden(),'reset authorization is one-time');
 const j=await page.evaluate(()=>window.NADIA_AUTH_QA);
 check(j.configured&&j.noFamilyDataSync,'separate auth provider no unverified sync');
+await page.locator('#nb-auth-provider').selectOption('failover');
+check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider())==='failover','explicit alternate credential realm chosen');
+check(await page.evaluate(()=>!sessionStorage.getItem('nadias-bloom-auth-session-v1-failover')),'primary session not silently copied to failover');
+await page.locator('#nb-auth-provider').selectOption('primary');
+check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider())==='primary','return to primary realm supported');
 check(requests.some(r=>r.path.endsWith('/otp')),'OTP request routed only to Supabase Auth');
 check(requests.some(r=>r.path.endsWith('/token')),'password login request routed only to Supabase Auth');
 check(requests.some(r=>r.path.endsWith('/verify')),'recovery link checked by Supabase Auth');
