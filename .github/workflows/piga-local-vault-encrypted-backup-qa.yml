@@ -1,0 +1,100 @@
+name: PIGA Local Vault Encrypted Backup - Review QA
+
+on:
+  push:
+    branches:
+      - review/piga-local-vault-encrypted-backup-20261028
+    paths:
+      - 'piga-pocket-local-vault/**'
+      - '.github/workflows/piga-local-vault-encrypted-backup-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crypto-host-jdk:
+    name: AES-GCM backup restore host tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile and execute isolated source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/piga-vault-host"
+          javac -encoding UTF-8 -d "$RUNNER_TEMP/piga-vault-host" \
+            piga-pocket-local-vault/android/app/src/main/java/com/pigapocket/localvault/VaultBackupCrypto.java \
+            piga-pocket-local-vault/tests/VaultBackupCryptoSelfTest.java
+          java -cp "$RUNNER_TEMP/piga-vault-host" com.pigapocket.localvault.VaultBackupCryptoSelfTest
+
+  android-app-compile:
+    name: Independent Android APK compile - not for install
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Compile debug APK in isolated Android project
+        shell: bash
+        working-directory: piga-pocket-local-vault/android
+        run: gradle --no-daemon :app:assembleDebug --stacktrace
+      - name: Verify Android artifact package and APK signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          python3 - <<'PY'
+          import json,pathlib,zipfile
+          base=pathlib.Path('piga-pocket-local-vault/android/app/build/outputs/apk/debug')
+          info=json.loads((base/'output-metadata.json').read_text())
+          assert info['applicationId']=='com.pigapocket.localvault'
+          with zipfile.ZipFile(base/'app-debug.apk') as z:
+              assert z.testzip() is None
+              assert {'classes.dex','AndroidManifest.xml'}<=set(z.namelist())
+          print('PASS: isolated APK structure; NOT eligible for in-place existing-app update')
+          PY
+          SIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -print | sort -V | tail -1)"
+          test -n "$SIGNER"
+          "$SIGNER" verify --print-certs "$APK"
+          sha256sum "$APK"
+          echo 'REVIEW ONLY: Debug signing certificate is NOT proven same as existing Samsung Local Vault.'
+      - name: Compare this review APK signer with existing official 0.1.0 release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/piga-original"
+          gh release download piga-pocket-local-vault-0.1.0-0c71b03d9421 \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'PIGA-Pocket-Local-Vault-0.1.0-debug.apk' \
+            --dir "$RUNNER_TEMP/piga-original"
+          OLD="$RUNNER_TEMP/piga-original/PIGA-Pocket-Local-Vault-0.1.0-debug.apk"
+          NEW="piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk"
+          SIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -print | sort -V | tail -1)"
+          test -s "$OLD"
+          test -n "$SIGNER"
+          "$SIGNER" verify --print-certs "$OLD"
+          old_digest="$("$SIGNER" verify --print-certs "$OLD" | awk '/certificate SHA-256 digest:/ {print $NF; exit}')"
+          new_digest="$("$SIGNER" verify --print-certs "$NEW" | awk '/certificate SHA-256 digest:/ {print $NF; exit}')"
+          test -n "$old_digest"
+          test -n "$new_digest"
+          if [ "$old_digest" = "$new_digest" ]; then
+            echo 'SIGNER_MATCH_WITH_RELEASE=YES. Still verify installed Samsung signature and versionCode before an update.'
+          else
+            echo 'SIGNER_MATCH_WITH_RELEASE=NO. IN-PLACE UPDATE BLOCKED; NEVER UNINSTALL OR CLEAR OLD VAULT APP.'
+          fi
+          echo 'COMPARISON ONLY: no APK installed, no external publication and no account permissions changed.'
