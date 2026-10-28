@@ -72,6 +72,7 @@ for(const width of [320,393,1280]){
  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
  check((await page.locator('#taskList').innerText()).includes('QA-TEST-LOCAL-TASK'),'local-task-survives-reload-'+width);
  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
+ await page.screenshot({path:'qa-nadia-v34-calendar-'+width+'.png',fullPage:false});
  check(await page.locator('[data-calendar-date]').count()>=28,'calendar-populated-'+width);
  check(await page.locator('#nb-cal-upcoming').count()===1,'upcoming-week-'+width);
  const firstDay=await page.locator('[data-calendar-date]').first().getAttribute('data-calendar-date');
