@@ -54,10 +54,12 @@ for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-5
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
 check('PWA launch scope',manifest.display==='standalone'&&manifest.start_url==='./'&&manifest.scope==='./');
 check('Happy and portraits safely withdrawn',!html.includes('id="view-happy"')&&!html.includes('happy-live-token')&&!html.includes('happy-avatar-rose.png'));
-check('New botanical design without face',html.includes('v29-botanical-mobile-no-happy'));check('Fifteen language labels included',html.includes('NB_LANGS=')&&html.includes('"nl":"Nederlands"')&&html.includes('"ar":"العربية"'));
+check('Current botanical family-book style without a face',html.includes('BARAKAH HOME 2027')&&html.includes('nb-book-cover')&&html.includes('data-nb-original-cover="1"'));check('Fifteen language labels included',html.includes('NB_LANGS=')&&html.includes('"nl":"Nederlands"')&&html.includes('"ar":"العربية"'));
 check('Civil holidays require Germany',html.includes('if(nbInGermany())for(const [date,title] of nbHolidayDates(y))'));
 check('Birthdays remain country-independent',html.includes('member.birthday.slice(5,7)===mon.slice(5,7)'));
 check('PWA standalone install mode',manifest.display==='standalone');
-check('Twelve mobile views and action launcher',html.includes('id="view-konto"')&&html.includes('id="nb29-add"')&&html.includes('id="nb29-query"'));check('No credential-consuming voice integration',!html.includes('happy-live-token')&&!html.includes('LIVE_URL'));
+const thumb=fs.readFileSync(path.join(root,'barakah-home-2027-cover-480.webp'));
+check('Original cover available in compressed true WebP format',thumb.toString('ascii',0,4)==='RIFF'&&thumb.toString('ascii',8,12)==='WEBP'&&thumb.length<240000);
+check('Family module launcher and account panel remain accessible',html.includes('id="view-start"')&&html.includes('id="view-kalender"')&&html.includes('id="view-kinder"')&&html.includes('id="view-buch"')&&html.includes('id="nb-auth-card"')&&html.includes('id="nb-offline-start"'));check('No credential-consuming voice integration',!html.includes('happy-live-token')&&!html.includes('LIVE_URL'));
 check('No admin credential in browser source',!html.includes('service_role')&&!html.includes('sb_secret_'));
 console.log(JSON.stringify({verdict:'PASS_LOCAL_SOURCE_INVARIANTS',checks:checks.length,failures:0,aiCalls:0,emailsSent:0,details:checks},null,2));
