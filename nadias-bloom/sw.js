@@ -1,8 +1,8 @@
 /* Nadia's Bloom v28: safe, bounded offline shell. Authentication URLs are never cached. */
 const CACHE='nadias-bloom-v34-20261028-spacious-calendar';
 // Compact original-cover rendition for fast PWA installs; source PNG remains in repository.
-const COVER_WEBP='https://mounirakarkach04-pixel.github.io/ados/nadias-bloom/barakah-home-2027-cover-480.webp';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'];
+const COVER_WEBP=new URL('./barakah-home-2027-cover-480.webp',self.location.href).toString();
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./barakah-home-2027-cover-480.webp','./Nadias_Bloom_Offline.html'];
 const OPTIONAL=['./icon-192.png','./icon-512.png'];
 const SCOPE=new URL('./',self.location.href);
 const CACHEABLE=new Set([...CORE,...OPTIONAL].map(file=>new URL(file,SCOPE).pathname));
@@ -11,11 +11,9 @@ self.addEventListener('install',event=>{
   event.waitUntil((async()=>{
     const cache=await caches.open(CACHE);
     await cache.addAll(CORE);
-    // 30KB cover can be cached as an opaque cross-origin response without delaying the core shell.
-    await Promise.allSettled([
-      ...OPTIONAL.map(file=>cache.add(file)),
-      (async()=>{const response=await fetch(COVER_WEBP,{mode:'no-cors',credentials:'omit'});await cache.put(COVER_WEBP,response)})()
-    ]);
+    // App shell, locally hosted original cover and standalone download are required offline.
+    await Promise.allSettled(OPTIONAL.map(file=>cache.add(file)));
+
     await self.skipWaiting();
   })());
 });
