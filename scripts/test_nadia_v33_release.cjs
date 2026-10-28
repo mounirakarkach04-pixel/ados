@@ -12,6 +12,8 @@ const dialog=html.match(/<dialog id="nb-nav-dialog"[\s\S]*?<\/dialog>/)?.[0]||''
 const nav=[...dialog.matchAll(/data-view="([a-z]+)"/g)].map(m=>m[1]);
 check(views.length===11&&nav.length===11&&views.every(v=>nav.includes(v)),'all-11-views-accessible');
 check(html.includes('id="nb-auth-provider"')&&html.includes('uiPaused:false')&&!html.includes('#nb-auth-card{display:none!important}'),'optional-account-visible-and-explicit');
+check(html.includes("let nbAuthProviderId='failover'")&&html.includes("sessionStorage.getItem('nadias-bloom-auth-session-v1')"),'new-user-healthy-failover-old-session-preserved');
+check(html.includes("nadias-bloom-auth-session-v1-failover"),'independent-login-realms');
 check(html.includes('id="nb-data-card"')&&html.includes('id="backup"')&&html.includes('id="restoreFile"'),'backup-visible');
 check(html.includes('pigapocket.com/showroom')&&html.includes('pigapocket.com/forschung-apps'),'main-showroom-links');
 check(sw.includes("if(url.search||url.hash||req.headers.has('authorization'))return;"),'no-auth-cache');
@@ -50,7 +52,15 @@ for(const width of [320,393,1280]){
  await page.waitForFunction(()=>!!window.NADIAS_BLOOM_QA);
  const qa=await page.evaluate(()=>({version:window.NADIAS_BLOOM_QA.version,days:window.NADIAS_BLOOM_QA.duaCount,auth:window.NADIA_AUTH_QA.uiPaused}));
  check(qa.version==='v34-spacious-family-calendar'&&qa.days===365&&!qa.auth,'QA-state-'+width);
- check(await page.locator('#nb-auth-card').isHidden(),'no-login-prompt-'+width);
+ await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
+ check(await page.locator('#nb-auth-card').isVisible(),'account-panel-visible-'+width);
+ check((await page.locator('#nb-auth-provider').inputValue())==='failover','default-provider-for-new-users-'+width);
+ await page.locator('#nb-auth-provider').selectOption('primary');
+ check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider()==='primary'),'original-account-available-'+width);
+ await page.locator('#nb-auth-provider').selectOption('failover');
+ check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider()==='failover'),'distinct-failover-reselect-'+width);
+ check(!await page.evaluate(()=>window.NADIA_AUTH_QA.sessionExists()),'planner-requires-no-account-'+width);
+ await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('start'));
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
  check(overflow<=2,'no-horizontal-overflow-'+width+': '+overflow);
  if(width<=393){
