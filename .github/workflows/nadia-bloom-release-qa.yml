@@ -1,15 +1,17 @@
-name: Nadia Bloom v32 Browser, Auth Mock, Offline PWA QA
+name: Nadia Bloom Release Browser & Offline QA
 on:
   workflow_dispatch:
   push:
     paths:
       - 'nadias-bloom/**'
-      - 'scripts/test_nadias_bloom_v261.js'
-      - 'scripts/test_nadia_happy_v262.js'
-      - 'scripts/test_nadia_v27_features.js'
+      - 'scripts/test_nadia_v33_release.cjs'
       - 'scripts/test_nadia_v27_pure.cjs'
-      - 'scripts/test_nadia_v29_ux.js'
-      - 'scripts/test_nadia_v32_pwa_offline.cjs'
+      - '.github/workflows/nadia-bloom-release-qa.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadia_v33_release.cjs'
       - '.github/workflows/nadia-bloom-release-qa.yml'
 permissions:
   contents: read
@@ -17,9 +19,9 @@ concurrency:
   group: nadia-bloom-release-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  happy-browser-qa:
+  browser-qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 22
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,20 +31,9 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
           npx playwright install --with-deps chromium
-      - name: Offline source regression and international calendar gates
+      - name: Preserve existing calendar/prayer pure regressions
         run: node scripts/test_nadia_v27_pure.cjs
-      - name: Verify calendar, prayer times, no portrait, and synthetic Auth
+      - name: Verify v33 source, mobile navigation, no-login, RTL and offline
         run: |
-          node scripts/test_nadia_v27_features.js
-      - name: Check v32 genuine cover, private offline export and 11-screen mobile UX
-        run: node scripts/test_nadia_v29_ux.js
-      - name: Chromium airplane mode PWA shell and local state acceptance
-        run: node scripts/test_nadia_v32_pwa_offline.cjs
-      - name: Upload eleven real Nadia screen views
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: nadia-v32-11-mobile-screens
-          path: qa-screenshots/nadia-v29-*.png
-          if-no-files-found: ignore
-          retention-days: 14
+          node scripts/test_nadia_v33_release.cjs --static
+          node scripts/test_nadia_v33_release.cjs --browser
