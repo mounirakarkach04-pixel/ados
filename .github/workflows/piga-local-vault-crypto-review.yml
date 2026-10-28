@@ -54,6 +54,24 @@ jobs:
               assert "AndroidManifest.xml" in apk.namelist()
           print("PASS: isolated package, APK zip CRC, manifest and dex")
           PY
-          find -L "$ANDROID_HOME/build-tools" -name apksigner -type f -print | sort -V | tail -1 | xargs -r -I{} {} verify --print-certs "$FILE"
+          APKSIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -print | sort -V | tail -n 1)"
+          if [ -z "$APKSIGNER" ] || [ ! -x "$APKSIGNER" ]; then
+            echo "BLOCK: Android SDK apksigner unavailable"
+            exit 3
+          fi
+          "$APKSIGNER" verify --print-certs "$FILE" | tee /tmp/piga-new-apk-cert.txt
           sha256sum "$FILE"
-          echo "REVIEW ONLY: no release, upload, merge, device installation or signer compatibility claim."
+          ORIGINAL_URL="https://github.com/mounirakarkach04-pixel/ados/releases/download/piga-pocket-local-vault-0.1.0-0c71b03d9421/PIGA-Pocket-Local-Vault-0.1.0-debug.apk"
+          if curl --fail --location --silent --show-error --max-time 35 "$ORIGINAL_URL" -o /tmp/piga-vault-original-release.apk; then
+            "$APKSIGNER" verify --print-certs /tmp/piga-vault-original-release.apk | tee /tmp/piga-old-apk-cert.txt
+            old_cert="$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' /tmp/piga-old-apk-cert.txt | head -n 1)"
+            new_cert="$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' /tmp/piga-new-apk-cert.txt | head -n 1)"
+            if [ -n "$old_cert" ] && [ -n "$new_cert" ] && [ "$old_cert" = "$new_cert" ]; then
+              echo "MATCH: candidate and original GitHub RELEASE certificates are equal; installed phone certificate still UNKNOWN"
+            else
+              echo "BLOCK_INPLACE_UPDATE: candidate and original GitHub RELEASE certificates differ or are unverified"
+            fi
+          else
+            echo "UNKNOWN: original release APK unavailable; no signer continuity claim"
+          fi
+          echo "REVIEW ONLY: no release, upload, merge, device installation or actual installed signer claim."
