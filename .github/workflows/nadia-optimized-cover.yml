@@ -1,0 +1,47 @@
+name: Nadia Bloom Original Cover — Small WebP
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nadia-optimized-cover.yml'
+      - 'nadias-bloom/barakah-home-2027-original-cover.png'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  optimize-cover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare one original-cover thumbnail
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          original=Path('nadias-bloom/barakah-home-2027-original-cover.png')
+          optimized=Path('nadias-bloom/barakah-home-2027-cover-480.webp')
+          if not original.is_file(): raise SystemExit('Original book cover not found')
+          with Image.open(original) as source:
+              image=ImageOps.exif_transpose(source)
+              image.thumbnail((480,768),Image.Resampling.LANCZOS)
+              if image.mode not in ('RGB','RGBA'): image=image.convert('RGB')
+              image.save(optimized,'WEBP',quality=78,method=6)
+          old=original.stat().st_size
+          new=optimized.stat().st_size
+          print(f'Cover optimized: {old} -> {new} bytes ({new/old:.1%}); original retained')
+          if new>=old or new>240000: raise SystemExit('Thumbnail not sufficiently optimized')
+          PY
+      - name: Commit thumbnail only (keep original untouched)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nadias-bloom/barakah-home-2027-cover-480.webp
+          if ! git diff --staged --quiet; then
+            git commit -m "perf(nadia): generate 480px WebP from authentic cover"
+            git push
+          fi
