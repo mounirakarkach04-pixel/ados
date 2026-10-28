@@ -1,4 +1,4 @@
-name: Nadia Bloom v29 Editorial, Auth Mock & Mobile UX QA
+name: Nadia Bloom v32 Browser, Auth Mock, Offline PWA QA
 on:
   workflow_dispatch:
   push:
@@ -9,6 +9,7 @@ on:
       - 'scripts/test_nadia_v27_features.js'
       - 'scripts/test_nadia_v27_pure.cjs'
       - 'scripts/test_nadia_v29_ux.js'
+      - 'scripts/test_nadia_v32_pwa_offline.cjs'
       - '.github/workflows/nadia-bloom-release-qa.yml'
 permissions:
   contents: read
@@ -33,13 +34,15 @@ jobs:
       - name: Verify calendar, prayer times, no portrait, and synthetic Auth
         run: |
           node scripts/test_nadia_v27_features.js
-      - name: Check v29 12-screen premium UX on small/mobile/desktop widths
+      - name: Check v32 genuine cover, private offline export and 11-screen mobile UX
         run: node scripts/test_nadia_v29_ux.js
-      - name: Upload 12 synthetic mobile screenshots
+      - name: Chromium airplane mode PWA shell and local state acceptance
+        run: node scripts/test_nadia_v32_pwa_offline.cjs
+      - name: Upload eleven real Nadia screen views
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nadia-v29-12-mobile-screens
+          name: nadia-v32-11-mobile-screens
           path: qa-screenshots/nadia-v29-*.png
           if-no-files-found: ignore
           retention-days: 14
