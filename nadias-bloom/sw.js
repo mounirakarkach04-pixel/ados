@@ -1,7 +1,8 @@
 /* Nadia's Bloom v28: safe, bounded offline shell. Authentication URLs are never cached. */
-const CACHE='nadias-bloom-v28-20261025-secure1';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'];
-const OPTIONAL=['./icon-192.png','./icon-512.png','./barakah-home-2027-original-cover.png'];
+const CACHE='nadias-bloom-v31-20261028-book-cover-calendar';
+// The real book cover belongs in the guaranteed offline shell; voice assets remain disabled.
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./barakah-home-2027-original-cover.png'];
+const OPTIONAL=['./icon-192.png','./icon-512.png'];
 const SCOPE=new URL('./',self.location.href);
 const CACHEABLE=new Set([...CORE,...OPTIONAL].map(file=>new URL(file,SCOPE).pathname));
 const NAVIGATIONS=new Set([new URL('./',SCOPE).pathname,new URL('index.html',SCOPE).pathname]);
