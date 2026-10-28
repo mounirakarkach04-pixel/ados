@@ -82,9 +82,12 @@ for(const width of [320,393,1280]){
    await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
    // Service Worker controlled offline navigation; no personal data sent to external endpoint.
    await page.waitForFunction(()=>navigator.serviceWorker?.controller,{timeout:20000}).catch(async()=>{await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>navigator.serviceWorker?.controller,{timeout:20000})});
+   const swEvidence=await page.evaluate(async()=>{const keys=await caches.keys(),name=keys.find(k=>k.startsWith('nadias-bloom-v33-'));const cache=name?await caches.open(name):null;const root=cache?await cache.match(new URL('./',location.href).toString()):null;return {controlled:!!navigator.serviceWorker?.controller,keys,rootCached:!!root,pageUrl:location.href}});
+   console.log('NADIA_V33_OFFLINE_PRECHECK',JSON.stringify(swEvidence));
+   check(swEvidence.controlled&&swEvidence.rootCached,'offline-cache-ready-'+width);
    await context.setOffline(true);
-   await page.reload({waitUntil:'domcontentloaded'});
-   check(await page.locator('#view-start').isVisible()||await page.locator('.view.active').count()===1,'offline-nav-'+width);
+   await page.goto(url,{waitUntil:'domcontentloaded',timeout:12000});
+   check(await page.locator('.view.active').count()===1,'offline-nav-'+width);
    await context.setOffline(false);
  }
  results.push({width,overflow,errors:errors.length});
