@@ -1,0 +1,44 @@
+name: PIGA Local Vault · stable phone test file
+on:
+  push:
+    branches: [feat/piga-portable-vault-samsung-apk-20261028]
+    paths:
+      - 'piga-pocket-local-vault/fixtures/**'
+      - '.github/workflows/piga-local-vault-fixture-download.yml'
+permissions:
+  contents: write
+jobs:
+  fixture-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and package data-only test fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,zipfile,hashlib,pathlib
+          source=pathlib.Path('piga-pocket-local-vault/fixtures/PIGA-Local-Vault-Test-NEU.json')
+          data=source.read_bytes()
+          parsed=json.loads(data)
+          assert parsed['schema']=='piga.local-vault.export.v1'
+          assert len(parsed['records'])==3
+          assert [x['id'] for x in parsed['records']] == ['PIGA-TEST-001','PIGA-TEST-002','PIGA-TEST-003']
+          assert all(x.get('gate2')=='BLOCK' and x.get('externalEffects')==0 for x in parsed['records'])
+          pathlib.Path('PIGA-Local-Vault-Test-NEU.json').write_bytes(data)
+          with zipfile.ZipFile('PIGA-Local-Vault-Test-NEU.zip','w',compression=zipfile.ZIP_DEFLATED) as out:
+              out.writestr(source.name,data)
+          print('PASS sha256:',hashlib.sha256(data).hexdigest())
+          PY
+      - name: Publish data-only test files with mobile download headers
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="piga-local-vault-testfile-v1-${GITHUB_SHA:0:12}"
+          gh release create "$TAG" --target "$GITHUB_SHA" --prerelease \
+            --title "PIGA Local Vault · offline test files" \
+            --notes "Data-only, 3 offline storage test records. Does not install any APK, send commands, grant permissions or contain personal data. Import only in Local Vault." \
+            PIGA-Local-Vault-Test-NEU.json PIGA-Local-Vault-Test-NEU.zip
