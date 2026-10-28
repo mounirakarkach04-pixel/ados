@@ -47,10 +47,14 @@ jobs:
           test -n "$APKSIGNER"
           BEFORE=/tmp/piga-vault-original/PIGA-Pocket-Local-Vault-0.1.0-debug.apk
           AFTER=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
-          OLD="$( "$APKSIGNER" verify --print-certs "$BEFORE" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -1)"
-          NEW="$( "$APKSIGNER" verify --print-certs "$AFTER" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -1)"
-          test -n "$OLD"
-          test -n "$NEW"
+          "$APKSIGNER" verify --print-certs "$BEFORE" | tee /tmp/old-cert.txt
+          "$APKSIGNER" verify --print-certs "$AFTER" | tee /tmp/new-cert.txt
+          OLD="$(sed -n 's/.*certificate SHA-256 digest: *//p' /tmp/old-cert.txt | head -1 | tr -d '\\r')"
+          NEW="$(sed -n 's/.*certificate SHA-256 digest: *//p' /tmp/new-cert.txt | head -1 | tr -d '\\r')"
+          if [ -z "$OLD" ] || [ -z "$NEW" ]; then
+            echo "BLOCK: signing fingerprint could not be extracted; no update or install permitted." >&2
+            exit 2
+          fi
           {
             echo "### PIGA Local Vault · SAFE UPDATE GATE"
             echo ""
