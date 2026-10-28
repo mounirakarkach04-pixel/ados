@@ -20,6 +20,19 @@ check((offline.match(/src="data:image\/webp;base64,/g)||[]).length>=2,'offline-b
 check((offline.match(/src="data:image\/svg\+xml,/g)||[]).length===3,'offline-app-icons-bundled');
 check(html.includes('id="nb-offline-start"')&&html.includes('download="Nadias_Bloom_Offline.html"'),'direct-standalone-download');
 check(sw.includes("'./icon-512.png'")&&sw.includes("'./Nadias_Bloom_Offline.html'"),'offline-icon-file-cache');
+
+const packs=html.match(/window\.NADIA_UI_V36_PACK=(\{.*?\});\s*\/\* NADIA_UI_I18N_V36_PACK_END/s);
+const offpacks=offline.match(/window\.NADIA_UI_V36_PACK=(\{.*?\});\s*\/\* NADIA_UI_I18N_V36_PACK_END/s);
+check(!!packs&&!!offpacks,'language-packs-embedded-online-and-offline');
+const allLanguages=JSON.parse(packs[1]);check(packs[1]===offpacks[1],'offline-pack-identical');
+check(Object.keys(allLanguages).length===14&&Object.values(allLanguages).every(p=>Object.keys(p).length>=450),'full-fifteen-language-catalogs');
+check(allLanguages.en.Gericht==='Dish'&&allLanguages.en.Ausgabe==='Expense'&&allLanguages.en.Einnahme==='Income','professional-finance-and-meal-terminology');
+const baseText=html.slice(html.indexOf('<body'),html.indexOf('<script>'));
+const bodyStrings=[...new Set([...baseText.matchAll(/>([^<>]+)</g)].map(m=>m[1].replace(/&amp;/g,'&').trim()).filter(t=>t.length>1&&!/^[\d\W]+$/u.test(t)))];
+const missing=bodyStrings.filter(t=>!['Nadia’s Bloom','BARAKAH HOME 2027'].includes(t)&&!(t in allLanguages.en));
+check(missing.length===0,'all-visible-developer-ui-strings-have-fifteen-language-packs:'+missing.join(',').slice(0,150));
+check(html.includes('nbDeveloperText(')&&offline.includes('nbDeveloperText('),'localized-dynamic-guidance');
+
 const views=[...html.matchAll(/<section id="view-([a-z]+)"/g)].map(m=>m[1]);
 const dialog=html.match(/<dialog id="nb-nav-dialog"[\s\S]*?<\/dialog>/)?.[0]||'';
 const nav=[...dialog.matchAll(/data-view="([a-z]+)"/g)].map(m=>m[1]);
@@ -162,6 +175,14 @@ for(const width of [320,393,1280]){
    const ics=await icsPromise;
    check(ics.suggestedFilename().endsWith('.ics'),'calendar-ics-download');
 
+   // Core forms, deep calendar copy and accessible labels must switch together.
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('en','US'));
+   check(await page.locator('#view-kalender h1').innerText()==='Calendar & Appointments','en-calendar-heading');
+   check((await page.locator('#nb-cal-create-title').innerText())!=='Ein besonderer Moment verdient Platz.','en-calendar-copy');
+   check(await page.locator('#view-essen label.field').first().innerText().then(s=>s.includes('Dish')),'en-meal-not-court');
+   check(await page.locator('#nb-lang-quick').inputValue()==='en','en-language-selection-persists');
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('fr','FR'));
+   check((await page.locator('#view-kalender').innerText()).includes('rendez-vous')||(await page.locator('#view-kalender').innerText()).includes('Rendez-vous'),'fr-full-calendar-ui');
    await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('ar','MA'));
    check(await page.locator('html').getAttribute('dir')==='rtl','arabic-rtl');
    await page.locator('#nb-open-menu').click();
