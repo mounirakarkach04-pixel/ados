@@ -71,3 +71,30 @@ jobs:
           "$SIGNER" verify --print-certs "$APK"
           sha256sum "$APK"
           echo 'REVIEW ONLY: Debug signing certificate is NOT proven same as existing Samsung Local Vault.'
+      - name: Compare this review APK signer with existing official 0.1.0 release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/piga-original"
+          gh release download piga-pocket-local-vault-0.1.0-0c71b03d9421 \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'PIGA-Pocket-Local-Vault-0.1.0-debug.apk' \
+            --dir "$RUNNER_TEMP/piga-original"
+          OLD="$RUNNER_TEMP/piga-original/PIGA-Pocket-Local-Vault-0.1.0-debug.apk"
+          NEW="piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk"
+          SIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -print | sort -V | tail -1)"
+          test -s "$OLD"
+          test -n "$SIGNER"
+          "$SIGNER" verify --print-certs "$OLD"
+          old_digest="$("$SIGNER" verify --print-certs "$OLD" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -n1)"
+          new_digest="$("$SIGNER" verify --print-certs "$NEW" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -n1)"
+          test -n "$old_digest"
+          test -n "$new_digest"
+          if [ "$old_digest" = "$new_digest" ]; then
+            echo 'SIGNER_MATCH_WITH_RELEASE=YES. Still verify installed Samsung signature and versionCode before an update.'
+          else
+            echo 'SIGNER_MATCH_WITH_RELEASE=NO. IN-PLACE UPDATE BLOCKED; NEVER UNINSTALL OR CLEAR OLD VAULT APP.'
+          fi
+          echo 'COMPARISON ONLY: no APK installed, no external publication and no account permissions changed.'
