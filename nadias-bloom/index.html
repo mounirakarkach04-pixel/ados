@@ -415,7 +415,7 @@ button,input,select,textarea{font-size:max(16px,1em)}
 @media(prefers-reduced-motion:reduce){#monthGrid .monthday{transition:none}}
 
 /* Nadia local-first family planner: sign-in entry hidden, no data migration. */
-#nb-auth-card{display:none!important}
+#nb-auth-card{scroll-margin-top:80px}
 .nb-login-pause{padding:16px 18px;margin:17px 0;border:1px solid #dbe6db;border-radius:17px;background:#f4f8f3;color:#4c6253;font-size:13px;line-height:1.6}
 .nb-login-pause p{margin:7px 0 0}
 .nb-nav-dialog{width:min(540px,calc(100vw - 24px));max-height:min(85dvh,780px);overflow:auto;border:1px solid #dfcdda;border-radius:24px;padding:22px;background:#fffdfa;color:#4d3947;box-shadow:0 24px 70px #3c263c55}
@@ -567,12 +567,12 @@ body{font-kerning:normal}
 @media(prefers-reduced-motion:reduce){.nb-focus-action,.card{transition:none}.nb-focus-action:hover{transform:none}}
 /* Release UI: diagnostics remain callable for QA but are not consumer-facing. */
 #nb-piga-guard-test,#nb-piga-guard-result,.nb-piga-guard-details{display:none!important}
-</style></head><body><a class="skip" href="#main">Zum Inhalt springen</a>
+</style><link rel="stylesheet" href="../quality/portfolio-polish.css"></head><body data-piga-app="nadias-bloom"><a class="skip piga-skip-link" href="#main">Zum Inhalt springen</a>
 <div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><img class="nb-logo-mark" src="./icon.svg" alt="" width="43" height="43"><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
 <div class="side-title">MIT LIEBE ORGANISIERT</div><button class="side-btn" data-view="haushalt"><span class="sym">✧</span>Home & Haushalt</button><button class="side-btn" data-view="geld"><span class="sym">€</span>Home & Money</button><button class="side-btn" data-view="iman"><span class="sym">☾</span>Iman & Barakah</button><button class="side-btn" data-view="journal"><span class="sym">❀</span>Dankbarkeit & Shura</button><button class="side-btn" data-view="buch"><span class="sym">▤</span>Buch & Einstellungen</button>
 <div class="side-bottom">Ein liebevoller Raum für deinen Familienalltag.<br>Deine Notizen bleiben auf diesem Gerät.<br><a href="https://pigapocket.com/datenschutz" target="_blank" rel="noopener">Datenschutz ↗</a> · <a href="https://pigapocket.com/impressum" target="_blank" rel="noopener">Impressum ↗</a></div></aside>
-<main id="main" class="content"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Lokale Daten sichern">▤ Sicherung</button><label class="nb-lang-top"><span id="nb-lang-top-label">Sprache</span><select id="nb-lang-quick" aria-label="Language / Sprache"></select></label><span class="pill">✿ Lokal & privat</span><div class="avatar nb-avatar-bloom" aria-hidden="true"><img src="./icon.svg" alt="" width="42" height="42"></div></div></div>
+<main id="main" class="content" tabindex="-1"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Konto oder lokalen Datenspeicher öffnen">♙ Konto</button><label class="nb-lang-top"><span id="nb-lang-top-label">Sprache</span><select id="nb-lang-quick" aria-label="Language / Sprache"></select></label><span class="pill">✿ Lokal & privat</span><div class="avatar nb-avatar-bloom" aria-hidden="true"><img src="./icon.svg" alt="" width="42" height="42"></div></div></div>
 <section id="view-start" class="view active"><div class="hero"><div><div class="eyebrow">DEIN MOMENT DER RUHE</div><h1>Alles im Blick.<br><em>Mehr Zeit fürs Leben.</em></h1><p>Ein Ort für eure Termine, Kinder, Mahlzeiten, Gebete und kleinen Glücksmomente – liebevoll inspiriert vom Buch BARAKAH HOME 2027.</p><div class="actions"><button class="btn primary" data-view="aufgaben">+ Den Tag planen</button><button class="btn light" data-view="iman">Duʿā des Tages ↗</button></div></div><div class="hero-bloom" aria-hidden="true">❀</div></div>
 <section class="nb-promo" aria-label="Buch und Installation">
  <div class="nb-promo-book"><span class="nb-promo-kicker">DAS BUCH HINTER NADIA’S BLOOM</span><div class="nb-promo-copy"><figure class="nb-book-cover nb-book-cover--mini"><img src="./barakah-home-2027-cover-480.webp" data-nb-original-cover="1" alt="Originalcover BARAKAH HOME 2027 – lila Blauregenblüten, goldener Titel und cremefarbener Torbogen" loading="lazy" decoding="async" width="672" height="1024"><figcaption>Originalcover</figcaption></figure><div><h2>BARAKAH HOME 2027</h2><p>Ein ruhiger Familienplaner für Tagesziele, Kinder-Kompass, Mahlzeiten, Haushalt, Iman und 365 Duʿā.</p><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch auf Amazon finden ↗</a><button class="btn soft" type="button" data-view="buch">Kostenlose Leseprobe ansehen</button></div><small>Entdecke die Buchausgabe und gestalte deinen Alltag mit mehr Leichtigkeit.</small></div></div></div>
@@ -1045,7 +1045,7 @@ function nbApplyLocale(){
 const l=nbLang();document.documentElement.lang=nbIntlLocale();document.documentElement.dir=l==='ar'?'rtl':'ltr';
 const nbNavWords=NB_V33_NAV_WORDS[l]||NB_V33_NAV_WORDS.en;
 $('nb-menu-label').textContent=nbNavWords[0];$('nb-nav-title').textContent=nbNavWords[1];
-$('nb-nav-close').textContent=nbNavWords[2]+' ×';$('nb-auth-open').textContent='▤ '+nbNavWords[3];
+$('nb-nav-close').textContent=nbNavWords[2]+' ×';$('nb-auth-open').textContent='♙ '+({de:'Konto',en:'Account',ar:'الحساب',fr:'Compte',es:'Cuenta',zh:'账户',it:'Account',pt:'Conta',th:'บัญชี',ms:'Akaun',id:'Akun',ko:'계정',ja:'アカウント',ru:'Аккаунт',nl:'Account'}[l]||'Account');
 $('nb-open-menu').setAttribute('aria-label',nbNavWords[1]);
 document.querySelectorAll('[data-nb-trans]').forEach(el=>{el.textContent=nbTr(el.dataset.nbTrans)});
 for(const el of document.querySelectorAll('.sidebar [data-view],.mobilebar [data-view],.mobile-directory [data-view],#nb-nav-dialog [data-view]')){
@@ -1390,7 +1390,7 @@ $('downloadOffline').onclick=async()=>{
   const covers=copy.querySelectorAll('img[data-nb-original-cover]');
   if(!covers.length)throw Error('Originalcover konnte im Offline-Grunddokument nicht gefunden werden');
   covers.forEach(img=>{img.setAttribute('src',embeddedCover);img.removeAttribute('data-nb-original-cover');img.removeAttribute('loading')});
-  copy.querySelectorAll('link[rel="manifest"],link[rel="apple-touch-icon"],script[src*="nadia-happy"],link[href*="nadia-happy"]').forEach(node=>node.remove());
+  copy.querySelectorAll('link[rel="manifest"],link[rel="apple-touch-icon"],link[href$=".css"],script[src*="nadia-happy"],link[href*="nadia-happy"]').forEach(node=>node.remove());
   const note=copy.querySelector('#nb-auth-status');if(note)note.textContent='Dies ist die Offline-Einzeldatei. Für E-Mail-Anmeldung bitte die HTTPS-Web-App öffnen. Deine Planungsdaten bleiben lokal auf dem jeweiligen Gerät.';
   download('Nadias_Bloom_Barakah_Home_2027_OFFLINE.html','<!doctype html>\n'+copy.outerHTML,'text/html;charset=utf-8');
   toast('Offline-App mit platzsparendem Originalcover gespeichert, ohne Familiendaten. Für einen Gerätewechsel separat JSON sichern.');
@@ -1405,8 +1405,13 @@ const NB_AUTH_CONFIG={
  failover:{url:'https://sanrkcovmkkhgdqydxfk.supabase.co',key:"sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ"}
 };
 const NB_AUTH_PROVIDER_PREF='nadias-bloom-auth-provider-choice-v1';
-let nbAuthProviderId='primary';
-try{if(localStorage.getItem(NB_AUTH_PROVIDER_PREF)==='failover')nbAuthProviderId='failover'}catch{}
+// Existing accounts stay with their original provider. New users see a separate selectable service.
+let nbAuthProviderId='failover';
+try{
+ const saved=localStorage.getItem(NB_AUTH_PROVIDER_PREF);
+ if(saved==='primary'||saved==='failover')nbAuthProviderId=saved;
+ else if(sessionStorage.getItem('nadias-bloom-auth-session-v1'))nbAuthProviderId='primary';
+}catch{}
 let NB_SUPABASE_URL=NB_AUTH_CONFIG[nbAuthProviderId].url;
 let NB_SUPABASE_KEY=NB_AUTH_CONFIG[nbAuthProviderId].key;
 let NB_AUTH_SESSION_KEY=nbAuthProviderId==='failover'?'nadias-bloom-auth-session-v1-failover':'nadias-bloom-auth-session-v1';
@@ -1501,6 +1506,7 @@ finally{for(const id of buttons)$(id).disabled=false}
 for(const id of ['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password'])$(id).addEventListener('click',()=>void nbAuthAction(id));
 function nbAuthSwitchProvider(provider){
  if(!Object.prototype.hasOwnProperty.call(NB_AUTH_CONFIG,provider))return;
+ if(nbAuthProviderId!==provider){$('nb-auth-password').value='';$('nb-auth-otp').value='';}
  nbAuthProviderId=provider;
  NB_SUPABASE_URL=NB_AUTH_CONFIG[provider].url;
  NB_SUPABASE_KEY=NB_AUTH_CONFIG[provider].key;
@@ -1547,7 +1553,7 @@ $('nb-show-remembered-email').onclick=()=>{
 const previous=localStorage.getItem('nadia-auth-remembered-email');
 nbAuthStatus(previous?'Auf diesem Gerät zuletzt gespeichert: '+previous:'Auf diesem Gerät wurde bisher keine E-Mail-Adresse für die Wiederfindung gespeichert.')
 };
-$('nb-auth-open').addEventListener('click',()=>setTimeout(()=>$('nb-data-card').scrollIntoView({behavior:'smooth',block:'start'}),50));
+$('nb-auth-open').addEventListener('click',()=>setTimeout(()=>$('nb-auth-card').scrollIntoView({behavior:'smooth',block:'start'}),50));
 (async function nbAuthCallback(){
 try{
 const fragment=new URLSearchParams(location.hash.slice(1)),query=new URLSearchParams(location.search);
@@ -1583,7 +1589,7 @@ if(query.has('code')){
 })();
 nbAuthRender();
 /* Preserve existing auth sessions without making background provider requests while account UI is paused. */
-window.NADIA_AUTH_QA={uiPaused:true,configured:!!NB_SUPABASE_KEY,provider:()=>nbAuthProviderId,app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true,separateCredentialRealms:true};
+window.NADIA_AUTH_QA={uiPaused:false,configured:!!NB_SUPABASE_KEY,provider:()=>nbAuthProviderId,app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true,separateCredentialRealms:true};
 
 nbSetupLocale();
 window.NADIAS_BLOOM_QA={version:'v34-spacious-family-calendar',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',read:()=>structuredClone(state),setView:openView,pigaSafety:()=>NB_PIGA_GUARD.status(),pigaSelfTest:()=>NB_PIGA_GUARD.selfTest(),locale:()=>({...nbLocaleConfig()}),setLocale:(lang,country)=>{if(NB_LANGS[lang]&&NB_COUNTRIES[country]){const c=nbLocaleConfig();c.lang=lang;c.country=country;save();$('nb-lang-quick').value=lang;$('nb-lang-setting').value=lang;$('nb-country-setting').value=country;nbApplyLocale();render()}}};
