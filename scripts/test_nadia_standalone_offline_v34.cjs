@@ -22,7 +22,8 @@ try{
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto('file://'+htmlPath,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.NADIAS_BLOOM_QA?.version==='v34-spacious-family-calendar');
-  const cover=page.locator('img[alt*="Originalcover"]').first();
+  // Accessible alt-text is translated to the selected language, so target the actual bundled image bytes.
+  const cover=page.locator('img[src^="data:image/webp;base64,"]').first();
   await cover.evaluate(el=>el.decode());
   assert((await cover.evaluate(el=>el.naturalWidth))>=400,'embedded cover decodes without internet');
   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
