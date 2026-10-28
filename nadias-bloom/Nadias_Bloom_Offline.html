@@ -995,6 +995,9 @@ function nbTranslateWholeUI(){
 }
 let nbUIObserver;
 function nbWatchLocalization(){
+ // Single-file offline operation uses explicit page-render and language-change localization.
+ // A file:// mutation observer may starve document readiness in Android/Chromium.
+ if(location.protocol==='file:')return;
  if(nbUIObserver)return;
  nbUIObserver=new MutationObserver(changes=>{if(changes.some(x=>x.addedNodes.length))nbTranslateWholeUI()});
  nbUIObserver.observe(document.body,{subtree:true,childList:true});
