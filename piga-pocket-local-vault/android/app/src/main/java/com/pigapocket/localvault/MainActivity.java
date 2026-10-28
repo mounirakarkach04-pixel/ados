@@ -78,6 +78,10 @@ public final class MainActivity extends Activity {
                 .setPositiveButton("Weiter", (d, w) -> chooseExport()).show());
         page.addView(exportButton);
 
+        Button safeBackup = button("Verschluesselte Sicherung / Wiederherstellung");
+        safeBackup.setOnClickListener(v -> startActivity(new Intent(this, VaultBackupActivity.class)));
+        page.addView(safeBackup);
+
         page.addView(text("SICHERHEIT", 15, Color.WHITE));
         page.addView(text("AES-256-GCM im AndroidKeyStore · App-private SQLite-Datenbank · Datenimport ohne Befehlsausführung · kein Netzwerkzugriff aus der App.", 16, Color.rgb(203, 213, 225)));
         page.addView(text("Diese App ersetzt NICHT die gekoppelte Phone Bridge und synchronisiert noch keine Supabase-Daten. Beim Löschen der App-Daten geht der Geräteschlüssel verloren. Sichere deine Daten vor einem Gerätewechsel durch Export.", 15, Color.rgb(251, 191, 36)));
