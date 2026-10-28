@@ -14,18 +14,18 @@ for(let attempt=1;attempt<=8;attempt++){
  try{
  const [page,sw,manifest,cover]=await Promise.all([get(''),get('sw.js'),get('manifest.webmanifest'),get('barakah-home-2027-cover-480.webp')]);
  const facts={
-  attempt,release:'v33',pageStatus:page.status,pageByteExact:page.sha256===expected,
-  v33Marker:page.buffer.toString().includes('v33-mobile-navigation-account-paused'),
+  attempt,release:'v34',pageStatus:page.status,pageByteExact:page.sha256===expected,
+  v34Marker:page.buffer.toString().includes('v34-spacious-family-calendar'),
   showroomLink:page.buffer.toString().includes('pigapocket.com/showroom'),
-  swStatus:sw.status,cacheV33:sw.buffer.toString().includes('nadias-bloom-v33-20261028'),
+  swStatus:sw.status,cacheV34:sw.buffer.toString().includes('nadias-bloom-v34-20261028'),
   manifestStatus:manifest.status,standalone:JSON.parse(manifest.buffer).display==='standalone',
   coverStatus:cover.status,webp:cover.type?.includes('image/webp')&&cover.buffer.length===30756,
   pageSha:page.sha256,expectedSha:expected
  };
- const pass=facts.pageStatus===200&&facts.pageByteExact&&facts.v33Marker&&facts.showroomLink&&facts.swStatus===200&&facts.cacheV33&&facts.manifestStatus===200&&facts.standalone&&facts.coverStatus===200&&facts.webp;
- console.log(JSON.stringify({result:pass?'PAGES_V33_HTTP_VERIFIED':'PAGES_V33_DELAY',...facts}));
+ const pass=facts.pageStatus===200&&facts.pageByteExact&&facts.v34Marker&&facts.showroomLink&&facts.swStatus===200&&facts.cacheV34&&facts.manifestStatus===200&&facts.standalone&&facts.coverStatus===200&&facts.webp;
+ console.log(JSON.stringify({result:pass?'PAGES_V34_HTTP_VERIFIED':'PAGES_V34_DELAY',...facts}));
  if(pass)return;
- }catch(e){console.log(JSON.stringify({result:'PAGES_V33_DELAY',attempt,error:String(e).slice(0,200)}))}
+ }catch(e){console.log(JSON.stringify({result:'PAGES_V34_DELAY',attempt,error:String(e).slice(0,200)}))}
  if(attempt<8)await new Promise(resolve=>setTimeout(resolve,7000));
 }
 process.exitCode=1;

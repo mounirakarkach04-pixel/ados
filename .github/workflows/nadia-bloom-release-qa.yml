@@ -37,3 +37,11 @@ jobs:
         run: |
           node scripts/test_nadia_v33_release.cjs --static
           node scripts/test_nadia_v33_release.cjs --browser
+      - name: Archive responsive calendar screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nadia-v34-calendar-320-393-1280
+          path: qa-nadia-v34-calendar-*.png
+          if-no-files-found: ignore
+          retention-days: 14

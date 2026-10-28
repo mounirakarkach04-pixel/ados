@@ -20,7 +20,10 @@ check(html.includes('nbUpdateCalendarAgenda()'),'calendar-agenda');
 check(!html.includes('id="view-happy"'),'no-unverified-voice');
 check(JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8')).display==='standalone','pwa-installable');
 check(html.includes('NB_V33_NAV_WORDS'),'translated-menu');
-if(process.argv.includes('--static')){console.log(JSON.stringify({status:'PASS',checks:count,mode:'static',release:'v33'}));process.exit(0)}
+check(html.includes('nb-cal-layout')&&html.includes('nb-cal-upcoming')&&html.includes('nb-cal-mini-stat'),'spacious-calendar');
+check(html.includes('nbCalendarJumpToForm')&&html.includes('nbUpdateCalendarUpcoming'),'calendar-event-flow');
+check(html.includes("ArrowRight:1")&&html.includes("PageDown"),'keyboard-navigation');
+if(process.argv.includes('--static')){console.log(JSON.stringify({status:'PASS',checks:count,mode:'static',release:'v34'}));process.exit(0)}
 (async()=>{
 const {chromium}=require('playwright'),http=require('node:http');
 const server=http.createServer((req,res)=>{
@@ -46,7 +49,7 @@ for(const width of [320,393,1280]){
  await page.goto(url,{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>!!window.NADIAS_BLOOM_QA);
  const qa=await page.evaluate(()=>({version:window.NADIAS_BLOOM_QA.version,days:window.NADIAS_BLOOM_QA.duaCount,auth:window.NADIA_AUTH_QA.uiPaused}));
- check(qa.version==='v33-mobile-navigation-account-paused'&&qa.days===365&&qa.auth,'QA-state-'+width);
+ check(qa.version==='v34-spacious-family-calendar'&&qa.days===365&&qa.auth,'QA-state-'+width);
  check(await page.locator('#nb-auth-card').isHidden(),'no-login-prompt-'+width);
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
  check(overflow<=2,'no-horizontal-overflow-'+width+': '+overflow);
@@ -69,11 +72,81 @@ for(const width of [320,393,1280]){
  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
  check((await page.locator('#taskList').innerText()).includes('QA-TEST-LOCAL-TASK'),'local-task-survives-reload-'+width);
  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
+ await page.screenshot({path:'qa-nadia-v34-calendar-'+width+'.png',fullPage:false});
  check(await page.locator('[data-calendar-date]').count()>=28,'calendar-populated-'+width);
+ check(await page.locator('#nb-cal-upcoming').count()===1,'upcoming-week-'+width);
+ const firstDay=await page.locator('[data-calendar-date]').first().getAttribute('data-calendar-date');
  await page.locator('[data-calendar-date]').first().click();
  check((await page.locator('#nb-cal-selected-heading').innerText()).length>6,'calendar-day-agenda-'+width);
+ check(await page.locator('#eventForm [name=date]').inputValue()===firstDay,'tap-day-prefills-new-event-'+width);
+ await page.locator('#nb-cal-jump-new').click();
+ check(await page.locator('#eventForm [name=date]').inputValue()===firstDay,'new-event-cta-preserves-selected-day-'+width);
+ await page.locator('#eventForm [name=title]').fill('QA-V34-Calendar');
+ await page.locator('#eventForm [name=time]').fill('09:30');
+ await page.locator('#eventForm button[type=submit],#eventForm button:not([type])').first().click();
+ check((await page.locator('#nb-cal-day-list').innerText()).includes('QA-V34-Calendar'),'saved-event-in-agenda-'+width);
+ const originalMonth=await page.locator('#monthChoose').inputValue();
+ await page.locator('#nb-next-month').click();
+ check(await page.locator('#monthChoose').inputValue()!==originalMonth,'next-month-'+width);
+ await page.locator('#nb-prev-month').click();
+ check(await page.locator('#monthChoose').inputValue()===originalMonth,'previous-month-'+width);
+ await page.locator('[data-calendar-date]').first().focus();
+ await page.keyboard.press('ArrowRight');
+ check(await page.locator('[data-calendar-date][aria-pressed=true]').count()===1,'keyboard-day-select-'+width);
+ const eventCount=Number(await page.locator('#nb-cal-month-event-count').innerText());
+ check(eventCount>=1,'month-events-updated-'+width);
+
  check(errors.length===0,'no-uncaught-js-'+width+': '+errors.join('; '));
  if(width===393){
+   // Exercise the real local-first families, food, finances, journal and export flows.
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kinder'));
+   await page.locator('#memberForm [name=name]').fill('QA Familie');
+   await page.locator('#memberForm button').first().click();
+   check((await page.locator('#memberList').innerText()).includes('QA Familie'),'family-member-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('einkauf'));
+   await page.locator('#shopForm [name=title]').fill('QA Einkaufsartikel');
+   await page.locator('#shopForm button').first().click();
+   check((await page.locator('#shopList').innerText()).includes('QA Einkaufsartikel'),'shopping-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('essen'));
+   await page.locator('#mealForm [name=title]').fill('QA Abendessen');
+   await page.locator('#mealForm [name=date]').fill(firstDay);
+   await page.locator('#mealForm button').first().click();
+   check((await page.locator('#mealList').innerText()).includes('QA Abendessen'),'meal-plan-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('geld'));
+   await page.locator('#moneyForm [name=title]').fill('QA Haushaltsbuch');
+   await page.locator('#moneyForm [name=amount]').fill('14.90');
+   await page.locator('#moneyForm [name=date]').fill(firstDay);
+   await page.locator('#moneyForm button').first().click();
+   check((await page.locator('#moneyList').innerText()).includes('QA Haushaltsbuch'),'finance-entry-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('journal'));
+   await page.locator('#journalForm [name=text]').fill('QA Dankbarkeit');
+   await page.locator('#journalForm button').first().click();
+   check((await page.locator('#journalList').innerText()).includes('QA Dankbarkeit'),'journal-entry-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('iman'));
+   check(await page.locator('#prayerRows input[data-prayer]').count()===5,'five-prayers-available');
+   check((await page.locator('#duaText').innerText()).length>10,'daily-dua-visible');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('haushalt'));
+   check(await page.locator('[data-chore]').count()>=1,'household-routines-visible');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
+   const backupPromise=page.waitForEvent('download');
+   await page.locator('#backup').click();
+   const backupDownload=await backupPromise;
+   check(backupDownload.suggestedFilename().endsWith('.json'),'private-backup-download');
+   check(await page.locator('#nb-auth-card').isHidden(),'login-still-optional');
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
+   await page.locator('.nb-cal-details').evaluate(el=>el.open=true);
+   const icsPromise=page.waitForEvent('download');
+   await page.locator('#exportICS').click();
+   const ics=await icsPromise;
+   check(ics.suggestedFilename().endsWith('.ics'),'calendar-ics-download');
+
    await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('ar','MA'));
    check(await page.locator('html').getAttribute('dir')==='rtl','arabic-rtl');
    await page.locator('#nb-open-menu').click();
@@ -82,7 +155,7 @@ for(const width of [320,393,1280]){
    await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
    // Service Worker controlled offline navigation; no personal data sent to external endpoint.
    await page.waitForFunction(()=>navigator.serviceWorker?.controller,{timeout:20000}).catch(async()=>{await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>navigator.serviceWorker?.controller,{timeout:20000})});
-   const swEvidence=await page.evaluate(async()=>{const keys=await caches.keys(),name=keys.find(k=>k.startsWith('nadias-bloom-v33-'));const cache=name?await caches.open(name):null;const root=cache?await cache.match(new URL('./',location.href).toString()):null;return {controlled:!!navigator.serviceWorker?.controller,keys,rootCached:!!root,pageUrl:location.href}});
+   const swEvidence=await page.evaluate(async()=>{const keys=await caches.keys(),name=keys.find(k=>k.startsWith('nadias-bloom-v34-'));const cache=name?await caches.open(name):null;const root=cache?await cache.match(new URL('./',location.href).toString()):null;return {controlled:!!navigator.serviceWorker?.controller,keys,rootCached:!!root,pageUrl:location.href}});
    console.log('NADIA_V33_OFFLINE_PRECHECK',JSON.stringify(swEvidence));
    check(swEvidence.controlled&&swEvidence.rootCached,'offline-cache-ready-'+width);
    await context.setOffline(true);
