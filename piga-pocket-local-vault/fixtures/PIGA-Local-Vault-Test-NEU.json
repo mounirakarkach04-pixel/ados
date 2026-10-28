@@ -1,0 +1,26 @@
+{
+  "schema": "piga.local-vault.export.v1",
+  "records": [
+    {
+      "id": "PIGA-TEST-001",
+      "type": "OFFLINE_CHECK",
+      "text": "Datensatz bleibt nach Neustart ohne Internet gespeichert.",
+      "gate2": "BLOCK",
+      "externalEffects": 0
+    },
+    {
+      "id": "PIGA-TEST-002",
+      "type": "INTEGRITY_CHECK",
+      "text": "Lokaler JSON-Import und Export.",
+      "gate2": "BLOCK",
+      "externalEffects": 0
+    },
+    {
+      "id": "PIGA-TEST-003",
+      "type": "BRIDGE_BOUNDARY",
+      "text": "Nur Testdaten, keine Befehle an PIGA Worker.",
+      "gate2": "BLOCK",
+      "externalEffects": 0
+    }
+  ]
+}
