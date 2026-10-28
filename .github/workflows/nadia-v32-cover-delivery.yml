@@ -1,0 +1,20 @@
+name: Nadia v32 Original Cover Real Delivery & CORS Gate
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/probe_nadia_webp_delivery.cjs'
+      - '.github/workflows/nadia-v32-cover-delivery.yml'
+permissions:
+  contents: read
+jobs:
+  verify-cover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify true WebP bytes, CDN MIME, and canonical cross-origin download support
+        run: node scripts/probe_nadia_webp_delivery.cjs
