@@ -1,0 +1,73 @@
+name: PIGA Pocket · Free Public Runner · Local Vault APK
+
+on:
+  push:
+    branches:
+      - feat/piga-portable-vault-samsung-apk-20261028
+    paths:
+      - 'piga-pocket-local-vault/**'
+      - '.github/workflows/piga-pocket-local-vault-samsung-apk.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-portable-vault:
+    name: Build Samsung-compatible independent APK (no private source)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      - name: Verify SDK, segregated app and zero private secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${ANDROID_HOME:-}"
+          test -s piga-pocket-local-vault/android/app/src/main/java/com/pigapocket/localvault/VaultStore.java
+          grep -F "applicationId 'com.pigapocket.localvault'" piga-pocket-local-vault/android/app/build.gradle
+          ! grep -R 'piga_phone_bridge_device_key' piga-pocket-local-vault
+          ! grep -R 'SUPABASE_SERVICE_ROLE_KEY' piga-pocket-local-vault
+          echo 'PASS: separate offline companion cannot overwrite paired com.pigapocket.bridge'
+
+      - name: Build Android debug APK
+        working-directory: piga-pocket-local-vault/android
+        run: gradle --no-daemon :app:assembleDebug --stacktrace
+
+      - name: Verify APK structure, package and SHA256
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          if command -v aapt >/dev/null; then
+            aapt dump badging "$APK" | grep -F "package: name='com.pigapocket.localvault'"
+          else
+            find "$ANDROID_HOME/build-tools" -name aapt -type f -print -quit | xargs -r -I{} {} dump badging "$APK" | grep -F "package: name='com.pigapocket.localvault'"
+          fi
+          zipinfo -1 "$APK" | grep -x 'classes.dex'
+          sha256sum "$APK" | tee "$APK.sha256"
+          cp "$APK" PIGA-Pocket-Local-Vault-0.1.0-debug.apk
+          cp "$APK.sha256" PIGA-Pocket-Local-Vault-0.1.0-debug.apk.sha256
+
+      - name: Publish download as immutable GitHub prerelease, not Actions artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="piga-pocket-local-vault-0.1.0-${GITHUB_SHA:0:12}"
+          gh release create "$TAG" --target "$GITHUB_SHA" --prerelease \
+            --title "PIGA Pocket Local Vault · Android offline preview 0.1.0" \
+            --notes "Independent DEBUG-SIGNED Android companion (com.pigapocket.localvault). Local encrypted SQLite and owner-initiated JSON import/export. Does NOT replace com.pigapocket.bridge or include the private PIGA production code or Supabase cloud data. Verify before installing. Offline preview; no full autonomy." \
+            PIGA-Pocket-Local-Vault-0.1.0-debug.apk \
+            PIGA-Pocket-Local-Vault-0.1.0-debug.apk.sha256
