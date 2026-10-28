@@ -948,13 +948,14 @@ try{state=nbCleanState(read(KEY)||structuredClone(initial))}catch{state=structur
 
 if(!nbStoredDataDamaged&&!state.migrated){const old=read(OLD);if(old&&typeof old==='object'){for(const k of ['members','events','tasks','shop','meals','routines'])if(Array.isArray(old[k])&&(!Array.isArray(state[k])||!state[k].length))state[k]=old[k];if(old.prayers&&Object.values(old.prayers).some(Boolean))state.prayers=old.prayers;state.migrated=true;try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{toast('Speicher voll. Bitte Backup exportieren und ältere Inhalte reduzieren.');return false}}
-function toast(text){const t=$('toast');t.textContent=text;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),3800)}
+function toast(text){const t=$('toast');t.textContent=nbDeveloperText(text);t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),3800)}
 function fmt(d){if(!d)return'Ohne Datum';const x=d.split('-');return x.length===3?x[2]+'.'+x[1]+'.'+x[0]:d}
 function euro(n){return Number(n||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'})}
 function sortDays(arr){return arr.slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')))}
 function row(obj,sub,kind,buttons){return '<div class="item '+(obj.done?'done':'')+'"><div class="main"><strong>'+esc(obj.title||obj.name||obj.text||'')+'</strong><small>'+esc(sub||'')+'</small></div><div class="item-actions">'+(buttons||'')+'</div></div>'}
 function action(k,id,title){return '<button class="iconbtn" data-remove="'+k+'" data-id="'+esc(id)+'" aria-label="'+esc(title||'Eintrag entfernen')+'" title="Entfernen">×</button>'}
-function empty(text){return '<div class="empty">'+esc(text)+'</div>'}
+function nbDeveloperText(source){const original=String(source||'');if(nbLang()==='de')return original;const stem=original.replace(/\\s*✿\\s*$/,'').trim();const translated=window.NADIA_UI_V36_PACK?.[nbLang()]?.[stem];return translated?(translated+(original.trim().endsWith('✿')?' ✿':'')):original}
+function empty(text){return '<div class="empty">'+esc(nbDeveloperText(text))+'</div>'}
 function openView(id){if(!$('view-'+id))id='start';document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+id));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===id));const more=$('nb-open-menu');more.classList.toggle('active',!['start','kalender','aufgaben'].includes(id));more.setAttribute('aria-current',more.classList.contains('active')?'page':'false');$('crumb').textContent=({start:'Mein Zuhause',kalender:'Kalender',aufgaben:'Aufgaben',kinder:'Kinder-Kompass',essen:'Essen',einkauf:'Einkauf',haushalt:'Haushalt',geld:'Finanzen',iman:'Iman & Barakah',journal:'Dankbarkeit',buch:'Buch & Einstellungen'})[id]||id;location.hash=id;scrollTo({top:0,behavior:'instant'});render()}
 function defaultMember(){return '<option value="">Für die ganze Familie</option>'+state.members.map(m=>'<option value="'+esc(m.id)+'">'+esc(m.name)+'</option>').join('')}
 function membership(id){return state.members.find(m=>m.id===id)?.name||'Familie'}
@@ -1220,7 +1221,7 @@ function nbUpdateCalendarAgenda(){
  const all=[...matches.map(x=>({title:x.title||'Eigener Termin',kind:'event',meta:[x.time||'',membership(x.member)].filter(Boolean).join(' · ')})),
  ...specials.map(x=>({title:x.title,kind:x.type,meta:''}))];
  count.textContent=matches.length+' '+(matches.length===1?'Termin':'Termine');
- list.innerHTML=all.length?all.map(x=>'<li><span class="nb-cal-agenda-kind nb-cal-agenda-kind-'+esc(x.kind)+'" aria-hidden="true"></span><span class="nb-cal-agenda-detail"><strong>'+esc(x.title)+'</strong>'+(x.meta?'<small class="nb-cal-agenda-meta">'+esc(x.meta)+'</small>':'')+'</span></li>').join(''):'<li class="nb-cal-empty-agenda">Dieser Tag ist noch frei. Raum für das, was wichtig ist. ✿</li>';
+ list.innerHTML=all.length?all.map(x=>'<li><span class="nb-cal-agenda-kind nb-cal-agenda-kind-'+esc(x.kind)+'" aria-hidden="true"></span><span class="nb-cal-agenda-detail"><strong>'+esc(x.title)+'</strong>'+(x.meta?'<small class="nb-cal-agenda-meta">'+esc(x.meta)+'</small>':'')+'</span></li>').join(''):'<li class="nb-cal-empty-agenda">'+esc(nbDeveloperText('Dieser Tag ist noch frei. Raum für das, was wichtig ist. ✿'))+'</li>';
 }
 function nbUpdateCalendarUpcoming(){
  const el=$('nb-cal-upcoming');if(!el)return;
@@ -1233,7 +1234,7 @@ function nbUpdateCalendarUpcoming(){
  el.innerHTML=upcoming.length?upcoming.slice(0,8).map(x=>{
   const d=new Date(x.ds+'T12:00:00'),month=d.toLocaleDateString(nbIntlLocale(),{month:'short'});
   return '<div class="nb-cal-upcoming-line"><span class="nb-cal-upcoming-date"><b>'+d.getDate()+'</b><small>'+esc(month)+'</small></span><span class="nb-cal-upcoming-text"><strong>'+esc(x.title)+'</strong><small>'+esc(x.detail||d.toLocaleDateString(nbIntlLocale(),{weekday:'long'}))+'</small></span></div>';
- }).join(''):'<p class="nb-cal-upcoming-empty">Keine geplanten Termine in den nächsten sieben Tagen. Genieße die freie Zeit. ✿</p>';
+ }).join(''):'<p class="nb-cal-upcoming-empty">'+esc(nbDeveloperText('Keine geplanten Termine in den nächsten sieben Tagen. Genieße die freie Zeit. ✿'))+'</p>';
 }
 function nbCalendarJumpToForm(){
  const d=$('eventForm').querySelector('[name=date]');d.value=nbSelectedDay||date();
