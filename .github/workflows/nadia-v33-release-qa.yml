@@ -1,0 +1,44 @@
+name: Nadia v33 Independent Mobile Offline Gate
+on:
+  push:
+    branches: [release/nadias-bloom-v33-pages-20261028, main]
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadia_v33_release.cjs'
+      - '.github/workflows/nadia-v33-release-qa.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'nadias-bloom/**'
+      - 'scripts/test_nadia_v33_release.cjs'
+      - '.github/workflows/nadia-v33-release-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nadia-v33-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/test_nadia_v33_release.cjs --static
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test 320/393/1280, local persistence, Arabic RTL and flight-mode PWA
+        run: node scripts/test_nadia_v33_release.cjs --browser
