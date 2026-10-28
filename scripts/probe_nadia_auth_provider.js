@@ -4,8 +4,8 @@
 const https=require('node:https'),fs=require('node:fs');
 const html=fs.readFileSync('nadias-bloom/index.html','utf8');
 const providers={};
-for(const m of html.matchAll(/\b(primary|failover):\{url:'(https:\/\/[a-z0-9-]+\.supabase\.co)',key:'(sb_publishable_[A-Za-z0-9_-]+)'\}/g)){
- providers[m[1]]={url:m[2],key:m[3]};
+for(const m of html.matchAll(/\b(primary|failover):\{url:'(https:\/\/[a-z0-9-]+\.supabase\.co)',key:([\"'])(sb_publishable_[A-Za-z0-9_-]+)\3\}/g)){
+ providers[m[1]]={url:m[2],key:m[4]};
 }
 if(!providers.primary||!providers.failover)throw Error('Both Auth realms must use publishable browser keys');
 if(html.includes('sb_secret_')||html.includes('service_role'))throw Error('Secret credentials in public client');
