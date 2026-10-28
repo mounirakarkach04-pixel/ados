@@ -84,9 +84,9 @@ check(await page.locator('[data-view="happy"]').count()===0,'no Happy navigation
 check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v32'),'v32 fast original-cover family studio loaded');
 await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
 check(await page.locator('#nb-auth-card').isVisible(),'optional auth card present');
-const picture=page.locator('img[data-nb-original-cover]').first();
+const picture=page.locator('#view-buch img[data-nb-original-cover]').first();
 await picture.scrollIntoViewIfNeeded();
-await page.waitForFunction(()=>{const i=document.querySelector('img[data-nb-original-cover]');return i?.complete&&i?.naturalWidth>0});
+await page.waitForFunction(()=>{const i=document.querySelector('#view-buch img[data-nb-original-cover]');return i?.complete&&i?.naturalWidth>0});
 check(await picture.evaluate(img=>img.naturalWidth)>=400,'authentic WebP cover successfully decoded on screen');
 check(await page.locator('#nb-auth-provider option').count()===2,'primary and separate optional failover realms visible');
 check(!(await page.locator('#nb-auth-logged-out').isHidden()),'no forced login');
