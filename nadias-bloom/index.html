@@ -1271,7 +1271,7 @@ if(nbStoredDataDamaged)toast('Gespeicherte Daten sind beschädigt. Die bisherige
 const today=date();$('eventForm').querySelector('[name=date]').value=today;$('mealForm').querySelector('[name=date]').value=today;$('moneyForm').querySelector('[name=date]').value=today;$('monthChoose').value=today.slice(0,7);
 if(location.hash){const h=location.hash.slice(1);if($('view-'+h))openView(h)}render();nbShowInstallState();
 window.addEventListener('hashchange',()=>{const h=decodeURIComponent(location.hash.slice(1));if($('view-'+h)&&!$('view-'+h).classList.contains('active'))openView(h)});
-if('serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register(new URL('sw.js',location.href).toString(),{scope:new URL('./',location.href).pathname}).catch(()=>{});
+if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register(new URL('sw.js',location.href).toString(),{scope:new URL('./',location.href).pathname}).catch(()=>{});
 })();
 </script>
 
