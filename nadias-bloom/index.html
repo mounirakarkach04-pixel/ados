@@ -464,7 +464,14 @@ button,input,select,textarea{font-size:max(16px,1em)}
 </section><div class="card nb-locale-card" id="nb-locale-card"><div class="eyebrow">GLOBAL · PRIVAT · EINSTELLBAR</div><h2 id="nb-locale-heading">Region & Sprache</h2><p class="note" id="nb-locale-intro">Das Gerät schlägt die Sprache vor. Du kannst sie jederzeit ändern.</p><div class="nb-locale-grid"><label class="field"><span id="nb-lang-label">Sprache / Language</span><select id="nb-lang-setting" aria-label="Sprache auswählen"></select></label><label class="field"><span id="nb-country-label">Land / Country</span><select id="nb-country-setting" aria-label="Land auswählen"></select></label></div><p id="nb-country-summary" class="note">Deutschland: nur nationale Feiertage und hessische Schulferien. Alle anderen Länder: nur islamische Festtage.</p><p id="nb-moon-note" class="note">Islamische Kalenderdaten sind Näherungen und können lokal um einen Tag abweichen. Für 2026–2027 sind Vorlagen hinterlegt; andere Jahre nutzt eine unverbindliche Umm-al-Qura-Berechnung.</p></div><div class="card mobile-directory" id="mobileModules"><h2>Alle Bereiche auf einen Blick</h2><p>Wähle, was dir gerade hilft. Alles ist direkt erreichbar – auch auf dem Handy.</p><div class="mobile-directory-grid"><button class="btn soft" data-view="start">⌂ Mein Zuhause</button><button class="btn soft" data-view="kalender">▣ Kalender</button><button class="btn soft" data-view="aufgaben">✓ Aufgaben</button><button class="btn soft" data-view="kinder">♡ Kinder-Kompass</button><button class="btn soft" data-view="essen">♨ Essensplan</button><button class="btn soft" data-view="einkauf">☷ Einkauf</button><button class="btn soft" data-view="haushalt">✧ Haushalt</button><button class="btn soft" data-view="geld">€ Home & Money</button><button class="btn soft" data-view="iman">☾ Iman & Barakah</button><button class="btn soft" data-view="journal">❀ Dankbarkeit</button><button class="btn soft" data-view="buch">▤ Buch & Sicherheit</button></div></div><div class="grid"><div class="card"><h2>Das Buch entdecken</h2><p><b>Weniger im Kopf. Mehr im Blick.</b> Ein liebevoller Begleiter für die Balance zwischen Familie, Haushalt, Essen, Terminen, Niyyah, Gebet und Dankbarkeit. Die App enthält 365 aus der Buchfassung übernommene Tages-Duʿā für 2027.</p><div class="nb-excerpts"><div class="eyebrow">AUSZÜGE AUS DEM BUCH · KEINE GESAMTAUSGABE</div><blockquote>„Ein Planer, der dir dienen soll – nicht umgekehrt.“</blockquote><p>Der Kinder-Kompass hilft, Schule, Kita, Termine und die Bedürfnisse jedes Kindes im Blick zu behalten. <em>Home &amp; Money</em> bringt Klarheit in Haushalt, Einkauf und Geld.</p><blockquote>„Du musst nicht jede Zeile ausfüllen und du musst auch nicht jeden Tag perfekt planen.“</blockquote><p>Der Tagesrhythmus verbindet <b>Niyyah</b>, drei machbare Prioritäten, Gebete und <b>Mental Load</b>: Was darf heute delegiert, verschoben oder weggelassen werden?</p><p class="note">Kurze redaktionelle Leseprobe auf Basis der Ausgabe BARAKAH HOME 2027. Weitere Buchinhalte und die vollständige PDF sind hier bewusst nicht öffentlich verlinkt.</p></div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">BARAKAH HOME 2027 auf Amazon suchen ↗</a><button class="btn soft" type="button" data-view="start">Zurück zu Nadia’s Bloom</button></div></div><div class="card nb-account" id="nb-auth-card">
 <div class="eyebrow">DEIN PERSÖNLICHER ZUGANG · FREIWILLIG</div><h2 id="nb-auth-translation-title">Anmelden &amp; Zugang sichern</h2>
 <p>Optionales Konto mit E-Mail und Passwort oder einmaligem E-Mail-Code. Du kannst den Familienplaner weiterhin ohne Anmeldung verwenden. <b>Wichtig:</b> Kalender-, Kinder- und Finanzdaten bleiben vorerst ausschließlich auf diesem Gerät und werden auch nach Anmeldung <b>nicht</b> automatisch synchronisiert.</p>
-<div id="nb-auth-logged-out">
+<div class="nb-auth-route" style="margin:15px 0;padding:15px;border:1px solid #eddde5;background:#fff8fa;border-radius:15px">
+<label class="field" for="nb-auth-provider">Welchen Kontodienst möchtest du verwenden?
+<select id="nb-auth-provider" aria-describedby="nb-auth-provider-info">
+<option value="primary">Bisheriges Konto · ursprünglicher Dienst</option>
+<option value="failover">Separates Ausweichkonto · anderer Dienst</option>
+</select></label>
+<p class="note" id="nb-auth-provider-info" role="status" aria-live="polite">Bisherige Konten bleiben dem ursprünglichen Dienst zugeordnet. Der Anbieter ist momentan gestört; deine lokale Planung funktioniert trotzdem.</p>
+</div><div id="nb-auth-logged-out">
 <label class="field">Deine E-Mail-Adresse<input id="nb-auth-email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="name@beispiel.de"></label>
 <label class="field">Passwort<input id="nb-auth-password" type="password" autocomplete="current-password" maxlength="120" placeholder="Mindestens 8 Zeichen"></label>
 <div class="actions"><button class="btn primary" type="button" id="nb-login">Anmelden</button><button class="btn soft" type="button" id="nb-register">Neues Konto erstellen</button><button class="btn outline" type="button" id="nb-email-code">E-Mail-Code oder Anmeldelink senden</button></div>
@@ -1037,9 +1044,17 @@ $('downloadOffline').onclick=async()=>{
 };
 $('clearData').onclick=()=>{if(confirm('Alle lokal gespeicherten Nadia’s-Bloom-Daten unwiderruflich löschen? Bitte vorher sichern.')){localStorage.removeItem(KEY);location.reload()}};
 /* Happy disabled by explicit release gate: no portrait, tokens or live calls. PIGA owner voice remains unchanged. */
-const NB_SUPABASE_URL='https://qjvopzschqukitvudgfz.supabase.co';
-const NB_SUPABASE_KEY='sb_publishable_fDsruYO5WHEqKVRjNEl9Rg_dYpSMrYg';
-const NB_AUTH_SESSION_KEY='nadias-bloom-auth-session-v1';
+/* Independent credential realms. Never silently send existing passwords to the failover project. */
+const NB_AUTH_CONFIG={
+ primary:{url:'https://qjvopzschqukitvudgfz.supabase.co',key:'sb_publishable_fDsruYO5WHEqKVRjNEl9Rg_dYpSMrYg'},
+ failover:{url:'https://sanrkcovmkkhgdqydxfk.supabase.co',key:"sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ"}
+};
+const NB_AUTH_PROVIDER_PREF='nadias-bloom-auth-provider-choice-v1';
+let nbAuthProviderId='primary';
+try{if(localStorage.getItem(NB_AUTH_PROVIDER_PREF)==='failover')nbAuthProviderId='failover'}catch{}
+let NB_SUPABASE_URL=NB_AUTH_CONFIG[nbAuthProviderId].url;
+let NB_SUPABASE_KEY=NB_AUTH_CONFIG[nbAuthProviderId].key;
+let NB_AUTH_SESSION_KEY=nbAuthProviderId==='failover'?'nadias-bloom-auth-session-v1-failover':'nadias-bloom-auth-session-v1';
 let nbSession=null,nbRecoveryReady=false;
 try{nbSession=JSON.parse(sessionStorage.getItem(NB_AUTH_SESSION_KEY)||'null');nbRecoveryReady=sessionStorage.getItem('nadia-auth-reset-ready')==='1'&&!!nbSession?.access_token}catch{}
 function nbAuthStatus(message){$('nb-auth-status').textContent=String(message||'')}
@@ -1129,6 +1144,26 @@ $('nb-new-password').value='';$('nb-confirm-password').value='';nbRecoveryReady=
 finally{for(const id of buttons)$(id).disabled=false}
 }
 for(const id of ['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password'])$(id).addEventListener('click',()=>void nbAuthAction(id));
+function nbAuthSwitchProvider(provider){
+ if(!Object.prototype.hasOwnProperty.call(NB_AUTH_CONFIG,provider))return;
+ nbAuthProviderId=provider;
+ NB_SUPABASE_URL=NB_AUTH_CONFIG[provider].url;
+ NB_SUPABASE_KEY=NB_AUTH_CONFIG[provider].key;
+ NB_AUTH_SESSION_KEY=provider==='failover'?'nadias-bloom-auth-session-v1-failover':'nadias-bloom-auth-session-v1';
+ try{localStorage.setItem(NB_AUTH_PROVIDER_PREF,provider)}catch{}
+ try{nbSession=JSON.parse(sessionStorage.getItem(NB_AUTH_SESSION_KEY)||'null')}catch{nbSession=null}
+ nbRecoveryReady=false;
+ $('nb-auth-provider').value=provider;
+ $('nb-auth-provider-info').textContent=provider==='failover'
+  ?'Neues, ausdrücklich getrenntes Konto im bestehenden PIGA-Ausweichprojekt. Bisherige Konten, Passwörter und Sitzungen werden NICHT übernommen. E-Mail-Bestätigung muss real geprüft werden. Keine Datensynchronisierung.'
+  :'Bisheriges Konto beim ursprünglichen Dienst. Dieser zeigt derzeit Datenbankfehler; du kannst jederzeit ohne Anmeldung lokal weiterplanen.';
+ nbAuthRender();
+ nbAuthStatus(provider==='failover'
+  ?'Ausweichdienst ausgewählt. Du brauchst dort ein eigenes Konto. Erst die Gesundheitsprüfung und eine echte Bestätigungs-E-Mail zeigen, ob der Zugang funktioniert.'
+  :'Ursprünglicher Dienst ausgewählt. Aktuell gestört; eine sichere Wiederherstellung wird benötigt.');
+}
+$('nb-auth-provider').addEventListener('change',event=>nbAuthSwitchProvider(event.target.value));
+nbAuthSwitchProvider(nbAuthProviderId);
 $('nb-auth-check').onclick=async()=>{
 const button=$('nb-auth-check');button.disabled=true;
 nbAuthStatus('Prüfe die Erreichbarkeit des bestehenden Anmeldedienstes …');
@@ -1187,7 +1222,7 @@ if(query.has('code')){
 })();
 nbAuthRender();
 if(nbSession?.refresh_token)void nbRefreshSession();
-window.NADIA_AUTH_QA={configured:!!NB_SUPABASE_KEY,provider:'supabase-goTrue',app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true};
+window.NADIA_AUTH_QA={configured:!!NB_SUPABASE_KEY,provider:()=>nbAuthProviderId,app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true,separateCredentialRealms:true};
 
 nbSetupLocale();
 window.NADIAS_BLOOM_QA={version:'v28-i18n-15-lang-no-happy',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',read:()=>structuredClone(state),setView:openView,pigaSafety:()=>NB_PIGA_GUARD.status(),pigaSelfTest:()=>NB_PIGA_GUARD.selfTest(),locale:()=>({...nbLocaleConfig()}),setLocale:(lang,country)=>{if(NB_LANGS[lang]&&NB_COUNTRIES[country]){const c=nbLocaleConfig();c.lang=lang;c.country=country;save();$('nb-lang-quick').value=lang;$('nb-lang-setting').value=lang;$('nb-country-setting').value=country;nbApplyLocale();render()}}};
