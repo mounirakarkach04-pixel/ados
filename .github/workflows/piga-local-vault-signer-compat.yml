@@ -1,0 +1,70 @@
+name: PIGA Local Vault · installed-APK signature compatibility
+
+on:
+  push:
+    branches: [feat/piga-portable-vault-samsung-apk-20261028]
+    paths:
+      - '.github/workflows/piga-local-vault-signer-compat.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    name: Compare published APK signing certificate against fresh debug build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Fetch published APK signed on 28 October
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/piga-vault-original
+          gh release download "piga-pocket-local-vault-0.1.0-0c71b03d9421" --repo "${GITHUB_REPOSITORY}" \
+            --pattern 'PIGA-Pocket-Local-Vault-0.1.0-debug.apk' --dir /tmp/piga-vault-original
+          test -s /tmp/piga-vault-original/PIGA-Pocket-Local-Vault-0.1.0-debug.apk
+
+      - name: Compile isolated candidate; DO NOT publish or install
+        working-directory: piga-pocket-local-vault/android
+        run: gradle --no-daemon :app:assembleDebug
+
+      - name: Verify published and fresh signer certificates
+        shell: bash
+        run: |
+          set -euo pipefail
+          APKSIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)"
+          test -n "$APKSIGNER"
+          BEFORE=/tmp/piga-vault-original/PIGA-Pocket-Local-Vault-0.1.0-debug.apk
+          AFTER=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
+          OLD="$( "$APKSIGNER" verify --print-certs "$BEFORE" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -1)"
+          NEW="$( "$APKSIGNER" verify --print-certs "$AFTER" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -1)"
+          test -n "$OLD"
+          test -n "$NEW"
+          {
+            echo "### PIGA Local Vault · SAFE UPDATE GATE"
+            echo ""
+            echo "- Installed baseline 0.1.0 signer SHA256: \`$OLD\`"
+            echo "- Fresh public runner debug signer SHA256: \`$NEW\`"
+            echo ""
+            if [ "$OLD" = "$NEW" ]; then
+              echo "PASS: same signing certificate; package/version validation still required."
+            else
+              echo "BLOCK: certificate mismatch. In-place APK update will be rejected by Android."
+              echo "Never uninstall original app without owner-verified JSON export, migration and backup."
+              echo "Next production release MUST use a stable privately held signing key."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "ORIGINAL_SIGNER_SHA256=$OLD"
+          echo "FRESH_SIGNER_SHA256=$NEW"
+          if [ "$OLD" = "$NEW" ]; then echo "UPDATE_SIGNER_COMPATIBLE=true"; else echo "UPDATE_SIGNER_COMPATIBLE=false"; fi
