@@ -88,8 +88,8 @@ jobs:
           test -s "$OLD"
           test -n "$SIGNER"
           "$SIGNER" verify --print-certs "$OLD"
-          old_digest="$("$SIGNER" verify --print-certs "$OLD" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -n1)"
-          new_digest="$("$SIGNER" verify --print-certs "$NEW" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -n1)"
+          old_digest="$("$SIGNER" verify --print-certs "$OLD" | awk '/certificate SHA-256 digest:/ {print $NF; exit}')"
+          new_digest="$("$SIGNER" verify --print-certs "$NEW" | awk '/certificate SHA-256 digest:/ {print $NF; exit}')"
           test -n "$old_digest"
           test -n "$new_digest"
           if [ "$old_digest" = "$new_digest" ]; then
