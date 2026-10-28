@@ -86,7 +86,7 @@ public final class VaultBackupActivity extends Activity {
     private static char[] readAndClear(EditText field) {
         int length = field.getText().length();
         char[] result = new char[length];
-        field.getText().getChars(0, length, result, 0);
+        for (int i = 0; i < length; i++) result[i] = field.getText().charAt(i);
         field.getText().clear();
         return result;
     }
