@@ -2,7 +2,7 @@
 const CACHE='nadias-bloom-v35-20261028-account-entry-portfolio';
 // Compact original-cover rendition for fast PWA installs; source PNG remains in repository.
 const COVER_WEBP=new URL('./barakah-home-2027-cover-480.webp',self.location.href).toString();
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./barakah-home-2027-cover-480.webp','./Nadias_Bloom_Offline.html','../quality/portfolio-polish.css'];
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./barakah-home-2027-cover-480.webp','./Nadias_Bloom_Offline.html'];
 const OPTIONAL=['./icon-192.png','./icon-512.png'];
 const SCOPE=new URL('./',self.location.href);
 const CACHEABLE=new Set([...CORE,...OPTIONAL].map(file=>new URL(file,SCOPE).pathname));
