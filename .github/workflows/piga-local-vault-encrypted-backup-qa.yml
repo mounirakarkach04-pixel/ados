@@ -1,0 +1,73 @@
+name: PIGA Local Vault Encrypted Backup - Review QA
+
+on:
+  push:
+    branches:
+      - review/piga-local-vault-encrypted-backup-20261028
+    paths:
+      - 'piga-pocket-local-vault/**'
+      - '.github/workflows/piga-local-vault-encrypted-backup-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crypto-host-jdk:
+    name: AES-GCM backup restore host tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile and execute isolated source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/piga-vault-host"
+          javac -encoding UTF-8 -d "$RUNNER_TEMP/piga-vault-host" \
+            piga-pocket-local-vault/android/app/src/main/java/com/pigapocket/localvault/VaultBackupCrypto.java \
+            piga-pocket-local-vault/tests/VaultBackupCryptoSelfTest.java
+          java -cp "$RUNNER_TEMP/piga-vault-host" com.pigapocket.localvault.VaultBackupCryptoSelfTest
+
+  android-app-compile:
+    name: Independent Android APK compile - not for install
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Compile debug APK in isolated Android project
+        shell: bash
+        working-directory: piga-pocket-local-vault/android
+        run: gradle --no-daemon :app:assembleDebug --stacktrace
+      - name: Verify Android artifact package and APK signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          python3 - <<'PY'
+          import json,pathlib,zipfile
+          base=pathlib.Path('piga-pocket-local-vault/android/app/build/outputs/apk/debug')
+          info=json.loads((base/'output-metadata.json').read_text())
+          assert info['applicationId']=='com.pigapocket.localvault'
+          with zipfile.ZipFile(base/'app-debug.apk') as z:
+              assert z.testzip() is None
+              assert {'classes.dex','AndroidManifest.xml'}<=set(z.namelist())
+          print('PASS: isolated APK structure; NOT eligible for in-place existing-app update')
+          PY
+          SIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -print | sort -V | tail -1)"
+          test -n "$SIGNER"
+          "$SIGNER" verify --print-certs "$APK"
+          sha256sum "$APK"
+          echo 'REVIEW ONLY: Debug signing certificate is NOT proven same as existing Samsung Local Vault.'
