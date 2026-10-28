@@ -163,7 +163,11 @@ public final class VaultBackupActivity extends Activity {
         try {
             JSONObject snapshot = new JSONObject();
             snapshot.put("schema", "piga.local-vault.export.v1");
-            snapshot.put("records", store.exportRecords());
+            org.json.JSONArray items = store.exportRecords();
+            if (items.length() > 1000) {
+                throw new IllegalStateException("Backup has over 1000 records; chunked recovery required");
+            }
+            snapshot.put("records", items);
             plaintext = snapshot.toString().getBytes(StandardCharsets.UTF_8);
             encrypted = VaultBackupCrypto.encrypt(plaintext, password);
             try (OutputStream out = getContentResolver().openOutputStream(uri, "wt")) {
