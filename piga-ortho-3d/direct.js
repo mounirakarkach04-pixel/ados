@@ -96,7 +96,7 @@ function renderCalendar(){
  const events=[...state.calendar].sort((a,b)=>a.start.localeCompare(b.start));
  if(!events.length)line(out,'Keine Termine','Lokale Termine oben erfassen.');
  for(const a of events)line(out,short(a.title,160),stamp(a.start)+' · '+a.minutes+' Minuten',tools=>{
-  action(tools,'Löschen',()=>{state.calendar=state.calendar.filter(x=>x.id!==a.id);commit('appointment_removed',a.title)});
+  action(tools,'Löschen',()=>{if(!confirm('Termin wirklich löschen?'))return;state.calendar=state.calendar.filter(x=>x.id!==a.id);commit('appointment_removed',a.title)});
  });
 }
 function renderInventory(){
