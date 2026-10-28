@@ -98,6 +98,55 @@ for(const width of [320,393,1280]){
 
  check(errors.length===0,'no-uncaught-js-'+width+': '+errors.join('; '));
  if(width===393){
+   // Exercise the real local-first families, food, finances, journal and export flows.
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kinder'));
+   await page.locator('#memberForm [name=name]').fill('QA Familie');
+   await page.locator('#memberForm button').first().click();
+   check((await page.locator('#memberList').innerText()).includes('QA Familie'),'family-member-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('einkauf'));
+   await page.locator('#shopForm [name=title]').fill('QA Einkaufsartikel');
+   await page.locator('#shopForm button').first().click();
+   check((await page.locator('#shopList').innerText()).includes('QA Einkaufsartikel'),'shopping-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('essen'));
+   await page.locator('#mealForm [name=title]').fill('QA Abendessen');
+   await page.locator('#mealForm [name=date]').fill(firstDay);
+   await page.locator('#mealForm button').first().click();
+   check((await page.locator('#mealList').innerText()).includes('QA Abendessen'),'meal-plan-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('geld'));
+   await page.locator('#moneyForm [name=title]').fill('QA Haushaltsbuch');
+   await page.locator('#moneyForm [name=amount]').fill('14.90');
+   await page.locator('#moneyForm [name=date]').fill(firstDay);
+   await page.locator('#moneyForm button').first().click();
+   check((await page.locator('#moneyList').innerText()).includes('QA Haushaltsbuch'),'finance-entry-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('journal'));
+   await page.locator('#journalForm [name=text]').fill('QA Dankbarkeit');
+   await page.locator('#journalForm button').first().click();
+   check((await page.locator('#journalList').innerText()).includes('QA Dankbarkeit'),'journal-entry-create');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('iman'));
+   check(await page.locator('#prayerRows input[data-prayer]').count()===5,'five-prayers-available');
+   check((await page.locator('#duaText').innerText()).length>10,'daily-dua-visible');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('haushalt'));
+   check(await page.locator('[data-chore]').count()>=1,'household-routines-visible');
+
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
+   const backupPromise=page.waitForEvent('download');
+   await page.locator('#backup').click();
+   const backupDownload=await backupPromise;
+   check(backupDownload.suggestedFilename().endsWith('.json'),'private-backup-download');
+   check(await page.locator('#nb-auth-card').isHidden(),'login-still-optional');
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
+   await page.locator('.nb-cal-details').evaluate(el=>el.open=true);
+   const icsPromise=page.waitForEvent('download');
+   await page.locator('#exportICS').click();
+   const ics=await icsPromise;
+   check(ics.suggestedFilename().endsWith('.ics'),'calendar-ics-download');
+
    await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('ar','MA'));
    check(await page.locator('html').getAttribute('dir')==='rtl','arabic-rtl');
    await page.locator('#nb-open-menu').click();
