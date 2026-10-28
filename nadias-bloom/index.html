@@ -428,6 +428,96 @@ button,input,select,textarea{font-size:max(16px,1em)}
 .nb-nav-grid button:hover,.nb-nav-grid button:focus-visible{border-color:#985875;background:#f6e8ef}
 .nb-nav-grid button.active{border-color:#985875;box-shadow:0 0 0 1px #985875 inset}
 @media(max-width:365px){.nb-nav-dialog{padding:15px}.nb-nav-grid{gap:6px}.nb-nav-grid button{font-size:12px;padding:9px 8px}}
+
+/* NADIA BLOOM v34 / Quiet Luxury Calendar Studio — ample space, responsive clarity */
+:root{--nb34-plum:#61475b;--nb34-rose:#a46e87;--nb34-olive:#627967;--nb34-line:#eee1e7;--nb34-cream:#fffdfa}
+body{font-kerning:normal}
+.content{max-width:1560px}
+#view-kalender{--nb34-ink:#493b45}
+#view-kalender .eyebrow{color:#886576}
+.nb-cal-intro{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:7px 3px 23px}
+.nb-cal-intro h1{font:500 clamp(34px,4.1vw,59px)/1.07 Georgia,serif;letter-spacing:-.052em;color:#59445b;margin:10px 0 12px}
+.nb-cal-intro .sub{max-width:660px;color:#6f6370;line-height:1.75}
+.nb-cal-cta{padding-inline:24px!important;min-height:52px!important;flex:none}
+.nb-cal-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 19px}
+.nb-cal-mini-stat{background:linear-gradient(130deg,#fffdfa,#fbf5f6);border:1px solid var(--nb34-line);border-radius:19px;padding:15px 19px;display:flex;align-items:center;justify-content:space-between;gap:15px;min-width:0}
+.nb-cal-mini-stat span{font-weight:700;color:#796a74;font-size:12px;line-height:1.4}
+.nb-cal-mini-stat strong{font:500 clamp(24px,3vw,32px) Georgia,serif;color:#78546c}
+.nb-cal-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);align-items:start;gap:18px}
+#view-kalender .nb-cal-board{padding:clamp(16px,2.3vw,30px);background:#fffdfb!important;border:1px solid var(--nb34-line)!important;min-width:0}
+.nb-cal-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.nb-cal-heading h2{font:500 clamp(22px,3vw,29px)/1.1 Georgia,serif;color:#5c465b;margin:9px 0 5px}
+.nb-cal-today-button{min-height:43px!important;white-space:nowrap}
+#view-kalender .nb-cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin:24px 0 17px}
+#view-kalender .nb-cal-head{display:flex;align-items:center;justify-content:space-between;gap:11px;flex:1;min-width:230px}
+#view-kalender .nb-cal-head b{order:0;flex:1;min-width:0;text-align:center;font:500 clamp(21px,2.3vw,30px)/1.13 Georgia,serif;color:#59435a;letter-spacing:-.03em}
+#view-kalender .nb-cal-chevron{font:500 27px Georgia,serif!important;min-width:47px;min-height:47px;padding:0!important;border:1px solid #e9dfe6;border-radius:15px}
+.nb-cal-month-pick{display:flex;gap:9px;align-items:center;font-size:11px;font-weight:700;color:#7c6676;white-space:nowrap}
+.nb-cal-month-pick input{max-width:159px;min-height:43px;font-size:13px!important}
+#view-kalender #monthGrid.months{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:0 0 19px}
+#monthGrid .nb-cal-weekday{padding:10px 0;color:#7e6f78;text-align:center;font-size:11px!important;font-weight:800;letter-spacing:.025em}
+#monthGrid .nb-cal-blank{display:block;min-height:0;pointer-events:none}
+#view-kalender #monthGrid .monthday{appearance:none;min-width:0;min-height:clamp(83px,8.2vw,116px);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:7px;padding:12px 9px!important;background:#fff;border:1px solid #eee5e9!important;border-radius:15px;color:#503c4d;text-align:left;position:relative;overflow:hidden;transition:background .15s,border-color .15s,box-shadow .15s}
+#view-kalender #monthGrid .monthday:hover{background:#fbf5f8!important;border-color:#c8a1b5!important}
+#view-kalender #monthGrid .monthday.today{background:#fff8ed!important;border-color:#d3ad75!important}
+#view-kalender #monthGrid .monthday[aria-pressed="true"]{background:#f8eaf2!important;border:2px solid #90607a!important;box-shadow:0 0 0 2px #fff inset!important;padding:11px 8px!important}
+#monthGrid .nb-cal-number{font:600 clamp(15px,1.5vw,19px)/1.1 Georgia,serif;color:#4b3a49;display:inline-flex;align-items:center;justify-content:center;min-width:26px;min-height:26px}
+#monthGrid .monthday.today .nb-cal-number{background:#c79858;border-radius:50%;color:#fff}
+#monthGrid .nb-cal-event-count{font-size:10px;line-height:1.2;color:#7a4e66;font-weight:800;background:#f7e4ee;border-radius:30px;padding:4px 6px}
+#monthGrid .nb-cal-small-title{font-size:10px;font-weight:650;color:#756370;line-height:1.35;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#monthGrid .nb-cal-indicators{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+#monthGrid .nb-cal-marker{width:7px;height:7px;display:inline-block;border-radius:50%;background:#b27594;flex:none}
+#monthGrid .nb-cal-marker.holiday{background:#c77b86}
+#monthGrid .nb-cal-marker.vacation{background:#799f7b}
+#monthGrid .nb-cal-marker.islam{background:#b39861}
+#monthGrid .nb-cal-marker.birthday{background:#c29655}
+#monthGrid .nb-cal-marker.jumuah{background:#9e83ad}
+#view-kalender .nb-cal-legend{display:flex;gap:8px;flex-wrap:wrap;padding:13px 0 7px;border-top:1px solid #eee6e8}
+#view-kalender .nb-cal-legend .nb-key{font-size:11px;font-weight:650;padding:7px 10px}
+.nb-cal-region{color:#8c7c84;font-size:11px;line-height:1.5;margin:10px 0 0}
+.nb-cal-side{display:grid;gap:18px;min-width:0}
+#view-kalender .nb-cal-agenda,#view-kalender .nb-cal-upcoming-panel{border:1px solid var(--nb34-line)!important;background:#fffdfb!important;padding:23px!important;border-radius:23px!important}
+#view-kalender .nb-cal-agenda{margin:0}
+.nb-cal-agenda-top{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:11px 0}
+#view-kalender .nb-cal-agenda h3,#view-kalender .nb-cal-upcoming-panel h3{font:500 clamp(22px,2.1vw,29px)/1.23 Georgia,serif;color:#60465c;margin:0}
+.nb-cal-count{display:inline-block;padding:6px 11px;border-radius:30px;background:#f7edf1;color:#795d71;font-size:11px}
+#view-kalender .nb-cal-day-list{margin:18px 0;gap:9px}
+#view-kalender .nb-cal-day-list li{padding:13px 11px;background:#fcf8f9;border:1px solid #f0e6ea;border-radius:13px;align-items:flex-start;line-height:1.5;min-width:0}
+.nb-cal-agenda-detail{display:grid;gap:3px;min-width:0}
+.nb-cal-agenda-meta{font-size:11px;color:#84737e}
+.nb-cal-day-add{width:100%;min-height:48px!important;margin-top:5px}
+.nb-cal-upcoming-list{display:grid;gap:9px;margin-top:16px}
+.nb-cal-upcoming-line{display:grid;grid-template-columns:44px 1fr;gap:11px;align-items:center;border-bottom:1px solid #f0e7e9;padding:0 0 10px;min-width:0}
+.nb-cal-upcoming-line:last-child{border-bottom:0}
+.nb-cal-upcoming-date{display:grid;place-items:center;gap:1px;padding:6px 2px;background:#f7eef3;border-radius:12px;color:#805269}
+.nb-cal-upcoming-date b{font:600 20px/1.1 Georgia,serif}
+.nb-cal-upcoming-date small{font-size:9px;font-weight:750;letter-spacing:.06em}
+.nb-cal-upcoming-text{min-width:0}
+.nb-cal-upcoming-text strong{display:block;font-size:12px;overflow-wrap:anywhere}
+.nb-cal-upcoming-text small{color:#877481;font-size:10px}
+.nb-cal-upcoming-empty{font-size:12px;color:#807380;line-height:1.65}
+#view-kalender .nb-cal-create{margin-top:22px;padding:clamp(20px,3vw,32px)!important;background:linear-gradient(128deg,#fffdfa,#fff5f8)!important;border:1px solid #eadce5!important;scroll-margin-top:30px}
+.nb-cal-form-intro{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:19px}
+.nb-cal-form-intro h2{font:500 clamp(23px,3vw,32px) Georgia,serif;color:#644b62;margin:7px 0}
+.nb-cal-form-intro p{font-size:12px;color:#817580}
+.nb-cal-form-flower{font:400 56px Georgia,serif;color:#d2a5bf}
+#view-kalender #eventForm{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+#view-kalender #eventForm .wide{grid-column:1/-1}
+#view-kalender #eventForm .field{font-size:12px}
+#view-kalender #eventForm input,#view-kalender #eventForm select{min-height:48px;font-size:16px}
+.nb-cal-details{margin:17px 0 10px;border:1px solid #e9dde4;border-radius:20px;background:#fffafc;overflow:hidden}
+.nb-cal-details>summary{list-style-position:inside;cursor:pointer;padding:20px 22px;font-size:13px;font-weight:750;color:#725469}
+.nb-cal-details-inner{padding:0 23px 23px}
+.nb-cal-details-inner h3{font:500 22px Georgia,serif;color:#62495d}
+.nb-cal-details-inner .btn{margin:12px 0}
+.nb-cal-details-inner .nb-calendar-source{font-size:11px;line-height:1.6}
+#view-kalender :where(button,input,select,summary):focus-visible{outline:3px solid #80516e;outline-offset:3px}
+@media(max-width:1180px){.nb-cal-layout{grid-template-columns:minmax(0,1fr) 290px;gap:13px}#view-kalender #monthGrid .monthday{min-height:82px;padding:9px 6px!important}#monthGrid .nb-cal-small-title{font-size:9px}}
+@media(max-width:990px){.nb-cal-layout{grid-template-columns:1fr}.nb-cal-side{grid-template-columns:1fr 1fr}#view-kalender #monthGrid .monthday{min-height:91px}}
+@media(max-width:700px){.nb-cal-intro{align-items:flex-start;flex-direction:column;gap:12px}.nb-cal-intro h1{font-size:clamp(33px,7vw,43px)}.nb-cal-cta{width:100%}.nb-cal-summary{gap:7px}.nb-cal-mini-stat{padding:12px 9px;border-radius:15px;display:grid;gap:4px;justify-content:initial}.nb-cal-mini-stat span{font-size:10px}.nb-cal-mini-stat strong{font-size:26px}.nb-cal-side{grid-template-columns:1fr}#view-kalender .nb-cal-board{padding:15px!important}#view-kalender .nb-cal-toolbar{gap:11px;margin:18px 0 14px}#view-kalender .nb-cal-month-pick{width:100%;justify-content:flex-end}#view-kalender #monthGrid.months{gap:4px}#view-kalender #monthGrid .monthday{min-height:69px;gap:5px;border-radius:11px;padding:7px 5px!important}#view-kalender #monthGrid .monthday[aria-pressed="true"]{padding:6px 4px!important}#monthGrid .nb-cal-small-title{display:none}#monthGrid .nb-cal-number{min-width:21px;min-height:21px;font-size:16px}#monthGrid .nb-cal-event-count{font-size:9px;padding:3px 4px}#monthGrid .nb-cal-marker{width:5px;height:5px}#view-kalender #eventForm{grid-template-columns:repeat(2,minmax(0,1fr))}#view-kalender .nb-cal-upcoming-panel{margin:0}}
+@media(max-width:380px){#view-kalender #monthGrid.months{gap:2px}#view-kalender #monthGrid .monthday{min-height:62px;padding:5px 3px!important}#view-kalender #monthGrid .monthday[aria-pressed="true"]{padding:4px 2px!important}#monthGrid .nb-cal-event-count{font-size:8px}#monthGrid .nb-cal-number{font-size:14px}#view-kalender #eventForm{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){#view-kalender #monthGrid .monthday{transition:none}}
+
 </style></head><body><a class="skip" href="#main">Zum Inhalt springen</a>
 <div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><span class="flower" aria-hidden="true">❀</span><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
@@ -454,7 +544,71 @@ button,input,select,textarea{font-size:max(16px,1em)}
 </section><h2 class="section-name">Dein Tag auf einen Blick</h2><div class="cards3"><div class="card stat"><span>▣</span><div class="num" id="statEvents">0</div><small>Termine heute</small></div><div class="card stat"><span>✓</span><div class="num" id="statTasks">0</div><small>Offene Aufgaben</small></div><div class="card stat"><span>☷</span><div class="num" id="statShop">0</div><small>Einkaufspunkte</small></div></div>
 <h2 class="section-name">Was heute wirklich zählt</h2><div class="grid"><div class="card"><h2>Niyyah & Top 3</h2><p>Beginne mit einer klaren Absicht. Drei Dinge sind genug.</p><div class="form one"><label class="field">Meine Niyyah heute<textarea id="dailyNiyyah" placeholder="Wofür möchte ich heute bewusst Zeit schenken?"></textarea></label><label class="field">Priorität 1<input id="priority1" placeholder="Was ist heute wichtig?"></label><label class="field">Priorität 2<input id="priority2" placeholder="Ein weiterer schöner Schritt"></label><label class="field">Priorität 3<input id="priority3" placeholder="Was darf heute gelingen?"></label></div><button class="btn primary" id="saveDay">Tagesplan speichern</button></div><div class="card"><h2>Heute gemeinsam</h2><div id="homeEvents" class="stack"></div><h3 style="margin-top:20px">Offene Aufgaben</h3><div id="homeTasks" class="stack"></div><button class="btn soft" data-view="kalender">Kalender öffnen ↗</button></div></div>
 <div class="grid" style="margin-top:18px"><div class="dua"><div class="eyebrow">BARAKAH HOME 2027 · EIN IMPULS</div><h3>Ein Moment für dein Herz</h3><p id="homeDua"></p><div class="actions"><button class="btn sage" data-view="iman">Iman & Duʿā öffnen</button></div></div><div class="card"><h2>Ein kleiner Moment für dich</h2><p>Zwischen Terminen, Gebeten und Familienalltag bleibt Platz für Ruhe. Beginne mit einer Duʿā oder halte einen dankbaren Gedanken fest.</p><div class="actions"><button class="btn primary" data-view="iman">Duʿā & Gebetszeiten</button><button class="btn soft" data-view="journal">Dankbarkeit notieren</button></div></div></div></section>
-<section id="view-kalender" class="view"><div class="eyebrow">FAMILIENZEIT</div><h1 class="title">Kalender & Termine</h1><p class="sub">Alles Wichtige im Blick. Persönliche Termine, Schule, Kita und gemeinsame Momente – ohne überfüllten Kalender. Der Monatskalender läuft jahresübergreifend; gesetzliche Feiertage werden berechnet. Hinterlegte Schulferien in Hessen reichen derzeit bis Anfang 2030, spätere Ferientermine werden nicht geschätzt.</p><div class="grid"><div class="card"><h2>Neuen Termin hinzufügen</h2><form class="form" id="eventForm"><label class="field wide">Worum geht es?<input required maxlength="140" name="title" placeholder="Schule, Arzt, Familienausflug …"></label><label class="field">Datum<input type="date" name="date" required></label><label class="field">Uhrzeit<input type="time" name="time"></label><label class="field">Wiederholung<select name="repeat"><option value="">Einmalig</option><option value="yearly">Jährlich (z. B. Jahrestag)</option></select></label><label class="field wide">Für wen?<select name="member" id="eventMember"></select></label><button class="btn primary wide">Termin speichern</button></form><button class="btn outline" id="exportICS">Kalender als .ics exportieren</button></div><div class="card"><h2>Termine</h2><div id="eventList" class="stack"></div></div></div><div class="card" style="margin-top:17px"><h2>Monatsblick</h2><div class="form"><label class="field">Monat auswählen<input id="monthChoose" type="month"></label></div><div class="nb-cal-toolbar"><div class="nb-cal-head"><button type="button" class="btn soft" id="nb-prev-month" aria-label="Vorheriger Monat">‹</button><b id="nb-month-label">Monatsübersicht</b><button type="button" class="btn soft" id="nb-next-month" aria-label="Nächster Monat">›</button><button type="button" class="btn soft" id="nb-this-month">Heute</button></div><div class="nb-cal-legend"><span class="nb-key holiday">Feiertag</span><span class="nb-key vacation">Ferien Hessen</span><span class="nb-key islam">Islamischer Anlass</span><span class="nb-key birthday">Geburtstag</span><span class="nb-key event">Eigener Termin</span><span class="nb-key jumuah">Freitag · Jumuʿa</span></div></div><div class="months" id="monthGrid" aria-label="Monatskalender"></div><section class="nb-cal-agenda" id="nb-cal-agenda" aria-labelledby="nb-cal-selected-heading"><div class="nb-cal-agenda-top"><h3 id="nb-cal-selected-heading">Ausgewählter Tag</h3><span id="nb-cal-day-count" class="nb-cal-count"></span></div><ul id="nb-cal-day-list" class="nb-cal-day-list"></ul><p class="note">Tag auswählen, um Termine und Anlässe zu sehen. Das Datum wird in das Formular für neue Termine übernommen.</p></section><p class="note">Automatisch: offizielle Hessen-Ferien und gesetzliche Feiertage (Quellen im Kalender); islamische Daten gemäß Verbandskalender mit Mondsichtungsabweichung. Bewegliche Schultage bitte bei der Schule prüfen. Termine und Geburtstage kommen aus deinen Eingaben.</p><p class="note" id="nb-calendar-locale-note" role="status">Regionales Kalenderprofil</p><div id="bookDates" class="stack"></div><div class="nb-calendar-source"><a href="https://kultus.hessen.de/schulsystem/ferien/ferientermine" target="_blank" rel="noopener noreferrer">Hessische Ferientermine ↗</a> · <a href="https://innen.hessen.de/buerger-staat/feiertage" target="_blank" rel="noopener noreferrer">Gesetzliche Feiertage ↗</a> · <a href="https://w.zentralrat.de/2860" target="_blank" rel="noopener noreferrer">Islamische Termine ↗</a></div></div></section>
+
+<section id="view-kalender" class="view nb-cal-v34">
+ <div class="nb-cal-intro">
+  <div><div class="eyebrow">NADIA’S BLOOM · FAMILY STUDIO</div><h1 class="title">Zeit für das, was zählt.</h1><p class="sub">Ein ruhiger Überblick für eure Familie. Termine, Geburtstage, freie Tage und besondere Momente – an einem liebevollen Ort.</p></div>
+  <button class="btn primary nb-cal-cta" type="button" id="nb-cal-jump-new">＋ Termin eintragen</button>
+ </div>
+ <div class="nb-cal-summary" aria-label="Kalender auf einen Blick">
+   <div class="nb-cal-mini-stat"><span>Termine im Monat</span><strong id="nb-cal-month-event-count">0</strong></div>
+   <div class="nb-cal-mini-stat"><span>Heute geplant</span><strong id="nb-cal-today-event-count">0</strong></div>
+   <div class="nb-cal-mini-stat"><span>Besondere Tage</span><strong id="nb-cal-special-count">0</strong></div>
+ </div>
+ <div class="nb-cal-layout">
+  <section class="card nb-cal-board" aria-labelledby="nb-cal-calendar-heading">
+   <div class="nb-cal-heading">
+     <div><div class="eyebrow">DEIN FAMILIENKALENDER</div><h2 id="nb-cal-calendar-heading">Der Monat im Blick</h2></div>
+     <button class="btn outline nb-cal-today-button" type="button" id="nb-this-month">Heute</button>
+   </div>
+   <div class="nb-cal-toolbar">
+    <div class="nb-cal-head" role="group" aria-label="Monat wechseln">
+     <button type="button" class="btn soft nb-cal-chevron" id="nb-prev-month" aria-label="Vorheriger Monat">‹</button>
+     <b id="nb-month-label" role="status" aria-live="polite">Monatsübersicht</b>
+     <button type="button" class="btn soft nb-cal-chevron" id="nb-next-month" aria-label="Nächster Monat">›</button>
+    </div>
+    <label class="nb-cal-month-pick"><span>Zum Monat springen</span><input id="monthChoose" type="month" aria-label="Monat direkt auswählen"></label>
+   </div>
+   <div class="months" id="monthGrid" aria-label="Monatskalender, Tag auswählen"></div>
+   <div class="nb-cal-legend" aria-label="Kalenderfarben">
+     <span class="nb-key event">● Termine</span><span class="nb-key birthday">● Geburtstage</span><span class="nb-key holiday">● Feiertage</span><span class="nb-key vacation">● Ferien</span><span class="nb-key islam">● Islamische Anlässe</span>
+   </div>
+   <p id="nb-calendar-locale-note" class="nb-cal-region" role="status">Regionales Kalenderprofil</p>
+  </section>
+  <aside class="nb-cal-side">
+   <section class="card nb-cal-agenda" id="nb-cal-agenda" aria-labelledby="nb-cal-selected-heading">
+     <div class="eyebrow">DEIN AUSGEWÄHLTER TAG</div>
+     <div class="nb-cal-agenda-top"><h3 id="nb-cal-selected-heading">Ausgewählter Tag</h3><span id="nb-cal-day-count" class="nb-cal-count"></span></div>
+     <ul id="nb-cal-day-list" class="nb-cal-day-list"></ul>
+     <button class="btn primary nb-cal-day-add" type="button" id="nb-cal-new-for-day">＋ An diesem Tag planen</button>
+   </section>
+   <section class="card nb-cal-upcoming-panel" aria-labelledby="nb-cal-upcoming-title">
+    <div class="eyebrow">BLEIB ENTSPANNT VORBEREITET</div><h3 id="nb-cal-upcoming-title">Die nächsten 7 Tage</h3>
+    <div id="nb-cal-upcoming" class="nb-cal-upcoming-list" aria-live="polite"></div>
+   </section>
+  </aside>
+ </div>
+ <section class="card nb-cal-create" id="nb-cal-create" aria-labelledby="nb-cal-create-title">
+  <div class="nb-cal-form-intro"><div><div class="eyebrow">EINFACH EINTRAGEN</div><h2 id="nb-cal-create-title">Ein besonderer Moment verdient Platz.</h2><p>Eintragen, speichern, wiederfinden. Ohne Anmeldung und ohne unnötige Schritte.</p></div><span aria-hidden="true" class="nb-cal-form-flower">✿</span></div>
+  <form class="form" id="eventForm">
+    <label class="field wide">Was steht an?<input required maxlength="140" name="title" placeholder="Schule, Arzttermin, Familienausflug …"></label>
+    <label class="field">Datum<input type="date" name="date" required></label>
+    <label class="field">Uhrzeit (optional)<input type="time" name="time"></label>
+    <label class="field">Wiederholung<select name="repeat"><option value="">Einmalig</option><option value="yearly">Jährlich, z. B. Jahrestag</option></select></label>
+    <label class="field">Für wen?<select name="member" id="eventMember"></select></label>
+    <button class="btn primary wide">Termin sicher speichern</button>
+  </form>
+ </section>
+ <details class="nb-cal-details">
+  <summary>Alle Termine, besondere Daten &amp; Kalender-Export</summary>
+  <div class="nb-cal-details-inner">
+   <div class="grid"><div><h3>Deine Termine</h3><div id="eventList" class="stack"></div><button class="btn outline" id="exportICS">Kalender als .ics exportieren</button></div>
+   <div><h3>Besondere Daten im Monat</h3><div id="bookDates" class="stack"></div></div></div>
+   <p class="note">Gesetzliche Feiertage werden berechnet; die veröffentlichten hessischen Schulferien reichen nur bis Anfang 2030. Islamische Daten sind Näherungen und können je nach Mondsichtung abweichen. Bewegliche Ferientage bitte vor Ort prüfen.</p>
+   <div class="nb-calendar-source"><a href="https://kultus.hessen.de/schulsystem/ferien/ferientermine" target="_blank" rel="noopener noreferrer">Hessische Ferientermine ↗</a> · <a href="https://innen.hessen.de/buerger-staat/feiertage" target="_blank" rel="noopener noreferrer">Gesetzliche Feiertage ↗</a> · <a href="https://w.zentralrat.de/2860" target="_blank" rel="noopener noreferrer">Islamische Termine ↗</a></div>
+  </div>
+ </details>
+</section>
 <section id="view-aufgaben" class="view"><div class="eyebrow">MENTAL LOAD REDUZIEREN</div><h1 class="title">Aufgaben & Routinen</h1><p class="sub">Nicht jede Aufgabe ist dringend. Delegiere bewusst, verschiebe liebevoll und feiere, was bereits geschafft ist.</p><div class="grid"><div class="card"><h2>Eine Aufgabe notieren</h2><form class="form" id="taskForm"><label class="field wide">Was steht an?<input required maxlength="160" name="title" placeholder="Anrufen, besorgen, planen …"></label><label class="field">Zuständig<select name="member" id="taskMember"></select></label><label class="field">Bis wann?<input type="date" name="date"></label><label class="field wide">Priorität<select name="priority"><option value="normal">Mit Ruhe</option><option value="today">Heute wichtig</option><option value="later">Kann warten</option></select></label><button class="btn primary wide">Aufgabe hinzufügen</button></form></div><div class="card"><h2>Deine Aufgaben <span class="flag" id="taskCount"></span></h2><div class="progress"><span id="taskProgress"></span></div><div id="taskList" class="stack"></div></div></div></section>
 <section id="view-kinder" class="view"><div class="eyebrow">JEDES KIND SEHEN</div><h1 class="title">Kinder-Kompass</h1><p class="sub">Wichtige Schul- und Kita-Themen, Bedürfnisse, Termine und besondere Momente – ohne Leistungsdruck.</p><div class="grid"><div class="card"><h2>Familienmitglied hinzufügen</h2><form class="form" id="memberForm"><label class="field wide">Name<input name="name" required maxlength="55" placeholder="Vorname"></label><label class="field">Rolle<select name="role"><option>Kind</option><option>Elternteil</option><option>Familie</option></select></label><label class="field">Geburtstag<input type="date" name="birthday"></label><button class="btn primary wide">Hinzufügen</button></form></div><div class="card"><h2>Unsere Familie</h2><div id="memberList" class="stack"></div></div><div class="card"><h2>Moment für uns</h2><form class="form one" id="familyNoteForm"><label class="field">Gedanke, Schule, Kita oder besondere Erinnerung<textarea name="text" required maxlength="1500" placeholder="Was braucht mein Kind gerade?"></textarea></label><button class="btn sage">Notiz hinzufügen</button></form></div><div class="card"><h2>Familiennotizen</h2><div id="familyNotes" class="stack"></div></div></div></section>
 <section id="view-essen" class="view"><div class="eyebrow">MEHR GEMEINSAME TISCHZEIT</div><h1 class="title">Essen & Wochenplanung</h1><p class="sub">Plane Frühstück, Mittag und Abendessen. Ein einfaches Essen mit lieben Menschen darf vollkommen genügen.</p><div class="grid"><div class="card"><h2>Gericht einplanen</h2><form class="form" id="mealForm"><label class="field wide">Gericht<input required maxlength="140" name="title" placeholder="Familienessen …"></label><label class="field">Tag<input type="date" required name="date"></label><label class="field">Mahlzeit<select name="type"><option>Frühstück</option><option>Mittag</option><option>Abendessen</option><option>Snack</option></select></label><button class="btn primary wide">Im Plan speichern</button></form></div><div class="card"><h2>Essensplan</h2><div id="mealList" class="stack"></div></div></div></section>
