@@ -1,5 +1,5 @@
 /* Nadia's Bloom v28: safe, bounded offline shell. Authentication URLs are never cached. */
-const CACHE='nadias-bloom-v32-20261028-cover-webp-30kb';
+const CACHE='nadias-bloom-v33-20261028-cover-webp-30kb';
 // Compact original-cover rendition for fast PWA installs; source PNG remains in repository.
 const COVER_WEBP='https://mounirakarkach04-pixel.github.io/ados/nadias-bloom/barakah-home-2027-cover-480.webp';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'];
