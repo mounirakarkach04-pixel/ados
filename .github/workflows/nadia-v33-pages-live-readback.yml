@@ -1,0 +1,26 @@
+name: Nadia v33 Public Pages Exact Live Readback
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'nadias-bloom/index.html'
+      - 'nadias-bloom/sw.js'
+      - 'scripts/verify_nadia_v33_pages_live.cjs'
+      - '.github/workflows/nadia-v33-pages-live-readback.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nadia-v33-pages-readback
+  cancel-in-progress: true
+jobs:
+  public-http-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify real public Pages HTTP bytes, WebP, PWA and v33 identity
+        run: node scripts/verify_nadia_v33_pages_live.cjs
