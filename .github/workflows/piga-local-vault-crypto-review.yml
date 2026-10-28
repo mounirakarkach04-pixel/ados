@@ -1,0 +1,59 @@
+name: PIGA Local Vault - encrypted backup review (no release)
+
+on:
+  push:
+    branches:
+      - review/piga-local-vault-encrypted-backup-20261028
+    paths:
+      - 'piga-pocket-local-vault/**'
+      - '.github/workflows/piga-local-vault-crypto-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  encrypted-backup-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Run independent JDK cryptography tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          CODE=piga-pocket-local-vault/android/app/src/main/java/com/pigapocket/localvault
+          TEST=piga-pocket-local-vault/tests/VaultBackupCryptoSelfTest.java
+          mkdir -p /tmp/piga-vault-crypto-classes
+          javac -d /tmp/piga-vault-crypto-classes "$CODE/VaultBackupCrypto.java" "$TEST"
+          java -cp /tmp/piga-vault-crypto-classes com.pigapocket.localvault.VaultBackupCryptoSelfTest
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Compile Android debug APK on public standard runner
+        working-directory: piga-pocket-local-vault/android
+        run: gradle --no-daemon :app:assembleDebug --stacktrace
+      - name: Verify app isolated and debug APK integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
+          META=piga-pocket-local-vault/android/app/build/outputs/apk/debug/output-metadata.json
+          test -s "$FILE"
+          python3 - <<'PY'
+          import json,zipfile
+          prefix="piga-pocket-local-vault/android/app/build/outputs/apk/debug/"
+          meta=json.load(open(prefix+"output-metadata.json"))
+          assert meta["applicationId"]=="com.pigapocket.localvault",meta
+          with zipfile.ZipFile(prefix+"app-debug.apk") as apk:
+              assert apk.testzip() is None
+              assert "classes.dex" in apk.namelist()
+              assert "AndroidManifest.xml" in apk.namelist()
+          print("PASS: isolated package, APK zip CRC, manifest and dex")
+          PY
+          find -L "$ANDROID_HOME/build-tools" -name apksigner -type f -print | sort -V | tail -1 | xargs -r -I{} {} verify --print-certs "$FILE"
+          sha256sum "$FILE"
+          echo "REVIEW ONLY: no release, upload, merge, device installation or signer compatibility claim."
