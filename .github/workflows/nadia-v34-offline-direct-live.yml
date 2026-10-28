@@ -1,0 +1,18 @@
+name: Nadia v34 Standalone Download Live HTTP Proof
+on:
+  push:
+    branches: [main]
+    paths: ['nadias-bloom/Nadias_Bloom_Offline.html','scripts/verify_nadia_offline_download_v34.cjs','.github/workflows/nadia-v34-offline-direct-live.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-public-download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/verify_nadia_offline_download_v34.cjs
