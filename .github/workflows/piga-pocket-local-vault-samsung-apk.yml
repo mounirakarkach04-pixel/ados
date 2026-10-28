@@ -49,12 +49,25 @@ jobs:
           set -euo pipefail
           APK=piga-pocket-local-vault/android/app/build/outputs/apk/debug/app-debug.apk
           test -s "$APK"
-          if command -v aapt >/dev/null; then
-            aapt dump badging "$APK" | grep -F "package: name='com.pigapocket.localvault'"
+          python3 - <<'PY'
+          import json, zipfile, pathlib
+          root=pathlib.Path("piga-pocket-local-vault/android/app/build/outputs/apk/debug")
+          apk=root/"app-debug.apk"
+          metadata=json.loads((root/"output-metadata.json").read_text())
+          assert metadata["applicationId"]=="com.pigapocket.localvault",metadata
+          with zipfile.ZipFile(apk) as z:
+              assert z.testzip() is None, "APK ZIP integrity failed"
+              names=set(z.namelist())
+              assert "classes.dex" in names and "AndroidManifest.xml" in names
+          print("PASS: APK metadata, dex, manifest and ZIP CRC")
+          PY
+          APKSIGNER="$(find -L "$ANDROID_HOME/build-tools" -name apksigner -print | sort -V | tail -1)"
+          if [ -n "$APKSIGNER" ]; then
+            "$APKSIGNER" verify --print-certs "$APK"
           else
-            find "$ANDROID_HOME/build-tools" -name aapt -type f -print -quit | xargs -r -I{} {} dump badging "$APK" | grep -F "package: name='com.pigapocket.localvault'"
+            echo "BLOCK: Android SDK apksigner missing" >&2
+            exit 3
           fi
-          zipinfo -1 "$APK" | grep -x 'classes.dex'
           sha256sum "$APK" | tee "$APK.sha256"
           cp "$APK" PIGA-Pocket-Local-Vault-0.1.0-debug.apk
           cp "$APK.sha256" PIGA-Pocket-Local-Vault-0.1.0-debug.apk.sha256
