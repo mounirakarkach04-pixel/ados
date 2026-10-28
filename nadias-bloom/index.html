@@ -1113,18 +1113,38 @@ const config=nbPrayerConfig(),auto=nbPrayerSchedule(ds);return auto?
 
 
 let nbSelectedDay=date();
+
+function nbCalendarEventDate(x,ds){return x.date===ds||(x.repeat==='yearly'&&x.date?.slice(5)===ds.slice(5))}
 function nbUpdateCalendarAgenda(){
- const title=$('nb-cal-selected-heading'), list=$('nb-cal-day-list'),count=$('nb-cal-day-count');
+ const title=$('nb-cal-selected-heading'),list=$('nb-cal-day-list'),count=$('nb-cal-day-count');
  if(!title||!list)return;
  const ds=nbSelectedDay||date();
  title.textContent=new Date(ds+'T12:00:00').toLocaleDateString(nbIntlLocale(),{weekday:'long',day:'numeric',month:'long',year:'numeric'});
- const matches=state.events.filter(x=>x.date===ds||(x.repeat==='yearly'&&x.date?.slice(5)===ds.slice(5)));
+ const matches=state.events.filter(x=>nbCalendarEventDate(x,ds)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
  const specials=nbSpecial(ds);
- const all=[...specials.map(x=>({title:x.title,kind:x.type})),...matches.map(x=>({title:x.title||'Eigener Termin',kind:'event'}))];
- count.textContent=matches.length+' eigene Termine';
- list.innerHTML=all.length?all.map(x=>'<li><span class="nb-cal-agenda-kind nb-cal-agenda-kind-'+esc(x.kind)+'" aria-hidden="true"></span><span>'+esc(x.title)+'</span></li>').join(''):'<li class="nb-cal-empty-agenda">Noch keine Termine oder Anlässe an diesem Tag.</li>';
+ const all=[...matches.map(x=>({title:x.title||'Eigener Termin',kind:'event',meta:[x.time||'',membership(x.member)].filter(Boolean).join(' · ')})),
+ ...specials.map(x=>({title:x.title,kind:x.type,meta:''}))];
+ count.textContent=matches.length+' '+(matches.length===1?'Termin':'Termine');
+ list.innerHTML=all.length?all.map(x=>'<li><span class="nb-cal-agenda-kind nb-cal-agenda-kind-'+esc(x.kind)+'" aria-hidden="true"></span><span class="nb-cal-agenda-detail"><strong>'+esc(x.title)+'</strong>'+(x.meta?'<small class="nb-cal-agenda-meta">'+esc(x.meta)+'</small>':'')+'</span></li>').join(''):'<li class="nb-cal-empty-agenda">Dieser Tag ist noch frei. Raum für das, was wichtig ist. ✿</li>';
 }
-
+function nbUpdateCalendarUpcoming(){
+ const el=$('nb-cal-upcoming');if(!el)return;
+ const upcoming=[];
+ for(let i=0;i<7;i++){
+  const ds=nbDayShift(date(),i);
+  for(const x of state.events.filter(e=>nbCalendarEventDate(e,ds)))upcoming.push({ds,title:x.title||'Termin',type:'event',detail:x.time||membership(x.member)});
+  for(const x of nbSpecial(ds).filter(s=>s.type!=='jumuah'&&s.type!=='vacation'))upcoming.push({ds,title:x.title,type:x.type,detail:''});
+ }
+ el.innerHTML=upcoming.length?upcoming.slice(0,8).map(x=>{
+  const d=new Date(x.ds+'T12:00:00'),month=d.toLocaleDateString(nbIntlLocale(),{month:'short'});
+  return '<div class="nb-cal-upcoming-line"><span class="nb-cal-upcoming-date"><b>'+d.getDate()+'</b><small>'+esc(month)+'</small></span><span class="nb-cal-upcoming-text"><strong>'+esc(x.title)+'</strong><small>'+esc(x.detail||d.toLocaleDateString(nbIntlLocale(),{weekday:'long'}))+'</small></span></div>';
+ }).join(''):'<p class="nb-cal-upcoming-empty">Keine geplanten Termine in den nächsten sieben Tagen. Genieße die freie Zeit. ✿</p>';
+}
+function nbCalendarJumpToForm(){
+ const d=$('eventForm').querySelector('[name=date]');d.value=nbSelectedDay||date();
+ $('nb-cal-create').scrollIntoView({block:'start',behavior:'smooth'});
+ setTimeout(()=>$('eventForm').querySelector('[name=title]')?.focus({preventScroll:true}),350);
+}
 function render(){
 const today=date(),todayD=state.daily[today]||{};
 $('todayLabel').textContent=new Date().toLocaleDateString(nbIntlLocale(),{weekday:'long',day:'numeric',month:'long',year:'numeric'});
@@ -1152,22 +1172,70 @@ $('journalList').innerHTML=state.journal.slice().reverse().map(x=>row({text:x.te
 if(!$('duaDate').value)$('duaDate').value='2027-01-01';const dua=getDua($('duaDate').value);$('duaText').textContent=dua?.text||'Nicht vorhanden';$('duaKind').textContent=dua?.type==='personal'?'Persönliche Duʿā · frei formuliert':'Buchzitat · Fundstelle in der Buchausgabe';
 $('prayerRows').innerHTML=['Fajr','Dhuhr','Asr','Maghrib','Isha'].map(n=>'<label class="checkrow"><input type="checkbox" data-prayer="'+n+'" '+(state.prayerDone[today]?.[n]?'checked':'')+'><span><b>'+n+'</b> <small>· '+esc(nbPrayerTime(n,today)||'Zeit selbst eintragen')+'</small></span></label>').join('');$('nb-prayer-source').textContent=nbPrayerStatus(today);
 $('prayerSetting').innerHTML=['Fajr','Dhuhr','Asr','Maghrib','Isha'].map(n=>'<label class="field" style="margin:0 0 7px">'+n+'<input type="time" data-time-prayer="'+n+'" value="'+esc(state.prayers[n]||'')+'"></label>').join('');
-const parts=($('monthChoose').value||today.slice(0,7)).split('-').map(Number);const yy=parts[0],mm=parts[1],days=new Date(yy,mm,0).getDate(),week=(new Date(yy,mm-1,1).getDay()+6)%7;const calendarMonth=yy+'-'+String(mm).padStart(2,'0');if(!nbSelectedDay.startsWith(calendarMonth))nbSelectedDay=today.startsWith(calendarMonth)?today:calendarMonth+'-01';
-let cal=Array.from({length:7},(_,i)=>new Date(2026,0,5+i).toLocaleDateString(nbIntlLocale(),{weekday:'short'})).map(d=>'<div class="eyebrow" style="text-align:center;font-size:9px">'+d+'</div>').join('');for(let i=0;i<week;i++)cal+='<span></span>';for(let n=1;n<=days;n++){const ds=yy+'-'+String(mm).padStart(2,'0')+'-'+String(n).padStart(2,'0');let c=state.events.filter(x=>x.date===ds||(x.repeat==='yearly'&&x.date?.slice(5)===ds.slice(5))).length;
-let special=nbSpecial(ds),classTag=special.length?' nb-date-'+special[0].type:'';
-cal+='<button type="button" class="monthday '+(ds===today?'today ':'')+(c?'has':'')+classTag+'" data-calendar-date="'+ds+'" aria-pressed="'+(ds===nbSelectedDay)+'" '+(ds===today?'aria-current="date" ':'')+'aria-label="'+esc(ds+' · '+special.map(z=>z.title).join('; ')+' · '+c+' eigene Termine')+'"><b>'+n+'</b>'+(special.length?'<span class="nb-cal-dot '+special[0].type+'" title="'+esc(special.map(z=>z.title).join(', '))+'">'+esc(special[0].title.split(' · ')[0])+'</span>':'')+(c?'<span class="nb-cal-dot">• '+c+' Termin'+(c===1?'':'e')+'</span>':'')+'</button>'}$('monthGrid').innerHTML=cal;nbUpdateCalendarAgenda();
+
+const parts=($('monthChoose').value||today.slice(0,7)).split('-').map(Number);
+const yy=parts[0],mm=parts[1],days=new Date(yy,mm,0).getDate(),week=(new Date(yy,mm-1,1).getDay()+6)%7;
+const calendarMonth=yy+'-'+String(mm).padStart(2,'0');
+if(!nbSelectedDay.startsWith(calendarMonth))nbSelectedDay=today.startsWith(calendarMonth)?today:calendarMonth+'-01';
+const calendarEntries=state.events.filter(x=>x.date?.slice(0,7)===calendarMonth||(x.repeat==='yearly'&&x.date?.slice(5,7)===calendarMonth.slice(5)));
+let specialDays=0;
+let cal=Array.from({length:7},(_,i)=>new Date(2026,0,5+i).toLocaleDateString(nbIntlLocale(),{weekday:'short'})).map(d=>'<div class="nb-cal-weekday" aria-hidden="true">'+esc(d)+'</div>').join('');
+for(let i=0;i<week;i++)cal+='<span class="nb-cal-blank" aria-hidden="true"></span>';
+for(let n=1;n<=days;n++){
+ const ds=calendarMonth+'-'+String(n).padStart(2,'0');
+ const events=calendarEntries.filter(x=>nbCalendarEventDate(x,ds));
+ const special=nbSpecial(ds);
+ if(special.some(x=>x.type!=='jumuah'&&x.type!=='vacation'))specialDays++;
+ const nonFriday=special.filter(x=>x.type!=='jumuah');
+ const classTag=nonFriday.length?' nb-date-'+nonFriday[0].type:'';
+ const label=ds+' · '+special.map(z=>z.title).join('; ')+' · '+events.length+' eigene Termine';
+ const kind=nonFriday.length?nonFriday[0].title.split(' · ')[0]:'';
+ const indicators=special.slice(0,3).map(x=>'<i class="nb-cal-marker '+esc(x.type)+'" title="'+esc(x.title)+'"></i>').join('');
+ cal+='<button type="button" class="monthday '+(ds===today?'today ':'')+(events.length?'has':'')+classTag+'" data-calendar-date="'+ds+'" aria-pressed="'+(ds===nbSelectedDay)+'" '+(ds===today?'aria-current="date" ':'')+'aria-label="'+esc(label)+'"><span class="nb-cal-number">'+n+'</span><span class="nb-cal-indicators" aria-hidden="true">'+indicators+'</span>'+(events.length?'<span class="nb-cal-event-count">'+events.length+' '+(events.length===1?'Termin':'Termine')+'</span>':'')+(kind?'<span class="nb-cal-small-title" title="'+esc(kind)+'">'+esc(kind)+'</span>':'')+'</button>';
+}
+for(let n=week+days;n%7!==0;n++)cal+='<span class="nb-cal-blank" aria-hidden="true"></span>';
+$('monthGrid').innerHTML=cal;
+$('nb-cal-month-event-count').textContent=calendarEntries.filter(x=>Number(x.date?.slice(-2))<=days).length;
+$('nb-cal-today-event-count').textContent=state.events.filter(x=>nbCalendarEventDate(x,today)).length;
+$('nb-cal-special-count').textContent=specialDays;
+nbUpdateCalendarAgenda();
+nbUpdateCalendarUpcoming();
 $('nb-calendar-locale-note').textContent=nbInGermany()?'Deutschland: Feiertage und Hessen-Schulferien.':nbTr('country')+': '+(NB_COUNTRIES[nbCountry()]||nbCountry())+' · '+nbTr('moonNote');
-const bds=nbMonthDetails(yy,mm);$('bookDates').innerHTML=bds.map(x=>row({title:x.title},fmt(x.date)+' · '+({holiday:'Feiertag',vacation:'Ferien',islam:'Islamischer Termin · Mondsichtung beachten',birthday:'Familie'}[x.type]||''),'',null)).join('')||empty('Für diesen Monat sind keine besonderen Daten hinterlegt.');$('nb-month-label').textContent=new Date(yy,mm-1,1).toLocaleDateString(nbIntlLocale(),{month:'long',year:'numeric'});
+const bds=nbMonthDetails(yy,mm);
+$('bookDates').innerHTML=bds.map(x=>row({title:x.title},fmt(x.date)+' · '+({holiday:'Feiertag',vacation:'Ferien',islam:'Islamischer Termin · Mondsichtung beachten',birthday:'Familie'}[x.type]||''),'',null)).join('')||empty('Für diesen Monat sind keine besonderen Daten hinterlegt.');
+$('nb-month-label').textContent=new Date(yy,mm-1,1).toLocaleDateString(nbIntlLocale(),{month:'long',year:'numeric'});
+
 }
 function add(form,collection,map){form.addEventListener('submit',e=>{e.preventDefault();let o=Object.fromEntries(new FormData(form));if(map)o=map(o);if(!o||!(o.title||o.name||o.text)){toast('Bitte zuerst etwas eintragen.');return}state[collection].push({id:uid(),...o});if(save()){form.reset();render();toast('Gespeichert. ✿')}})}
 add($('eventForm'),'events');add($('taskForm'),'tasks',o=>({...o,done:false}));add($('memberForm'),'members',o=>({...o,id:uid()}));add($('familyNoteForm'),'notes',o=>({...o,date:date()}));add($('mealForm'),'meals');add($('shopForm'),'shop',o=>({...o,done:false}));add($('routineForm'),'customRoutines');add($('shuraForm'),'shura',o=>({...o,date:date()}));add($('journalForm'),'journal',o=>({...o,date:date()}));
 add($('moneyForm'),'money',o=>({...o,amount:Math.round(Number(o.amount)*100)/100}));
-const nbNavDialog=$('nb-nav-dialog');$('nb-open-menu').addEventListener('click',()=>{if(typeof nbNavDialog.showModal==='function')nbNavDialog.showModal();else nbNavDialog.setAttribute('open','');});$('nb-nav-close').addEventListener('click',()=>nbNavDialog.close());nbNavDialog.addEventListener('click',e=>{if(e.target===nbNavDialog)nbNavDialog.close()});document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]');if(nav){if(nav.closest('#nb-nav-dialog')&&nbNavDialog.open)nbNavDialog.close();openView(nav.dataset.view);return}const remove=e.target.closest('[data-remove]');if(remove){const k=remove.dataset.remove;const id=remove.dataset.id;if(!Array.isArray(state[k]))return;if(!confirm('Diesen Eintrag wirklich entfernen?'))return;state[k]=state[k].filter(x=>x.id!==id);save();render();return}const toggle=e.target.closest('[data-toggle]');if(toggle){const obj=state[toggle.dataset.toggle]?.find(x=>x.id===toggle.dataset.id);if(obj){obj.done=!obj.done;save();render()}return}const day=e.target.closest('[data-calendar-date]');if(day){nbSelectedDay=day.dataset.calendarDate;$('eventForm').querySelector('[name=date]').value=nbSelectedDay;render();toast('Datum gewählt. Die Tagesübersicht steht unter dem Kalender.');return}});
+const nbNavDialog=$('nb-nav-dialog');$('nb-open-menu').addEventListener('click',()=>{if(typeof nbNavDialog.showModal==='function')nbNavDialog.showModal();else nbNavDialog.setAttribute('open','');});$('nb-nav-close').addEventListener('click',()=>nbNavDialog.close());nbNavDialog.addEventListener('click',e=>{if(e.target===nbNavDialog)nbNavDialog.close()});document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]');if(nav){if(nav.closest('#nb-nav-dialog')&&nbNavDialog.open)nbNavDialog.close();openView(nav.dataset.view);return}const remove=e.target.closest('[data-remove]');if(remove){const k=remove.dataset.remove;const id=remove.dataset.id;if(!Array.isArray(state[k]))return;if(!confirm('Diesen Eintrag wirklich entfernen?'))return;state[k]=state[k].filter(x=>x.id!==id);save();render();return}const toggle=e.target.closest('[data-toggle]');if(toggle){const obj=state[toggle.dataset.toggle]?.find(x=>x.id===toggle.dataset.id);if(obj){obj.done=!obj.done;save();render()}return}const day=e.target.closest('[data-calendar-date]');if(day){nbSelectedDay=day.dataset.calendarDate;$('eventForm').querySelector('[name=date]').value=nbSelectedDay;render();if(matchMedia('(max-width:990px)').matches)$('nb-cal-agenda').scrollIntoView({block:'start',behavior:'smooth'});return}});
 document.addEventListener('change',e=>{if(e.target.matches('[data-chore]')){state.choreDone[date()]||={};state.choreDone[date()][e.target.dataset.chore]=e.target.checked;save()}if(e.target.matches('[data-prayer]')){state.prayerDone[date()]||={};state.prayerDone[date()][e.target.dataset.prayer]=e.target.checked;save()}});
 $('saveDay').onclick=()=>{state.daily[date()]={niyyah:$('dailyNiyyah').value.slice(0,1500),top:[1,2,3].map(i=>$('priority'+i).value.slice(0,200))};save();toast('Ein schöner Tagesplan. Gespeichert. ✿')};
 $('resetChores').onclick=()=>{if(confirm('Nur die heutigen Haushalts-Häkchen zurücksetzen?')){state.choreDone[date()]={};save();render()}};
 $('savePrayerTimes').onclick=()=>{const c=nbPrayerConfig();const baseline=c.mode==='auto'?nbSolarForDay(date(),Number(c.lat),Number(c.lon),c.asr):null;document.querySelectorAll('[data-time-prayer]').forEach(x=>{if(x.value)state.prayers[x.dataset.timePrayer]=x.value;if(baseline&&Number.isFinite(baseline[x.dataset.timePrayer])&&x.value){const adjust=nbMinutes(x.value)-baseline[x.dataset.timePrayer];if(Math.abs(adjust)<=45)c.adjust[x.dataset.timePrayer]=Math.round(adjust)}});save();render();toast('Gebetszeiten gespeichert. Im Automatikmodus dienen die Eingaben als persönliche Minutenkorrektur.')};
 const nbCities={kassel:{lat:51.3127,lon:9.4797,title:'Kassel'},frankfurt:{lat:50.1109,lon:8.6821,title:'Frankfurt am Main'},fulda:{lat:50.5516,lon:9.6752,title:'Fulda'},badhersfeld:{lat:50.8711,lon:9.7086,title:'Bad Hersfeld'}};
+$('nb-cal-jump-new').onclick=nbCalendarJumpToForm;
+$('nb-cal-new-for-day').onclick=nbCalendarJumpToForm;
+$('monthGrid').addEventListener('keydown',e=>{
+ const day=e.target.closest('[data-calendar-date]');if(!day)return;
+ let delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[e.key];
+ const jsDay=new Date(day.dataset.calendarDate+'T12:00:00');
+ if(e.key==='Home')delta=-((jsDay.getDay()+6)%7);
+ if(e.key==='End')delta=6-((jsDay.getDay()+6)%7);
+ if(e.key==='PageUp'||e.key==='PageDown'){
+  const p=day.dataset.calendarDate.split('-').map(Number),month=e.key==='PageUp'?-1:1;
+  const target=new Date(p[0],p[1]-1+month,Math.min(p[2],28),12);
+  const ds=target.getFullYear()+'-'+String(target.getMonth()+1).padStart(2,'0')+'-'+String(target.getDate()).padStart(2,'0');
+  e.preventDefault();nbSelectedDay=ds;$('monthChoose').value=ds.slice(0,7);render();
+  requestAnimationFrame(()=>document.querySelector('[data-calendar-date="'+ds+'"]')?.focus());return;
+ }
+ if(delta===undefined)return;
+ e.preventDefault();
+ const ds=nbDayShift(day.dataset.calendarDate,delta);
+ nbSelectedDay=ds;$('monthChoose').value=ds.slice(0,7);$('eventForm').querySelector('[name=date]').value=ds;render();
+ requestAnimationFrame(()=>document.querySelector('[data-calendar-date="'+ds+'"]')?.focus());
+});
 const nbCalSelector=$('monthChoose');
 $('nb-prev-month').onclick=()=>{const p=(nbCalSelector.value||date().slice(0,7)).split('-').map(Number);nbCalSelector.value=(p[1]===1?p[0]-1:p[0])+'-'+String(p[1]===1?12:p[1]-1).padStart(2,'0');render()};
 $('nb-next-month').onclick=()=>{const p=(nbCalSelector.value||date().slice(0,7)).split('-').map(Number);nbCalSelector.value=(p[1]===12?p[0]+1:p[0])+'-'+String(p[1]===12?1:p[1]+1).padStart(2,'0');render()};
@@ -1420,7 +1488,7 @@ nbAuthRender();
 window.NADIA_AUTH_QA={uiPaused:true,configured:!!NB_SUPABASE_KEY,provider:()=>nbAuthProviderId,app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true,separateCredentialRealms:true};
 
 nbSetupLocale();
-window.NADIAS_BLOOM_QA={version:'v33-mobile-navigation-account-paused',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',read:()=>structuredClone(state),setView:openView,pigaSafety:()=>NB_PIGA_GUARD.status(),pigaSelfTest:()=>NB_PIGA_GUARD.selfTest(),locale:()=>({...nbLocaleConfig()}),setLocale:(lang,country)=>{if(NB_LANGS[lang]&&NB_COUNTRIES[country]){const c=nbLocaleConfig();c.lang=lang;c.country=country;save();$('nb-lang-quick').value=lang;$('nb-lang-setting').value=lang;$('nb-country-setting').value=country;nbApplyLocale();render()}}};
+window.NADIAS_BLOOM_QA={version:'v34-spacious-family-calendar',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',read:()=>structuredClone(state),setView:openView,pigaSafety:()=>NB_PIGA_GUARD.status(),pigaSelfTest:()=>NB_PIGA_GUARD.selfTest(),locale:()=>({...nbLocaleConfig()}),setLocale:(lang,country)=>{if(NB_LANGS[lang]&&NB_COUNTRIES[country]){const c=nbLocaleConfig();c.lang=lang;c.country=country;save();$('nb-lang-quick').value=lang;$('nb-lang-setting').value=lang;$('nb-country-setting').value=country;nbApplyLocale();render()}}};
 if(nbStoredDataDamaged)toast('Gespeicherte Daten sind beschädigt. Die bisherigen Rohdaten wurden nicht überschrieben; bitte Sicherung prüfen.');
 const today=date();$('eventForm').querySelector('[name=date]').value=today;$('mealForm').querySelector('[name=date]').value=today;$('moneyForm').querySelector('[name=date]').value=today;$('monthChoose').value=today.slice(0,7);
 if(location.hash){const h=location.hash.slice(1);if($('view-'+h))openView(h)}render();nbShowInstallState();
