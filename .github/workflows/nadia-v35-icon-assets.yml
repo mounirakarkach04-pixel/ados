@@ -1,0 +1,43 @@
+name: Nadia Bloom v35 · Rasterize Icon Assets
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/nadia-v35-app-icon-install-20261028
+    paths:
+      - nadias-bloom/icon.svg
+      - scripts/generate_nadia_icons.py
+      - .github/workflows/nadia-v35-icon-assets.yml
+permissions:
+  contents: write
+concurrency:
+  group: nadia-v35-icon-assets
+  cancel-in-progress: false
+jobs:
+  rasterize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install icon build dependencies
+        run: python -m pip install cairosvg pillow
+      - name: Generate and verify home screen icon sizes
+        run: |
+          python scripts/generate_nadia_icons.py
+          file nadias-bloom/icon-192.png nadias-bloom/icon-512.png
+      - name: Commit versioned icons without changing any other file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nadias-bloom/icon-192.png nadias-bloom/icon-512.png
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(nadia): v35 matching PNG home screen icons"
+            git push origin HEAD:release/nadia-v35-app-icon-install-20261028
+          fi

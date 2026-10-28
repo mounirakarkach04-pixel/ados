@@ -1,14 +1,14 @@
 {
   "name": "Nadia’s Bloom — Barakah Home Family Studio",
-  "short_name": "Nadia’s Bloom",
-  "description": "Lokaler Familienplaner nach BARAKAH HOME 2027",
+  "short_name": "Nadia Bloom",
+  "description": "Nadia’s Bloom – dein liebevoller Offline-Familienplaner für Kalender, Familie, Haushalt und Alltag.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "lang": "de",
-  "theme_color": "#7e5166",
-  "background_color": "#fff8f8",
+  "theme_color": "#80526D",
+  "background_color": "#FFF8F0",
   "icons": [
     {
       "src": "icon-192.png",

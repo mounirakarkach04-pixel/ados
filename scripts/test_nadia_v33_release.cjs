@@ -7,6 +7,32 @@ const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),sw=fs.readFileSy
 let count=0;function check(v,label){assert.ok(v,label);count++}
 for(const m of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)){new vm.Script(m[1]);check(true,'inline-script-parse')}
 new vm.Script(sw);check(true,'service-worker-parse');
+const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
+check(manifest.short_name==='Nadia Bloom'&&manifest.display==='standalone','homescreen-brand-name');
+check(manifest.icons.some(i=>i.sizes==='512x512'&&i.purpose.includes('maskable')),'adaptive-maskable-icon');
+for(const size of [192,512]){
+ const png=fs.readFileSync(path.join(root,'icon-'+size+'.png'));
+ check(png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))&&png.readUInt32BE(16)===size&&png.readUInt32BE(20)===size,'raster-home-icon-'+size);
+}
+const offline=fs.readFileSync(path.join(root,'Nadias_Bloom_Offline.html'),'utf8');
+check(offline.includes('v34-spacious-family-calendar')&&offline.includes('nb-install-brand'),'standalone-calendar-and-brand');
+check((offline.match(/src="data:image\/webp;base64,/g)||[]).length>=2,'offline-book-cover-bundled');
+check((offline.match(/src="data:image\/svg\+xml,/g)||[]).length===3,'offline-app-icons-bundled');
+check(html.includes('id="nb-offline-start"')&&html.includes('download="Nadias_Bloom_Offline.html"'),'direct-standalone-download');
+check(sw.includes("'./icon-512.png'")&&sw.includes("'./Nadias_Bloom_Offline.html'"),'offline-icon-file-cache');
+
+const packs=html.match(/window\.NADIA_UI_V36_PACK=(\{.*?\});\s*\/\* NADIA_UI_I18N_V36_PACK_END/s);
+const offpacks=offline.match(/window\.NADIA_UI_V36_PACK=(\{.*?\});\s*\/\* NADIA_UI_I18N_V36_PACK_END/s);
+check(!!packs&&!!offpacks,'language-packs-embedded-online-and-offline');
+const allLanguages=JSON.parse(packs[1]);check(packs[1]===offpacks[1],'offline-pack-identical');
+check(Object.keys(allLanguages).length===14&&Object.values(allLanguages).every(p=>Object.keys(p).length>=450),'full-fifteen-language-catalogs');
+check(allLanguages.en.Gericht==='Dish'&&allLanguages.en.Ausgabe==='Expense'&&allLanguages.en.Einnahme==='Income','professional-finance-and-meal-terminology');
+const baseText=html.slice(html.indexOf('<body'),html.indexOf('<script>'));
+const bodyStrings=[...new Set([...baseText.matchAll(/>([^<>]+)</g)].map(m=>m[1].replace(/&amp;/g,'&').trim()).filter(t=>t.length>1&&!/^[\d\W]+$/u.test(t)))];
+const missing=bodyStrings.filter(t=>!['Nadia’s Bloom','BARAKAH HOME 2027'].includes(t)&&!(t in allLanguages.en));
+check(missing.length===0,'all-visible-developer-ui-strings-have-fifteen-language-packs:'+missing.join(',').slice(0,150));
+check(html.includes('nbDeveloperText(')&&offline.includes('nbDeveloperText('),'localized-dynamic-guidance');
+
 const views=[...html.matchAll(/<section id="view-([a-z]+)"/g)].map(m=>m[1]);
 const dialog=html.match(/<dialog id="nb-nav-dialog"[\s\S]*?<\/dialog>/)?.[0]||'';
 const nav=[...dialog.matchAll(/data-view="([a-z]+)"/g)].map(m=>m[1]);
@@ -60,7 +86,8 @@ for(const width of [320,393,1280]){
  await page.locator('#nb-auth-provider').selectOption('failover');
  check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider()==='failover'),'distinct-failover-reselect-'+width);
  check(!await page.evaluate(()=>window.NADIA_AUTH_QA.sessionExists()),'planner-requires-no-account-'+width);
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('start'));
+ check(await page.locator('.nb-install-brand-icon').count()===1,'home-icon-preview-present-'+width);
+ check(await page.locator('.nb-install-brand-icon').evaluate(i=>i.complete&&i.naturalWidth>0),'home-icon-renders-'+width);
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
  check(overflow<=2,'no-horizontal-overflow-'+width+': '+overflow);
  if(width<=393){
@@ -160,6 +187,14 @@ for(const width of [320,393,1280]){
    const ics=await icsPromise;
    check(ics.suggestedFilename().endsWith('.ics'),'calendar-ics-download');
 
+   // Core forms, deep calendar copy and accessible labels must switch together.
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('en','US'));
+   check(await page.locator('#view-kalender h1').innerText()==='Calendar & Appointments','en-calendar-heading');
+   check((await page.locator('#nb-cal-create-title').innerText())!=='Ein besonderer Moment verdient Platz.','en-calendar-copy');
+   check(await page.locator('#view-essen label.field').first().innerText().then(s=>s.includes('Dish')),'en-meal-not-court');
+   check(await page.locator('#nb-lang-quick').inputValue()==='en','en-language-selection-persists');
+   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('fr','FR'));
+   check((await page.locator('#view-kalender').innerText()).includes('rendez-vous')||(await page.locator('#view-kalender').innerText()).includes('Rendez-vous'),'fr-full-calendar-ui');
    await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('ar','MA'));
    check(await page.locator('html').getAttribute('dir')==='rtl','arabic-rtl');
    await page.locator('#nb-open-menu').click();
@@ -179,6 +214,28 @@ for(const width of [320,393,1280]){
  results.push({width,overflow,errors:errors.length});
  await context.close();
 }
+// Fully offline HTML file must render and preserve planning without any HTTP access.
+const fileContext=await browser.newContext({viewport:{width:393,height:850},acceptDownloads:true});
+const filePage=await fileContext.newPage(),fileErrors=[],remoteRequests=[];
+filePage.on('pageerror',e=>fileErrors.push(e.message));
+filePage.on('request',r=>{if(/^https?:/.test(r.url()))remoteRequests.push(r.url())});
+await fileContext.setOffline(true);
+await filePage.goto('file://'+path.join(root,'Nadias_Bloom_Offline.html'),{waitUntil:'domcontentloaded'});
+await filePage.waitForFunction(()=>!!window.NADIAS_BLOOM_QA,{timeout:12000});
+check(await filePage.locator('.nb-install-brand-icon').evaluate(i=>i.complete&&i.naturalWidth>0),'airplane-home-icon-renders');
+check(await filePage.locator('img[src^="data:image/webp"]').count()>=2,'airplane-cover-inline');
+await filePage.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
+await filePage.locator('#taskForm [name=title]').fill('AIRPLANE-V35-TASK');
+await filePage.locator('#taskForm button').first().click();
+check((await filePage.locator('#taskList').innerText()).includes('AIRPLANE-V35-TASK'),'airplane-save-task');
+await filePage.reload({waitUntil:'domcontentloaded'});
+await filePage.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
+check((await filePage.locator('#taskList').innerText()).includes('AIRPLANE-V35-TASK'),'airplane-reload-persistence');
+await filePage.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
+check(await filePage.locator('[data-calendar-date]').count()>=28,'airplane-calendar-present');
+check(remoteRequests.length===0,'airplane-no-network-dependencies:'+remoteRequests.join(','));
+check(fileErrors.length===0,'airplane-js-free:'+fileErrors.join(','));
+await fileContext.close();
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
 console.log(JSON.stringify({status:'PASS',mode:'browser',checks:count,viewports:results},null,2))
 })().catch(e=>{console.error(e);process.exitCode=1});

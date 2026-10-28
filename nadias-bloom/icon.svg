@@ -1,1 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Nadia’s Bloom Blüte"><defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="#fff1e9"/><stop offset=".55" stop-color="#f4bfc9"/><stop offset="1" stop-color="#db90a8"/></linearGradient><linearGradient id="p" x2="0" y2="1"><stop stop-color="#fff8eb"/><stop offset=".55" stop-color="#ffe2df"/><stop offset="1" stop-color="#e799a8"/></linearGradient></defs><rect x="5" y="5" width="502" height="502" rx="110" fill="url(#b)"/><g fill="url(#p)" stroke="#bd836e" stroke-width="6" stroke-linejoin="round"><path d="M253 389Q102 375 108 216Q193 219 253 389Z"/><path d="M259 389Q414 375 404 216Q318 219 259 389Z"/><path d="M258 396Q152 315 179 139Q250 180 258 396Z"/><path d="M256 396Q362 315 334 139Q263 180 256 396Z"/><path d="M256 386Q166 256 256 85Q346 256 256 386Z"/></g><path d="M118 365Q256 446 394 365" fill="none" stroke="#b67476" stroke-width="9" stroke-linecap="round"/><path d="M169 403Q256 434 343 403" fill="none" stroke="#fff2dc" stroke-width="11" stroke-linecap="round"/><circle cx="109" cy="134" r="6" fill="#fff8ea"/><circle cx="401" cy="134" r="6" fill="#fff8ea"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Nadia’s Bloom – stilisierte Blüte in Rosé und Salbei">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFF8F0"/><stop offset=".53" stop-color="#F6DCD9"/><stop offset="1" stop-color="#E7B8C2"/></linearGradient>
+<linearGradient id="rose" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F8D3CF"/><stop offset=".55" stop-color="#D88D9E"/><stop offset="1" stop-color="#A75B76"/></linearGradient>
+<linearGradient id="roseLight" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE6D9"/><stop offset="1" stop-color="#D49AB0"/></linearGradient>
+<linearGradient id="sage" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7D9C85"/><stop offset="1" stop-color="#315D54"/></linearGradient>
+<radialGradient id="halo"><stop stop-color="#FFFBF3" stop-opacity=".96"/><stop offset="1" stop-color="#FFF4E9" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="512" height="512" fill="url(#bg)"/><circle cx="256" cy="245" r="214" fill="url(#halo)"/>
+<circle cx="256" cy="256" r="185" fill="none" stroke="#FFFFFF" stroke-width="3" opacity=".5"/>
+<path d="M256 364 Q250 313 254 261" fill="none" stroke="#476B60" stroke-width="12" stroke-linecap="round"/>
+<path d="M250 338 C208 345 177 330 164 290 C201 284 237 299 250 338 Z" fill="url(#sage)"/>
+<path d="M263 342 C299 340 325 324 340 286 C303 287 271 303 263 342 Z" fill="url(#sage)"/>
+<path d="M176 298 Q223 310 250 337 M328 297 Q286 316 264 341" fill="none" stroke="#BCD0AC" stroke-width="4" stroke-linecap="round" opacity=".75"/>
+<path d="M251 259 C204 247 169 224 178 173 C188 130 224 152 251 206 Z" fill="url(#roseLight)" stroke="#B36D82" stroke-width="3"/>
+<path d="M260 259 C309 243 342 219 334 172 C324 127 285 151 260 206 Z" fill="url(#roseLight)" stroke="#B36D82" stroke-width="3"/>
+<path d="M255 260 C219 222 206 180 235 134 C252 110 272 126 280 159 C286 193 269 233 255 260 Z" fill="url(#rose)" stroke="#AE647F" stroke-width="3"/>
+<path d="M252 271 C210 273 164 256 157 218 C154 191 180 184 203 197 C225 212 243 239 252 271 Z" fill="url(#rose)" stroke="#AC667D" stroke-width="3"/>
+<path d="M264 271 C306 273 350 253 355 214 C357 188 332 185 310 199 C289 213 273 239 264 271 Z" fill="url(#rose)" stroke="#AC667D" stroke-width="3"/>
+<path d="M249 270 C225 244 222 223 245 206 C257 198 270 202 280 216 C294 235 280 260 264 273 Z" fill="#FFE4D4" stroke="#CB8B94" stroke-width="3"/>
+<circle cx="257" cy="245" r="13" fill="#B78653"/><circle cx="254" cy="241" r="6" fill="#F9E5B9" opacity=".86"/>
+<circle cx="345" cy="134" r="5" fill="#FFF8E7" opacity=".8"/><circle cx="154" cy="366" r="4" fill="#FFF9EF" opacity=".9"/>
+</svg>
