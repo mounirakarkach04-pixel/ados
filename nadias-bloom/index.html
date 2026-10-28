@@ -1164,6 +1164,12 @@ function nbAuthSwitchProvider(provider){
 }
 $('nb-auth-provider').addEventListener('change',event=>nbAuthSwitchProvider(event.target.value));
 nbAuthSwitchProvider(nbAuthProviderId);
+if(location.protocol==='file:'){
+ /* A self-contained file is never a cloud account entry point. */
+ $('nb-auth-provider').disabled=true;
+ for(const id of ['nb-login','nb-register','nb-email-code','nb-verify-code','nb-recover-password','nb-update-password','nb-auth-check'])$(id).disabled=true;
+ nbAuthStatus('Offline-Einzeldatei: alle Familienfunktionen bleiben lokal verfügbar. Für Anmeldung und Bestätigungs-E-Mails die HTTPS-Web-App öffnen. Ein Export synchronisiert keine Familiendaten.');
+}
 $('nb-auth-check').onclick=async()=>{
 const button=$('nb-auth-check');button.disabled=true;
 nbAuthStatus('Prüfe die Erreichbarkeit des bestehenden Anmeldedienstes …');
