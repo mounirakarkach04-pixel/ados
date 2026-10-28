@@ -92,7 +92,7 @@ public final class VaultBackupActivity extends Activity {
     }
 
     private void discardPendingPassword() {
-        if (pendingExportPassword != null) Arrays.fill(pendingExportPassword, '\\0');
+        if (pendingExportPassword != null) Arrays.fill(pendingExportPassword, '\0');
         pendingExportPassword = null;
     }
 
@@ -125,8 +125,8 @@ public final class VaultBackupActivity extends Activity {
                         picker.putExtra(Intent.EXTRA_TITLE, "PIGA-Local-Vault-Backup.pigavault");
                         startActivityForResult(picker, EXPORT_ENCRYPTED);
                     } finally {
-                        Arrays.fill(a, '\\0');
-                        Arrays.fill(b, '\\0');
+                        Arrays.fill(a, '\0');
+                        Arrays.fill(b, '\0');
                     }
                 }).show();
     }
@@ -175,7 +175,7 @@ public final class VaultBackupActivity extends Activity {
         } catch (Exception e) {
             result("Sicherung fehlgeschlagen: " + e.getClass().getSimpleName());
         } finally {
-            Arrays.fill(password, '\\0');
+            Arrays.fill(password, '\0');
             if (plaintext != null) Arrays.fill(plaintext, (byte) 0);
             if (encrypted != null) Arrays.fill(encrypted, (byte) 0);
         }
@@ -199,7 +199,7 @@ public final class VaultBackupActivity extends Activity {
         } catch (Exception e) {
             result("Wiederherstellung abgelehnt: Passwort falsch, Backup defekt oder inkompatibel.");
         } finally {
-            Arrays.fill(password, '\\0');
+            Arrays.fill(password, '\0');
             if (backup != null) Arrays.fill(backup, (byte) 0);
             if (plaintext != null) Arrays.fill(plaintext, (byte) 0);
         }
