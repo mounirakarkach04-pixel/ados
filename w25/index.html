@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#071d29"><meta name="referrer" content="no-referrer">
+<title>PIGA · W25 Handykommunikation</title>
+<style>
+:root{color-scheme:dark;font:16px/1.55 system-ui,sans-serif;background:#071923;color:#e2f5fa}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#173c51,#071923 55%);min-height:100dvh}
+main{max-width:680px;margin:auto;padding:32px 18px 70px}h1{font-size:clamp(1.7rem,6vw,2.5rem);margin-bottom:0}.sub{color:#accfd7}.panel{margin:18px 0;border-radius:18px;border:1px solid #396070;background:#102c3b;padding:20px}
+strong{color:#8febdb}button{padding:14px 18px;min-height:48px;border-radius:10px;border:1px solid #4992a2;background:#197283;color:white;font-size:1rem;font-weight:650;cursor:pointer;margin:5px 7px 5px 0}button:disabled{opacity:.48;cursor:default}button:focus-visible{outline:3px solid #8ff7e9;outline-offset:3px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.85rem;color:#bbd8e1}
+code{color:#abf1e7}small{color:#b1ced6}#log{min-height:90px}
+</style></head><body><main>
+<p class="sub">PIGA MASTER GOVERNANCE · DEVICE / S3</p><h1>W25 · Handykommunikation</h1>
+<p>Dieser Agent kann auf deinem Samsung einen lokal erstellten Bericht mit einem eigenen Browser-P-256-Schlüssel signieren und dem privaten Koordinator übergeben. Er ist <strong>kein</strong> Besitzerkonto und keine native Android-Bridge.</p>
+<section class="panel" aria-live="polite"><h2>Status</h2><p id="state">Initialisierung …</p>
+<button id="send" disabled>Signierten Bericht senden</button><button id="stop" disabled>Agent anhalten</button>
+<p><small>Erste Kopplung nur über den von der ursprünglichen Android-Bridge bestätigten Einmal-Link. Kein Tastaturzugriff, keine bezahlte API. Die Seite muss im Vordergrund bleiben.</small></p></section>
+<section class="panel"><h2>Nachweise</h2><pre id="log">Noch kein bestätigter Nachrichtenempfang.</pre>
+<p><small>RECEIVED_DURABLE bedeutet nur: Nachricht im Backend gespeichert. Eine ChatGPT-Antwort zurück zum Handy benötigt einen getrennten, signierten Nachweis.</small></p></section></main><script src="./app.js" defer></script></body></html>
