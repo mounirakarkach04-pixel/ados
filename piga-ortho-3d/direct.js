@@ -96,7 +96,7 @@ function renderCalendar(){
  const events=[...state.calendar].sort((a,b)=>a.start.localeCompare(b.start));
  if(!events.length)line(out,'Keine Termine','Lokale Termine oben erfassen.');
  for(const a of events)line(out,short(a.title,160),stamp(a.start)+' · '+a.minutes+' Minuten',tools=>{
-  action(tools,'Löschen',()=>{state.calendar=state.calendar.filter(x=>x.id!==a.id);commit('appointment_removed',a.title)});
+  action(tools,'Löschen',()=>{if(!confirm('Termin wirklich löschen?'))return;state.calendar=state.calendar.filter(x=>x.id!==a.id);commit('appointment_removed',a.title)});
  });
 }
 function renderInventory(){
@@ -167,7 +167,7 @@ function exportJson(){audit('export','JSON-Sicherung exportiert');save();downloa
 $('export').onclick=exportJson;$('exportTop').onclick=exportJson;
 $('exportCsv').onclick=()=>{
  const rows=[['Artikelnummer','Bezeichnung','Bestand'],...state.inventory.map(x=>[x.code,x.name,x.count])];
- const csv=rows.map(row=>row.map(s=>'"'+String(s).replace(/"/g,'""').replace(/^[=+\-@\t]/,'\\$&')+'"').join(';')).join('\r\n');
+  const csv=rows.map(row=>row.map(s=>{const value=String(s);const safe=/^(?:\s*[=+\-@]|[\t\r\n])/.test(value)?"'"+value:value;return '"'+safe.replace(/"/g,'""')+'"'}).join(';')).join('\r\n');
  download('PIGA-ORTHO-Inventur.csv','\uFEFF'+csv,'text/csv;charset=utf-8');msg('Inventur-CSV erstellt.');
 };
 $('importBtn').onclick=()=>$('importFile').click();
