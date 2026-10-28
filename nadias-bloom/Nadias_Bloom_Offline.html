@@ -989,7 +989,8 @@ function nbTranslateWholeUI(){
  const one=lang==='de'?'Termin':catalog['Termin']||'Appointment',many=lang==='de'?'Termine':catalog['Termine']||'Appointments';
  for(const el of document.querySelectorAll('.nb-cal-event-count,#nb-cal-day-count')){
   const n=Number((el.textContent||'').match(/^\d+/)?.[0]);if(!Number.isFinite(n))continue;
-  el.textContent=new Intl.NumberFormat(nbIntlLocale()).format(n)+' '+(n===1?one:many);
+  const next=new Intl.NumberFormat(nbIntlLocale()).format(n)+' '+(n===1?one:many);
+  if(el.textContent!==next)el.textContent=next;
  }
 }
 let nbUIObserver;
