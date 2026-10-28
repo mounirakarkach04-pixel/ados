@@ -41,8 +41,19 @@ const server=http.createServer((req,res)=>{
   assert((await page.locator('#taskList').innerText()).includes('QA-v32-AIRPLANE-MODE'),'test task is stored');
   const initial=await page.evaluate(()=>localStorage.getItem('nadias-bloom-barakah-v26'));
   assert(initial&&initial.includes('QA-v32-AIRPLANE-MODE'),'real local storage state saved');
+  const diagnostic=await page.evaluate(async()=>{
+   const registrations=await navigator.serviceWorker.getRegistrations();
+   const names=await caches.keys();
+   const cache=await caches.open('nadias-bloom-v32-20261028-cover-webp-30kb');
+   return {controller:!!navigator.serviceWorker.controller,registrations:registrations.length,caches:names,root:!!(await cache.match('./')),index:!!(await cache.match('./index.html'))};
+  });
+  console.log('NADIA_PWA_CACHE_DIAGNOSTIC',JSON.stringify(diagnostic));
+  assert(diagnostic.controller&&diagnostic.root&&diagnostic.index,'PWA controller and complete offline shell cache required');
   await context.setOffline(true);
-  await page.reload({waitUntil:'domcontentloaded',timeout:20000});
+  const offlineFetch=await page.evaluate(async()=>{try{const r=await fetch('./index.html');return {ok:r.ok,status:r.status}}catch(e){return {ok:false,error:String(e.message||e)}}});
+  console.log('NADIA_OFFLINE_SW_FETCH',JSON.stringify(offlineFetch));
+  assert(offlineFetch.ok,'service worker must serve index.html while offline');
+  await page.goto(base+'index.html',{waitUntil:'domcontentloaded',timeout:20000});
   assert((await page.title()).includes('Nadia'),'PWA shell remains reachable offline');
   await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
   assert((await page.locator('#taskList').innerText()).includes('QA-v32-AIRPLANE-MODE'),'saved family task works in airplane mode');
