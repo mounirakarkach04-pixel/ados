@@ -1292,7 +1292,7 @@ $('downloadOffline').onclick=async()=>{
   const covers=copy.querySelectorAll('img[data-nb-original-cover]');
   if(!covers.length)throw Error('Originalcover konnte im Offline-Grunddokument nicht gefunden werden');
   covers.forEach(img=>{img.setAttribute('src',embeddedCover);img.removeAttribute('data-nb-original-cover');img.removeAttribute('loading')});
-  copy.querySelectorAll('link[rel="manifest"],link[rel="apple-touch-icon"],link[href*="portfolio-polish.css"],script[src*="nadia-happy"],link[href*="nadia-happy"]').forEach(node=>node.remove());
+  copy.querySelectorAll('link[rel="manifest"],link[rel="apple-touch-icon"],link[href$=".css"],script[src*="nadia-happy"],link[href*="nadia-happy"]').forEach(node=>node.remove());
   const note=copy.querySelector('#nb-auth-status');if(note)note.textContent='Dies ist die Offline-Einzeldatei. Für E-Mail-Anmeldung bitte die HTTPS-Web-App öffnen. Deine Planungsdaten bleiben lokal auf dem jeweiligen Gerät.';
   download('Nadias_Bloom_Barakah_Home_2027_OFFLINE.html','<!doctype html>\n'+copy.outerHTML,'text/html;charset=utf-8');
   toast('Offline-App mit platzsparendem Originalcover gespeichert, ohne Familiendaten. Für einen Gerätewechsel separat JSON sichern.');
