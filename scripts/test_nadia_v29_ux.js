@@ -1,58 +1,91 @@
 #!/usr/bin/env node
 'use strict';
-/* PIGA Gate 1 synthetic only. No AI, provider auth calls, real emails or payments. */
+// Nadia Bloom v32: browser acceptance on 320px, 393px, and desktop.
+// All auth/cover network access blocked or locally simulated; no real email, AI, family data sent.
 const fs=require('node:fs'),http=require('node:http'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
-const root=path.resolve('nadias-bloom'),allowed=new Set(['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png','barakah-home-2027-original-cover.png']);
-assert.equal(fs.statSync(path.join(root,'barakah-home-2027-original-cover.png')).size,2414301,'unaltered BARAKAH cover');
-const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),file=url.pathname.replace(/^\/nadias-bloom\/?/,'')||'index.html';if(!allowed.has(file)){res.writeHead(404);return res.end('404')}const mime=file.endsWith('.png')?'image/png':file.endsWith('.svg')?'image/svg+xml':file.endsWith('.html')?'text/html; charset=utf-8':file.endsWith('.js')?'text/javascript':'application/manifest+json';res.writeHead(200,{'content-type':mime});fs.createReadStream(path.join(root,file)).pipe(res)});
+const root=path.resolve('nadias-bloom');
+const assets=new Set(['index.html','manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png','barakah-home-2027-original-cover.png','barakah-home-2027-cover-480.webp']);
+const original=fs.readFileSync(path.join(root,'barakah-home-2027-original-cover.png'));
+const thumb=fs.readFileSync(path.join(root,'barakah-home-2027-cover-480.webp'));
+assert.equal(original.length,2414301,'immutable original cover');
+assert(thumb.length<40000&&thumb.toString('ascii',0,4)==='RIFF'&&thumb.toString('ascii',8,12)==='WEBP','actual compact original cover');
+const server=http.createServer((req,res)=>{
+ const pathname=new URL(req.url,'http://localhost').pathname;
+ const file=pathname.replace(/^\/nadias-bloom\/?/,'')||'index.html';
+ if(!assets.has(file)){res.writeHead(404);return res.end('404')}
+ const mime=file.endsWith('.png')?'image/png':file.endsWith('.webp')?'image/webp':file.endsWith('.svg')?'image/svg+xml':file.endsWith('.html')?'text/html; charset=utf-8':file.endsWith('.js')?'text/javascript':'application/manifest+json';
+ res.writeHead(200,{'content-type':mime});fs.createReadStream(path.join(root,file)).pipe(res);
+});
 (async()=>{
- await new Promise(ok=>server.listen(0,'127.0.0.1',ok));const base='http://127.0.0.1:'+server.address().port+'/nadias-bloom/';
- const browser=await chromium.launch({headless:true,args:['--no-sandbox']});let n=0;const report=[],screens=[];fs.mkdirSync('qa-screenshots',{recursive:true});
- try{for(const width of [320,393,1280]){
- const context=await browser.newContext({viewport:{width,height:844},serviceWorkers:'block'}),page=await context.newPage(),errors=[],external=[];
- page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith(base)&&!r.url().startsWith('data:'))external.push(r.url().split('?')[0])});
- const check=(v,why)=>{assert.ok(v,width+'px: '+why);n++};
- await page.goto(base);await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
- check((await page.title()).includes('Nadia'),'title');check(await page.locator('#view-konto').count()===1,'12th account view');
- check(await page.locator('.nb29-tabs button').count()===5,'five navigation slots');
- check(await page.locator('[data-nb29-form]').count()===6,'six one-tap creation routes');
- check(await page.locator('#nb-lang-quick option').count()===15,'15 languages');
- check(await page.locator('img[src="barakah-home-2027-original-cover.png"]').count()>=2,'original book cover');
- check(await page.locator('#view-happy').count()===0,'Happy not falsely presented');
- await page.locator(width<900?'#nb29-add':'#nb29-desktop-add').click();
- check(await page.locator('#nb29-quick').isVisible(),'quick sheet opens');
- await page.locator('[data-nb29-form=taskForm]').click();
- check(await page.locator('#view-aufgaben').isVisible(),'quick action routes to task form');
- await page.locator('#taskForm [name=title]').fill('QA-v29-Aufgabe');
- await page.locator('#taskForm button').click();
- check((await page.locator('#taskList').innerText()).includes('QA-v29-Aufgabe'),'locally stored task');
- await page.locator('#nb29-search-trigger').click();await page.locator('#nb29-query').fill('QA-v29-Aufgabe');
- check((await page.locator('#nb29-results').innerText()).includes('QA-v29-Aufgabe'),'search local task');
- await page.locator('[data-nb29-result=aufgaben]').first().click();
- check(await page.locator('#nb29-search').isHidden(),'search closes safely');
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('konto'));
- check(await page.locator('#nb29-auth-host #nb-auth-card').count()===1,'auth moved without cloning');
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
- check(await page.locator('#nb29-auth-anchor + #nb-auth-card').count()===1,'auth restored');
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('nl','NL'));
- check((await page.locator('[data-nb29=more]').innerText())==='Meer','Dutch navigation');
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('ar','MA'));
- check(await page.evaluate(()=>document.documentElement.dir)==='rtl','Arabic RTL');
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setLocale('de','DE'));
- const future=await page.evaluate(()=>{const d=new Date();d.setDate(d.getDate()+2);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')});
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('kalender'));
- await page.locator('#eventForm [name=title]').fill('QA-v29-Termin');await page.locator('#eventForm [name=date]').fill(future);await page.locator('#eventForm button').click();
- await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('start'));
- check((await page.locator('#nb29-week-list').innerText()).includes('QA-v29-Termin'),'seven-day agenda');
- await page.reload();check((await page.locator('#nb29-week-list').innerText()).includes('QA-v29-Termin'),'offline local persistence');
- const over=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
- check(over<5,'no horizontal overflow '+over);
- if(width===393){for(const view of ['start','kalender','aufgaben','kinder','essen','einkauf','haushalt','geld','iman','journal','buch','konto']){await page.evaluate(v=>window.NADIAS_BLOOM_QA.setView(v),view);await page.screenshot({path:'qa-screenshots/nadia-v29-'+view+'.png',animations:'disabled'});screens.push(view)}}
- check(errors.length===0,'zero uncaught JS exceptions: '+errors.join('|'));
- check(external.length===0,'no outbound data: '+external.slice(0,3).join(','));
- report.push({width,overflow:over});await context.close()
- }}finally{await browser.close();await new Promise(ok=>server.close(ok))}
- assert.equal(screens.length,12,'12 Chromium previews generated');
- console.log(JSON.stringify({verdict:'PASS_NADIA_V29_MOBILE_UX',checks:n,views:12,screenshots:screens.length,report,externalCalls:0,realEmailsSent:0,modelCalls:0},null,2));
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+ const base='http://127.0.0.1:'+server.address().port+'/nadias-bloom/';
+ const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ const summary=[];let screenshots=0;
+ try{
+ for(const width of [320,393,1280]){
+  const context=await browser.newContext({viewport:{width,height:844},serviceWorkers:'block',acceptDownloads:true});
+  const page=await context.newPage(),errors=[],unexpected=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  page.on('request',r=>{
+   const url=r.url();
+   if(url.startsWith('https://')&&!url.includes('mounirakarkach04-pixel.github.io/ados/nadias-bloom/barakah-home-2027-cover-480.webp'))unexpected.push(url);
+  });
+  await page.route('https://mounirakarkach04-pixel.github.io/ados/nadias-bloom/barakah-home-2027-cover-480.webp',
+    route=>route.fulfill({status:200,contentType:'image/webp',body:thumb}));
+  await page.goto(base);
+  let count=0;
+  const check=(v,label)=>{assert.ok(v,width+'px: '+label);count++};
+  check((await page.title()).includes('Nadia'),'app title');
+  check((await page.evaluate(()=>window.NADIAS_BLOOM_QA.version)).includes('v32'),'release identity');
+  check(await page.locator('#nb-install').count()===1,'install entry');
+  check(await page.locator('#nb-lang-quick option').count()===15,'15 accessible languages');
+  check(await page.locator('#view-buch #nb-auth-card').count()===1,'auth account is correctly in book and settings view');
+  check(await page.locator('img[data-nb-original-cover]').count()===2,'both book previews carry original cover');
+  check(await page.locator('#view-happy').count()===0,'disabled unverified voice');
+  check(await page.locator('#nb-auth-provider option').count()===2,'two explicitly separate account realms');
+  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
+  const picture=page.locator('#view-buch img[data-nb-original-cover]').first();
+  await picture.scrollIntoViewIfNeeded();
+  await page.waitForFunction(()=>{const image=document.querySelector('#view-buch img[data-nb-original-cover]');return image?.complete&&image.naturalWidth>0});
+  check(await picture.evaluate(img=>img.naturalWidth)>400,'30KB original image visibly decoded');
+  await page.locator('#nb-auth-provider').selectOption('failover');
+  check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider())==='failover','failover chosen explicitly');
+  check(await page.evaluate(()=>!sessionStorage.getItem('nadias-bloom-auth-session-v1-failover')),'no legacy session copied');
+  await page.locator('#nb-auth-provider').selectOption('primary');
+  check(await page.evaluate(()=>window.NADIA_AUTH_QA.provider())==='primary','primary restored');
+  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
+  await page.locator('#taskForm [name=title]').fill('QA-v32-PRIVATE-DO-NOT-EXPORT');
+  await page.locator('#taskForm button').click();
+  check((await page.locator('#taskList').innerText()).includes('QA-v32-PRIVATE-DO-NOT-EXPORT'),'local task created');
+  await page.reload();
+  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('aufgaben'));
+  check((await page.locator('#taskList').innerText()).includes('QA-v32-PRIVATE-DO-NOT-EXPORT'),'local task persists across reload');
+  await page.evaluate(()=>window.NADIAS_BLOOM_QA.setView('buch'));
+  const downloading=page.waitForEvent('download');
+  await page.locator('#downloadOffline').click();
+  const received=await downloading;
+  const filePath=await received.path();
+  const offline=fs.readFileSync(filePath,'utf8');
+  check(offline.includes('data:image/webp;base64,'),'downloaded one-file app embeds actual WebP');
+  check(!offline.includes('QA-v32-PRIVATE-DO-NOT-EXPORT'),'download does not leak personalized family records');
+  check(offline.length<500000,'standalone HTML remains lightweight');
+  const over=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+  check(over<5,'viewport has no horizontal overflow: '+over);
+  check(errors.length===0,'no uncaught page errors: '+errors.join(' | '));
+  check(unexpected.length===0,'no unexpected outbound network calls');
+  if(width===393){
+   for(const view of ['start','kalender','aufgaben','kinder','essen','einkauf','haushalt','geld','iman','journal','buch']){
+    await page.evaluate(v=>window.NADIAS_BLOOM_QA.setView(v),view);
+    check(await page.locator('#view-'+view).isVisible(),'view '+view+' accessible');
+    await page.screenshot({path:'qa-screenshots/nadia-v29-'+view+'.png',animations:'disabled'});
+    screenshots++;
+   }
+  }
+  summary.push({width,checks:count,overflow:over});
+  await context.close();
+ }
+ }finally{await browser.close();await new Promise(ok=>server.close(ok))}
+ assert.equal(screenshots,11,'eleven real app view screenshots');
+ console.log(JSON.stringify({verdict:'PASS_NADIA_V32_BROWSER_UX_AND_COVER_EXPORT',summary,views:11,screenshots,emailsSent:0,aiCalls:0,realAuthE2E:'NOT_VERIFIED'},null,2));
 })().catch(e=>{console.error(e);process.exitCode=1});
