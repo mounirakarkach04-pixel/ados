@@ -1,0 +1,57 @@
+name: Nadia Bloom · Compile Complete 15-Language UI
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nadia-translation-compiler.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nadia-15-language-compiler-main
+  cancel-in-progress: false
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout Nadia v35 working branch, never touch main application
+        uses: actions/checkout@v4
+        with:
+          ref: release/nadia-v35-app-icon-install-20261028
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify translation provider for all supported languages
+        run: python -u scripts/nadia_i18n_full_v36.py --smoke
+      - name: Compile complete on-device offline translation packs
+        run: python -u scripts/nadia_i18n_full_v36.py
+      - name: Validate multilingual coverage, scripts and offline parity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          store=json.loads(Path('scripts/nadia_i18n_v36_cache.json').read_text())
+          langs=('en','ar','fr','es','zh','it','pt','th','ms','id','ko','ja','ru','nl')
+          assert set(store)==set(langs)
+          lengths={k:len(v) for k,v in store.items()}
+          assert min(lengths.values())>=250,lengths
+          for name in ('index.html','Nadias_Bloom_Offline.html'):
+            page=Path('nadias-bloom',name).read_text()
+            assert 'window.NADIA_UI_V36_PACK=' in page
+            assert 'NADIA_UI_I18N_V36_PACK_END' in page
+            assert 'nbTranslateWholeUI()' in page
+            assert 'translate.googleapis.com' not in page
+          print('NADIA_FULL_UI_TRANSLATION_15_LANGUAGES_PASS',lengths)
+          PY
+          node scripts/test_nadia_v33_release.cjs --static
+      - name: Write verified language pack back to candidate branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/nadia_i18n_v36_cache.json nadias-bloom/index.html nadias-bloom/Nadias_Bloom_Offline.html
+          if ! git diff --cached --quiet; then
+            git commit -m "i18n(nadia): complete 15-language UI localization embedded for online and offline"
+            git push origin HEAD:release/nadia-v35-app-icon-install-20261028
+          fi
