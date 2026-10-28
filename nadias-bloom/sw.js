@@ -6,7 +6,7 @@ const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./barakah
 const OPTIONAL=['./icon-192.png','./icon-512.png'];
 const SCOPE=new URL('./',self.location.href);
 const CACHEABLE=new Set([...CORE,...OPTIONAL].map(file=>new URL(file,SCOPE).pathname));
-const NAVIGATIONS=new Set([new URL('./',SCOPE).pathname,new URL('index.html',SCOPE).pathname]);
+const NAVIGATIONS=new Set([new URL('./',SCOPE).pathname,new URL('index.html',SCOPE).pathname,new URL('Nadias_Bloom_Offline.html',SCOPE).pathname]);
 self.addEventListener('install',event=>{
   event.waitUntil((async()=>{
     const cache=await caches.open(CACHE);
