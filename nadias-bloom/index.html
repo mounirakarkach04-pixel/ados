@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#442f47"><meta name="description" content="Nadia’s Bloom – liebevoller Familien- und Alltagsplaner nach BARAKAH HOME 2027 mit Kalender, Familie, Gebetszeiten, Duʿā, Mahlzeiten und Finanzen.">
-<meta name="color-scheme" content="light"><title>Nadia’s Bloom · Barakah Home Family Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" sizes="192x192" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="color-scheme" content="light"><title>Nadia’s Bloom · Barakah Home Family Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"><link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{font-family:Inter,"Segoe UI Variable",system-ui,-apple-system,Arial,sans-serif;color:#382d35;background:#f9f5f2;--berry:#793d5c;--deep:#442d47;--rose:#bd7790;--rosep:#f4e5e9;--sage:#567764;--sagep:#e4eee6;--gold:#d4ad6e;--ink:#382d35;--muted:#80737a;--line:#eee4e5;--paper:#fffefd;--shadow:0 22px 58px #56334714}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 92% 0%,#f3d9e44c,transparent 35%),radial-gradient(ellipse at 6% 35%,#e0eadd7d,transparent 40%),#faf7f4}button,input,select,textarea{font:inherit}a{color:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}:focus-visible{outline:3px solid #9b6287;outline-offset:3px}::-webkit-scrollbar{width:9px}::-webkit-scrollbar-thumb{background:#d7c5cf;border-radius:8px}.skip{position:absolute;top:-60px;left:1rem;padding:10px;background:#fff;z-index:40}.skip:focus{top:8px}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.sidebar{position:sticky;top:0;height:100dvh;overflow-y:auto;padding:29px 19px;background:linear-gradient(155deg,#482e49,#67415f 60%,#4b574d);color:#fff;z-index:20;box-shadow:12px 0 35px #3b293421}.logo{display:flex;align-items:center;gap:12px;margin:0 7px 29px;text-decoration:none}.flower{width:43px;height:43px;display:grid;place-items:center;background:#ffffff24;border:1px solid #ffffff50;border-radius:17px;font-size:28px;color:#f6d5db}.logo strong{display:block;font:500 25px/1.05 Georgia,serif;letter-spacing:-.05em}.logo small{display:block;color:#ead8dd;font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-top:5px}.side-title{font-size:10px;color:#e7c7d6;letter-spacing:.2em;font-weight:800;margin:24px 14px 8px}.side-btn{display:flex;width:100%;align-items:center;gap:12px;text-align:left;border:1px solid transparent;border-radius:14px;background:transparent;color:#f9f1f3;padding:12px 13px;font-size:13px;font-weight:650;transition:background .12s}.side-btn .sym{font-size:18px;width:25px;text-align:center}.side-btn:hover,.side-btn.active{background:#ffffff20;border-color:#ffffff30}.side-bottom{border-top:1px solid #ffffff2d;padding:19px 11px 0;margin-top:24px;font-size:11px;color:#eedfe4;line-height:1.7}.side-bottom a{text-decoration:underline;text-underline-offset:3px}
@@ -567,16 +567,207 @@ body{font-kerning:normal}
 @media(prefers-reduced-motion:reduce){.nb-focus-action,.card{transition:none}.nb-focus-action:hover{transform:none}}
 /* Release UI: diagnostics remain callable for QA but are not consumer-facing. */
 #nb-piga-guard-test,#nb-piga-guard-result,.nb-piga-guard-details{display:none!important}
-</style><link rel="stylesheet" href="../quality/portfolio-polish.css"></head><body data-piga-app="nadias-bloom"><a class="skip piga-skip-link" href="#main">Zum Inhalt springen</a>
-<div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><img class="nb-logo-mark" src="./icon.svg" alt="" width="43" height="43"><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
+</style><link rel="stylesheet" href="../quality/portfolio-polish.css"><style id="nb41-module-center-style">
+/* Nadia’s Bloom v41 – one welcoming, searchable module center; data and existing handlers untouched. */
+#view-start .nb-focus-bar,#view-start .nb-quickstart,#view-start .nb37-launch{display:none!important}
+.nb41-hub{margin:24px 0 28px;position:relative}
+.nb41-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:17px}
+.nb41-heading h2{font:500 clamp(28px,4vw,42px)/1.15 Georgia,serif;letter-spacing:-.035em;color:#5d3d69;margin:7px 0}
+.nb41-heading p{color:#76637d;font-size:14px;line-height:1.6;margin:0;max-width:700px}
+.nb41-flower{font-size:54px;color:#b398c9;opacity:.6;line-height:1}
+.nb41-search-wrap{display:flex;align-items:center;gap:12px;background:#fffefa;border:1px solid #dfd0e7;box-shadow:0 7px 20px #694a7411;border-radius:19px;padding:0 18px;min-height:55px;margin-bottom:19px;color:#9074a0;font-size:29px}
+.nb41-search-wrap:focus-within{outline:2px solid #9879c2;outline-offset:2px}
+.nb41-search-wrap input{border:0;outline:0;background:transparent;color:#44334e;flex:1;min-width:0;height:52px;font-size:15px;font-family:inherit}
+.nb41-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.nb41-group{min-width:0;background:linear-gradient(145deg,#fffdfc,#f9f2fc 76%,#f5eff9);border:1px solid #e8daed;border-radius:27px;padding:clamp(15px,2.3vw,24px);box-shadow:0 10px 27px #603d7010}
+.nb41-group-heading{display:flex;align-items:flex-start;gap:13px;margin-bottom:16px}
+.nb41-group-mark{display:grid;place-items:center;width:47px;height:47px;flex:0 0 47px;font-size:23px;border-radius:17px;color:#81579b;background:#f0e5f5}
+.nb41-group h3{font:500 clamp(20px,2.4vw,25px) Georgia,serif;color:#66446f;margin:0 0 5px}
+.nb41-group-heading p{font:12px/1.5 system-ui;color:#806f88;margin:0}
+.nb41-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.nb41-tile{display:flex;align-items:center;gap:9px;min-width:0;padding:12px 12px;border:1px solid #ebe0ed;border-radius:15px;background:#fffefd;cursor:pointer;color:#543c61;text-align:start;min-height:65px;box-shadow:0 3px 10px #76507b0c;transition:transform .16s ease,background .16s ease,border-color .16s ease}
+.nb41-tile strong{font:650 12px/1.34 system-ui;min-width:0;flex:1;overflow-wrap:anywhere}
+.nb41-tile-icon{font-size:21px;display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:12px;background:#f7eefa;color:#805d9b}
+.nb41-chevron{font-size:20px;color:#ac92b6}
+.nb41-tile:hover{background:#fdf7ff;border-color:#bd9fd0;transform:translateY(-1px)}
+.nb41-tile:focus-visible{outline:3px solid #8769aa;outline-offset:2px}
+.nb41-no-results{margin:9px 0 18px;padding:14px 19px;border-radius:16px;background:#f5ebf6;color:#6e5275}
+.nb41-group[hidden],.nb41-tile[hidden],.nb41-no-results[hidden]{display:none!important}
+#view-start .nb-promo{margin-top:40px!important;padding-top:28px;border-top:1px solid #e4d9e9}
+#view-start .nb-promo .nb-promo-book{background:transparent!important;box-shadow:none!important}
+#view-start .nb-promo .nb-promo-install{box-shadow:0 9px 22px #755a7817}
+.sidebar .side-btn{min-height:41px;border-radius:11px}
+.sidebar .side-btn:focus-visible,.mobilebar button:focus-visible{outline:3px solid #b897d3;outline-offset:2px}
+#nb-nav-dialog .nb-nav-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.nb41-dialog-group{min-width:0;background:#fff9fd;border:1px solid #ecddea;border-radius:18px;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.nb41-dialog-group>h3{grid-column:1/-1;font:600 15px Georgia,serif;color:#765880;margin:7px 8px}
+.nb41-dialog-group>[data-view]{min-width:0}
+@media(max-width:900px){.nb41-categories{grid-template-columns:1fr}.nb41-group{padding:20px}}
+@media(max-width:560px){.nb41-hub{margin-top:18px}.nb41-group{border-radius:22px;padding:15px}.nb41-flower{font-size:34px}.nb41-group h3{font-size:21px}.nb41-tile{padding:10px;min-height:59px}.nb41-tile strong{font-size:12px}.nb41-tile-icon{width:30px;height:30px;flex-basis:30px;font-size:19px}.nb41-categories{gap:12px}#nb-nav-dialog .nb-nav-grid{grid-template-columns:1fr}}
+@media(max-width:355px){.nb41-tiles,.nb41-dialog-group{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.nb41-tile{transition:none}.nb41-tile:hover{transform:none}}
+</style><style id="nb43-voice-book-layout">
+/* v43: an intentional in-page voice entry and mobile navigation instead of a floating overlay. */
+.nb43-voice-band{display:grid;grid-template-columns:54px minmax(0,1fr) auto;align-items:center;gap:17px;padding:clamp(18px,2.6vw,27px);margin:18px 0 21px;border:1px solid #e4d2e9;border-radius:27px;background:linear-gradient(112deg,#f9f0fa 0%,#fcf9fd 53%,#fffdfa 100%);box-shadow:0 11px 33px #61446d12;min-width:0}
+.nb43-voice-emblem{display:grid;place-items:center;width:54px;height:54px;border-radius:20px;color:#f8e9ff;font-size:28px;background:radial-gradient(circle at 35% 20%,#d8bfe6,#9d78b4 55%,#5f4376);box-shadow:0 5px 15px #6842762c}
+.nb43-voice-intro strong{display:block;font:500 clamp(21px,2.6vw,27px)/1.2 Georgia,serif;color:#64486d}
+.nb43-voice-intro p{margin:6px 0 0;color:#756681;font-size:12px;line-height:1.65;max-width:55ch}
+.nb43-voice-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;min-width:0}
+#nb43-happy-host #nb-happy-piga-dock{position:static!important;left:auto!important;bottom:auto!important;right:auto!important;max-width:none!important;z-index:auto!important;align-items:stretch;transform:none!important}
+#nb43-happy-host #nb-happy-piga-open{min-height:51px;padding:7px 16px 7px 8px;white-space:nowrap}
+#nb43-happy-host #nb-happy-piga-dock-note{display:none!important}
+.nb43-piga-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;gap:5px;text-decoration:none;border:1px solid #d8c4e1;border-radius:17px;padding:10px 14px;background:#fff;color:#67477a;font:750 12px/1.25 system-ui;white-space:nowrap}
+.nb43-piga-link:hover{background:#f5ecf9}
+.nb43-piga-link:focus-visible,#nb43-happy-mobile:focus-visible{outline:3px solid #936ca9;outline-offset:3px}
+.nb43-happy-status{grid-column:2/-1;padding:10px 14px;color:#693e69;background:#f8edf6;border-radius:12px;font:600 12px/1.55 system-ui;margin:0}
+.nb43-happy-status[hidden]{display:none!important}
+/* Authentic front cover only: no outer card, thick border, spine or fake 3D mockup. */
+#view-start .nb-promo{grid-template-columns:minmax(0,1.85fr) minmax(245px,.76fr)!important;align-items:center;gap:clamp(20px,3vw,42px);margin:35px 0 18px!important;padding:clamp(14px,2vw,20px) 0}
+#view-start .nb-promo-book{padding:clamp(12px,2.6vw,25px)!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+#view-start .nb-promo-book:before{inset:0;background:radial-gradient(ellipse at 26% 50%,#e4d2eda3,transparent 55%)}
+#view-start .nb-promo-book .nb-promo-copy{grid-template-columns:minmax(190px,285px) minmax(0,1fr)!important;gap:clamp(20px,3vw,38px);text-align:start}
+#view-start .nb-promo-book .nb-book-cover--mini{width:100%!important;max-width:285px!important;justify-self:center}
+#view-start .nb-promo-book .nb-book-cover--mini img{aspect-ratio:690/1024!important;object-fit:cover!important;object-position:right center!important;border:0!important;border-radius:3px!important;background:transparent!important;box-shadow:0 19px 47px #4c2d5930!important}
+#view-start .nb-promo-book h2{font:500 clamp(27px,2.8vw,38px)/1.17 Georgia,serif!important;color:#684671;margin:8px 0 13px}
+#view-start .nb-promo-book p{font-size:14px;line-height:1.8;max-width:48ch}
+#view-start .nb-promo-install{padding:clamp(18px,2.2vw,27px)!important;border-radius:27px!important;box-shadow:0 11px 34px #76507914!important}
+#view-buch .nb-book-showcase{display:grid;grid-template-columns:minmax(220px,390px) minmax(0,1fr)!important;align-items:center;gap:clamp(28px,5vw,78px);padding:clamp(18px,3vw,44px) 0!important;background:transparent!important;box-shadow:none!important;border:0!important;overflow:visible!important}
+#view-buch .nb-book-showcase .nb-book-cover--large{width:100%!important;max-width:390px!important;justify-self:center}
+#view-buch .nb-book-showcase .nb-book-cover--large img{display:block;width:100%;aspect-ratio:690/1024!important;height:auto;object-fit:cover!important;object-position:right center!important;background:transparent!important;border:0!important;border-radius:3px!important;box-shadow:0 23px 57px #523b5c39!important}
+#view-buch .nb-book-showcase-copy h2{font-size:clamp(33px,5vw,62px)}
+#view-buch .nb-book-showcase-copy p{font-size:15px;line-height:1.85}
+@media(max-width:1120px){.nb43-voice-band{grid-template-columns:46px 1fr}.nb43-voice-emblem{width:46px;height:46px}.nb43-voice-actions{grid-column:2;justify-content:flex-start}#view-start .nb-promo{grid-template-columns:1fr!important}}
+@media(max-width:800px){
+ .mobilebar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));justify-content:stretch;gap:0}
+ .mobilebar button{min-width:0!important;min-height:49px;padding:5px 2px!important;max-width:100%;font-size:10px}
+ .mobilebar #nb43-happy-mobile{background:linear-gradient(160deg,#a77bb9,#76518f);color:#fff;border-radius:14px;margin:-2px 3px 0;box-shadow:0 3px 12px #60457035;font-weight:800}
+ .mobilebar #nb43-happy-mobile .sym{font-size:20px}
+ .nb43-voice-band{grid-template-columns:42px 1fr;gap:12px;padding:16px;margin:15px 0 18px}
+ .nb43-voice-emblem{width:42px;height:42px;border-radius:15px;font-size:24px}
+ .nb43-voice-intro strong{font-size:21px}
+ .nb43-voice-actions{grid-column:2}
+ #nb43-happy-host #nb-happy-piga-dock{display:none!important}
+ .nb43-piga-link{min-height:43px;font-size:12px;padding:8px 13px}
+ .nb43-happy-status:not([hidden]){position:fixed;z-index:50;bottom:calc(82px + env(safe-area-inset-bottom));left:12px;right:12px;max-width:480px;margin:auto;box-shadow:0 8px 28px #50375c36;pointer-events:none}
+}
+@media(max-width:720px){
+ #view-start .nb-promo-book .nb-promo-copy{grid-template-columns:1fr!important;justify-items:center;text-align:center}
+ #view-start .nb-promo-book .nb-book-cover--mini{max-width:min(67vw,295px)!important}
+ #view-start .nb-promo-book .nb-promo-copy .actions{justify-content:center}
+ #view-start .nb-promo{gap:13px}
+ #view-buch .nb-book-showcase{grid-template-columns:1fr!important;gap:22px}
+ #view-buch .nb-book-showcase .nb-book-cover--large{max-width:min(79vw,355px)!important}
+ #view-buch .nb-book-showcase-copy{text-align:center}
+ #view-buch .nb-book-showcase-copy .actions{justify-content:center}
+}
+@media(max-width:370px){.nb43-voice-band{grid-template-columns:1fr}.nb43-voice-emblem{display:none}.nb43-voice-actions,.nb43-happy-status{grid-column:1}.mobilebar button{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.nb43-piga-link,.mobilebar #nb43-happy-mobile{transition:none!important}}
+</style><style id="nb45-book-happy-premium">
+/* v45: native-like navigation and real front-cover presentation. No new AI engine. */
+#view-start .nb43-voice-band{grid-template-columns:48px minmax(0,1fr) auto;padding:17px 21px;margin:16px 0 22px;border-radius:24px}
+#view-start .nb43-voice-emblem{width:48px;height:48px;background:radial-gradient(circle at 30% 18%,#e7daf1,#ad86bc 52%,#68507e);border-radius:17px}
+#nb45-happy-header,#nb45-happy-inline{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:45px;border:1px solid #e7c9de;border-radius:15px;background:linear-gradient(123deg,#8c639b,#ab7fba);color:#fff;font:750 13px/1.3 system-ui;padding:10px 15px;cursor:pointer;box-shadow:0 7px 20px #75528224;white-space:nowrap}
+#nb45-happy-header:hover,#nb45-happy-inline:hover{background:linear-gradient(123deg,#765186,#986ca8)}
+#nb45-happy-header:focus-visible,#nb45-happy-inline:focus-visible{outline:3px solid #a58ab9;outline-offset:3px}
+#nb45-happy-inline{display:none}
+#view-start .nb-promo{gap:clamp(14px,3vw,35px);border-top:1px solid #eadfec;position:relative}
+#view-start .nb-promo-book,#view-buch .nb-book-showcase{isolation:isolate}
+#view-start .nb-promo-book:before{background:radial-gradient(ellipse at 22% 48%,#ddcae77d 0%,#f3ebf561 43%,transparent 70%)!important}
+#view-start .nb-promo-book .nb-promo-copy{grid-template-columns:minmax(172px,237px) minmax(0,1fr)!important;align-items:center;gap:clamp(18px,3.2vw,45px)!important}
+#view-start .nb-promo-book .nb-book-cover--mini{width:100%!important;max-width:237px!important}
+#view-start .nb-promo-book .nb-book-cover--mini img,#view-buch .nb-book-showcase .nb-book-cover--large img{border-radius:2px!important;box-shadow:0 13px 34px #4d35542c!important;object-position:right center!important;object-fit:cover!important;background:transparent!important}
+#view-start .nb-promo-book .nb-book-cover figcaption,#view-buch .nb-book-showcase figcaption{font-size:11px;color:#7a5c84;margin-top:12px}
+#view-buch .nb-book-showcase{grid-template-columns:minmax(180px,340px) minmax(0,1fr)!important;gap:clamp(20px,4vw,70px)}
+#view-buch .nb-book-showcase .nb-book-cover--large{max-width:340px!important}
+#view-buch .nb-book-showcase:after{background:radial-gradient(ellipse at 16% 50%,#d2bbdc78,transparent 57%);inset:0}
+@media(max-width:1000px){#view-start .nb43-voice-band{grid-template-columns:45px 1fr}#view-start .nb43-voice-actions{grid-column:2}}
+@media(max-width:800px){
+ #nb45-happy-header{display:none}
+ #nb45-happy-inline{display:inline-flex}
+ #view-start .nb43-voice-band{margin:13px 0 18px}
+ .nb43-voice-actions{justify-content:flex-start}
+ .nb43-piga-link{font-size:11px}
+}
+@media(max-width:720px){
+ #view-start .nb-promo-book .nb-promo-copy{grid-template-columns:1fr!important;gap:16px!important}
+ #view-start .nb-promo-book .nb-book-cover--mini{max-width:min(60vw,250px)!important}
+ #view-start .nb-promo-book .nb-promo-copy>div{text-align:center}
+ #view-start .nb-promo-book .nb-promo-copy .actions{justify-content:center}
+ #view-buch .nb-book-showcase{grid-template-columns:1fr!important}
+ #view-buch .nb-book-showcase .nb-book-cover--large{max-width:min(69vw,300px)!important}
+}
+@media(max-width:390px){#view-start .nb43-voice-band{grid-template-columns:1fr}#view-start .nb43-voice-actions{grid-column:1}.nb43-piga-link{flex:1;min-width:0}}
+</style><style id="nb47-happy-cover-ux">
+/* v47: one clear Happy control per visual context and authentic, comfortably sized front cover. */
+#view-start .nb-promo-book .nb-book-cover--mini{width:100%!important;max-width:265px!important;justify-self:center}
+#view-start .nb-promo-book .nb-promo-copy{grid-template-columns:minmax(205px,265px) minmax(0,1fr)!important;align-items:center}
+#view-start .nb-promo-book .nb-book-cover img,
+#view-buch .nb-book-showcase .nb-book-cover img{
+  object-fit:cover!important;object-position:right center!important;
+  aspect-ratio:690/1024!important;max-width:100%!important;
+  border:0!important;border-radius:2px!important;background:transparent!important;
+  box-shadow:0 15px 33px #4d36521c!important;
+}
+#view-start .nb-promo-book .nb-book-cover figcaption,
+#view-buch .nb-book-showcase .nb-book-cover figcaption{display:none!important}
+#view-start .nb-promo-book{padding-inline:0!important}
+#view-buch .nb-book-showcase{background:transparent!important;border:0!important;box-shadow:none!important}
+#view-start .nb43-voice-band{scroll-margin-top:95px}
+@media(max-width:800px){
+  /* The original Happy engine remains in the DOM, but only the single inline CTA is visible. */
+  #nb43-happy-host{display:none!important}
+  #nb45-happy-inline{display:inline-flex!important}
+  #nb43-piga-link{display:none!important}
+  #view-start .nb43-voice-band{grid-template-columns:42px minmax(0,1fr)!important;gap:12px!important}
+  #view-start .nb43-voice-actions{grid-column:2!important;justify-content:flex-start!important}
+  #view-start .nb43-voice-intro p{font-size:12px!important;line-height:1.55!important}
+  #view-start .nb-promo-book .nb-promo-copy{grid-template-columns:1fr!important;justify-items:center!important;gap:18px!important}
+  #view-start .nb-promo-book .nb-book-cover--mini{max-width:min(70vw,290px)!important}
+  #view-start .nb-promo-book .nb-promo-copy>div{text-align:center}
+  #view-start .nb-promo-book .nb-promo-copy .actions{justify-content:center}
+  #view-buch .nb-book-showcase .nb-book-cover--large{max-width:min(76vw,340px)!important}
+}
+@media(max-width:390px){#view-start .nb43-voice-band{grid-template-columns:1fr!important}#view-start .nb43-voice-emblem{display:none!important}#view-start .nb43-voice-actions{grid-column:1!important}}
+</style><style id="nb48-safe-happy-navigation">
+/* Nadia v48: keep Happy within the existing mobile navigation; reserve real room for the reader. */
+:root{--nb48-wisteria:#815c91;--nb48-ink:#4e3b54;--nb48-line:#ebddea;--nb48-paper:#fffafc}
+#view-start .card,#view-start .nb-promo-install,#view-buch .nb-book-showcase{border-color:var(--nb48-line)}
+#view-start .nb43-voice-band{background:linear-gradient(120deg,#fffafc,#f3eaf8)!important;border:1px solid #eadceb!important;box-shadow:0 10px 30px #60466f0c!important}
+#nb45-happy-header:focus-visible,#nb45-happy-inline:focus-visible,.mobilebar button:focus-visible{outline:3px solid #815c91!important;outline-offset:3px}
+@media(max-width:800px){
+ html{scroll-padding-bottom:calc(130px + env(safe-area-inset-bottom))}
+ .content{padding-bottom:calc(150px + env(safe-area-inset-bottom))!important}
+ .mobilebar{position:fixed!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;left:10px!important;right:10px!important;width:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;padding:7px!important;gap:3px!important;min-height:65px!important;border:1px solid #e7d6e9!important;border-radius:19px!important;background:rgba(255,251,254,.97)!important;box-shadow:0 8px 30px #4b345131!important;z-index:70!important;box-sizing:border-box}
+ .mobilebar button{min-width:0!important;min-height:49px!important;max-width:100%;border-radius:12px!important;overflow:hidden;font-size:10px!important;line-height:1.2!important}
+ .mobilebar #nb43-happy-mobile{position:static!important;inset:auto!important;transform:none!important;margin:0!important;min-height:49px!important;background:linear-gradient(145deg,#9567a4,#735085)!important;box-shadow:0 4px 12px #6e518638!important;color:#fff!important}
+ /* Keep the original click target for the single Gacrux Live controller, but not as a second floating UI. */
+ #nb-happy-piga-dock,#nb43-happy-host #nb-happy-piga-dock{display:none!important}
+ .nb43-happy-status:not([hidden]){position:static!important;z-index:auto!important;inset:auto!important;left:auto!important;right:auto!important;bottom:auto!important;max-width:none!important;margin:10px 0 0!important;box-shadow:none!important;pointer-events:auto!important}
+ .toast.show{bottom:calc(93px + env(safe-area-inset-bottom))!important;left:12px!important;right:12px!important;max-width:min(480px,calc(100vw - 24px))!important;margin-inline:auto}
+ #view-start .nb-promo-book .nb-promo-copy,#view-buch .nb-book-showcase{row-gap:24px!important}
+ #view-start .nb43-voice-band{padding:16px!important}
+}
+@media(max-width:360px){.mobilebar{left:5px!important;right:5px!important;padding:5px!important;gap:1px!important}.mobilebar button{font-size:9px!important}}
+@media(prefers-reduced-motion:reduce){.mobilebar #nb43-happy-mobile{transition:none!important}}
+</style></head><body data-piga-app="nadias-bloom"><a class="skip piga-skip-link" href="#main">Zum Inhalt springen</a>
+<div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><img class="nb-logo-mark" src="./icon-192.png" alt="" width="43" height="43"><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
 <div class="side-title">MIT LIEBE ORGANISIERT</div><button class="side-btn" data-view="haushalt"><span class="sym">✧</span>Home & Haushalt</button><button class="side-btn" data-view="geld"><span class="sym">€</span>Home & Money</button><button class="side-btn" data-view="iman"><span class="sym">☾</span>Iman & Barakah</button><button class="side-btn" data-view="journal"><span class="sym">❀</span>Dankbarkeit & Shura</button><button class="side-btn" data-view="buch"><span class="sym">▤</span>Buch & Einstellungen</button>
 <div class="side-bottom">Ein liebevoller Raum für deinen Familienalltag.<br>Deine Notizen bleiben auf diesem Gerät.<br><a href="https://pigapocket.com/datenschutz" target="_blank" rel="noopener">Datenschutz ↗</a> · <a href="https://pigapocket.com/impressum" target="_blank" rel="noopener">Impressum ↗</a></div></aside>
-<main id="main" class="content" tabindex="-1"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Konto oder lokalen Datenspeicher öffnen">♙ Konto</button><label class="nb-lang-top"><span id="nb-lang-top-label">Sprache</span><select id="nb-lang-quick" aria-label="Language / Sprache"></select></label><span class="pill">✿ Lokal & privat</span><div class="avatar nb-avatar-bloom" aria-hidden="true"><img src="./icon.svg" alt="" width="42" height="42"></div></div></div>
+<main id="main" class="content" tabindex="-1"><div class="topbar"><div><div class="crumb">NADIA’S BLOOM / <span id="crumb">Mein Zuhause</span></div><div class="date-line" id="todayLabel" style="margin:5px 0 0"></div></div><div class="topbar-actions"><button id="nb45-happy-header" type="button" aria-haspopup="dialog" aria-controls="nb-happy-piga-dialog"><span aria-hidden="true">✦</span> Happy</button><button class="btn soft" type="button" id="nb-auth-open" data-view="buch" title="Konto oder lokalen Datenspeicher öffnen">♙ Konto</button><label class="nb-lang-top"><span id="nb-lang-top-label">Sprache</span><select id="nb-lang-quick" aria-label="Language / Sprache"></select></label><span class="pill">✿ Lokal & privat</span><div class="avatar nb-avatar-bloom" aria-hidden="true"><img src="./icon-192.png" alt="" width="42" height="42"></div></div></div>
 <section id="view-start" class="view active"><div class="hero"><div><div class="eyebrow">DEIN MOMENT DER RUHE</div><h1>Alles im Blick.<br><em>Mehr Zeit fürs Leben.</em></h1><p>Ein Ort für eure Termine, Kinder, Mahlzeiten, Gebete und kleinen Glücksmomente – liebevoll inspiriert vom Buch BARAKAH HOME 2027.</p><div class="actions"><button class="btn primary" data-view="aufgaben">+ Den Tag planen</button><button class="btn light" data-view="iman">Duʿā des Tages ↗</button></div></div><div class="hero-bloom" aria-hidden="true">❀</div></div>
-<section class="nb-promo" aria-label="Buch und Installation">
- <div class="nb-promo-book"><span class="nb-promo-kicker">DAS BUCH HINTER NADIA’S BLOOM</span><div class="nb-promo-copy"><figure class="nb-book-cover nb-book-cover--mini"><img src="./barakah-home-2027-cover-480.webp" data-nb-original-cover="1" alt="Originalcover BARAKAH HOME 2027 – lila Blauregenblüten, goldener Titel und cremefarbener Torbogen" loading="lazy" decoding="async" width="672" height="1024"><figcaption>Originalcover</figcaption></figure><div><h2>BARAKAH HOME 2027</h2><p>Ein ruhiger Familienplaner für Tagesziele, Kinder-Kompass, Mahlzeiten, Haushalt, Iman und 365 Duʿā.</p><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch auf Amazon finden ↗</a><button class="btn soft" type="button" data-view="buch">Kostenlose Leseprobe ansehen</button></div><small>Entdecke die Buchausgabe und gestalte deinen Alltag mit mehr Leichtigkeit.</small></div></div></div>
- <div class="nb-promo-install"><div class="nb-install-brand" aria-label="Nadia’s Bloom App-Symbol Vorschau"><img class="nb-install-brand-icon" src="./icon.svg" alt="Nadia’s Bloom Startbildschirm-App-Symbol: stilisierte Blüte in Rosé und Salbei" width="80" height="80"><div class="nb-install-brand-copy"><span class="nb-promo-kicker">DEIN NEUES APP-SYMBOL</span><strong>Nadia’s Bloom</strong><small>Ein Zuhause für deine Familienplanung.</small></div></div><span class="nb-promo-kicker">FÜR ANDROID &amp; IPHONE</span><h2>Dein Zuhause. Immer dabei.</h2><p>Als Web-App auf dem Startbildschirm installieren und den lokalen Familienplaner auch offline öffnen.</p><button type="button" class="btn primary" id="nb-install">Als App installieren <span aria-hidden="true">↓</span></button><p class="note" id="nb-install-state" role="status">Nach Installation startet Nadia’s Bloom über das App-Symbol ohne sichtbare Browserleiste.</p><details id="nb-install-help"><summary>Android / iPhone: Installationsanleitung</summary><div class="nb-install-steps"><b>Android:</b> In Chrome öffnen · Browsermenü · „App installieren“ oder „Zum Startbildschirm hinzufügen“.<br><b>iPhone:</b> In Safari öffnen · Teilen · „Zum Home-Bildschirm hinzufügen“ · „Als Web-App öffnen“ aktivieren.</div></details><a href="./Nadias_Bloom_Offline.html" download="Nadias_Bloom_Offline.html" class="btn soft nb-offline-direct-download" id="nb-offline-start">Offline-App als vollständige Datei herunterladen ↓</a><small>Dein Familienplaner funktioniert auch offline. Für das App-Symbol einmal über den Browser installieren.</small></div>
+
+<section class="nb43-voice-band" id="nb43-voice-band" aria-label="Happy und PIGA Sprachzugang">
+ <span class="nb43-voice-emblem" aria-hidden="true">✦</span>
+ <div class="nb43-voice-intro"><strong id="nb43-voice-title">Happy – für deinen Alltag</strong><p id="nb43-voice-description">Fragen stellen, schreiben oder sprechen – wann immer du möchtest. Das Mikrofon startet nur nach deiner Freigabe.</p></div>
+ <div class="nb43-voice-actions"><div id="nb43-happy-host"></div><button type="button" id="nb45-happy-inline" aria-controls="nb-happy-piga-dialog" aria-haspopup="dialog"><span aria-hidden="true">✦</span> Happy</button><a class="nb43-piga-link" id="nb43-piga-link" href="https://pigapocket.com/showroom" target="_blank" rel="noopener noreferrer" aria-label="PIGA Sprach-KI im separaten Showroom öffnen">PIGA-Sprach-KI <span aria-hidden="true">↗</span></a></div>
+ <p id="nb43-happy-status" class="nb43-happy-status" role="status" hidden></p>
+</section>
+<section class="nb41-hub" id="nb41-hub" aria-labelledby="nb41-title">
+<div class="nb41-heading"><div><div class="eyebrow">NADIA’S BLOOM · FAMILY STUDIO</div><h2 id="nb41-title" data-nb41-i="0">Deine Bereiche</h2><p data-nb41-i="1">Was möchtest du heute erledigen? Wähle einen Bereich – ohne lange zu suchen.</p></div><div class="nb41-flower" aria-hidden="true">✿</div></div>
+<label class="nb41-search-wrap"><span aria-hidden="true">⌕</span><input id="nb41-search" type="search" autocomplete="off" maxlength="70" placeholder="Bereich suchen, z. B. Kalender oder Rezepte" aria-label="Module durchsuchen" data-nb41-placeholder="2"></label>
+<p class="nb41-no-results" id="nb41-no-results" data-nb41-i="3" role="status" hidden>Keine passenden Bereiche gefunden.</p>
+<div class="nb41-categories"><section class="nb41-group" data-nb41-group="day" aria-label="Mein Tag"><div class="nb41-group-heading"><span class="nb41-group-mark" aria-hidden="true">◷</span><div><h3 data-nb41-i="4">Mein Tag</h3><p data-nb41-i="8">Termine, Aufgaben und Erinnerungen</p></div></div><div class="nb41-tiles"><button type="button" class="nb41-tile" data-view="kalender" data-nb41-search="Kalender Calendar" aria-label="Kalender öffnen"><span class="nb41-tile-icon" aria-hidden="true">▣</span><strong data-nb41-module="kalender">Kalender</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="aufgaben" data-nb41-search="Aufgaben Tasks" aria-label="Aufgaben öffnen"><span class="nb41-tile-icon" aria-hidden="true">✓</span><strong data-nb41-module="aufgaben">Aufgaben</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="erinnerungen" data-nb41-search="Erinnerungen Reminders" aria-label="Erinnerungen öffnen"><span class="nb41-tile-icon" aria-hidden="true">⏰</span><strong data-nb41-module="erinnerungen">Erinnerungen</strong><span class="nb41-chevron" aria-hidden="true">›</span></button></div></section><section class="nb41-group" data-nb41-group="family" aria-label="Familie & Miteinander"><div class="nb41-group-heading"><span class="nb41-group-mark" aria-hidden="true">♡</span><div><h3 data-nb41-i="5">Familie & Miteinander</h3><p data-nb41-i="9">Kinder, Nachrichten und gemeinsame Momente</p></div></div><div class="nb41-tiles"><button type="button" class="nb41-tile" data-view="kinder" data-nb41-search="Kinder-Kompass Children" aria-label="Kinder-Kompass öffnen"><span class="nb41-tile-icon" aria-hidden="true">♡</span><strong data-nb41-module="kinder">Kinder-Kompass</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="familienchat" data-nb41-search="Familien-Pinnwand Family board" aria-label="Familien-Pinnwand öffnen"><span class="nb41-tile-icon" aria-hidden="true">✉</span><strong data-nb41-module="familienchat">Familien-Pinnwand</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="journal" data-nb41-search="Dankbarkeit Gratitude" aria-label="Dankbarkeit öffnen"><span class="nb41-tile-icon" aria-hidden="true">✿</span><strong data-nb41-module="journal">Dankbarkeit</strong><span class="nb41-chevron" aria-hidden="true">›</span></button></div></section><section class="nb41-group" data-nb41-group="home" aria-label="Küche & Zuhause"><div class="nb41-group-heading"><span class="nb41-group-mark" aria-hidden="true">✧</span><div><h3 data-nb41-i="6">Küche & Zuhause</h3><p data-nb41-i="10">Mahlzeiten, Vorräte und Haushalt</p></div></div><div class="nb41-tiles"><button type="button" class="nb41-tile" data-view="essen" data-nb41-search="Essensplanung Meals" aria-label="Essensplanung öffnen"><span class="nb41-tile-icon" aria-hidden="true">♨</span><strong data-nb41-module="essen">Essensplanung</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="rezepte" data-nb41-search="Zutaten & Rezepte Recipes" aria-label="Zutaten & Rezepte öffnen"><span class="nb41-tile-icon" aria-hidden="true">🥣</span><strong data-nb41-module="rezepte">Zutaten & Rezepte</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="einkauf" data-nb41-search="Einkauf & Vorrat Shopping" aria-label="Einkauf & Vorrat öffnen"><span class="nb41-tile-icon" aria-hidden="true">☷</span><strong data-nb41-module="einkauf">Einkauf & Vorrat</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="haushalt" data-nb41-search="Haushalt Household" aria-label="Haushalt öffnen"><span class="nb41-tile-icon" aria-hidden="true">⌂</span><strong data-nb41-module="haushalt">Haushalt</strong><span class="nb41-chevron" aria-hidden="true">›</span></button></div></section><section class="nb41-group" data-nb41-group="life" aria-label="Herz & Organisation"><div class="nb41-group-heading"><span class="nb41-group-mark" aria-hidden="true">☾</span><div><h3 data-nb41-i="7">Herz & Organisation</h3><p data-nb41-i="11">Glaube, Finanzen, Teilen und Einstellungen</p></div></div><div class="nb41-tiles"><button type="button" class="nb41-tile" data-view="iman" data-nb41-search="Iman & Duʿā Faith" aria-label="Iman & Duʿā öffnen"><span class="nb41-tile-icon" aria-hidden="true">☾</span><strong data-nb41-module="iman">Iman & Duʿā</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="geld" data-nb41-search="Finanzen Finances" aria-label="Finanzen öffnen"><span class="nb41-tile-icon" aria-hidden="true">€</span><strong data-nb41-module="geld">Finanzen</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="teilen" data-nb41-search="Teilen & Outlook Sharing" aria-label="Teilen & Outlook öffnen"><span class="nb41-tile-icon" aria-hidden="true">✉</span><strong data-nb41-module="teilen">Teilen & Outlook</strong><span class="nb41-chevron" aria-hidden="true">›</span></button><button type="button" class="nb41-tile" data-view="buch" data-nb41-search="Buch & Einstellungen Book & settings" aria-label="Buch & Einstellungen öffnen"><span class="nb41-tile-icon" aria-hidden="true">▤</span><strong data-nb41-module="buch">Buch & Einstellungen</strong><span class="nb41-chevron" aria-hidden="true">›</span></button></div></section></div>
 </section>
 <section class="nb-focus-bar" aria-label="Schnell planen">
  <div class="nb-focus-heading"><span class="nb-focus-flower" aria-hidden="true">✿</span><div><strong>Dein Familien-Cockpit</strong><small>Alles Wichtige – ein Griff genügt.</small></div></div>
@@ -600,7 +791,11 @@ body{font-kerning:normal}
 <button class="nb-book-shortcut" type="button" data-view="buch">Das zugrunde liegende Buch BARAKAH HOME 2027 kennenlernen ↗</button>
 </section><h2 class="section-name">Dein Tag auf einen Blick</h2><div class="cards3"><div class="card stat"><span>▣</span><div class="num" id="statEvents">0</div><small>Termine heute</small></div><div class="card stat"><span>✓</span><div class="num" id="statTasks">0</div><small>Offene Aufgaben</small></div><div class="card stat"><span>☷</span><div class="num" id="statShop">0</div><small>Einkaufspunkte</small></div></div>
 <h2 class="section-name">Was heute wirklich zählt</h2><div class="grid"><div class="card"><h2>Niyyah & Top 3</h2><p>Beginne mit einer klaren Absicht. Drei Dinge sind genug.</p><div class="form one"><label class="field">Meine Niyyah heute<textarea id="dailyNiyyah" placeholder="Wofür möchte ich heute bewusst Zeit schenken?"></textarea></label><label class="field">Priorität 1<input id="priority1" placeholder="Was ist heute wichtig?"></label><label class="field">Priorität 2<input id="priority2" placeholder="Ein weiterer schöner Schritt"></label><label class="field">Priorität 3<input id="priority3" placeholder="Was darf heute gelingen?"></label></div><button class="btn primary" id="saveDay">Tagesplan speichern</button></div><div class="card"><h2>Heute gemeinsam</h2><div id="homeEvents" class="stack"></div><h3 style="margin-top:20px">Offene Aufgaben</h3><div id="homeTasks" class="stack"></div><button class="btn soft" data-view="kalender">Kalender öffnen ↗</button></div></div>
-<div class="grid" style="margin-top:18px"><div class="dua"><div class="eyebrow">BARAKAH HOME 2027 · EIN IMPULS</div><h3>Ein Moment für dein Herz</h3><p id="homeDua"></p><div class="actions"><button class="btn sage" data-view="iman">Iman & Duʿā öffnen</button></div></div><div class="card"><h2>Ein kleiner Moment für dich</h2><p>Zwischen Terminen, Gebeten und Familienalltag bleibt Platz für Ruhe. Beginne mit einer Duʿā oder halte einen dankbaren Gedanken fest.</p><div class="actions"><button class="btn primary" data-view="iman">Duʿā & Gebetszeiten</button><button class="btn soft" data-view="journal">Dankbarkeit notieren</button></div></div></div></section>
+<div class="grid" style="margin-top:18px"><div class="dua"><div class="eyebrow">BARAKAH HOME 2027 · EIN IMPULS</div><h3>Ein Moment für dein Herz</h3><p id="nb-home-dua-date" class="nb-home-dua-date" aria-live="polite"></p><p id="homeDua"></p><div class="actions"><button class="btn sage" data-view="iman">Iman & Duʿā öffnen</button></div></div><div class="card"><h2>Ein kleiner Moment für dich</h2><p>Zwischen Terminen, Gebeten und Familienalltag bleibt Platz für Ruhe. Beginne mit einer Duʿā oder halte einen dankbaren Gedanken fest.</p><div class="actions"><button class="btn primary" data-view="iman">Duʿā & Gebetszeiten</button><button class="btn soft" data-view="journal">Dankbarkeit notieren</button></div></div></div><section class="nb-promo" aria-label="Buch und Installation">
+ <div class="nb-promo-book"><span class="nb-promo-kicker">DAS BUCH HINTER NADIA’S BLOOM</span><div class="nb-promo-copy"><figure class="nb-book-cover nb-book-cover--mini"><img src="./barakah-home-2027-original-cover.png" data-nb-original-cover="1" alt="Originalcover BARAKAH HOME 2027 – lila Blauregenblüten, goldener Titel und cremefarbener Torbogen" loading="eager" fetchpriority="high" decoding="async" width="690" height="1024"><figcaption>Originalcover</figcaption></figure><div><h2>BARAKAH HOME 2027</h2><p>Ein ruhiger Familienplaner für Tagesziele, Kinder-Kompass, Mahlzeiten, Haushalt, Iman und 365 Duʿā.</p><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch auf Amazon finden ↗</a><button class="btn soft" type="button" data-view="buch">Kostenlose Leseprobe ansehen</button></div><small>Entdecke die Buchausgabe und gestalte deinen Alltag mit mehr Leichtigkeit.</small></div></div></div>
+ <div class="nb-promo-install"><div class="nb-install-brand" aria-label="Nadia’s Bloom App-Symbol Vorschau"><img class="nb-install-brand-icon" src="./icon-192.png" alt="Nadia’s Bloom App-Symbol: goldene NB-Buchstaben unter einem cremefarbenen Torbogen mit violettem Blauregen" width="80" height="80"><div class="nb-install-brand-copy"><span class="nb-promo-kicker">DEIN NEUES APP-SYMBOL</span><strong>Nadia’s Bloom</strong><small>Ein Zuhause für deine Familienplanung.</small></div></div><span class="nb-promo-kicker">FÜR ANDROID &amp; IPHONE</span><h2>Dein Zuhause. Immer dabei.</h2><p>Als Web-App auf dem Startbildschirm installieren und den lokalen Familienplaner auch offline öffnen.</p><button type="button" class="btn primary" id="nb-install">Als App installieren <span aria-hidden="true">↓</span></button><p class="note" id="nb-install-state" role="status">Nach Installation startet Nadia’s Bloom über das App-Symbol ohne sichtbare Browserleiste.</p><details id="nb-install-help"><summary>Android / iPhone: Installationsanleitung</summary><div class="nb-install-steps"><b>Android:</b> In Chrome öffnen · Browsermenü · „App installieren“ oder „Zum Startbildschirm hinzufügen“.<br><b>iPhone:</b> In Safari öffnen · Teilen · „Zum Home-Bildschirm hinzufügen“ · „Als Web-App öffnen“ aktivieren.</div></details><a href="./Nadias_Bloom_Offline.html" download="Nadias_Bloom_Offline.html" class="btn soft nb-offline-direct-download" id="nb-offline-start">Offline-App als vollständige Datei herunterladen ↓</a><small>Dein Familienplaner funktioniert auch offline. Für das App-Symbol einmal über den Browser installieren.</small></div>
+</section>
+</section>
 
 <section id="view-kalender" class="view nb-cal-v34">
  <div class="nb-cal-intro">
@@ -672,10 +867,16 @@ body{font-kerning:normal}
 <section id="view-einkauf" class="view"><div class="eyebrow">VORRAT ZUERST</div><h1 class="title">Einkauf & Vorrat</h1><p class="sub">Ein liebevoller Einkaufszettel, der an das erinnert, was wirklich fehlt – statt mehr zu sammeln.</p><div class="grid"><div class="card"><h2>Zur Liste hinzufügen</h2><form class="form" id="shopForm"><label class="field wide">Produkt<input name="title" required maxlength="120" placeholder="Obst, Brot, Reis …"></label><label class="field">Menge<input name="qty" maxlength="35" placeholder="z. B. 2 Packungen"></label><label class="field">Kategorie<select name="category"><option>Lebensmittel</option><option>Haushalt</option><option>Kinder</option><option>Sonstiges</option></select></label><button class="btn primary wide">Zum Einkauf</button></form><div class="actions"><button class="btn soft" id="shareShop">Einkaufsliste teilen ↗</button><button class="btn outline" id="copyShop">Kopieren</button></div></div><div class="card"><h2>Unsere Einkaufsliste</h2><div id="shopList" class="stack"></div></div></div></section>
 <section id="view-haushalt" class="view"><div class="eyebrow">HOME & CARE</div><h1 class="title">Home & Haushalt</h1><p class="sub">Schöne Ordnung entsteht durch kleine, faire Routinen. Die Checkliste ist an BARAKAH HOME 2027 angelehnt.</p><div class="grid"><div class="card"><h2>Haushaltsroutinen</h2><div id="choreList" class="stack"></div><button class="btn soft" id="resetChores">Heutige Häkchen zurücksetzen</button></div><div class="card"><h2>Eigene Routine</h2><form class="form one" id="routineForm"><label class="field">Aufgabe<input required name="title" maxlength="110" placeholder="Was unterstützt euer Zuhause?"></label><button class="btn primary">Routine hinzufügen</button></form><div id="customRoutines" class="stack"></div></div></div></section>
 <section id="view-geld" class="view"><div class="eyebrow">HOME & MONEY</div><h1 class="title">Haushalt & Finanzen</h1><p class="sub">Ein ruhiger Überblick über Einnahmen, Ausgaben und Sparziele. Alles bleibt lokal auf diesem Gerät.</p><div class="cards3"><div class="card stat"><small>Einnahmen im Monat</small><div class="num" id="moneyIn">0 €</div></div><div class="card stat"><small>Ausgaben im Monat</small><div class="num" id="moneyOut">0 €</div></div><div class="card stat"><small>Verbleibender Saldo</small><div class="num" id="moneyLeft">0 €</div></div></div><div class="grid" style="margin-top:18px"><div class="card"><h2>Buchung hinzufügen</h2><form id="moneyForm" class="form"><label class="field">Art<select name="kind"><option value="out">Ausgabe</option><option value="in">Einnahme</option></select></label><label class="field">Betrag (€)<input name="amount" type="number" min="0.01" max="9999999" step="0.01" required></label><label class="field wide">Beschreibung<input name="title" maxlength="150" required placeholder="Einkauf, Fixkosten, Rücklage …"></label><label class="field wide">Datum<input name="date" type="date" required></label><button class="btn primary wide">Buchung speichern</button></form><button class="btn outline" id="exportMoney">Monatsübersicht CSV ↗</button></div><div class="card"><h2>Monatsübersicht</h2><div id="moneyList" class="stack"></div></div></div></section>
-<section id="view-iman" class="view"><div class="eyebrow">IMAN & BARAKAH</div><h1 class="title">Ein stiller Moment für dich</h1><p class="sub">Niyyah, Dankbarkeit, Gebete und 365 Tages-Duʿā aus dem veröffentlichten Buch, sorgfältig als Quellenzitat oder persönliche Bitte gekennzeichnet.</p><div class="dua"><div class="eyebrow">BUCHJAHR 2027 · DUʿĀ DES TAGES</div><h3>Deine tägliche Duʿā</h3><label class="field" style="max-width:230px">Buchdatum 2027<input type="date" id="duaDate" min="2027-01-01" max="2027-12-31"></label><p id="duaText"></p><span class="flag" id="duaKind"></span><p class="note">Die Unterscheidung folgt der Buchkennzeichnung. Schriftzitate und Quellen bitte im Buch nachschlagen; persönliche Duʿā sind frei formuliert.</p></div>
+<section id="view-iman" class="view"><div class="eyebrow">IMAN & BARAKAH</div><h1 class="title">Ein stiller Moment für dich</h1><p class="sub">Niyyah, Dankbarkeit, Gebete und 365 Tages-Duʿā aus dem veröffentlichten Buch, sorgfältig als Quellenzitat oder persönliche Bitte gekennzeichnet.</p><div class="dua nb-daily-dua" id="nb-daily-dua" aria-label="Duʿā des Tages">
+  <div class="nb-dua-heading"><div class="eyebrow">BARAKAH HOME 2027 · DEIN TÄGLICHER MOMENT</div><h3>Deine tägliche Duʿā</h3><p id="nb-dua-date-caption" class="nb-dua-date-caption" aria-live="polite"></p></div>
+  <p id="duaText" class="nb-dua-text" lang="de" aria-live="polite"></p><span class="flag" id="duaKind"></span>
+  <div class="nb-dua-actions"><button class="btn sage" id="nb-dua-today" type="button">Heute</button><button class="btn primary" id="nb-dua-happy" type="button">✦ Mit Happy sprechen</button><a class="btn soft" id="nb-dua-happy-direct" href="https://pigapocket.com/nadias-bloom/happy-live" target="_blank" rel="noopener noreferrer">Happy direkt öffnen ↗</a></div>
+  <details class="nb-dua-archive"><summary id="nb-dua-archive-label">Anderen Tag entdecken</summary><div class="nb-dua-archive-controls"><label class="field"><span id="nb-dua-date-input-label">Datum wählen</span><input type="date" id="duaDate"></label><button class="btn soft" type="button" id="nb-dua-prev" aria-label="Vorheriger Tag">‹</button><button class="btn soft" type="button" id="nb-dua-next" aria-label="Nächster Tag">›</button></div></details>
+  <p class="note">365 Duʿā aus der Buchausgabe 2027, nach dem lokalen Kalendertag zugeordnet. Bei Quellzitaten die Originalfundstelle im Buch prüfen; persönlich formulierte Bitten sind entsprechend gekennzeichnet.</p>
+</div>
 <div class="grid" style="margin-top:19px"><div class="card"><h2>Die fünf Gebete</h2><p id="nb-prayer-source">Zeiten zunächst manuell. Auf Wunsch berechnet Nadia’s Bloom sie offline aus Datum, Ort und deiner Berechnungsmethode. Gemeindezeiten können abweichen.</p><div id="prayerRows" class="stack"></div><button class="btn soft" data-view="buch">Zeiten bearbeiten ↗</button></div><div class="card"><h2>Gemeinsame Shura</h2><p>Welche Entscheidung brauchen wir als Familie? Was darf warten? Wie können wir einander unterstützen?</p><form id="shuraForm" class="form one"><label class="field">Familien-Shura / Gedanken<textarea required maxlength="1500" name="text" placeholder="Worüber möchten wir liebevoll sprechen?"></textarea></label><button class="btn primary">Gedanken festhalten</button></form><div id="shuraNotes" class="stack"></div></div></div></section>
 <section id="view-journal" class="view"><div class="eyebrow">ALHAMDULILLAH</div><h1 class="title">Dankbarkeit & Gedanken</h1><p class="sub">Nicht alles muss dokumentiert werden. Nur das, was du gerne festhalten möchtest.</p><div class="grid"><div class="card"><h2>Ein schöner Moment</h2><form id="journalForm" class="form one"><label class="field">Wofür bin ich heute dankbar?<textarea required maxlength="2000" name="text" placeholder="Heute war schön, dass …"></textarea></label><button class="btn primary">In mein Journal</button></form></div><div class="card"><h2>Meine Einträge</h2><div id="journalList" class="stack"></div></div></div></section>
-<section id="view-buch" class="view"><div class="eyebrow">DIE QUELLE DIESER APP</div><h1 class="title">BARAKAH HOME 2027</h1><p class="sub">Der islamische Familien- & Alltagsplaner · Deutschland Edition, von Mounir Akarkach. Das Buch inspiriert die digitale Alltagsgestaltung.</p><div class="nb-book-showcase" aria-label="Das originale Cover von BARAKAH HOME 2027"><figure class="nb-book-cover nb-book-cover--large"><img src="./barakah-home-2027-cover-480.webp" data-nb-original-cover="1" alt="Originales Buchcover: BARAKAH HOME 2027, dein muslimischer Familienplaner, 365 Tage und 365 Duʿā, von Mounir Akarkach" loading="lazy" decoding="async" width="672" height="1024"><figcaption>Das originale Buchcover</figcaption></figure><div class="nb-book-showcase-copy"><div class="eyebrow">EIN BUCH · EIN ZUHAUSE · DEIN RHYTHMUS</div><h2>Mehr Achtsamkeit.<br><em>Mehr Barakah.</em></h2><p>Dieses Originalcover mit seinem zarten Blauregen bildet die gestalterische Grundlage von Nadia’s Bloom. Hinter der App steht der Familienplaner mit Monatsübersichten, Wochenplanung und 365 Duʿā für das Jahr 2027.</p><div class="nb-book-signature">Mit Liebe organisiert. Mit Ruhe gelebt.</div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch bei Amazon suchen ↗</a><button type="button" class="btn soft" data-view="iman">Duʿā entdecken</button></div><p class="note">Das Originalcover von BARAKAH HOME 2027.</p></div></div><section class="card nb-piga-guard" id="nb-piga-guard-panel" aria-labelledby="nb-piga-guard-title">
+<section id="view-buch" class="view"><div class="eyebrow">DIE QUELLE DIESER APP</div><h1 class="title">BARAKAH HOME 2027</h1><p class="sub">Der islamische Familien- & Alltagsplaner · Deutschland Edition, von Mounir Akarkach. Das Buch inspiriert die digitale Alltagsgestaltung.</p><div class="nb-book-showcase" aria-label="Das originale Cover von BARAKAH HOME 2027"><figure class="nb-book-cover nb-book-cover--large"><img src="./barakah-home-2027-original-cover.png" data-nb-original-cover="1" alt="Originales Buchcover: BARAKAH HOME 2027, dein muslimischer Familienplaner, 365 Tage und 365 Duʿā, von Mounir Akarkach" loading="lazy" decoding="async" width="672" height="1024"><figcaption>Das originale Buchcover</figcaption></figure><div class="nb-book-showcase-copy"><div class="eyebrow">EIN BUCH · EIN ZUHAUSE · DEIN RHYTHMUS</div><h2>Mehr Achtsamkeit.<br><em>Mehr Barakah.</em></h2><p>Dieses Originalcover mit seinem zarten Blauregen bildet die gestalterische Grundlage von Nadia’s Bloom. Hinter der App steht der Familienplaner mit Monatsübersichten, Wochenplanung und 365 Duʿā für das Jahr 2027.</p><div class="nb-book-signature">Mit Liebe organisiert. Mit Ruhe gelebt.</div><div class="actions"><a class="btn primary" href="https://www.amazon.de/s?k=BARAKAH+HOME+2027+Mounir+Akarkach" target="_blank" rel="noopener noreferrer">Buch bei Amazon suchen ↗</a><button type="button" class="btn soft" data-view="iman">Duʿā entdecken</button></div><p class="note">Das Originalcover von BARAKAH HOME 2027.</p></div></div><section class="card nb-piga-guard" id="nb-piga-guard-panel" aria-labelledby="nb-piga-guard-title">
 <div class="eyebrow">DATENSCHUTZ &amp; VERTRAUEN</div>
 <h2 id="nb-piga-guard-title">Deine Familie. Deine Daten.</h2>
 <p>Kalender, Notizen und Familienplanung werden auf diesem Gerät gespeichert. Du entscheidest selbst, wann du eine Sicherung exportierst oder Daten entfernst.</p>
@@ -960,7 +1161,81 @@ function empty(text){return '<div class="empty">'+esc(nbDeveloperText(text))+'</
 function openView(id){if(!$('view-'+id))id='start';document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+id));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===id));const more=$('nb-open-menu');more.classList.toggle('active',!['start','kalender','aufgaben'].includes(id));more.setAttribute('aria-current',more.classList.contains('active')?'page':'false');$('crumb').textContent=({start:'Mein Zuhause',kalender:'Kalender',aufgaben:'Aufgaben',kinder:'Kinder-Kompass',essen:'Essen',einkauf:'Einkauf',haushalt:'Haushalt',geld:'Finanzen',iman:'Iman & Barakah',journal:'Dankbarkeit',buch:'Buch & Einstellungen'})[id]||id;location.hash=id;scrollTo({top:0,behavior:'instant'});render()}
 function defaultMember(){return '<option value="">Für die ganze Familie</option>'+state.members.map(m=>'<option value="'+esc(m.id)+'">'+esc(m.name)+'</option>').join('')}
 function membership(id){return state.members.find(m=>m.id===id)?.name||'Familie'}
-function getDua(d){let k=d;if(!DUAS[k])k='2027-'+d.slice(5);return DUAS[k]||DUAS['2027-01-01']}
+/* Continuous one-Du'a-per-local-calendar-day cycle: 365 verified source records.
+   The 2027 book ordering is preserved; leap day advances instead of repeating. */
+const NB_DUA_ORDER=Object.keys(DUAS).sort();
+function nbDuaCycleIndex(d){
+ const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d||''));
+ if(!match)return null;
+ const y=Number(match[1]),m=Number(match[2]),day=Number(match[3]);
+ if(y<1900||y>2200||m<1||m>12||day<1||day>31)return null;
+ const utc=Date.UTC(y,m-1,day),check=new Date(utc);
+ if(check.getUTCFullYear()!==y||check.getUTCMonth()+1!==m||check.getUTCDate()!==day)return null;
+ const days=Math.round((utc-Date.UTC(2027,0,1))/86400000);
+ return ((days%365)+365)%365;
+}
+function getDua(d){
+ const index=nbDuaCycleIndex(d);
+ return index===null?null:DUAS[NB_DUA_ORDER[index]]||null;
+}
+const NB_DUA_LABELS={
+ de:['Heute','Ausgewählter Tag','Heute anzeigen','✦ Mit Happy sprechen','Happy direkt öffnen ↗','Anderen Tag entdecken','Datum wählen','Vorheriger Tag','Nächster Tag','Persönliche Duʿā · frei formuliert','Buchzitat · Fundstelle in der Buchausgabe','Für dieses Datum liegt keine Duʿā vor'],
+ en:['Today','Selected day','Show today','✦ Talk to Happy','Open Happy directly ↗','Explore another day','Choose date','Previous day','Next day','Personal Duʿā · freely written','Book quote · check the source in the book','No Duʿā found for this day'],
+ fr:["Aujourd’hui","Jour sélectionné","Voir aujourd’hui","✦ Parler à Happy","Ouvrir Happy ↗","Explorer un autre jour","Choisir une date","Jour précédent","Jour suivant","Duʿā personnelle · formulation libre","Citation du livre · vérifier la source","Aucune Duʿā pour ce jour"],
+ ar:['اليوم','اليوم المحدد','عرض اليوم','✦ تحدث مع هابي','افتح هابي مباشرة ↗','اكتشف يومًا آخر','اختر التاريخ','اليوم السابق','اليوم التالي','دعاء شخصي · بصياغة حرة','اقتباس من الكتاب · راجع المصدر','لا يوجد دعاء لهذا اليوم'],
+ es:['Hoy','Día seleccionado','Ver hoy','✦ Hablar con Happy','Abrir Happy ↗','Explorar otro día','Elegir fecha','Día anterior','Día siguiente','Duʿā personal · texto libre','Cita del libro · comprobar fuente','No hay Duʿā para este día'],
+ zh:['今天','选定日期','返回今天','✦ 与 Happy 交谈','直接打开 Happy ↗','查看其他日期','选择日期','前一天','后一天','个人祈祷 · 自由撰写','书中引文 · 核对出处','此日期没有祈祷'],
+ it:['Oggi','Giorno selezionato','Mostra oggi','✦ Parla con Happy','Apri Happy ↗','Esplora un altro giorno','Scegli data','Giorno precedente','Giorno seguente','Duʿā personale · testo libero','Citazione dal libro · controlla la fonte','Nessuna Duʿā per questo giorno'],
+ pt:['Hoje','Dia selecionado','Mostrar hoje','✦ Falar com Happy','Abrir Happy ↗','Explorar outro dia','Escolher data','Dia anterior','Dia seguinte','Duʿā pessoal · texto livre','Citação do livro · verificar fonte','Sem Duʿā para este dia'],
+ th:['วันนี้','วันที่เลือก','แสดงวันนี้','✦ คุยกับ Happy','เปิด Happy ↗','ดูวันอื่น','เลือกวันที่','วันก่อนหน้า','วันถัดไป','ดุอาอ์ส่วนตัว · เขียนอิสระ','ข้อความจากหนังสือ · ตรวจสอบแหล่งที่มา','ไม่พบดุอาอ์สำหรับวันนี้'],
+ ms:['Hari ini','Hari dipilih','Tunjuk hari ini','✦ Bercakap dengan Happy','Buka Happy ↗','Lihat hari lain','Pilih tarikh','Hari sebelumnya','Hari berikutnya','Duʿā peribadi · teks bebas','Petikan buku · semak sumber','Tiada Duʿā untuk hari ini'],
+ id:['Hari ini','Hari dipilih','Tampilkan hari ini','✦ Bicara dengan Happy','Buka Happy ↗','Jelajahi hari lain','Pilih tanggal','Hari sebelumnya','Hari berikutnya','Doa pribadi · tulisan bebas','Kutipan buku · periksa sumber','Tidak ada doa pada tanggal ini'],
+ ko:['오늘','선택한 날','오늘 보기','✦ Happy와 대화','Happy 직접 열기 ↗','다른 날 보기','날짜 선택','이전 날','다음 날','개인 두아 · 자유 작성','책 인용 · 출처 확인','해당 날짜의 두아가 없습니다'],
+ ja:['今日','選択した日','今日を表示','✦ Happyと話す','Happyを直接開く ↗','別の日を見る','日付を選択','前の日','次の日','個人のドゥアー · 自由な文','本の引用 · 出典を確認','この日のドゥアーはありません'],
+ ru:['Сегодня','Выбранный день','Показать сегодня','✦ Поговорить с Happy','Открыть Happy ↗','Другой день','Выбрать дату','Предыдущий день','Следующий день','Личная дуа · свободный текст','Цитата из книги · проверить источник','Нет дуа на эту дату'],
+ nl:['Vandaag','Geselecteerde dag','Toon vandaag','✦ Praat met Happy','Open Happy ↗','Andere dag bekijken','Datum kiezen','Vorige dag','Volgende dag','Persoonlijke duʿā · vrij geformuleerd','Boekcitaat · controleer de bron','Geen duʿā voor deze dag']
+};
+let nbDuaAutoDate=true,nbDuaLastDay=date();
+function nbRenderDailyDua(){
+ const input=$('duaDate'),now=date();
+ if(nbDuaAutoDate||!input.value)input.value=now;
+ const selected=input.value,dua=getDua(selected);
+ const l=NB_DUA_LABELS[nbLang()]||NB_DUA_LABELS.de;
+ const calendarDate=new Date(selected+'T12:00:00');
+ const dayLabel=Number.isNaN(calendarDate.getTime())?selected:calendarDate.toLocaleDateString(nbIntlLocale(),{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ $('duaText').textContent=dua?.text||l[11];
+ $('duaKind').textContent=dua?.type==='personal'?l[9]:l[10];
+ $('nb-dua-date-caption').textContent=(selected===now?l[0]:l[1])+' · '+dayLabel;
+ $('nb-dua-today').textContent=l[2];$('nb-dua-happy').textContent=l[3];
+ $('nb-dua-happy-direct').textContent=l[4];$('nb-dua-archive-label').textContent=l[5];
+ $('nb-dua-date-input-label').textContent=l[6];
+ $('nb-dua-prev').setAttribute('aria-label',l[7]);$('nb-dua-next').setAttribute('aria-label',l[8]);
+}
+function nbShiftDuaDate(delta){
+ const input=$('duaDate'),base=new Date((input.value||date())+'T12:00:00');
+ if(Number.isNaN(base.getTime()))return;
+ base.setDate(base.getDate()+delta);
+ input.value=base.getFullYear()+'-'+String(base.getMonth()+1).padStart(2,'0')+'-'+String(base.getDate()).padStart(2,'0');
+ nbDuaAutoDate=input.value===date();
+ nbRenderDailyDua();
+}
+function nbRefreshDuaForLocalDay(){
+ const day=date();if(day===nbDuaLastDay)return;
+ nbDuaLastDay=day;
+ if(nbDuaAutoDate)$('duaDate').value=day;
+ // Refresh the header, calendar day, task counts, home Du'a and the archive together.
+ render();
+}
+let nbDuaMidnightTimer;
+function nbScheduleNextDuaDay(){
+ clearTimeout(nbDuaMidnightTimer);
+ const now=new Date(),next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,1);
+ nbDuaMidnightTimer=setTimeout(()=>{
+  nbRefreshDuaForLocalDay();
+  nbScheduleNextDuaDay();
+ },Math.max(1000,next.getTime()-now.getTime()));
+}
+
 
 /* Nadia UI v36: only translate documented developer UI text; user data remain untouched. */
 const NB_UI_TEXT_BASE=new WeakMap(),NB_UI_ATTR_BASE=new WeakMap();
@@ -1251,7 +1526,8 @@ $('statTasks').textContent=state.tasks.filter(x=>!x.done).length;$('statShop').t
 $('homeEvents').innerHTML=state.events.filter(x=>x.date===today).map(x=>row(x,(x.time||'')+' · '+membership(x.member),'',null)).join('')||empty('Für heute sind noch keine Termine eingetragen.');
 $('homeTasks').innerHTML=state.tasks.filter(x=>!x.done).slice(0,4).map(x=>row(x,x.priority==='today'?'Heute wichtig':'In Ruhe erledigen','',null)).join('')||empty('Heute ist noch nichts offen. ✿');
 const ni=$('dailyNiyyah');if(document.activeElement!==ni)ni.value=todayD.niyyah||'';for(let i=1;i<=3;i++){const el=$('priority'+i);if(document.activeElement!==el)el.value=(todayD.top||[])[i-1]||''}
-$('homeDua').textContent=(getDua(today)?.text||'').slice(0,220)+' …';
+$('homeDua').textContent=getDua(today)?.text||'';
+$('nb-home-dua-date').textContent=new Date(today+'T12:00:00').toLocaleDateString(nbIntlLocale(),{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · '+(nbDuaCycleIndex(today)+1)+'/365';
 $('eventMember').innerHTML=defaultMember();$('taskMember').innerHTML=defaultMember();
 $('eventList').innerHTML=sortDays(state.events).map(x=>row(x,fmt(x.date)+' · '+(x.time||'ohne Uhrzeit')+' · '+membership(x.member),'',action('events',x.id))).join('')||empty('Noch keine Termine. Ein neues Kapitel darf leicht beginnen.');
 $('taskCount').textContent=state.tasks.filter(x=>!x.done).length+' offen';let done=state.tasks.filter(x=>x.done).length;$('taskProgress').style.width=(state.tasks.length?100*done/state.tasks.length:0)+'%';
@@ -1267,7 +1543,7 @@ $('moneyIn').textContent=euro(inc);$('moneyOut').textContent=euro(out);$('moneyL
 $('moneyList').innerHTML=thisMoney.slice().reverse().map(x=>row(x,(x.kind==='in'?'+':'−')+euro(x.amount)+' · '+fmt(x.date),'',action('money',x.id))).join('')||empty('Noch keine Monatsbuchungen.');
 $('shuraNotes').innerHTML=state.shura.slice().reverse().map(x=>row({text:x.text},fmt(x.date),'',action('shura',x.id))).join('')||empty('Noch keine gemeinsamen Gedanken.');
 $('journalList').innerHTML=state.journal.slice().reverse().map(x=>row({text:x.text},fmt(x.date),'',action('journal',x.id))).join('')||empty('Jeder kleine gute Moment zählt.');
-if(!$('duaDate').value)$('duaDate').value='2027-01-01';const dua=getDua($('duaDate').value);$('duaText').textContent=dua?.text||'Nicht vorhanden';$('duaKind').textContent=dua?.type==='personal'?'Persönliche Duʿā · frei formuliert':'Buchzitat · Fundstelle in der Buchausgabe';
+nbRenderDailyDua();
 $('prayerRows').innerHTML=['Fajr','Dhuhr','Asr','Maghrib','Isha'].map(n=>'<label class="checkrow"><input type="checkbox" data-prayer="'+n+'" '+(state.prayerDone[today]?.[n]?'checked':'')+'><span><b>'+n+'</b> <small>· '+esc(nbPrayerTime(n,today)||'Zeit selbst eintragen')+'</small></span></label>').join('');$('nb-prayer-source').textContent=nbPrayerStatus(today);
 $('prayerSetting').innerHTML=['Fajr','Dhuhr','Asr','Maghrib','Isha'].map(n=>'<label class="field" style="margin:0 0 7px">'+n+'<input type="time" data-time-prayer="'+n+'" value="'+esc(state.prayers[n]||'')+'"></label>').join('');
 
@@ -1343,7 +1619,20 @@ $('nb-prayer-city').onchange=()=>{const k=$('nb-prayer-city').value;if(nbCities[
 $('nb-save-prayer-config').onclick=()=>{const mode=$('nb-prayer-mode').value,lat=$('nb-lat').value,lon=$('nb-lon').value;if(mode==='auto'&&(lat===''||lon===''||!Number.isFinite(Number(lat))||Math.abs(Number(lat))>66||lon===''||Math.abs(Number(lon))>180)){toast('Für die automatische Berechnung bitte einen Ort wählen.');return}const c=nbPrayerConfig();c.mode=mode;c.lat=lat===''?null:Number(lat);c.lon=lon===''?null:Number(lon);c.cityKey=$('nb-prayer-city').value;c.city=nbCities[c.cityKey]?.title||'manueller Ort';c.asr=Number($('nb-asr').value);save();render();$('nb-prayer-calibration').textContent=nbPrayerStatus(date())+' · Fajr 18° · Isha 17° · ± Abweichung je nach Gemeinde.';toast(mode==='auto'?'Gebetszeiten werden nun jeden Tag neu berechnet.':'Manuelle Zeiten aktiviert.')};
 $('nb-get-location').onclick=()=>{if(!navigator.geolocation){toast('Standort ist auf diesem Gerät nicht verfügbar.');return}if(!confirm('Standort einmalig für die lokale Gebetszeitenberechnung freigeben? Er wird nicht an einen Server gesendet.'))return;navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude,lon=pos.coords.longitude;if(Math.abs(lat)>66){toast('Für diesen Breitengrad ist die einfache Berechnung nicht geeignet.');return}$('nb-lat').value=lat.toFixed(4);$('nb-lon').value=lon.toFixed(4);$('nb-prayer-city').value='custom';$('nb-prayer-mode').value='auto';$('nb-save-prayer-config').click()},()=>toast('Standort nicht freigegeben; Ort weiterhin manuell wählbar.'),{enableHighAccuracy:false,maximumAge:600000,timeout:10000})};
 
-$('duaDate').onchange=render;$('monthChoose').onchange=render;
+$('duaDate').onchange=()=>{nbDuaAutoDate=$('duaDate').value===date();nbRenderDailyDua()};
+$('nb-dua-today').onclick=()=>{nbDuaAutoDate=true;$('duaDate').value=date();nbRenderDailyDua()};
+$('nb-dua-prev').onclick=()=>nbShiftDuaDate(-1);
+$('nb-dua-next').onclick=()=>nbShiftDuaDate(1);
+$('nb-dua-happy').onclick=()=>{
+ const launcher=$('nb-happy-piga-open');
+ if(launcher)launcher.click();
+ else window.open('https://pigapocket.com/nadias-bloom/happy-live','_blank','noopener,noreferrer');
+};
+nbScheduleNextDuaDay();
+setInterval(nbRefreshDuaForLocalDay,60000);
+window.addEventListener('focus',()=>{nbRefreshDuaForLocalDay();nbScheduleNextDuaDay()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){nbRefreshDuaForLocalDay();nbScheduleNextDuaDay()}});
+$('monthChoose').onchange=render;
 function download(name,data,type){const blob=new Blob([data],{type:type||'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000)}
 function safeCSV(v){let s=String(v||'').replace(/"/g,'""');if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s+'"'}
 $('exportICS').onclick=()=>{function escapeICS(v){return String(v||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/[,;]/g,c=>'\\'+c)}const x='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Nadias Bloom//Barakah//DE\r\n'+state.events.filter(e=>e.date).map(e=>'BEGIN:VEVENT\r\nUID:'+e.id+'@nadias-bloom\r\nDTSTART:'+e.date.replaceAll('-','')+'T'+(e.time||'09:00').replace(':','')+'00\r\n'+(e.repeat==='yearly'?'RRULE:FREQ=YEARLY\r\n':'')+'DURATION:PT60M\r\nSUMMARY:'+escapeICS(e.title)+'\r\nEND:VEVENT').join('\r\n')+'\r\nEND:VCALENDAR';download('nadias-bloom-termine.ics',x,'text/calendar;charset=utf-8')};
@@ -1351,17 +1640,58 @@ $('exportMoney').onclick=()=>download('nadias-bloom-finanzen.csv','Datum;Art;Bes
 function shopText(){return 'Nadia’s Bloom – Einkauf\n'+state.shop.filter(x=>!x.done).map(x=>'• '+x.title+(x.qty?' ('+x.qty+')':'')).join('\n')}
 $('shareShop').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent(shopText()),'_blank','noopener,noreferrer');
 $('copyShop').onclick=async()=>{try{await navigator.clipboard.writeText(shopText());toast('Einkaufsliste kopiert.')}catch{toast('Kopieren nicht verfügbar. Nutze Teilen.')}}
-$('backup').onclick=()=>download('nadias-bloom-barakah-backup.json',JSON.stringify({schema:'nadias-bloom-v26',savedAt:new Date().toISOString(),state},null,2),'application/json');
+/* V37 backup bridge: all local family-studio records travel together with the original app backup. */
+const NB_V37_STORE_KEY='nadias-bloom-family-studio-v37';
+function nbValidateStudioV37(raw){
+ if(raw==null)return null;
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Error('Ungültiger Familienstudio-Datensatz');
+ const fields={pantry:{id:70,title:90,quantity:45},messages:{id:70,sender:70,text:1200,at:50},reminders:{id:70,title:150,at:50,done:'boolean'}};
+ const clean={pantry:[],messages:[],reminders:[],calendarAlerts:raw.calendarAlerts===true,seen:{}};
+ for(const [key,spec] of Object.entries(fields)){
+  if(!Array.isArray(raw[key])||raw[key].length>1000)throw Error('Ungültige Familienstudio-Liste: '+key);
+  clean[key]=raw[key].map(item=>{
+   if(!item||typeof item!=='object'||Array.isArray(item))throw Error('Ungültiger Eintrag: '+key);
+   const safe={};
+   for(const [name,limit] of Object.entries(spec)){
+    const value=item[name];
+    if(value===undefined)continue;
+    if(limit==='boolean'){if(typeof value!=='boolean')throw Error('Ungültiges Statusfeld');safe[name]=value}
+    else {if(typeof value!=='string'||value.length>limit)throw Error('Ungültiger Text in '+key);safe[name]=value}
+   }
+   if(!safe.id)throw Error('Eintrag ohne ID');
+   if(safe.at&&!Number.isFinite(new Date(safe.at).getTime()))throw Error('Ungültige Zeitangabe');
+   return safe;
+  });
+ }
+ if(raw.seen&&typeof raw.seen==='object'&&!Array.isArray(raw.seen)){
+  for(const [key,value] of Object.entries(raw.seen).slice(-500)){if(key.length<=120&&value===true&&!['__proto__','constructor','prototype'].includes(key))clean.seen[key]=true}
+ }
+ return clean;
+}
+function nbReadStudioV37(){try{const raw=localStorage.getItem(NB_V37_STORE_KEY);if(!raw)return null;if(raw.length>1600000)throw Error('Familienstudio zu groß');return nbValidateStudioV37(JSON.parse(raw))}catch{return null}}
+$('backup').onclick=()=>download('nadias-bloom-barakah-backup.json',JSON.stringify({schema:'nadias-bloom-v26-v37',savedAt:new Date().toISOString(),state,studioV37:nbReadStudioV37()},null,2),'application/json');
 $('restore').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=async(e)=>{
  const file=e.target.files?.[0];e.target.value='';
- if(!file||file.size>2000000){toast('Bitte eine gültige Sicherung unter 2 MB auswählen.');return}
+ if(!file||file.size>4000000){toast('Bitte eine gültige Sicherung unter 4 MB auswählen.');return}
  try{
   const json=JSON.parse(await file.text()),candidate=nbCleanState(json.state||json,true);
-  const counts='Familie: '+candidate.members.length+' · Termine: '+candidate.events.length+' · Aufgaben: '+candidate.tasks.length;
+  const studio=Object.prototype.hasOwnProperty.call(json,'studioV37')?nbValidateStudioV37(json.studioV37):null;
+  const counts='Familie: '+candidate.members.length+' · Termine: '+candidate.events.length+' · Aufgaben: '+candidate.tasks.length+(studio?' · Studio-Nachrichten: '+studio.messages.length:'');
   if(!confirm('Die Sicherung enthält '+counts+'. Alle aktuellen Daten dieses Geräts ersetzen?'))return;
-  /* Commit storage BEFORE changing app state. If quota is full, previous data stay intact. */
-  localStorage.setItem(KEY,JSON.stringify(candidate));
-  state=candidate;render();toast('Sicherung geprüft und wiederhergestellt. ✿');
+  const previous=localStorage.getItem(KEY),prevStudio=localStorage.getItem(NB_V37_STORE_KEY);
+  try{
+   if(studio)localStorage.setItem(NB_V37_STORE_KEY,JSON.stringify(studio));
+   localStorage.setItem(KEY,JSON.stringify(candidate));
+  }catch(writeError){
+   try{
+    if(previous===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,previous);
+    if(prevStudio===null)localStorage.removeItem(NB_V37_STORE_KEY);else localStorage.setItem(NB_V37_STORE_KEY,prevStudio);
+   }catch{}
+   throw writeError;
+  }
+  state=candidate;
+  if(studio)window.dispatchEvent(new Event('nadia:v37:restored'));
+  render();toast('Sicherung geprüft und wiederhergestellt. ✿');
  }catch(error){toast('Sicherung nicht übernommen: '+String(error?.message||'ungültige Datei').slice(0,100))}
 };
 const NB_COVER_WEBP="./barakah-home-2027-cover-480.webp";
@@ -1591,6 +1921,7 @@ nbAuthRender();
 /* Preserve existing auth sessions without making background provider requests while account UI is paused. */
 window.NADIA_AUTH_QA={uiPaused:false,configured:!!NB_SUPABASE_KEY,provider:()=>nbAuthProviderId,app:'nadias-bloom',sessionExists:()=>!!nbSession?.access_token,noFamilyDataSync:true,separateCredentialRealms:true};
 
+window.addEventListener('nadia:v37:add-shopping',event=>{const items=Array.isArray(event.detail?.items)?event.detail.items:[];for(const raw of items.slice(0,30)){const title=String(raw||'').trim().slice(0,90);if(!title||state.shop.some(x=>String(x.title).toLocaleLowerCase()===title.toLocaleLowerCase()))continue;state.shop.push({id:uid(),title,qty:'',done:false})}save();render()});
 nbSetupLocale();
 window.NADIAS_BLOOM_QA={version:'v34-spacious-family-calendar',duaCount:Object.keys(DUAS).length,gate2:'CONFIRM_REQUIRED',read:()=>structuredClone(state),setView:openView,pigaSafety:()=>NB_PIGA_GUARD.status(),pigaSelfTest:()=>NB_PIGA_GUARD.selfTest(),locale:()=>({...nbLocaleConfig()}),setLocale:(lang,country)=>{if(NB_LANGS[lang]&&NB_COUNTRIES[country]){const c=nbLocaleConfig();c.lang=lang;c.country=country;save();$('nb-lang-quick').value=lang;$('nb-lang-setting').value=lang;$('nb-country-setting').value=country;nbApplyLocale();render()}}};
 if(nbStoredDataDamaged)toast('Gespeicherte Daten sind beschädigt. Die bisherigen Rohdaten wurden nicht überschrieben; bitte Sicherung prüfen.');
@@ -1601,5 +1932,656 @@ if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname
 })();
 </script>
 
+<style>
+/* NADIA_V37_DESIGN */
+.nb-promo{grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr)!important;align-items:stretch}
+.nb-promo-book,.nb-promo-install{min-width:0;padding:clamp(22px,3vw,35px)!important;border-radius:34px!important;box-shadow:0 20px 50px #55415717!important}
+.nb-promo-book .nb-promo-copy{display:grid!important;grid-template-columns:minmax(170px,230px) minmax(0,1fr);align-items:center;gap:clamp(18px,3vw,34px)}
+.nb-promo-copy>div{min-width:0}
+.nb-promo-book .nb-book-cover--mini{width:100%!important;max-width:230px!important;margin-inline:auto}
+.nb-promo-book .nb-book-cover--mini img{width:100%!important;height:auto!important;aspect-ratio:672/1024!important;object-fit:contain!important}
+.nb-book-showcase{grid-template-columns:minmax(210px,335px) minmax(0,1fr)!important;min-width:0;border-radius:36px!important;gap:clamp(25px,4vw,60px)}
+.nb-book-showcase .nb-book-cover--large{max-width:335px!important}
+.nb-book-showcase .nb-book-cover--large img{object-fit:contain!important}
+.nb-book-cover img{border-radius:7px 18px 18px 7px!important;box-shadow:10px 16px 35px #49314a35!important}
+.card,.hero,.nb-focus-bar,.nb-step,.nb-quickstart{border-radius:clamp(23px,2.8vw,33px)!important}
+.btn,.nb-focus-action{border-radius:16px!important}
+.nb37-launch{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.nb37-launch button{flex:1 1 150px;border:1px solid #e9dce5;background:linear-gradient(130deg,#fffdf9,#f7ecf5);padding:18px 16px;text-align:start;border-radius:22px;color:#76526f;font-weight:750;box-shadow:0 10px 28px #76566d12;cursor:pointer;min-height:82px}
+.nb37-launch button .nb37-emoji{display:block;font-size:26px;margin-bottom:5px}
+.nb37-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;align-items:start}
+.nb37-card{min-width:0;background:linear-gradient(143deg,#fffefa,#faf2f7);border:1px solid #eee1ea;border-radius:29px;padding:clamp(19px,2.6vw,30px);box-shadow:0 15px 40px #5c405a11}
+.nb37-card h2{font:500 clamp(22px,3vw,29px) Georgia,serif;color:#6b4a62;margin:0 0 14px}
+.nb37-card form{display:grid;gap:14px}
+.nb37-card label{display:grid;gap:7px;font-size:13px;font-weight:700;color:#70546a}
+.nb37-card input,.nb37-card textarea{width:100%;padding:12px 14px;min-width:0}
+.nb37-card textarea{min-height:95px;resize:vertical}
+.nb37-items{display:grid;gap:10px;margin-top:16px}
+.nb37-row{display:flex;gap:12px;align-items:center;justify-content:space-between;background:#fff;border:1px solid #ebdfeb;border-radius:18px;padding:13px 15px;min-width:0}
+.nb37-row>div{min-width:0;overflow-wrap:anywhere}
+.nb37-row strong{display:block;color:#6b4b64}
+.nb37-row small{color:#867887}
+.nb37-row button,.nb37-recipe button{border-radius:13px;border:1px solid #e8d7e2;background:#fff7fa;color:#7d5470;padding:9px 12px;cursor:pointer}
+.nb37-recipe{padding:16px;background:#fff;border:1px solid #e8d9e4;border-radius:21px;margin-top:12px}
+.nb37-recipe strong{color:#744c69;font-size:17px;display:block}
+.nb37-recipe p{color:#756678;line-height:1.5;margin:9px 0}
+.nb37-note{border-radius:18px;background:#f3eaf2;color:#665164;padding:14px 17px;line-height:1.65;margin:16px 0}
+.nb37-popup{border:0;border-radius:28px;max-width:min(92vw,440px);padding:26px;background:#fffdfa;color:#604661;box-shadow:0 25px 80px #34223755}
+.nb37-popup::backdrop{background:#35253691}
+.nb37-popup h2{font:500 29px Georgia,serif}
+.nb37-popup .actions{margin-top:20px}
+@media(max-width:1000px){.nb-promo{grid-template-columns:1fr!important}}
+@media(max-width:720px){.nb-promo-book .nb-promo-copy{grid-template-columns:1fr!important;justify-items:center;text-align:center}.nb-promo-book .nb-book-cover--mini{max-width:min(73vw,285px)!important}.nb-promo-book .nb-promo-copy .actions{justify-content:center}.nb-book-showcase{grid-template-columns:1fr!important;justify-items:center;text-align:center}.nb-book-showcase .nb-book-cover--large{max-width:min(78vw,335px)!important}.nb37-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.nb37-launch button{transition:none!important}}
+/* NADIA_V37_DESIGN_END */
+</style>
+<script>
+
+/* NADIA_V37_MODULE: autonomous in-app local processors; no external endpoints, no fake remote chat or closed-app pushes */
+(function(){
+'use strict';
+const $=id=>document.getElementById(id), STORE='nadias-bloom-family-studio-v37';
+const keys=['recipes','chat','reminders','pantry','ingredient','quantity','add','suggestions','newMessage','sender','message','send','familyMessages','newReminder','subject','when','save','upcoming','notify','calendar','close','remove','shopping','missing','recipesHelp','chatNotice','reminderNotice','empty'];
+const packs={
+de:['Zutaten & Rezepte','Familienchat','Erinnerungen','Unsere Vorräte','Zutat','Menge','Hinzufügen','Rezeptideen','Neue Nachricht','Von wem?','Nachricht','Nachricht speichern','Familiennachrichten','Neue Erinnerung','Woran erinnern?','Datum und Uhrzeit','Erinnerung speichern','Kommende Erinnerungen','Systembenachrichtigungen aktivieren','Kalendertermine mit Uhrzeit 30 Minuten vorher erinnern','Schließen','Entfernen','Zur Einkaufsliste','Fehlt:','Aus deinen Vorräten passende Rezeptideen finden – ganz ohne Internet.','Lokale Familien-Pinnwand: Nachrichten bleiben auf diesem Gerät und werden nicht an andere Familiengeräte übertragen.','Pop-ups funktionieren bei geöffneter App. Bei geschlossener App oder ausgeschaltetem Gerät sind Erinnerungen noch nicht garantiert.','Noch keine Einträge.'],
+en:['Ingredients & recipes','Family chat','Reminders','Our pantry','Ingredient','Quantity','Add','Recipe ideas','New message','From whom?','Message','Save message','Family messages','New reminder','Remind me about','Date and time','Save reminder','Upcoming reminders','Enable system notifications','Remind me about timed calendar events 30 minutes ahead','Close','Remove','Add to shopping','Missing:','Find recipes using your pantry, even offline.','Local family board only: messages stay on this device and do not reach other family phones.','Pop-ups work while the app is open. Delivery when closed or powered off is not guaranteed.','No entries yet.'],
+ar:['المكونات والوصفات','دردشة العائلة','التذكيرات','مخزون البيت','المكوّن','الكمية','إضافة','أفكار وصفات','رسالة جديدة','المرسل','الرسالة','حفظ الرسالة','رسائل العائلة','تذكير جديد','بماذا أذكّرك؟','التاريخ والوقت','حفظ التذكير','تذكيرات قادمة','تفعيل الإشعارات','التذكير بمواعيد التقويم قبل 30 دقيقة','إغلاق','حذف','إضافة للتسوق','ناقص:','وصفات من مكونات البيت دون إنترنت.','لوحة عائلية محلية: الرسائل تبقى على هذا الجهاز ولا تصل للأجهزة الأخرى.','تظهر النوافذ ما دام التطبيق مفتوحًا؛ لا ضمان عند إغلاقه أو إطفاء الجهاز.','لا توجد عناصر بعد.'],
+fr:['Ingrédients et recettes','Chat familial','Rappels','Nos provisions','Ingrédient','Quantité','Ajouter','Idées de recettes','Nouveau message','Expéditeur','Message','Enregistrer','Messages familiaux','Nouveau rappel','Objet du rappel','Date et heure','Enregistrer le rappel','Rappels à venir','Activer les notifications','Rappeler les rendez-vous 30 minutes avant','Fermer','Supprimer','Ajouter aux courses','Manque :','Des recettes selon vos ingrédients, même hors ligne.','Tableau familial local : les messages restent sur cet appareil.','Les fenêtres apparaissent avec l’application ouverte, sans garantie si elle est fermée.','Aucune entrée.'],
+es:['Ingredientes y recetas','Chat familiar','Recordatorios','Despensa','Ingrediente','Cantidad','Añadir','Ideas de recetas','Mensaje nuevo','Remitente','Mensaje','Guardar mensaje','Mensajes familiares','Nuevo recordatorio','¿Qué recordar?','Fecha y hora','Guardar recordatorio','Próximos recordatorios','Activar notificaciones','Recordar eventos 30 minutos antes','Cerrar','Eliminar','Añadir a compras','Falta:','Recetas con tus ingredientes, incluso sin conexión.','Tablón familiar local: los mensajes solo quedan en este dispositivo.','Las ventanas funcionan con la app abierta; cerrada no hay garantía.','Sin entradas.'],
+zh:['食材与食谱','家庭留言','提醒','家庭食材','食材','数量','添加','食谱建议','新消息','发送者','消息','保存消息','家庭消息','新提醒','提醒内容','日期和时间','保存提醒','即将到来的提醒','启用系统通知','日历事件提前30分钟提醒','关闭','删除','添加到购物清单','缺少：','根据已有食材离线寻找菜谱。','本地家庭留言板：消息只存于此设备，不会发到其他手机。','应用打开时才有弹窗；关闭应用或关机后无法保证提醒。','暂无内容。'],
+it:['Ingredienti e ricette','Chat famiglia','Promemoria','Dispensa','Ingrediente','Quantità','Aggiungi','Idee ricette','Nuovo messaggio','Mittente','Messaggio','Salva messaggio','Messaggi di famiglia','Nuovo promemoria','Cosa ricordare?','Data e ora','Salva promemoria','Prossimi promemoria','Attiva notifiche','Ricorda eventi 30 minuti prima','Chiudi','Rimuovi','Aggiungi alla spesa','Manca:','Ricette con ciò che hai, anche offline.','Bacheca locale: i messaggi restano su questo dispositivo.','Popup con app aperta; nessuna garanzia quando è chiusa.','Nessuna voce.'],
+pt:['Ingredientes e receitas','Chat da família','Lembretes','Despensa','Ingrediente','Quantidade','Adicionar','Ideias de receitas','Nova mensagem','Remetente','Mensagem','Guardar mensagem','Mensagens da família','Novo lembrete','O que lembrar?','Data e hora','Guardar lembrete','Próximos lembretes','Ativar notificações','Lembrar eventos 30 minutos antes','Fechar','Remover','Adicionar às compras','Falta:','Receitas com os seus ingredientes, mesmo offline.','Mural local: mensagens ficam só neste dispositivo.','Alertas com a aplicação aberta; sem garantia quando fechada.','Sem registos.'],
+th:['วัตถุดิบและสูตรอาหาร','แชตครอบครัว','การเตือน','วัตถุดิบในบ้าน','วัตถุดิบ','ปริมาณ','เพิ่ม','ไอเดียสูตรอาหาร','ข้อความใหม่','ผู้ส่ง','ข้อความ','บันทึกข้อความ','ข้อความครอบครัว','การเตือนใหม่','เตือนเรื่องอะไร','วันและเวลา','บันทึกการเตือน','การเตือนที่กำลังมา','เปิดการแจ้งเตือน','เตือนนัดหมายล่วงหน้า 30 นาที','ปิด','ลบ','เพิ่มในรายการซื้อ','ขาด:','ค้นหาสูตรจากวัตถุดิบที่มีโดยไม่ใช้อินเทอร์เน็ต','กระดานข้อความในเครื่องนี้เท่านั้น ไม่ส่งไปเครื่องอื่น','ป๊อปอัปทำงานเมื่อเปิดแอป ไม่มีการรับประกันเมื่อปิด','ยังไม่มีรายการ'],
+ms:['Bahan & resipi','Sembang keluarga','Peringatan','Stok rumah','Bahan','Kuantiti','Tambah','Idea resipi','Mesej baharu','Pengirim','Mesej','Simpan mesej','Mesej keluarga','Peringatan baharu','Ingatkan tentang','Tarikh dan masa','Simpan peringatan','Peringatan akan datang','Aktifkan pemberitahuan','Ingatkan kalendar 30 minit awal','Tutup','Padam','Tambah ke senarai beli','Tiada:','Cari resipi daripada bahan sedia ada, walaupun luar talian.','Papan keluarga setempat: mesej hanya pada peranti ini.','Pop timbul apabila aplikasi dibuka; tiada jaminan apabila ditutup.','Belum ada entri.'],
+id:['Bahan & resep','Obrolan keluarga','Pengingat','Persediaan dapur','Bahan','Jumlah','Tambah','Ide resep','Pesan baru','Pengirim','Pesan','Simpan pesan','Pesan keluarga','Pengingat baru','Ingatkan tentang','Tanggal dan waktu','Simpan pengingat','Pengingat mendatang','Aktifkan notifikasi','Ingatkan acara 30 menit sebelumnya','Tutup','Hapus','Tambahkan ke belanja','Kurang:','Cari resep dari bahan yang ada, bahkan tanpa internet.','Papan keluarga lokal: pesan hanya tersimpan di perangkat ini.','Pop-up bekerja saat aplikasi terbuka; tidak dijamin saat tertutup.','Belum ada entri.'],
+ko:['재료와 레시피','가족 채팅','알림','우리 식재료','재료','수량','추가','레시피 추천','새 메시지','보낸 사람','메시지','메시지 저장','가족 메시지','새 알림','알림 내용','날짜 및 시간','알림 저장','예정된 알림','시스템 알림 허용','일정 30분 전 알림','닫기','삭제','장보기 목록에 추가','부족함:','보유 재료로 오프라인 레시피를 찾아보세요.','가족 게시판은 이 기기에만 저장되며 다른 휴대폰으로 전송되지 않습니다.','앱이 열려 있을 때만 팝업이 작동하며 종료 시 알림은 보장되지 않습니다.','항목이 없습니다.'],
+ja:['食材とレシピ','家族チャット','リマインダー','家の食材','食材','数量','追加','レシピの提案','新規メッセージ','送信者','メッセージ','メッセージを保存','家族のメッセージ','新しい通知','お知らせする内容','日時','通知を保存','今後の通知','通知を許可','予定の30分前に通知','閉じる','削除','買い物リストへ','不足：','手元の食材からオフラインでレシピを探します。','家族掲示板はこの端末のみ保存。他の端末には届きません。','アプリを開いている間のみポップアップが動作します。','まだありません。'],
+ru:['Продукты и рецепты','Семейный чат','Напоминания','Наши запасы','Продукт','Количество','Добавить','Идеи рецептов','Новое сообщение','От кого?','Сообщение','Сохранить сообщение','Семейные сообщения','Новое напоминание','О чём напомнить?','Дата и время','Сохранить напоминание','Предстоящие напоминания','Включить уведомления','Напомнить за 30 минут до события','Закрыть','Удалить','В список покупок','Не хватает:','Подберите рецепты из продуктов, даже без интернета.','Локальная семейная доска: сообщения остаются на устройстве.','Окна работают при открытом приложении; в закрытом состоянии доставка не гарантируется.','Пока пусто.'],
+nl:['Ingrediënten en recepten','Familiechat','Herinneringen','Onze voorraad','Ingrediënt','Hoeveelheid','Toevoegen','Receptideeën','Nieuw bericht','Afzender','Bericht','Bericht bewaren','Familieberichten','Nieuwe herinnering','Waarvoor herinneren?','Datum en tijd','Herinnering bewaren','Komende herinneringen','Meldingen inschakelen','Agenda-afspraken 30 minuten vooraf','Sluiten','Verwijderen','Aan boodschappen toevoegen','Ontbreekt:','Vind recepten met je voorraad, ook zonder internet.','Lokaal familiebord: berichten blijven op dit apparaat.','Pop-ups werken terwijl de app open is; gesloten is levering niet gegarandeerd.','Nog geen items.']
+};
+for(const [language,values] of Object.entries(packs))if(values.length!==keys.length)throw Error('v37 locale length '+language+' '+values.length);
+const language=()=>($('nb-lang-quick')?.value||'de');
+const tr=key=>{const n=keys.indexOf(key);return n>=0?(packs[language()]||packs.en)[n]:key};
+const esc=text=>String(text??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fresh=()=>({pantry:[],messages:[],reminders:[],calendarAlerts:false,seen:{}});
+function nb37Load(){const next=fresh();try{const raw=JSON.parse(localStorage.getItem(STORE)||'null');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){for(const k of ['pantry','messages','reminders'])if(Array.isArray(raw[k]))next[k]=raw[k].slice(0,1000).filter(x=>x&&typeof x==='object');next.calendarAlerts=raw.calendarAlerts===true;if(raw.seen&&typeof raw.seen==='object'&&!Array.isArray(raw.seen))next.seen=raw.seen}}catch{}return next}
+let data=nb37Load();
+function persist(){try{localStorage.setItem(STORE,JSON.stringify(data));return true}catch{$('nb37-permission-status').textContent='Local storage unavailable. Export your data.';return false}}
+const nav=(key,emoji)=>'<button type="button" data-view="'+key+'"><span class="sym" aria-hidden="true">'+emoji+'</span><span data-v37="'+(key==='rezepte'?'recipes':key==='familienchat'?'chat':'reminders')+'"></span></button>';
+document.querySelector('.sidebar .side-bottom')?.insertAdjacentHTML('beforebegin','<div class="side-title">FAMILY STUDIO</div>'+nav('rezepte','♨')+nav('familienchat','♡')+nav('erinnerungen','◷'));
+document.querySelector('#nb-nav-dialog .nb-nav-grid')?.insertAdjacentHTML('beforeend',nav('rezepte','♨')+nav('familienchat','♡')+nav('erinnerungen','◷'));
+document.querySelector('#view-start .nb-promo')?.insertAdjacentHTML('afterend','<div class="nb37-launch">'+[['rezepte','🥣','recipes'],['familienchat','💌','chat'],['erinnerungen','⏰','reminders']].map(x=>'<button type="button" data-view="'+x[0]+'"><span class="nb37-emoji" aria-hidden="true">'+x[1]+'</span><span data-v37="'+x[2]+'"></span></button>').join('')+'</div>');
+document.querySelector('#view-buch')?.insertAdjacentHTML('beforebegin',String.raw`
+<!-- NADIA_V37_FAMILY_STUDIO -->
+<section class="view" id="view-rezepte"><div class="eyebrow">NADIA’S BLOOM · FAMILY STUDIO</div><h1 class="title" data-v37="recipes">Zutaten & Rezepte</h1>
+<p class="sub" data-v37="recipesHelp">Aus deinen Vorräten passende Rezeptideen finden – ganz ohne Internet.</p>
+<div class="nb37-grid"><div class="nb37-card"><h2 data-v37="pantry">Unsere Vorräte</h2><form id="nb37-pantry-form">
+<label><span data-v37="ingredient">Zutat</span><input id="nb37-ingredient" maxlength="90" required autocomplete="off" placeholder="Tomaten"></label>
+<label><span data-v37="quantity">Menge</span><input id="nb37-quantity" maxlength="45" placeholder="400 g"></label>
+<button class="btn primary" data-v37="add">Hinzufügen</button></form><div class="nb37-items" id="nb37-pantry-list"></div></div>
+<div class="nb37-card"><h2 data-v37="suggestions">Rezeptideen</h2><div class="nb37-items" id="nb37-recipe-list"></div></div></div></section>
+<section class="view" id="view-familienchat"><div class="eyebrow">NADIA’S BLOOM · FAMILY STUDIO</div><h1 class="title" data-v37="chat">Familienchat</h1>
+<p class="nb37-note" data-v37="chatNotice">Lokale Familien-Pinnwand: Nachrichten bleiben auf diesem Gerät und werden nicht an andere Familiengeräte übertragen.</p>
+<div class="nb37-grid"><div class="nb37-card"><h2 data-v37="newMessage">Neue Nachricht</h2>
+<form id="nb37-chat-form"><label><span data-v37="sender">Von wem?</span><input id="nb37-sender" maxlength="70" required></label>
+<label><span data-v37="message">Nachricht</span><textarea id="nb37-message" maxlength="1200" required></textarea></label><button class="btn primary" data-v37="send">Nachricht speichern</button></form></div>
+<div class="nb37-card"><h2 data-v37="familyMessages">Familiennachrichten</h2><div class="nb37-items" id="nb37-chat-list"></div></div></div></section>
+<section class="view" id="view-erinnerungen"><div class="eyebrow">NADIA’S BLOOM · FAMILY STUDIO</div><h1 class="title" data-v37="reminders">Erinnerungen</h1>
+<p class="nb37-note" data-v37="reminderNotice">Pop-ups funktionieren bei geöffneter App. Bei geschlossener App oder ausgeschaltetem Gerät sind Erinnerungen noch nicht garantiert.</p>
+<div class="nb37-grid"><div class="nb37-card"><h2 data-v37="newReminder">Neue Erinnerung</h2>
+<form id="nb37-reminder-form"><label><span data-v37="subject">Woran erinnern?</span><input id="nb37-title" maxlength="150" required></label>
+<label><span data-v37="when">Datum und Uhrzeit</span><input id="nb37-time" type="datetime-local" required></label>
+<button class="btn primary" data-v37="save">Erinnerung speichern</button></form>
+<button type="button" class="btn soft" id="nb37-permission" data-v37="notify" style="margin-top:15px">Systembenachrichtigungen aktivieren</button><p id="nb37-permission-status" role="status" class="note"></p></div>
+<div class="nb37-card"><h2 data-v37="upcoming">Kommende Erinnerungen</h2>
+<label class="nb37-note" style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="nb37-calendar" style="width:auto;min-height:auto"><span data-v37="calendar">Kalendertermine mit Uhrzeit 30 Minuten vorher erinnern</span></label>
+<div class="nb37-items" id="nb37-reminder-list"></div></div></div></section>
+<dialog id="nb37-popup" class="nb37-popup"><div class="eyebrow">✿ NADIA’S BLOOM</div><h2 data-v37="reminders">Erinnerungen</h2><p id="nb37-popup-text"></p><div class="actions"><button type="button" class="btn primary" id="nb37-close" data-v37="close">Schließen</button></div></dialog>
+<!-- NADIA_V37_FAMILY_STUDIO_END -->
+`);
+function translate(){document.querySelectorAll('[data-v37]').forEach(el=>{const value=tr(el.dataset.v37);if(el.textContent!==value)el.textContent=value});}
+function list(id,items){$(id).innerHTML=items.join('')||'<p class="note">'+esc(tr('empty'))+'</p>'}
+const button=(kind,id)=>'<button type="button" data-v37-remove="'+kind+'" data-id="'+esc(id)+'" aria-label="'+esc(tr('remove'))+'">×</button>';
+const clean=text=>String(text||'').trim().slice(0,200);
+const mkid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const norm=text=>clean(text).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/s$|en$|n$/g,'');
+const catalog=[
+{title:'Tomaten-Pasta',items:['Tomaten','Nudeln','Zwiebeln']},
+{title:'Gemüsereis',items:['Reis','Karotten','Erbsen']},
+{title:'Omelett',items:['Eier','Milch','Käse']},
+{title:'Linsensuppe',items:['Linsen','Zwiebeln','Karotten']},
+{title:'Kartoffelpfanne',items:['Kartoffeln','Zwiebeln','Paprika']},
+{title:'Couscous mit Gemüse',items:['Couscous','Tomaten','Zucchini']}
+];
+function show(){translate();
+list('nb37-pantry-list',data.pantry.map(x=>'<div class="nb37-row"><div><strong>'+esc(x.title)+'</strong><small>'+esc(x.quantity||'')+'</small></div>'+button('pantry',x.id)+'</div>'));
+list('nb37-chat-list',data.messages.slice().reverse().map(x=>'<div class="nb37-row"><div><strong>'+esc(x.sender)+'</strong><small>'+esc(new Date(x.at).toLocaleString(language()))+'</small><p style="white-space:pre-wrap;overflow-wrap:anywhere">'+esc(x.text)+'</p></div>'+button('messages',x.id)+'</div>'));
+list('nb37-reminder-list',data.reminders.filter(x=>!x.done).slice().sort((a,b)=>String(a.at).localeCompare(String(b.at))).map(x=>'<div class="nb37-row"><div><strong>'+esc(x.title)+'</strong><small>'+esc(new Date(x.at).toLocaleString(language()))+'</small></div>'+button('reminders',x.id)+'</div>'));
+const have=data.pantry.map(x=>norm(x.title));
+const sorted=catalog.map(x=>({...x,missing:x.items.filter(item=>!have.some(y=>y===norm(item)||y.includes(norm(item))||norm(item).includes(y)))})).sort((a,b)=>a.missing.length-b.missing.length);
+$('nb37-recipe-list').innerHTML=sorted.map((r,i)=>'<article class="nb37-recipe"><strong>'+esc(r.title)+'</strong><p>'+esc(r.items.join(' · '))+'</p><small>'+esc(tr('missing'))+' '+esc(r.missing.join(', ')||'—')+'</small>'+(r.missing.length?'<div style="margin-top:10px"><button type="button" data-v37-shop="'+i+'">'+esc(tr('shopping'))+'</button></div>':'')+'</article>').join('');
+window.NADIA_V37_SUGGESTIONS=sorted;
+$('nb37-calendar').checked=data.calendarAlerts===true;
+}
+function entry(k,item){data[k].push({id:mkid(),...item});if(data[k].length>1000)data[k].shift();persist();show()}
+$('nb37-pantry-form').addEventListener('submit',e=>{e.preventDefault();const title=clean($('nb37-ingredient').value);if(!title)return;entry('pantry',{title,quantity:clean($('nb37-quantity').value)});e.target.reset()});
+$('nb37-chat-form').addEventListener('submit',e=>{e.preventDefault();const sender=clean($('nb37-sender').value),text=String($('nb37-message').value||'').trim().slice(0,1200);if(!sender||!text)return;entry('messages',{sender,text,at:new Date().toISOString()});$('nb37-message').value=''});
+$('nb37-reminder-form').addEventListener('submit',e=>{e.preventDefault();const title=clean($('nb37-title').value),at=$('nb37-time').value;if(!title||!at||!Number.isFinite(new Date(at).getTime()))return;entry('reminders',{title,at,done:false});e.target.reset();check()});
+$('nb37-calendar').addEventListener('change',e=>{data.calendarAlerts=e.target.checked;persist();check()});
+document.addEventListener('click',e=>{const del=e.target.closest('[data-v37-remove]');if(del){const k=del.dataset.v37Remove;if(!['pantry','messages','reminders'].includes(k))return;data[k]=data[k].filter(x=>x.id!==del.dataset.id);persist();show();return}const buy=e.target.closest('[data-v37-shop]');if(buy){const r=window.NADIA_V37_SUGGESTIONS[Number(buy.dataset.v37Shop)];if(!r)return;window.dispatchEvent(new CustomEvent('nadia:v37:add-shopping',{detail:{items:r.missing}}));window.NADIAS_BLOOM_QA?.setView('einkauf')}});
+document.addEventListener('change',e=>{if(e.target.matches('#nb-lang-quick,#nb-lang-setting'))queueMicrotask(show)});
+const pop=$('nb37-popup');
+$('nb37-close').addEventListener('click',()=>{pop.close();setTimeout(check,0)});
+/* v37 durable reminder admission: never acknowledge an alert before a presentation channel accepts it. */
+function alertUser(title){
+ if(pop.open)return false;
+ if(document.visibilityState==='visible'){
+  $('nb37-popup-text').textContent=title;
+  try{if(typeof pop.showModal==='function'){pop.showModal();if(pop.open)return true}
+      else{window.alert(title);return true}}catch{}
+ }
+ if(typeof Notification!=='undefined'&&Notification.permission==='granted'){
+  try{new Notification('Nadia’s Bloom',{body:title,tag:'nadia-'+String(title).slice(0,90)});return true}catch{}
+ }
+ return false;
+}
+function check(){
+ const now=Date.now();let changed=false,accepted=false;
+ // Time is only a due threshold. An offline/hidden app never expires a pending reminder.
+ for(const x of data.reminders){
+  const at=new Date(x.at).getTime();
+  if(!x.done&&Number.isFinite(at)&&at<=now&&alertUser(x.title)){
+   x.done=true;changed=true;accepted=true;break;
+  }
+ }
+ if(!accepted&&data.calendarAlerts){
+  const state=window.NADIAS_BLOOM_QA?.read();
+  for(const event of state?.events||[]){
+   if(!event.date||!event.time)continue;
+   const eventAt=new Date(event.date+'T'+event.time).getTime();
+   const at=eventAt-1800000;
+   const key='calendar-'+event.id+'-'+event.date+'-'+event.time;
+   // Catch up after foregrounding within one hour after a missed calendar appointment.
+   if(Number.isFinite(at)&&at>0&&at<=now&&now<=eventAt+3600000&&!data.seen[key]&&alertUser(event.title)){
+    data.seen[key]=true;changed=true;break;
+   }
+  }
+ }
+ if(changed){
+  const seen=Object.keys(data.seen);
+  if(seen.length>500)for(const key of seen.slice(0,seen.length-400))delete data.seen[key];
+  persist();show();
+ }
+}
+$('nb37-permission').addEventListener('click',async()=>{if(typeof Notification==='undefined'||location.protocol==='file:'){$('nb37-permission-status').textContent='System notifications not supported in this mode.';return}try{const result=await Notification.requestPermission();$('nb37-permission-status').textContent=result==='granted'?'✓':'Not enabled: '+result}catch{$('nb37-permission-status').textContent='Notification access unavailable.'}});
+setInterval(check,30000);window.addEventListener('focus',check);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});
+window.NADIA_V37_WORKERS={version:'v37-local-family-studio',mode:'LOCAL_ONLY',pantry:()=>data.pantry.length,messages:()=>data.messages.length,reminders:()=>data.reminders.length,notificationsWhenClosed:'NOT_GUARANTEED',remoteChat:'NOT_IMPLEMENTED'};
+window.addEventListener('nadia:v37:restored',()=>{data=nb37Load();show();check()});
+show();check();
+})();
+</script>
+<script>
+/* NADIA_V38_SHARE_START */
+(function(){'use strict';const P={"de":["Teilen & Outlook","Nachricht vorbereiten","Text","Eigener Text","Letzte Familiennachricht","Nächster Termin","Einkaufsliste","In WhatsApp öffnen","E-Mail-Entwurf öffnen","Outlook-Kalender","Kalenderdatei exportieren","Outlook öffnen","Nichts wird automatisch verschickt. Bitte prüfe den Empfänger vor dem Senden.","Termine per ICS-Datei in Outlook importieren. Keine automatische Synchronisierung.","E-Mail-Adresse (optional)","Betreff","Bitte zuerst eine Nachricht eingeben."],"en":["Share & Outlook","Prepare message","Text","Own text","Latest family message","Next event","Shopping list","Open WhatsApp","Open email draft","Outlook calendar","Export calendar file","Open Outlook","Nothing sends automatically. Review the recipient before sending.","Import the ICS file in Outlook. No automatic synchronization.","Email (optional)","Subject","Enter a message first."],"ar":["المشاركة وOutlook","إعداد رسالة","النص","نص شخصي","آخر رسالة عائلية","الموعد القادم","قائمة التسوق","فتح واتساب","فتح مسودة البريد","تقويم Outlook","تصدير ملف التقويم","فتح Outlook","لا شيء يُرسل تلقائياً. تحققي من المستلم قبل الإرسال.","استيراد ملف ICS في Outlook. لا توجد مزامنة تلقائية.","البريد الإلكتروني (اختياري)","الموضوع","أدخلي رسالة أولاً."],"fr":["Partager & Outlook","Préparer un message","Texte","Texte libre","Dernier message familial","Prochain rendez-vous","Liste de courses","Ouvrir WhatsApp","Ouvrir un brouillon e-mail","Calendrier Outlook","Exporter le calendrier","Ouvrir Outlook","Aucun envoi automatique. Vérifiez le destinataire.","Importez le fichier ICS dans Outlook. Pas de synchronisation automatique.","E-mail (facultatif)","Objet","Saisissez un message."],"es":["Compartir y Outlook","Preparar mensaje","Texto","Texto propio","Último mensaje familiar","Próxima cita","Lista de compras","Abrir WhatsApp","Abrir borrador de correo","Calendario Outlook","Exportar calendario","Abrir Outlook","Nada se envía automáticamente. Comprueba el destinatario.","Importa el archivo ICS en Outlook. No hay sincronización automática.","Email (opcional)","Asunto","Escribe un mensaje."],"zh":["分享与 Outlook","准备消息","内容","自己输入","最新家庭消息","下一个约会","购物清单","打开 WhatsApp","打开邮件草稿","Outlook 日历","导出日历文件","打开 Outlook","不会自动发送，请检查收件人。","在 Outlook 导入 ICS 文件，不会自动同步。","电子邮件（选填）","主题","请先输入内容。"],"it":["Condividi e Outlook","Prepara messaggio","Testo","Testo proprio","Ultimo messaggio familiare","Prossimo appuntamento","Lista della spesa","Apri WhatsApp","Apri bozza email","Calendario Outlook","Esporta calendario","Apri Outlook","Nessun invio automatico. Verifica il destinatario.","Importa il file ICS in Outlook. Nessuna sincronizzazione automatica.","Email (facoltativa)","Oggetto","Scrivi un messaggio."],"pt":["Partilhar e Outlook","Preparar mensagem","Texto","Texto próprio","Última mensagem da família","Próximo compromisso","Lista de compras","Abrir WhatsApp","Abrir rascunho de e-mail","Calendário Outlook","Exportar calendário","Abrir Outlook","Nada é enviado automaticamente. Verifica o destinatário.","Importa o ficheiro ICS no Outlook. Sem sincronização automática.","E-mail (opcional)","Assunto","Introduz uma mensagem."],"th":["แชร์และ Outlook","เตรียมข้อความ","ข้อความ","เขียนเอง","ข้อความครอบครัวล่าสุด","นัดหมายถัดไป","รายการซื้อของ","เปิด WhatsApp","เปิดร่างอีเมล","ปฏิทิน Outlook","ส่งออกปฏิทิน","เปิด Outlook","ไม่มีการส่งอัตโนมัติ โปรดตรวจสอบผู้รับ","นำเข้าไฟล์ ICS ใน Outlook ไม่มีการซิงค์อัตโนมัติ","อีเมล (ไม่บังคับ)","หัวข้อ","กรอกข้อความก่อน"],"ms":["Kongsi & Outlook","Sediakan mesej","Teks","Teks sendiri","Mesej keluarga terkini","Janji temu berikut","Senarai belian","Buka WhatsApp","Buka draf e-mel","Kalendar Outlook","Eksport kalendar","Buka Outlook","Tiada penghantaran automatik. Semak penerima.","Import fail ICS dalam Outlook. Tiada penyegerakan automatik.","E-mel (pilihan)","Subjek","Masukkan mesej."],"id":["Bagikan & Outlook","Siapkan pesan","Teks","Teks sendiri","Pesan keluarga terbaru","Janji berikutnya","Daftar belanja","Buka WhatsApp","Buka draf email","Kalender Outlook","Ekspor kalender","Buka Outlook","Tidak ada pengiriman otomatis. Periksa penerima.","Impor file ICS di Outlook. Bukan sinkronisasi otomatis.","Email (opsional)","Subjek","Isi pesan dahulu."],"ko":["공유 및 Outlook","메시지 준비","내용","직접 작성","최근 가족 메시지","다음 일정","장보기 목록","WhatsApp 열기","이메일 초안 열기","Outlook 일정","일정 내보내기","Outlook 열기","자동 전송하지 않습니다. 수신자를 확인하세요.","ICS 파일을 Outlook에 가져오세요. 자동 동기화가 아닙니다.","이메일 (선택)","제목","먼저 메시지를 입력하세요."],"ja":["共有と Outlook","メッセージを準備","本文","自由入力","最新の家族メッセージ","次の予定","買い物リスト","WhatsApp を開く","メール下書きを開く","Outlook カレンダー","予定をエクスポート","Outlook を開く","自動送信しません。送信先を確認してください。","ICS ファイルを Outlook に取り込みます。自動同期ではありません。","メール（任意）","件名","先にメッセージを入力してください。"],"ru":["Поделиться и Outlook","Подготовить сообщение","Текст","Свой текст","Последнее сообщение семьи","Ближайшее событие","Список покупок","Открыть WhatsApp","Открыть письмо","Календарь Outlook","Экспорт календаря","Открыть Outlook","Ничего не отправляется автоматически. Проверьте адресата.","Импортируйте ICS в Outlook. Автосинхронизации нет.","E-mail (необязательно)","Тема","Введите сообщение."],"nl":["Delen en Outlook","Bericht voorbereiden","Tekst","Eigen tekst","Laatste familiebericht","Volgende afspraak","Boodschappenlijst","Open WhatsApp","Open e-mailconcept","Outlook-agenda","Agenda exporteren","Open Outlook","Niets wordt automatisch verzonden. Controleer de ontvanger.","Importeer het ICS-bestand in Outlook. Geen automatische synchronisatie.","E-mail (optioneel)","Onderwerp","Voer eerst een bericht in."]},CSS=".nb38-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}.nb38-card{min-width:0;background:linear-gradient(140deg,#fffdfa,#f9edf6);padding:clamp(20px,3vw,30px);border:1px solid #ebdce8;border-radius:30px;box-shadow:0 18px 44px #59435916}.nb38-card h2{color:#6b4964;font:500 30px Georgia,serif}.nb38-card label{display:grid;gap:7px;font-weight:700;font-size:13px;margin:15px 0}.nb38-card :is(textarea,input,select){width:100%;max-width:100%;box-sizing:border-box;padding:12px 14px}.nb38-card textarea{min-height:125px}.nb38-actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:16px}.nb38-actions>*{flex:1 1 145px;min-height:45px;border-radius:17px!important}.nb38-note{line-height:1.7;background:#f0e8ef;color:#6f5269;padding:16px;border-radius:19px;margin-top:16px}@media(max-width:740px){.nb38-grid{grid-template-columns:1fr}}",HTML="<section id=\"view-teilen\" class=\"view\"><div class=\"eyebrow\">NADIA’S BLOOM · FAMILY STUDIO</div><h1 class=\"title\" data-nb38=\"0\"></h1><p class=\"sub\">WhatsApp · E-Mail · Outlook</p><div class=\"nb38-grid\">\n<div class=\"nb38-card\"><h2 data-nb38=\"1\"></h2><label><span data-nb38=\"2\"></span><select id=\"nb38-kind\"><option value=\"own\" data-nb38=\"3\"></option><option value=\"family\" data-nb38=\"4\"></option><option value=\"event\" data-nb38=\"5\"></option><option value=\"shopping\" data-nb38=\"6\"></option></select></label><textarea id=\"nb38-body\" maxlength=\"2500\" aria-label=\"Nachricht\"></textarea>\n<label><span data-nb38=\"14\"></span><input id=\"nb38-to\" type=\"email\" autocomplete=\"email\" maxlength=\"190\"></label><label><span data-nb38=\"15\"></span><input id=\"nb38-subject\" maxlength=\"100\" value=\"Nadia’s Bloom\"></label><div class=\"nb38-actions\"><button type=\"button\" class=\"btn primary\" data-nb38=\"7\" id=\"nb38-wa\"></button><button type=\"button\" class=\"btn soft\" data-nb38=\"8\" id=\"nb38-mail\"></button></div><p class=\"nb38-note\" data-nb38=\"12\"></p><p id=\"nb38-status\" role=\"status\"></p></div>\n<div class=\"nb38-card\"><h2 data-nb38=\"9\"></h2><p class=\"nb38-note\" data-nb38=\"13\"></p><div class=\"nb38-actions\"><button type=\"button\" class=\"btn primary\" data-nb38=\"10\" id=\"nb38-ics\"></button><a href=\"https://outlook.live.com/calendar/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"btn soft\" data-nb38=\"11\"></a></div><p class=\"note\">Offline: Entwürfe und .ics-Export. WhatsApp, E-Mail und Outlook benötigen Internet. Microsoft-Graph-Synchronisierung noch nicht aktiv.</p></div></div></section>";
+
+if(document.getElementById('view-teilen'))return;
+const $=id=>document.getElementById(id);
+const style=document.createElement('style');style.textContent=CSS;document.head.appendChild(style);
+document.getElementById('view-buch')?.insertAdjacentHTML('beforebegin',HTML);
+const nav='<button type="button" data-view="teilen"><span class="sym">✉</span><span data-nb38="0"></span></button>';
+document.querySelector('.sidebar .side-bottom')?.insertAdjacentHTML('beforebegin','<div class="side-title">KOMMUNIKATION</div>'+nav);
+document.querySelector('#nb-nav-dialog .nb-nav-grid')?.insertAdjacentHTML('beforeend',nav);
+document.querySelector('#view-start .nb37-launch')?.insertAdjacentHTML('afterend','<div class="nb37-launch"><button type="button" data-view="teilen"><span class="nb37-emoji">✉</span><span data-nb38="0"></span></button></div>');
+const locale=()=>($('nb-lang-quick')?.value||'de'),t=i=>(P[locale()]||P.en)[i];
+function translate(){document.querySelectorAll('[data-nb38]').forEach(el=>{const v=t(Number(el.dataset.nb38));if(el.textContent!==v)el.textContent=v})}
+function source(){
+const mode=$('nb38-kind').value;if(mode==='own')return;
+let text='';
+if(mode==='family')try{const d=JSON.parse(localStorage.getItem('nadias-bloom-family-studio-v37')||'{}'),messages=Array.isArray(d.messages)?d.messages:[],m=messages.at(-1);if(m)text=String(m.sender||'Familie')+': '+String(m.text||'')}catch{}
+const q=window.NADIAS_BLOOM_QA?.read();
+if(mode==='event'){const events=Array.isArray(q?.events)?q.events:[];const e=events.filter(x=>x.date>=new Date().toISOString().slice(0,10)).sort((a,b)=>String(a.date).localeCompare(String(b.date)))[0];if(e)text=String(e.title||'')+' · '+String(e.date||'')+' '+String(e.time||'')}
+if(mode==='shopping'){const rows=(q?.shop||[]).filter(x=>!x.done);text=rows.map(x=>'• '+String(x.title||'')+(x.qty?' ('+x.qty+')':'')).join('\n')}
+$('nb38-body').value=text.slice(0,2500);$('nb38-status').textContent=text?'':t(16)
+}
+$('nb38-kind').addEventListener('change',source);
+function content(){const val=$('nb38-body').value.trim();if(val)return val.slice(0,2500);$('nb38-status').textContent=t(16);return null}
+$('nb38-wa').addEventListener('click',()=>{const body=content();if(body)window.open('https://wa.me/?text='+encodeURIComponent(body),'_blank','noopener,noreferrer')});
+$('nb38-mail').addEventListener('click',()=>{const body=content();if(!body)return;const email=$('nb38-to').value.trim();if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$('nb38-status').textContent=t(16);return}location.href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent($('nb38-subject').value.slice(0,100))+'&body='+encodeURIComponent(body)});
+$('nb38-ics').addEventListener('click',()=>{$('exportICS')?.click()});
+document.addEventListener('change',e=>{if(e.target.matches('#nb-lang-quick,#nb-lang-setting'))queueMicrotask(translate)});
+window.NADIA_V38_CONNECTORS={whatsapp:'prefilled-approval-draft',email:'mailto-approval-draft',outlook:'ics-one-way-import',automaticSend:false,oauthConnected:false};
+translate();
+})();
+/* NADIA_V38_SHARE_END */
+</script>
 <!-- NADIA V27 FAMILY CONTINUITY -->
+
+<style id="nb-happy-ux-v39">
+/* Happy: warm, legible, mobile-first; complements v37 without changing stored data. */
+#nb-happy-piga-open{background:linear-gradient(128deg,#604060 0%,#995b81 52%,#bb7c9d 100%);box-shadow:0 14px 34px #5c315c62,0 2px 10px #f9d4e566;border-color:#ffe0ef;transition:transform .16s ease,box-shadow .16s ease}
+#nb-happy-piga-open:hover{transform:translateY(-2px);box-shadow:0 18px 43px #5c315c72}
+#nb-happy-piga-open:active{transform:translateY(0)}
+#nb-happy-piga-open .nbh-orb{font-size:21px;background:radial-gradient(circle at 30% 24%,#fff 1%,#efcfe9 23%,#ac78bd 63%,#54305f 100%)}
+#nb-happy-piga-panel{border-radius:30px;border-color:#edc7df;box-shadow:0 30px 95px #25112899}
+#nb-happy-piga-bar{background:linear-gradient(110deg,#fffbfd,#f8eef5);border-bottom:1px solid #ead8e4}
+#nb-happy-piga-bar strong{color:#542d52}
+#nb-happy-piga-dock-note{box-shadow:0 7px 22px #543b5022}
+@media(max-width:600px){
+ #nb-happy-piga-dock{bottom:max(88px,calc(env(safe-area-inset-bottom) + 72px));left:max(12px,env(safe-area-inset-left))}
+ #nb-happy-piga-open{min-height:55px;font-size:13px;padding-right:18px}
+ #nb-happy-piga-panel{border-radius:0;width:100%;height:100dvh}
+ #nb-happy-piga-bar{padding-top:max(13px,env(safe-area-inset-top))}
+}
+@media(prefers-reduced-motion:reduce){#nb-happy-piga-open{transition:none}#nb-happy-piga-open:hover{transform:none}}
+</style>
+<!-- NADIA_V40_ORIGINAL_BLAUREGEN_FRONT: right-hand front of 1536×1024 original KDP artwork, without redrawing -->
+<style id="nadia-v40-original-blauregen-front">
+/* Cropping the exact right-hand 690px of the 1536×1024 wrap at display time.
+   CSS only: offline single-file keeps its existing embedded wisteria artwork. */
+.nb-book-cover--mini img,.nb-book-cover--large img{
+ width:100%!important;
+ height:auto!important;
+ aspect-ratio:690 / 1024!important;
+ object-fit:cover!important;
+ object-position:right center!important;
+ border:0!important;
+ border-radius:5px!important;
+ background:#f7eff3!important;
+ box-shadow:0 20px 37px rgba(71,42,62,.19)!important;
+}
+.nb-book-showcase,
+.nb-promo-book{
+ background:transparent!important;
+ border:0!important;
+ box-shadow:none!important;
+}
+.nb-book-showcase{overflow:visible!important;}
+.nb-book-showcase:after{content:none!important;}
+.nb-book-cover figcaption{color:#81697a;}
+@media(max-width:720px){
+ .nb-book-showcase{padding-inline:clamp(12px,4vw,25px)!important;}
+ .nb-promo-book{padding-inline:clamp(12px,4vw,25px)!important;}
+ .nb-book-showcase .nb-book-cover--large{max-width:min(74vw,320px)!important;}
+}
+</style>
+<style id="nb40-wisteria-original-front">
+/* Authentic BARAKAH HOME 2027: display only the right 690x1024 front of the 1536x1024 Drive original, without redrawing or changing its words. */
+.nb-promo-book{position:relative;border:0!important;background:linear-gradient(118deg,rgba(249,242,251,.48),rgba(255,250,251,.12) 70%)!important;box-shadow:none!important;isolation:isolate}
+.nb-promo-book::before{content:"";position:absolute;inset:12% 6% 4%;background:radial-gradient(ellipse at center,#e6d4ef75,transparent 73%);filter:blur(14px);pointer-events:none;z-index:-1}
+.nb-book-showcase{position:relative;background:linear-gradient(135deg,rgba(252,248,253,.94),rgba(246,238,249,.42) 68%,rgba(254,251,252,.6))!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+.nb-book-showcase::after{content:"";position:absolute;inset:9% 17% 6% -3%;background:radial-gradient(ellipse,#d9c0e48a,transparent 69%);filter:blur(18px);pointer-events:none;z-index:0}
+.nb-book-showcase > *{position:relative;z-index:1}
+.nb-book-cover img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:690/1024!important;object-fit:cover!important;object-position:right center!important;border:0!important;border-radius:3px!important;background:#f8edf7!important;box-shadow:0 20px 44px #654b653c,0 5px 12px #745e7024!important}
+.nb-promo-book .nb-book-cover--mini{width:min(100%,220px)!important}
+.nb-promo-book .nb-book-cover--mini img{aspect-ratio:690/1024!important;object-fit:cover!important;object-position:right center!important}
+.nb-book-showcase .nb-book-cover--large{width:100%!important;max-width:340px!important}
+.nb-book-showcase .nb-book-cover--large img{aspect-ratio:690/1024!important;object-fit:cover!important;object-position:right center!important}
+.nb-book-cover figcaption{color:#7d607b;font-size:11px}
+.nb-promo-book .nb-promo-copy>div,.nb-book-showcase-copy{min-width:0}
+@media(max-width:720px){.nb-promo-book{padding:18px 4px!important}.nb-book-showcase{padding:22px 8px!important;gap:23px!important}.nb-promo-book .nb-book-cover--mini{max-width:min(62vw,240px)!important}.nb-book-showcase .nb-book-cover--large{max-width:min(78vw,340px)!important}}
+</style>
+<style id="nb44-dua-continuous-date">
+.nb-home-dua-date{margin:5px 0 14px!important;color:#6a527a!important;font:700 12px/1.5 system-ui!important;letter-spacing:.01em}
+#view-start #homeDua{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}
+@media(max-width:600px){#view-start .nb-home-dua-date{font-size:12px}}
+</style>
+<style id="nb-daily-dua-today-v42">
+/* Today's 365-book-entry Du'a is shown first, calendar archive remains optional. */
+#view-iman{min-width:0;overflow-wrap:break-word}
+#view-iman .title{font-size:clamp(30px,7vw,51px);line-height:1.14;overflow-wrap:break-word}
+#view-iman .sub{max-width:68ch}
+#view-iman .nb-daily-dua{isolation:isolate;min-width:0;max-width:100%;padding:clamp(20px,4vw,36px);overflow:hidden;background:linear-gradient(145deg,#fcf7fb 0%,#f5edf6 49%,#f8f4ee 100%);border:1px solid #e6d5e6;border-radius:27px;box-shadow:0 17px 42px #75507117}
+#view-iman .nb-daily-dua:before{content:"✿";right:16px;top:12px;color:#b18db6;font-size:49px;opacity:.26;pointer-events:none}
+.nb-dua-heading{position:relative;z-index:1}
+#view-iman .nb-daily-dua h3{font:500 clamp(25px,5.5vw,36px)/1.2 Georgia,serif;color:#633c62;margin:12px 0 6px}
+#view-iman .nb-daily-dua .eyebrow{font-size:11px;color:#8c6385;max-width:85%;letter-spacing:.1em}
+#view-iman .nb-dua-date-caption{margin:0 0 18px;color:#78637a;font-size:13px;line-height:1.55}
+#view-iman #duaText{position:relative;z-index:1;max-width:100%;overflow-wrap:anywhere;font:400 clamp(17px,3.5vw,22px)/1.75 Georgia,serif;color:#4b384c;margin:18px 0}
+#view-iman #duaKind{background:#f0e1ed;color:#654565;font-weight:700}
+.nb-dua-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:22px 0 18px}
+#view-iman .nb-dua-actions>*{min-height:45px;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.nb-dua-archive{margin-top:9px;padding:12px 15px;background:#ffffffb3;border:1px solid #e9dce7;border-radius:16px}
+.nb-dua-archive summary{cursor:pointer;font-size:13px;font-weight:750;color:#715276}
+.nb-dua-archive-controls{display:flex;align-items:end;gap:9px;flex-wrap:wrap;padding-top:12px}
+.nb-dua-archive-controls .field{flex:1 1 180px;max-width:260px}
+.nb-dua-archive-controls input{width:100%;min-height:46px}
+.nb-dua-archive-controls .btn{min-width:47px;height:47px;font-size:22px}
+#view-iman .nb-daily-dua .note{max-width:100%;margin:15px 0 0;font-size:11px;color:#806f7d;line-height:1.65}
+@media(max-width:600px){
+ #view-iman .nb-daily-dua{padding:21px 17px;margin:13px 0 18px;border-radius:23px}
+ #view-iman .nb-dua-actions .btn{flex:1 1 100%;white-space:normal}
+ #view-iman .nb-dua-archive-controls .field{flex-basis:100%;max-width:100%}
+ #nb-happy-piga-dock{bottom:calc(76px + env(safe-area-inset-bottom))!important;max-width:min(255px,68vw)!important}
+ #nb-happy-piga-open{max-width:100%;min-height:50px!important;font-size:12px!important}
+ #nb-happy-piga-open-label{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+}
+</style>
+<!-- Happy v38: one shared PIGA Gemini Live; deliberately no auto microphone or family-data upload. -->
+<style id="nb-happy-piga-one-engine-style">
+#nb-happy-piga-dock{position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));z-index:21000;max-width:min(280px,calc(100vw - 24px));display:flex;flex-direction:column;gap:6px}
+#nb-happy-piga-open{display:flex;align-items:center;gap:10px;background:linear-gradient(130deg,#603e64,#aa728d);color:#fff;border:1px solid #e7b6cd;border-radius:999px;padding:9px 15px 9px 9px;box-shadow:0 12px 36px #2c152957;font:700 13px/1.3 system-ui;min-height:52px;cursor:pointer}
+#nb-happy-piga-open .nbh-orb{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 26%,#f7eeff,#bbd8f2 26%,#8471b7 66%,#442854);box-shadow:0 0 20px #ebd4ff96;font-size:18px}
+#nb-happy-piga-open:focus-visible,#nb-happy-piga-close:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#nb-happy-piga-dock-note{font:600 11px/1.45 system-ui;background:#fff8fc;color:#593d57;border:1px solid #e7c9dc;border-radius:12px;padding:7px 10px;max-width:280px}
+#nb-happy-piga-webview-hint{margin:clamp(14px,4vw,28px);padding:clamp(18px,4vw,27px);border:1px solid #e1c7de;border-radius:18px;background:#fff;color:#594359;font:500 14px/1.65 system-ui}
+#nb-happy-piga-webview-hint a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:17px;padding:11px 18px;background:#8c577d;color:#fff;font-weight:750;border-radius:13px;text-decoration:none}
+#nb-happy-piga-webview-hint a:focus-visible{outline:3px solid #d69ec9;outline-offset:3px}
+#nb-happy-piga-dialog[hidden]{display:none!important}
+#nb-happy-piga-dialog{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:#170d20bd;padding:12px;overscroll-behavior:contain}
+#nb-happy-piga-panel{width:min(770px,100%);height:min(92dvh,860px);display:flex;flex-direction:column;border-radius:23px;overflow:hidden;background:#fef9fc;border:1px solid #e5c4da;box-shadow:0 25px 80px #180b27aa}
+#nb-happy-piga-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;color:#533452;background:#fff7fb}
+#nb-happy-piga-bar strong{font:700 16px Georgia,serif}
+#nb-happy-piga-bar span{display:block;font:500 11px/1.3 system-ui;color:#846b7d;margin-top:2px}
+#nb-happy-piga-close{background:#683c61;color:#fff;border:0;border-radius:12px;min-width:44px;min-height:44px;cursor:pointer;font:700 18px system-ui}
+#nb-happy-piga-frame{width:100%;border:0;flex:1;min-height:0;background:#081726}
+@media(max-width:600px){#nb-happy-piga-dialog{padding:0}#nb-happy-piga-panel{height:100dvh;width:100%;border-radius:0}#nb-happy-piga-dock{bottom:max(12px,env(safe-area-inset-bottom))}}
+#nb-happy-piga-actions{display:flex;align-items:center;gap:9px;flex-shrink:0}
+#nb-happy-piga-direct{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:8px 11px;border:1px solid #d7afcd;border-radius:13px;background:#fff;color:#603a5d;text-decoration:none;font:700 12px/1.25 system-ui;text-align:center}
+#nb-happy-piga-direct:focus-visible{outline:3px solid #ad6a9c;outline-offset:3px}
+@media(max-width:480px){#nb-happy-piga-bar{flex-wrap:wrap}#nb-happy-piga-actions{width:100%;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){#nb-happy-piga-open{transition:none}}
+</style>
+<style id="nb-daily-dua-mobile-dock-fix-v42">@media(max-width:600px){#nb-happy-piga-dock{bottom:calc(76px + env(safe-area-inset-bottom))!important;max-width:min(255px,68vw)!important}#nb-happy-piga-open{max-width:100%;min-height:50px!important;font-size:12px!important}#nb-happy-piga-open-label{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}}</style>
+<style id="nb43-happy-inline-navigation">
+/* The single existing Happy launch control belongs to navigation, not over content. */
+#nb-happy-piga-dock.nb43-inline{position:static!important;inset:auto!important;bottom:auto!important;left:auto!important;right:auto!important;top:auto!important;z-index:auto!important;width:auto!important;min-width:0!important;max-width:none!important;margin:0!important;transform:none!important;display:flex!important;flex-direction:column!important;gap:0!important}
+#nb-happy-piga-dock-note{position:static!important;z-index:auto!important;max-width:none!important;box-shadow:none!important;margin:8px 0 14px!important;padding:11px 15px!important;white-space:normal!important;overflow-wrap:anywhere!important;background:#fff4fa!important;color:#633e69!important}
+#nb-happy-piga-dock-note[hidden]{display:none!important}
+.sidebar #nb-happy-piga-dock.nb43-inline{width:calc(100% - 16px)!important;margin:0 8px 18px!important}
+.sidebar #nb-happy-piga-open{width:100%!important;justify-content:flex-start!important;min-height:51px!important;padding:8px 13px!important;border-radius:16px!important;box-shadow:0 5px 18px #7d518131!important}
+.sidebar #nb-happy-piga-open-label{font:750 13px/1.3 system-ui!important;overflow:visible!important;white-space:normal!important}
+@media(max-width:800px){
+.mobilebar{align-items:stretch!important;gap:2px!important}
+.mobilebar > button{min-width:0!important;flex:1 1 0!important}
+.mobilebar #nb-happy-piga-dock.nb43-inline{flex:1 1 0!important;width:0!important;min-width:0!important;align-self:stretch!important}
+.mobilebar #nb-happy-piga-open{width:100%!important;height:100%!important;min-height:52px!important;max-width:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;padding:4px 1px!important;border:0!important;border-radius:13px!important;background:linear-gradient(140deg,#efe1f7,#fff1f9)!important;box-shadow:none!important;color:#6b4379!important}
+.mobilebar #nb-happy-piga-open .nbh-orb{width:25px!important;height:25px!important;flex:0 0 25px!important;display:grid!important;place-items:center!important;font-size:16px!important}
+.mobilebar #nb-happy-piga-open-label{font:800 10px/1.2 system-ui!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important}
+.mobilebar #nb-happy-piga-open:focus-visible{outline:3px solid #9670ae!important;outline-offset:-1px!important}
+}
+@media(max-width:355px){.mobilebar{padding-inline:2px!important;gap:0!important}.mobilebar #nb-happy-piga-open-label{font-size:9px!important}}
+</style>
+<script id="nb-happy-piga-one-engine">
+(()=>{'use strict';
+ if(window.NadiaHappyPigaSharedV38)return;
+ const I18N={
+ de:['Happy · Mit mir sprechen','Happy · Nadia’s Bloom','Deine persönliche Begleiterin für Familie & Alltag','Schließen','Happy Live prüft die Freigabe …','Happy Live ist gerade nicht bereit. Lokale App-Funktionen bleiben verfügbar.','Offline: Happy Live braucht Internet. Deine Familienfunktionen bleiben lokal verfügbar.'],
+ en:['Talk to Happy','Happy · Nadia’s Bloom','Your warm companion for family and everyday life','Close','Checking Happy Live …','Happy Live is not ready. Local app features still work.','Offline: Happy Live needs internet. Family features remain local.'],
+ fr:['Parler à Happy','Happy · Nadia’s Bloom','Voix PIGA Gemini Live partagée · Gacrux','Fermer','Vérification de Happy Live …','Happy Live est indisponible. Les fonctions locales restent accessibles.','Hors ligne : la voix nécessite Internet. Les outils familiaux restent accessibles.'],
+ ar:['تحدثي مع هابي','هابي · ناديا بلوم','صوت PIGA Gemini Live المشترك · Gacrux','إغلاق','جارٍ التحقق من هابي …','الصوت غير متاح حاليًا. الميزات المحلية مستمرة.','دون اتصال: الصوت يتطلب الإنترنت. تبقى الأدوات المحلية متاحة.'],
+ es:['Hablar con Happy','Happy · Nadia’s Bloom','Voz PIGA Gemini Live compartida · Gacrux','Cerrar','Comprobando Happy Live …','Happy Live no está disponible. Las funciones locales siguen activas.','Sin conexión: la voz requiere Internet. Tus funciones locales siguen disponibles.'],
+ it:['Parla con Happy','Happy · Nadia’s Bloom','Voce PIGA Gemini Live condivisa · Gacrux','Chiudi','Verifica Happy Live …','Happy Live non è disponibile. Le funzioni locali restano attive.','Offline: la voce richiede Internet. Le funzioni locali restano disponibili.'],
+ pt:['Falar com Happy','Happy · Nadia’s Bloom','Voz PIGA Gemini Live partilhada · Gacrux','Fechar','A verificar Happy Live …','Happy Live indisponível. As funções locais continuam disponíveis.','Offline: a voz requer internet. As funções locais continuam disponíveis.'],
+ th:['คุยกับแฮปปี้','Happy · Nadia’s Bloom','เสียง PIGA Gemini Live · Gacrux','ปิด','กำลังตรวจสอบ Happy Live …','Happy Live ยังไม่พร้อม ฟังก์ชันออฟไลน์ยังใช้ได้','ออฟไลน์: เสียงต้องใช้อินเทอร์เน็ต แต่ฟังก์ชันในเครื่องยังใช้ได้'],
+ ms:['Bercakap dengan Happy','Happy · Nadia’s Bloom','Suara PIGA Gemini Live dikongsi · Gacrux','Tutup','Menyemak Happy Live …','Happy Live belum tersedia. Fungsi luar talian masih ada.','Luar talian: suara memerlukan Internet. Fungsi keluarga tetap tersedia.'],
+ id:['Bicara dengan Happy','Happy · Nadia’s Bloom','Suara PIGA Gemini Live bersama · Gacrux','Tutup','Memeriksa Happy Live …','Happy Live belum tersedia. Fungsi lokal tetap dapat digunakan.','Offline: suara memerlukan internet. Fitur keluarga tetap lokal.'],
+ ko:['Happy와 대화','Happy · Nadia’s Bloom','PIGA Gemini Live 공유 음성 · Gacrux','닫기','Happy Live 확인 중 …','Happy Live를 사용할 수 없습니다. 로컬 기능은 계속 이용할 수 있습니다.','오프라인: 음성은 인터넷이 필요합니다. 가족 기능은 로컬에서 계속 작동합니다.'],
+ ja:['Happyと話す','Happy · Nadia’s Bloom','PIGA Gemini Live 共通音声 · Gacrux','閉じる','Happy Liveを確認中 …','Happy Liveは現在利用できません。ローカル機能は利用できます。','オフライン: 音声にはネット接続が必要です。家族向け機能は使えます。'],
+ ru:['Говорить с Happy','Happy · Nadia’s Bloom','Общий голос PIGA Gemini Live · Gacrux','Закрыть','Проверка Happy Live …','Happy Live недоступна. Локальные функции продолжают работать.','Офлайн: для голоса нужен интернет. Семейные функции работают локально.'],
+ nl:['Praat met Happy','Happy · Nadia’s Bloom','Gedeelde PIGA Gemini Live-stem · Gacrux','Sluiten','Happy Live controleren …','Happy Live is niet beschikbaar. Lokale functies blijven werken.','Offline: spraak vereist internet. Gezinsfuncties blijven lokaal beschikbaar.'],
+ zh:['与 Happy 交谈','Happy · Nadia’s Bloom','共享 PIGA Gemini Live 声音 · Gacrux','关闭','正在检查 Happy Live …','Happy Live 暂不可用，本地功能仍可使用。','离线：语音需要网络，家庭功能仍可离线使用。']
+ };
+ const lang=()=>{const code=(document.documentElement.lang||'de').toLowerCase().split('-')[0];return I18N[code]||I18N.de};
+ const separateLabels={de:'Separat öffnen',en:'Open separately',fr:'Ouvrir à part',ar:'فتح منفصل',es:'Abrir aparte',it:'Apri a parte',pt:'Abrir à parte',th:'เปิดแยก',ms:'Buka berasingan',id:'Buka terpisah',ko:'별도로 열기',ja:'別で開く',ru:'Открыть отдельно',nl:'Apart openen',zh:'单独打开'};
+ const separateText=()=>separateLabels[(document.documentElement.lang||'de').toLowerCase().split('-')[0]]||separateLabels.de;
+ const create=(tag,id,text)=>{const x=document.createElement(tag);if(id)x.id=id;if(text)x.textContent=text;return x};
+ function mount(){
+  if(document.getElementById('nb-happy-piga-dock'))return;
+  const dock=create('div','nb-happy-piga-dock');
+  const open=create('button','nb-happy-piga-open');open.type='button';
+  const orb=create('span',null,'✦');orb.className='nbh-orb';orb.setAttribute('aria-hidden','true');
+  const openLabel=create('span','nb-happy-piga-open-label',lang()[0]);open.append(orb,openLabel);
+  const note=create('span','nb-happy-piga-dock-note');note.hidden=true;note.setAttribute('role','status');
+  dock.append(open,note);
+  const dlg=create('section','nb-happy-piga-dialog');dlg.hidden=true;dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-label','Happy Live');
+  const panel=create('div','nb-happy-piga-panel');
+  const bar=create('div','nb-happy-piga-bar'),brand=create('div'),name=create('strong','nb-happy-piga-title',lang()[1]),subtitle=create('span','nb-happy-piga-subtitle',lang()[2]);
+  brand.append(name,subtitle);
+  const close=create('button','nb-happy-piga-close','×');close.type='button';close.setAttribute('aria-label',lang()[3]);const direct=create('a','nb-happy-piga-direct',separateText());
+  direct.href='https://pigapocket.com/nadias-bloom/happy-live';direct.target='_blank';direct.rel='noopener noreferrer';
+  const actions=create('div','nb-happy-piga-actions');actions.append(direct,close);bar.append(brand,actions);
+  panel.append(bar);dlg.append(panel);
+  document.body.append(dock,dlg);
+  // One Happy button, moved at runtime to the existing responsive navigation.
+  dock.classList.add('nb43-inline');
+  const mobileNavigation=document.querySelector('nav.mobilebar');
+  const desktopSidebar=document.querySelector('aside.sidebar');
+  const sidebarLogo=desktopSidebar?.querySelector('.logo');
+  const displayMode=window.matchMedia('(max-width:800px)');
+  function placeHappy(){
+   if(displayMode.matches&&mobileNavigation)mobileNavigation.append(dock);
+   else if(sidebarLogo)sidebarLogo.insertAdjacentElement('afterend',dock);
+   else if(desktopSidebar)desktopSidebar.prepend(dock);
+  }
+  placeHappy();
+  if(displayMode.addEventListener)displayMode.addEventListener('change',placeHappy);
+  else displayMode.addListener?.(placeHappy);
+  // Announcements stay in the content's normal flow, never inside bottom navigation.
+  const mainHeader=document.querySelector('main.content .topbar');
+  if(mainHeader)mainHeader.insertAdjacentElement('afterend',note);
+  openLabel.textContent='Happy';open.title=lang()[0];open.setAttribute('aria-label',lang()[0]);
+
+  let pending=false,priorFocus=null;
+  const message=value=>{note.textContent=value;note.hidden=!value};
+  function shut(){
+   dlg.hidden=true;
+   const frame=document.getElementById('nb-happy-piga-frame');if(frame)frame.remove();
+   document.getElementById('nb-happy-piga-webview-hint')?.remove();
+   document.body.style.removeProperty('overflow');
+   if(priorFocus&&typeof priorFocus.focus==='function')priorFocus.focus();
+  }
+  async function launch(){
+   if(pending)return;
+   if(!navigator.onLine){message(lang()[6]);return}
+   if(location.protocol!=='https:'||!['pigapocket.com','www.pigapocket.com'].includes(location.hostname)){
+    // A saved standalone HTML file cannot host the shared live engine;
+    // this explicit click opens only the canonical, secure voice route.
+    window.open('https://pigapocket.com/nadias-bloom/happy-live','_blank','noopener,noreferrer');
+    return;
+   }
+   // Instagram/Facebook WebViews can block framed documents or delegated
+   // microphone input. Do not display the broken ERR_BLOCKED_BY_CSP iframe.
+   // Show a real, accessible direct-URL handoff instead; never auto-activate mic.
+   if(/Instagram|FBAN|FBAV|FB_IAB|FB4A|Line\//i.test(navigator.userAgent)){
+    priorFocus=document.activeElement;
+    const key=(document.documentElement.lang||'de').toLowerCase().split('-')[0];
+    const hintTexts={
+     de:'Instagram kann die Sprach-KI im eingebetteten Fenster und das Mikrofon sperren. Öffne diese Seite über das Instagram-Menü (⋯) im externen Browser, zum Beispiel Chrome oder Samsung Internet. Dort Happy starten und das Mikrofon erlauben.',
+     en:'Instagram may block embedded voice and microphone access. Use the Instagram menu (⋯) to open this page in Chrome or Samsung Internet, then start Happy and allow the microphone.',
+     fr:'Instagram peut bloquer la voix intégrée et le micro. Utilisez le menu Instagram (⋯) pour ouvrir cette page dans Chrome ou Samsung Internet, puis autorisez le micro.',
+     ar:'قد يمنع إنستغرام تشغيل الصوت والميكروفون داخل التطبيق. افتح الصفحة من قائمة إنستغرام (⋯) في Chrome أو Samsung Internet ثم اسمح بالميكروفون.',
+     es:'Instagram puede bloquear la voz integrada y el micrófono. Abre esta página desde el menú (⋯) en Chrome o Samsung Internet y permite el micrófono.',
+     it:'Instagram potrebbe bloccare la voce e il microfono integrati. Apri la pagina dal menu (⋯) in Chrome o Samsung Internet e abilita il microfono.',
+     pt:'O Instagram pode bloquear a voz integrada e o microfone. Abra a página pelo menu (⋯) no Chrome ou Samsung Internet e permita o microfone.',
+     nl:'Instagram kan de ingebouwde spraak en microfoon blokkeren. Open de pagina via het menu (⋯) in Chrome of Samsung Internet en geef microfoontoegang.',
+     ru:'Instagram может блокировать голосовой режим и микрофон. Через меню (⋯) откройте страницу в Chrome или Samsung Internet и разрешите микрофон.',
+     zh:'Instagram 可能阻止内嵌语音和麦克风。请通过菜单 (⋯) 用 Chrome 或 Samsung Internet 打开此页面并允许麦克风。',
+     ja:'Instagram 内では音声やマイクが制限されることがあります。メニュー (⋯) から Chrome または Samsung Internet で開き、マイクを許可してください。',
+     ko:'Instagram에서 음성과 마이크를 차단할 수 있습니다. 메뉴(⋯)에서 Chrome 또는 Samsung Internet으로 열고 마이크를 허용하세요.',
+     th:'Instagram อาจบล็อกเสียงและไมโครโฟน ให้เปิดหน้านี้ผ่านเมนู (⋯) ใน Chrome หรือ Samsung Internet แล้วอนุญาตไมโครโฟน',
+     ms:'Instagram mungkin menyekat suara dan mikrofon. Buka halaman ini melalui menu (⋯) dalam Chrome atau Samsung Internet, kemudian benarkan mikrofon.',
+     id:'Instagram dapat memblokir suara dan mikrofon. Buka halaman ini lewat menu (⋯) di Chrome atau Samsung Internet, lalu izinkan mikrofon.'
+    };
+    const hint=create('div','nb-happy-piga-webview-hint',hintTexts[key]||hintTexts.de);
+    hint.setAttribute('role','note');
+    const openDirect=create('a',null,separateText());
+    openDirect.href='https://pigapocket.com/nadias-bloom/happy-live';
+    openDirect.target='_blank';openDirect.rel='noopener noreferrer';
+    hint.append(openDirect);panel.append(hint);
+    dlg.hidden=false;document.body.style.overflow='hidden';close.focus();
+    return;
+   }
+   // Opening the text chat must not depend on the separate audio token gate.
+   // Neither microphone nor AI inference starts until the visitor acts.
+   pending=true;open.disabled=true;message('');
+   priorFocus=document.activeElement;
+   const frame=create('iframe','nb-happy-piga-frame');frame.title=lang()[1];frame.allow='microphone';
+   frame.referrerPolicy='same-origin';frame.src='/nadias-bloom/happy-live';
+   frame.addEventListener('load',()=>{
+     // Browser error documents have no expected same-origin voice control.
+     try{if(!frame.contentDocument?.getElementById('voice'))message(lang()[5])}
+     catch{message(lang()[5])}
+   },{once:true});
+   panel.append(frame);dlg.hidden=false;document.body.style.overflow='hidden';close.focus();
+   pending=false;open.disabled=false;
+   const controller=new AbortController(),clock=setTimeout(()=>controller.abort(),7000);
+   try{
+    const response=await fetch('/__piga/live/health',{method:'GET',credentials:'omit',cache:'no-store',signal:controller.signal});
+    const result=await response.json();
+    if(!response.ok||result.tokenMintEligible!==true||result.readiness?.quotaCredentialReady!==true){
+     message(lang()[5]);
+    }
+   }catch{message(lang()[5])}
+   finally{clearTimeout(clock)}
+  }
+  open.addEventListener('click',()=>void launch());
+  close.addEventListener('click',shut);
+  dlg.addEventListener('click',event=>{if(event.target===dlg)shut()});
+  window.addEventListener('keydown',event=>{if(!dlg.hidden&&event.key==='Escape')shut()});
+  window.addEventListener('pagehide',()=>{document.getElementById('nb-happy-piga-frame')?.remove()});
+  window.addEventListener('online',()=>message(''));
+  window.addEventListener('offline',()=>{if(!dlg.hidden)shut();message(lang()[6])});
+  const updateLang=()=>{openLabel.textContent='Happy';open.title=lang()[0];open.setAttribute('aria-label',lang()[0]);name.textContent=lang()[1];subtitle.textContent=lang()[2];close.setAttribute('aria-label',lang()[3]);direct.textContent=separateText()};
+  new MutationObserver(updateLang).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ }
+ window.NadiaHappyPigaSharedV38=Object.freeze({version:'v38-one-piga-gemini-live',provider:'original-Gemini-Live-Gacrux',profile:'nadias-bloom-happy',offline:'local-only',autoMicrophone:false,localFamilySync:false,gate2:'BLOCK'});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+})();
+</script>
+
+<script id="nb41-module-center-script">
+(()=>{'use strict';
+const M=["kalender","aufgaben","erinnerungen","kinder","familienchat","journal","essen","rezepte","einkauf","haushalt","iman","geld","teilen","buch"];
+const G=[{"id":"day","modules":["kalender","aufgaben","erinnerungen"]},{"id":"family","modules":["kinder","familienchat","journal"]},{"id":"home","modules":["essen","rezepte","einkauf","haushalt"]},{"id":"life","modules":["iman","geld","teilen","buch"]}];
+const P={"de":["Deine Bereiche","Was möchtest du heute erledigen? Wähle einen Bereich – ohne lange zu suchen.","Bereich suchen, z. B. Kalender oder Rezepte","Keine passenden Bereiche gefunden.","Mein Tag","Familie & Miteinander","Küche & Zuhause","Herz & Organisation","Termine, Aufgaben und Erinnerungen","Kinder, Nachrichten und gemeinsame Momente","Mahlzeiten, Vorräte und Haushalt","Glaube, Finanzen, Teilen und Einstellungen","Kalender","Aufgaben","Erinnerungen","Kinder-Kompass","Familien-Pinnwand","Dankbarkeit","Essensplanung","Zutaten & Rezepte","Einkauf & Vorrat","Haushalt","Iman & Duʿā","Finanzen","Teilen & Outlook","Buch & Einstellungen"],"en":["Your spaces","What would you like to do today? Choose an area and get started.","Search, e.g. calendar or recipes","No matching areas found.","My day","Family & togetherness","Kitchen & home","Heart & organization","Appointments, tasks and reminders","Children, notes and shared moments","Meals, pantry and household","Faith, finances, sharing and settings","Calendar","Tasks","Reminders","Children's compass","Family noticeboard","Gratitude","Meal planning","Ingredients & recipes","Shopping & pantry","Household","Faith & Duʿā","Finances","Share & Outlook","Book & settings"],"fr":["Vos espaces","Que souhaitez-vous faire aujourd’hui ? Choisissez une rubrique.","Rechercher : calendrier, recettes…","Aucune rubrique trouvée.","Ma journée","Famille & liens","Cuisine & maison","Cœur & organisation","Rendez-vous, tâches et rappels","Enfants, messages et moments partagés","Repas, provisions et maison","Foi, finances, partage et paramètres","Calendrier","Tâches","Rappels","Repères pour les enfants","Tableau familial","Gratitude","Repas","Ingrédients & recettes","Courses & provisions","Maison","Foi & Duʿā","Finances","Partager & Outlook","Livre & paramètres"],"ar":["مساحاتك","ماذا تريدين أن تنجزي اليوم؟ اختاري القسم المناسب.","ابحثي عن قسم مثل التقويم أو الوصفات","لم يُعثر على أقسام مطابقة.","يومي","الأسرة والتواصل","المطبخ والمنزل","الإيمان والتنظيم","المواعيد والمهام والتذكيرات","الأطفال والرسائل واللحظات المشتركة","الوجبات والمخزون والمنزل","الإيمان والمال والمشاركة والإعدادات","التقويم","المهام","التذكيرات","دليل الأطفال","لوحة الأسرة","الامتنان","تخطيط الوجبات","المكونات والوصفات","التسوق والمخزون","المنزل","الإيمان والدعاء","المال","المشاركة وOutlook","الكتاب والإعدادات"],"es":["Tus espacios","¿Qué deseas hacer hoy? Elige un área y comienza.","Buscar calendario, recetas…","No se encontraron áreas.","Mi día","Familia & convivencia","Cocina & hogar","Corazón & organización","Citas, tareas y recordatorios","Niños, mensajes y momentos juntos","Comidas, despensa y hogar","Fe, finanzas, compartir y ajustes","Calendario","Tareas","Recordatorios","Guía infantil","Tablón familiar","Gratitud","Plan de comidas","Ingredientes & recetas","Compras & despensa","Hogar","Fe & Duʿā","Finanzas","Compartir & Outlook","Libro & ajustes"],"it":["I tuoi spazi","Che cosa vuoi fare oggi? Scegli una sezione.","Cerca calendario, ricette…","Nessuna sezione trovata.","La mia giornata","Famiglia & insieme","Cucina & casa","Cuore & organizzazione","Appuntamenti, attività e promemoria","Bambini, messaggi e momenti condivisi","Pasti, dispensa e casa","Fede, finanze, condivisione e impostazioni","Calendario","Attività","Promemoria","Guida bambini","Bacheca familiare","Gratitudine","Pasti","Ingredienti & ricette","Spesa & dispensa","Casa","Fede & Duʿā","Finanze","Condividi & Outlook","Libro & impostazioni"],"pt":["Seus espaços","O que deseja fazer hoje? Escolha uma área.","Pesquisar calendário, receitas…","Nenhuma área encontrada.","Meu dia","Família & convivência","Cozinha & lar","Coração & organização","Compromissos, tarefas e lembretes","Crianças, mensagens e momentos juntos","Refeições, despensa e casa","Fé, finanças, partilha e definições","Calendário","Tarefas","Lembretes","Guia infantil","Mural da família","Gratidão","Planejar refeições","Ingredientes & receitas","Compras & despensa","Casa","Fé & Duʿā","Finanças","Compartilhar & Outlook","Livro & definições"],"nl":["Jouw onderdelen","Wat wil je vandaag doen? Kies een onderdeel.","Zoek kalender, recepten…","Geen passende onderdelen.","Mijn dag","Familie & samen","Keuken & thuis","Hart & organisatie","Afspraken, taken en herinneringen","Kinderen, berichten en samen tijd","Maaltijden, voorraad en huishouden","Geloof, geldzaken, delen en instellingen","Agenda","Taken","Herinneringen","Kinderkompas","Familiebord","Dankbaarheid","Maaltijdplanning","Ingrediënten & recepten","Boodschappen & voorraad","Huishouden","Geloof & Duʿā","Geldzaken","Delen & Outlook","Boek & instellingen"],"ru":["Ваши разделы","Что вы хотите сделать сегодня? Выберите раздел.","Поиск: календарь, рецепты…","Ничего не найдено.","Мой день","Семья и общение","Кухня и дом","Душа и порядок","Встречи, дела и напоминания","Дети, сообщения и общие моменты","Еда, запасы и домашние дела","Вера, финансы, обмен и настройки","Календарь","Задачи","Напоминания","Детский компас","Семейная доска","Благодарность","План питания","Продукты и рецепты","Покупки и запасы","Дом","Вера и дуа","Финансы","Поделиться и Outlook","Книга и настройки"],"zh":["你的功能区","今天想做什么？选择一个功能即可开始。","搜索日历、食谱等","没有找到匹配的功能。","我的一天","家庭与陪伴","厨房与家务","心灵与管理","日程、任务和提醒","孩子、留言和家庭时光","餐食、储备和家务","信仰、财务、分享和设置","日历","任务","提醒","儿童指南","家庭留言板","感恩","餐食计划","食材和食谱","购物与储备","家务","信仰与祈祷","财务","分享与Outlook","书籍与设置"],"ja":["あなたの機能","今日は何をしますか？項目を選んでください。","カレンダーやレシピを検索","該当する項目がありません。","今日の予定","家族との時間","キッチンと家","心と整理","予定、タスク、リマインダー","子ども、伝言、家族の時間","食事、備蓄、家事","信仰、お金、共有、設定","カレンダー","タスク","リマインダー","子どもガイド","家族の伝言板","感謝","献立","食材とレシピ","買い物と備蓄","家事","信仰とドゥア","家計","共有とOutlook","本と設定"],"ko":["나의 공간","오늘 무엇을 하시겠어요? 항목을 선택하세요.","달력이나 요리법 검색","일치하는 항목이 없습니다.","나의 하루","가족과 함께","주방과 집","마음과 정리","일정, 할 일, 알림","아이, 메시지, 가족 시간","식사, 식재료, 집안일","신앙, 재정, 공유, 설정","달력","할 일","알림","어린이 나침반","가족 게시판","감사","식단 계획","재료와 요리법","장보기와 식재료","집안일","신앙과 두아","재정","공유와 Outlook","책과 설정"],"th":["พื้นที่ของคุณ","วันนี้อยากทำอะไร? เลือกหมวดที่ต้องการ","ค้นหาปฏิทินหรือสูตรอาหาร","ไม่พบหมวดที่ตรงกัน","วันของฉัน","ครอบครัวและความผูกพัน","ครัวและบ้าน","ใจและการจัดระเบียบ","นัดหมาย งาน และการเตือน","เด็ก ข้อความ และเวลาด้วยกัน","อาหาร วัตถุดิบ และงานบ้าน","ศรัทธา การเงิน การแชร์ และตั้งค่า","ปฏิทิน","งาน","การเตือน","คู่มือเด็ก","กระดานข้อความครอบครัว","ความขอบคุณ","แผนอาหาร","วัตถุดิบและสูตรอาหาร","ซื้อของและของในบ้าน","งานบ้าน","ศรัทธาและดุอา","การเงิน","แชร์และ Outlook","หนังสือและตั้งค่า"],"ms":["Ruang anda","Apa yang ingin dilakukan hari ini? Pilih bahagian.","Cari kalendar, resipi…","Tiada bahagian sepadan.","Hari saya","Keluarga & kebersamaan","Dapur & rumah","Hati & pengurusan","Temu janji, tugas dan peringatan","Anak-anak, mesej dan masa bersama","Makanan, stok dan kerja rumah","Iman, kewangan, kongsi dan tetapan","Kalendar","Tugas","Peringatan","Kompas kanak-kanak","Papan keluarga","Kesyukuran","Rancangan makanan","Bahan & resipi","Beli-belah & stok","Kerja rumah","Iman & Duʿā","Kewangan","Kongsi & Outlook","Buku & tetapan"],"id":["Ruang Anda","Apa yang ingin dilakukan hari ini? Pilih bagian.","Cari kalender, resep…","Tidak ada bagian yang cocok.","Hari saya","Keluarga & kebersamaan","Dapur & rumah","Hati & pengaturan","Janji temu, tugas, dan pengingat","Anak, pesan, dan waktu bersama","Menu, persediaan, dan urusan rumah","Iman, keuangan, berbagi, dan pengaturan","Kalender","Tugas","Pengingat","Kompas anak","Papan keluarga","Rasa syukur","Rencana makan","Bahan & resep","Belanja & persediaan","Urusan rumah","Iman & Duʿā","Keuangan","Bagikan & Outlook","Buku & pengaturan"]};
+const root=document.getElementById('nb41-hub'), search=document.getElementById('nb41-search');
+if(!root||!search||root.dataset.ready)return;root.dataset.ready='1';
+const locale=()=>{const selected=document.getElementById('nb-lang-quick')?.value||document.documentElement.lang||'de';const l=selected.toLowerCase().split(/[-_]/)[0];return P[l]?l:'en'};
+function translate(){
+ const words=P[locale()];
+ root.querySelectorAll('[data-nb41-i]').forEach(el=>{const v=words[Number(el.dataset.nb41I)];if(v!==undefined&&el.textContent!==v)el.textContent=v});
+ search.placeholder=words[2];search.setAttribute('aria-label',words[2]);
+ root.querySelectorAll('[data-nb41-module]').forEach(el=>{const i=M.indexOf(el.dataset.nb41Module);if(i>=0)el.textContent=words[12+i]});
+ root.querySelectorAll('.nb41-tile').forEach(el=>{const i=M.indexOf(el.dataset.view);if(i>=0)el.setAttribute('aria-label',words[12+i])});
+ document.querySelectorAll('[data-nb41-group-heading]').forEach(el=>{const i=G.findIndex(g=>g.id===el.dataset.nb41GroupHeading);if(i>=0)el.textContent=words[4+i]});
+ root.querySelectorAll('.nb41-group').forEach(el=>{const i=G.findIndex(g=>g.id===el.dataset.nb41Group);if(i>=0)el.setAttribute('aria-label',words[4+i])});
+}
+function filter(){
+ const query=search.value.trim().toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+ let found=0;
+ root.querySelectorAll('.nb41-group').forEach(group=>{
+ let n=0;
+ group.querySelectorAll('.nb41-tile').forEach(tile=>{
+ const haystack=(tile.dataset.nb41Search+' '+tile.textContent+' '+tile.dataset.view).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+ const match=!query||haystack.includes(query);tile.hidden=!match;if(match){n++;found++}
+ });
+ group.hidden=n===0;
+ });
+ document.getElementById('nb41-no-results').hidden=found!==0;
+}
+function groupNav(){
+ const grid=document.querySelector('#nb-nav-dialog .nb-nav-grid');if(!grid||grid.dataset.nb41Grouped)return;
+ grid.dataset.nb41Grouped='1';
+ const buttons=[...grid.querySelectorAll(':scope > [data-view]')];
+ for(const group of G){
+  const panel=document.createElement('div');panel.className='nb41-dialog-group';
+  const h=document.createElement('h3');h.dataset.nb41GroupHeading=group.id;panel.append(h);
+  const wanted=group.id==='day'?['start',...group.modules]:group.modules;
+  for(const key of wanted){const el=buttons.find(button=>button.dataset.view===key);if(el)panel.append(el)}
+  if(panel.querySelector('[data-view]'))grid.append(panel);
+ }
+}
+search.addEventListener('input',filter);
+document.getElementById('nb-lang-quick')?.addEventListener('change',()=>{translate();filter()});
+document.getElementById('nb-lang-setting')?.addEventListener('change',()=>{translate();filter()});
+const langObserver=new MutationObserver(()=>{translate();filter()});
+langObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+groupNav();translate();filter();
+})();
+</script>
+<script id="nb43-voice-placement-script">
+(()=>{'use strict';
+ if(window.NadiaVoicePlacementV43)return;
+ const LOCALES={
+ de:['Happy – für deinen Alltag','Fragen stellen, schreiben oder sprechen. Das Mikrofon startet nur mit deiner Freigabe.','PIGA-Sprach-KI','PIGA-Sprach-KI im separaten Showroom öffnen'],
+ en:['Happy – here for you','Ask, type or speak. The microphone starts only with your permission.','PIGA Voice AI','Open PIGA Voice AI in the separate Showroom'],
+ fr:['Happy – à vos côtés','Posez une question, écrivez ou parlez. Le micro nécessite votre accord.','Voix PIGA','Ouvrir la voix PIGA dans le Showroom séparé'],
+ ar:['Happy – معك كل يوم','اسألي أو اكتبي أو تحدثي. لا يبدأ الميكروفون إلا بإذنك.','مساعد PIGA الصوتي','فتح مساعد PIGA الصوتي في صفحة منفصلة'],
+ es:['Happy – contigo cada día','Pregunta, escribe o habla. El micrófono necesita tu permiso.','Voz PIGA','Abrir la voz PIGA en el Showroom separado'],
+ zh:['Happy – 陪伴你的日常','提问、打字或交谈。麦克风只会在获得许可后启动。','PIGA 语音助手','在独立展示页面打开 PIGA 语音助手'],
+ it:['Happy – al tuo fianco','Chiedi, scrivi o parla. Il microfono si avvia solo con il tuo consenso.','Voce PIGA','Apri la voce PIGA nello Showroom separato'],
+ pt:['Happy – sempre contigo','Pergunte, escreva ou fale. O microfone exige sua permissão.','Voz PIGA','Abrir voz PIGA no Showroom separado'],
+ th:['Happy – อยู่เคียงข้างคุณ','ถาม พิมพ์ หรือพูด ไมโครโฟนเริ่มได้เมื่อคุณอนุญาตเท่านั้น','เสียง PIGA','เปิดเสียง PIGA ในโชว์รูมแยกต่างหาก'],
+ ms:['Happy – teman harian anda','Tanya, taip atau bercakap. Mikrofon hanya aktif dengan izin.','Suara PIGA','Buka suara PIGA di Showroom berasingan'],
+ id:['Happy – teman harianmu','Tanya, ketik, atau bicara. Mikrofon perlu izinmu.','Suara PIGA','Buka suara PIGA di Showroom terpisah'],
+ ko:['Happy – 당신의 일상 도우미','질문하거나 글을 쓰고 말해보세요. 마이크는 허가 후 시작됩니다.','PIGA 음성 AI','별도의 쇼룸에서 PIGA 음성 AI 열기'],
+ ja:['Happy – 毎日のパートナー','質問、入力、音声で会話。マイクは許可後にのみ開始します。','PIGA 音声 AI','別のショールームで PIGA 音声 AI を開く'],
+ ru:['Happy – рядом каждый день','Спрашивайте, пишите или говорите. Микрофон запускается только с вашего разрешения.','Голос PIGA','Открыть голос PIGA в отдельном Showroom'],
+ nl:['Happy – elke dag bij je','Stel een vraag, typ of spreek. De microfoon start alleen met toestemming.','PIGA-spraak-AI','Open PIGA-spraak-AI in de aparte Showroom']
+ };
+ const language=()=>{const l=(document.getElementById('nb-lang-quick')?.value||document.documentElement.lang||'de').split(/[-_]/)[0].toLowerCase();return LOCALES[l]||LOCALES.en};
+ function mount(){
+  const dock=document.getElementById('nb-happy-piga-dock'),original=document.getElementById('nb-happy-piga-open'),host=document.getElementById('nb43-happy-host');
+  const menu=document.querySelector('#nb-nav-dialog .nb-nav-grid'),mobilebar=document.querySelector('.mobilebar');
+  if(!dock||!original||!host||!mobilebar)return;
+  if(host.contains(dock))return;
+  host.append(dock); /* Original button and Gacrux live implementation remain canonical. */
+  const mobile=document.createElement('button');mobile.id='nb43-happy-mobile';mobile.type='button';
+  mobile.setAttribute('aria-haspopup','dialog');mobile.setAttribute('aria-controls','nb-happy-piga-dialog');
+  mobile.innerHTML='<span class="sym" aria-hidden="true">✦</span><span>Happy</span>';
+  mobile.addEventListener('click',()=>original.click());
+  mobilebar.append(mobile);
+  const separate=document.createElement('a');separate.id='nb43-piga-menu';separate.href='https://pigapocket.com/showroom';
+  separate.target='_blank';separate.rel='noopener noreferrer';separate.className='nb43-piga-link';
+  if(menu)menu.append(separate);
+  const status=document.getElementById('nb43-happy-status'),source=document.getElementById('nb-happy-piga-dock-note');
+  const syncStatus=()=>{if(!source||!status)return;status.textContent=source.textContent;status.hidden=source.hidden||!source.textContent};
+  if(source){new MutationObserver(syncStatus).observe(source,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});syncStatus()}
+  const update=()=>{const words=language();document.getElementById('nb43-voice-title').textContent=words[0];document.getElementById('nb43-voice-description').textContent=words[1];const piga=document.getElementById('nb43-piga-link');piga.firstChild.textContent=words[2]+' ';piga.setAttribute('aria-label',words[3]);mobile.setAttribute('aria-label',words[0]);separate.textContent=words[2]+' ↗';separate.setAttribute('aria-label',words[3])};
+  document.getElementById('nb-lang-quick')?.addEventListener('change',update);
+  document.getElementById('nb-lang-setting')?.addEventListener('change',update);
+  new MutationObserver(update).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  update();
+  window.NadiaVoicePlacementV43=Object.freeze({version:'v43-in-flow-desktop-mobile-tab',originalVoiceRetained:true,microphoneOptIn:true,offlineLive:false});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+})();
+</script>
+<script id="nb45-happy-quick-access">
+(()=>{'use strict';
+ const canonical=()=>document.getElementById('nb-happy-piga-open');
+ const trigger=()=>{const button=canonical();if(button)button.click();else{
+  const status=document.getElementById('nb43-happy-status');
+  if(status){status.textContent='Happy ist zurzeit nicht verfügbar. Die lokalen Familienmodule bleiben nutzbar.';status.hidden=false;}
+ }};
+ for(const id of ['nb45-happy-header','nb45-happy-inline'])document.getElementById(id)?.addEventListener('click',trigger);
+ const dict={
+ de:'Happy öffnen',en:'Open Happy',fr:'Ouvrir Happy',ar:'افتحي Happy',es:'Abrir Happy',zh:'打开 Happy',it:'Apri Happy',pt:'Abrir Happy',th:'เปิด Happy',ms:'Buka Happy',id:'Buka Happy',ko:'Happy 열기',ja:'Happy を開く',ru:'Открыть Happy',nl:'Open Happy'
+ };
+ const setLanguage=()=>{const l=(document.getElementById('nb-lang-quick')?.value||document.documentElement.lang||'de').split(/[-_]/)[0].toLowerCase();const label=dict[l]||dict.en;
+  for(const id of ['nb45-happy-header','nb45-happy-inline']){const b=document.getElementById(id);if(b){b.setAttribute('aria-label',label);b.title=label;}}};
+ document.getElementById('nb-lang-quick')?.addEventListener('change',setLanguage);
+ new MutationObserver(setLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ setLanguage();
+})();
+</script>
+<script id="nb47-book-voice-placement">
+(()=>{'use strict';
+if(document.getElementById('nb47-book-voice-style'))return;
+const style=document.createElement('style');
+style.id='nb47-book-voice-style';
+style.textContent="\n/* v47: original front cover editorial integration; no synthetic cover or replacement assets */\n#view-start .nb-promo.nb-promo{\n display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:clamp(12px,2vw,22px)!important;\n border-top:1px solid #e8daed!important;padding:clamp(16px,2vw,25px) 0 0!important;margin:26px 0 12px!important;\n}\n#view-start .nb-promo .nb-promo-book{\n background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;\n padding:clamp(8px,2vw,20px)!important;isolation:isolate;\n}\n#view-start .nb-promo-book .nb-promo-copy{\n display:grid!important;grid-template-columns:minmax(0,1fr) minmax(175px,310px)!important;\n align-items:center!important;column-gap:clamp(22px,5vw,88px)!important;row-gap:15px!important;\n}\n#view-start .nb-promo-book .nb-promo-copy>figure{\n grid-column:2!important;grid-row:1!important;max-width:min(100%,310px)!important;\n width:100%!important;justify-self:center!important;min-width:0;\n}\n#view-start .nb-promo-book .nb-promo-copy>div{\n grid-column:1!important;grid-row:1!important;min-width:0;text-align:start!important;\n}\n#view-start .nb-promo-book .nb-book-cover img,\n#view-buch .nb-book-showcase .nb-book-cover img{\n width:100%!important;height:auto!important;aspect-ratio:690/1024!important;\n object-fit:cover!important;object-position:right center!important; /* crop genuine original FRONT only */\n border:0!important;border-radius:3px!important;background:transparent!important;\n box-shadow:0 18px 42px rgba(63,39,74,.16)!important;\n}\n#view-start .nb-promo-book .nb-book-cover figcaption,\n#view-buch .nb-book-showcase figcaption{display:none!important}\n#view-start .nb-promo-book:before{z-index:-1!important;inset:12% 0 6% auto!important;width:54%!important;filter:blur(20px)!important}\n#view-start .nb-promo-install{\n display:grid!important;grid-template-columns:minmax(180px,.8fr) minmax(0,1.2fr)!important;\n align-items:center;gap:10px 25px;box-shadow:none!important;border:1px solid #e8d9e9!important;\n background:linear-gradient(115deg,#fffafc,#f7effb)!important;padding:18px clamp(18px,3vw,34px)!important;\n}\n#view-start .nb-promo-install .nb-install-brand{grid-column:1;grid-row:1/span 5;align-self:center}\n#view-start .nb-promo-install>h2,#view-start .nb-promo-install>p,\n#view-start .nb-promo-install>#nb-install,\n#view-start .nb-promo-install>details{grid-column:2}\n#view-buch .nb-book-showcase.nb-book-showcase{\n display:grid!important;grid-template-columns:minmax(0,1fr) minmax(210px,380px)!important;\n align-items:center!important;gap:clamp(25px,5vw,76px)!important;\n background:transparent!important;border:0!important;box-shadow:none!important;\n padding:clamp(18px,3vw,36px) 0!important;\n}\n#view-buch .nb-book-showcase>figure{\n grid-column:2!important;grid-row:1!important;width:100%!important;max-width:380px!important;justify-self:center!important;\n}\n#view-buch .nb-book-showcase>.nb-book-showcase-copy{\n grid-column:1!important;grid-row:1!important;text-align:start!important;\n}\n#view-buch .nb-book-showcase-copy .actions{justify-content:flex-start!important}\n#view-buch .nb-book-showcase:after{display:none!important}\n#nb45-happy-header{display:inline-flex!important} /* one persistent desktop entry */\n#nb45-happy-inline{display:inline-flex!important} /* one optional contextual entry on the start page */\n#nb43-happy-host #nb-happy-piga-dock{display:none!important} /* canonical button stays available to proxy clicks */\n#nb43-piga-link{min-height:45px!important}\n.sidebar #nb43-piga-link{\n display:flex!important;margin:12px 3px 16px!important;justify-content:center;\n border-color:#f2daef6b!important;background:#ffffff15!important;color:#fff!important;\n}\n#nb43-voice-band .nb43-voice-actions{justify-content:flex-start!important}\n#nb43-voice-band{grid-template-columns:48px minmax(0,1fr) auto!important}\n#nb43-voice-band .nb43-voice-emblem{background:radial-gradient(circle at 32% 30%,#fbf3ff,#bf96d0 65%,#765891)!important}\n@media(max-width:1020px){\n #view-start .nb-promo-book .nb-promo-copy{grid-template-columns:minmax(0,1fr) minmax(150px,255px)!important}\n #view-start .nb-promo .nb-promo-install{grid-template-columns:1fr!important}\n #view-start .nb-promo-install .nb-install-brand,#view-start .nb-promo-install>h2,\n #view-start .nb-promo-install>p,#view-start .nb-promo-install>#nb-install,\n #view-start .nb-promo-install>details{grid-column:1!important;grid-row:auto!important}\n #view-start .nb-promo-install{padding:20px!important}\n}\n@media(max-width:800px){\n #nb45-happy-header{display:none!important}\n #nb45-happy-inline{display:none!important} /* mobile: Happy lives in bottom navigation */\n #nb43-voice-band{grid-template-columns:42px minmax(0,1fr)!important}\n #nb43-voice-band .nb43-voice-actions{grid-column:2!important}\n #nb43-voice-band .nb43-piga-link{display:none!important} /* PIGA via menu, Happy via bottom tab */\n .mobilebar #nb43-happy-mobile{min-height:48px!important;flex:1!important}\n}\n@media(max-width:680px){\n #view-start .nb-promo-book .nb-promo-copy{grid-template-columns:1fr!important;gap:22px!important}\n #view-start .nb-promo-book .nb-promo-copy>figure{\n  grid-column:1!important;grid-row:1!important;max-width:min(67vw,270px)!important;\n }\n #view-start .nb-promo-book .nb-promo-copy>div{\n  grid-column:1!important;grid-row:2!important;text-align:center!important;\n }\n #view-start .nb-promo-book .nb-promo-copy .actions{justify-content:center!important}\n #view-buch .nb-book-showcase.nb-book-showcase{grid-template-columns:1fr!important;gap:22px!important}\n #view-buch .nb-book-showcase>figure{\n  grid-column:1!important;grid-row:1!important;max-width:min(76vw,330px)!important;\n }\n #view-buch .nb-book-showcase>.nb-book-showcase-copy{\n  grid-column:1!important;grid-row:2!important;text-align:center!important;\n }\n #view-buch .nb-book-showcase-copy .actions{justify-content:center!important}\n #view-start .nb-promo .nb-promo-install{grid-template-columns:1fr!important}\n #view-start .nb-promo-install .nb-install-brand{grid-row:auto!important}\n}\n@media(prefers-reduced-motion:reduce){#view-start .nb-promo-book img{transition:none!important}}\n";
+document.head.appendChild(style);
+function placePiga(){
+ // The owner already approved a separate PIGA Showroom: don't mix personas.
+ // On desktop PIGA lives in the sidebar, and Happy remains a direct topbar action.
+ // On mobile PIGA stays in the existing "All areas" menu, Happy in the bottom bar.
+ const link=document.getElementById('nb43-piga-link');
+ const sidebar=document.querySelector('.sidebar .side-bottom');
+ if(link&&sidebar&&link.parentElement!==sidebar.parentElement)sidebar.insertAdjacentElement('beforebegin',link);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',placePiga,{once:true});
+else placePiga();
+})();
+</script>
 </body></html>

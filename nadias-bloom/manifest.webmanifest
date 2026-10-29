@@ -1,14 +1,14 @@
 {
-  "name": "Nadia’s Bloom — Barakah Home Family Studio",
+  "name": "Nadia’s Bloom — Familienplaner",
   "short_name": "Nadia Bloom",
-  "description": "Nadia’s Bloom – dein liebevoller Offline-Familienplaner für Kalender, Familie, Haushalt und Alltag.",
+  "description": "Nadia’s Bloom – Kalender, Familie, Rezepte, Erinnerungen und Alltag an einem Ort, mit Blauregen-Design.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "lang": "de",
-  "theme_color": "#80526D",
-  "background_color": "#FFF8F0",
+  "theme_color": "#79568B",
+  "background_color": "#FAF6FC",
   "icons": [
     {
       "src": "icon-192.png",
@@ -20,13 +20,13 @@
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": [
