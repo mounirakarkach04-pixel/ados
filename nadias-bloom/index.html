@@ -805,6 +805,179 @@ body{font-kerning:normal}
 @media(max-width:560px){#nb50-filter-tools{padding-top:11px}#nb50-filter-reset{width:auto;max-width:100%}}
 @media(prefers-reduced-motion:reduce){#nb50-filter-reset{transition:none!important}}
 </style>
+<style id="nb52-final-module-design">
+/* Nadia's Bloom v52 — final, CSS-only module design; original Blauregen identity.
+   The single Happy/Gacrux controller, original cover, translations, offline and local data are untouched. */
+#nb41-hub{
+ --nb52-ink:#4d3954;--nb52-muted:#74657a;--nb52-stroke:#e8dbe9;
+ --nb52-paper:#fffdfd;--nb52-ring:#876299;
+ margin-block:clamp(25px,3.6vw,43px) clamp(28px,4vw,42px);
+}
+#nb41-hub .nb41-heading{align-items:center;gap:16px;margin-bottom:18px}
+#nb41-hub .nb41-heading h2{
+ font-family:Georgia,"Times New Roman",serif;
+ color:#563f61;letter-spacing:-.045em;
+ font-size:clamp(29px,3.4vw,43px);line-height:1.17;margin:5px 0 9px;
+ text-wrap:balance;
+}
+#nb41-hub .nb41-heading p{color:#77677d;font-size:clamp(13px,1.2vw,15px);line-height:1.65;max-width:55ch}
+#nb41-hub .nb41-flower{font-size:clamp(32px,4vw,53px);opacity:.48}
+#nb41-hub .nb41-search-wrap{
+ min-height:58px;padding:0 17px;gap:12px;
+ border-radius:20px;border:1px solid #ddcbdf;
+ background:linear-gradient(115deg,#fffefd,#fef9fc);
+ box-shadow:0 6px 20px #5c365c0b;
+ transition:border-color .18s ease,box-shadow .18s ease;
+}
+#nb41-hub .nb41-search-wrap:focus-within{
+ outline:none;border-color:#916da3;box-shadow:0 0 0 3px #d8c1e46b,0 7px 22px #674a7d12;
+}
+#nb41-hub #nb41-search{font-size:15px;line-height:1.5;color:var(--nb52-ink);min-height:52px}
+#nb41-hub #nb41-search::placeholder{color:#87788c;opacity:1}
+#nb41-hub #nb49-tools{
+ margin:0 0 21px;padding:clamp(13px,1.6vw,19px);
+ border:1px solid #eadfe9;border-radius:22px;
+ background:linear-gradient(138deg,#fffdfd 0%,#fcf7fc 78%,#f8f0f7 100%);
+ box-shadow:0 9px 28px #553b580c;
+}
+#nb41-hub .nb49-tools-heading{margin-bottom:11px;align-items:baseline}
+#nb41-hub .nb49-tools-heading strong{color:#664a6b;font-size:11px;letter-spacing:.075em}
+#nb41-hub .nb49-tools-heading span{color:#806d83;font-size:11px;line-height:1.5}
+#nb41-hub .nb49-filters{display:flex;flex-wrap:wrap;gap:8px}
+#nb41-hub .nb49-filter,#nb41-hub .nb49-recent button,#nb41-hub #nb50-filter-reset{
+ min-height:44px;border-radius:999px;border:1px solid #dfd0e1;
+ background:#fffdfd;color:#604967;font:700 12px/1.35 system-ui,sans-serif;
+ box-shadow:0 2px 7px #603c5b09;
+ transition:border-color .18s ease,background-color .18s ease,box-shadow .18s ease;
+}
+#nb41-hub .nb49-filter{padding:10px 15px}
+#nb41-hub .nb49-filter[aria-pressed="true"]{
+ background:#66496f;border-color:#66496f;color:#fff;
+ box-shadow:0 5px 13px #68436425;
+}
+#nb41-hub .nb49-filter:hover:not([aria-pressed="true"]),
+#nb41-hub .nb49-recent button:hover,#nb41-hub #nb50-filter-reset:hover{
+ background:#f7edf7;border-color:#ac8eb4;
+}
+#nb41-hub .nb49-recent-wrap{border-top:1px solid #eaddE9;margin-top:15px;padding-top:14px}
+#nb41-hub .nb49-recent{gap:8px}
+#nb41-hub .nb49-recent button{padding:8px 14px;min-height:44px}
+#nb41-hub #nb50-filter-tools{padding:11px 1px 0;align-items:center}
+#nb41-hub #nb50-visible-count{color:#74637a;font-size:12px}
+#nb41-hub #nb50-filter-reset{padding-inline:17px}
+#nb41-hub .nb41-categories{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:clamp(13px,1.7vw,22px);align-items:stretch;
+}
+#nb41-hub .nb41-group{
+ position:relative;isolation:isolate;min-width:0;overflow:hidden;
+ border:1px solid var(--nb49-group-line,#e6d9e9);
+ border-radius:clamp(22px,2vw,27px);
+ padding:clamp(16px,2vw,25px);
+ background:linear-gradient(160deg,#fffefe 0%,#fcfafc 57%,var(--nb49-wash,#f6eff8) 120%);
+ box-shadow:0 9px 25px #604a6610;
+ transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease;
+}
+#nb41-hub .nb41-group::before{
+ left:23px;right:23px;height:3px;border-radius:0 0 8px 8px;
+ background:linear-gradient(90deg,var(--nb49-accent,#93739e),transparent 92%);opacity:.72;
+}
+#nb41-hub .nb41-group-heading{
+ display:flex;align-items:center;gap:14px;
+ padding-bottom:15px;margin:0 0 14px;
+ border-bottom:1px solid var(--nb49-group-line,#e8dce9);
+}
+#nb41-hub .nb41-group-mark{
+ display:grid;place-items:center;width:51px;height:51px;flex:0 0 51px;
+ border-radius:17px;background:var(--nb49-wash,#f5eef8);
+ color:var(--nb49-accent,#9071a0);
+ border:1px solid var(--nb49-group-line,#e8dce9);
+ font-size:24px;line-height:1;
+}
+#nb41-hub .nb41-group-heading>div{min-width:0}
+#nb41-hub .nb41-group h3{
+ font-family:Georgia,"Times New Roman",serif;
+ font-size:clamp(21px,1.9vw,26px);font-weight:500;line-height:1.23;
+ margin:0 0 5px;letter-spacing:-.027em;color:#5d4562;text-wrap:balance;
+}
+#nb41-hub .nb41-group-heading p{font-size:12px;line-height:1.55;color:#78697e;margin:0}
+#nb41-hub .nb41-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#nb41-hub .nb41-tile{
+ min-width:0;min-height:73px;display:flex;align-items:center;gap:11px;
+ padding:12px 12px;text-align:start;border-radius:17px;
+ border:1px solid #e9dfe8;background:#fffefe;color:#503e58;
+ box-shadow:0 3px 10px #57465b09;
+ transform:none;transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease,transform .18s ease;
+}
+#nb41-hub .nb41-tile strong{
+ flex:1;min-width:0;font:700 clamp(12px,1.04vw,13px)/1.42 system-ui,sans-serif;
+ overflow-wrap:break-word;word-break:normal;color:#4e3d55;
+}
+#nb41-hub .nb41-tile-icon{
+ display:grid;place-items:center;width:41px;height:41px;flex:0 0 41px;
+ border-radius:14px;background:var(--nb49-wash,#f5eef8);
+ color:var(--nb49-accent,#9074a3);font-size:21px;
+ border:1px solid var(--nb49-group-line,#eadce9);
+}
+#nb41-hub .nb41-chevron{
+ color:#9d84a7;font-size:22px;line-height:1;flex:none;
+ transition:transform .18s ease;
+}
+#nb41-hub .nb41-tile:focus-visible,
+#nb41-hub .nb49-filter:focus-visible,
+#nb41-hub .nb49-recent button:focus-visible,
+#nb41-hub #nb50-filter-reset:focus-visible{
+ outline:3px solid var(--nb52-ring)!important;outline-offset:3px!important;
+}
+#nb41-hub .nb41-tile:hover{
+ border-color:var(--nb49-accent,#93759c);background:#fff;
+ box-shadow:0 7px 20px #725b7517;transform:translateY(-2px);
+}
+#nb41-hub .nb41-tile:hover .nb41-chevron{transform:translateX(2px)}
+#nb41-hub .nb41-no-results{border:1px dashed #c9b4ce;background:#fdf6fc;border-radius:17px;padding:15px 18px;line-height:1.5}
+#nb41-hub .nb41-group[hidden],#nb41-hub .nb41-tile[hidden],
+#nb41-hub #nb50-filter-reset[hidden],#nb41-hub #nb41-no-results[hidden]{display:none!important}
+/* Inner module cards align with the new hub without restyling navigation, Happy or book art. */
+.view:not(#view-start)>.card,.view:not(#view-start) .card{
+ border-radius:20px;border-color:#e9dfe9;
+ box-shadow:0 9px 25px #67475e0b;
+}
+.view:not(#view-start) .card h2{color:#614763}
+@media(min-width:901px) and (hover:hover) and (pointer:fine){
+ #nb41-hub .nb41-group:hover{
+  border-color:#d8c6dc;box-shadow:0 14px 33px #67456515;transform:translateY(-1px);
+ }
+}
+@media(max-width:1060px){
+ #nb41-hub .nb41-categories{gap:14px}
+ #nb41-hub .nb41-tiles{grid-template-columns:1fr}
+ #nb41-hub .nb41-tile{min-height:63px}
+}
+@media(max-width:760px){
+ #nb41-hub .nb41-categories{grid-template-columns:1fr;gap:14px}
+ #nb41-hub .nb41-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ #nb41-hub .nb41-group{padding:17px 18px}
+}
+@media(max-width:520px){
+ #nb41-hub .nb41-heading{gap:8px}
+ #nb41-hub .nb41-flower{font-size:33px}
+ #nb41-hub #nb49-tools{padding:13px 12px;border-radius:19px}
+ #nb41-hub .nb49-filters{gap:7px}
+ #nb41-hub .nb49-filter{padding:9px 12px;min-height:44px}
+ #nb41-hub .nb41-tiles{grid-template-columns:1fr;gap:9px}
+ #nb41-hub .nb41-group{padding:16px;border-radius:21px}
+ #nb41-hub .nb41-group-heading{gap:12px}
+ #nb41-hub .nb41-group-mark{width:45px;height:45px;flex-basis:45px}
+ #nb41-hub .nb41-tile{min-height:60px;padding:10px 13px;gap:11px}
+ #nb41-hub .nb41-tile-icon{width:38px;height:38px;flex-basis:38px}
+ #nb41-hub .nb41-tile strong{font-size:13px}
+}
+@media(hover:none){#nb41-hub .nb41-tile:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){
+ #nb41-hub .nb41-group,#nb41-hub .nb41-tile,#nb41-hub .nb41-chevron,
+ #nb41-hub .nb41-search-wrap,#nb41-hub .nb49-filter{transition:none!important;transform:none!important}
+}
+</style>
 </head><body data-piga-app="nadias-bloom"><a class="skip piga-skip-link" href="#main">Zum Inhalt springen</a>
 <div class="app"><aside class="sidebar" aria-label="Bereiche"><a class="logo" href="#start"><img class="nb-logo-mark" src="./icon-192.png" alt="" width="43" height="43"><span><strong>Nadia’s Bloom</strong><small>Barakah Home Studio</small></span></a>
 <div class="side-title">DEIN TAG</div><button class="side-btn active" data-view="start"><span class="sym">⌂</span>Mein Zuhause</button><button class="side-btn" data-view="kalender"><span class="sym">▣</span>Kalender & Termine</button><button class="side-btn" data-view="aufgaben"><span class="sym">✓</span>Aufgaben & Routinen</button><button class="side-btn" data-view="kinder"><span class="sym">♡</span>Kinder-Kompass</button><button class="side-btn" data-view="essen"><span class="sym">♨</span>Essen & Planung</button><button class="side-btn" data-view="einkauf"><span class="sym">☷</span>Einkauf & Vorrat</button>
