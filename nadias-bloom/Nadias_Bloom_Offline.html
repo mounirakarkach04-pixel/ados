@@ -2736,4 +2736,62 @@ window.NadiaBloomV49=Object.freeze({version:'49.0',moduleCount:ids.length,mode:'
   window.NadiaBloomV50=Object.freeze({version:'50.0',change:'accessible-local-filter-reset',remoteWrite:false});
 })();
 </script>
+
+<style id="nb51-original-happy-restoration">
+/* v51: restore the existing v39 Happy orb and original modal rather than replacing them.
+   Keep the v43 canonical single engine, without changing Gemini or private family data. */
+#nb43-happy-host{display:block!important;min-width:0;max-width:100%}
+#nb43-happy-host #nb-happy-piga-dock{
+ display:flex!important;position:static!important;inset:auto!important;
+ left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+ z-index:auto!important;transform:none!important;align-items:flex-start!important;
+ width:max-content;max-width:100%;gap:6px
+}
+#nb43-happy-host #nb-happy-piga-open{
+ display:flex!important;align-items:center!important;gap:10px!important;
+ min-height:52px!important;max-width:100%;white-space:normal!important;
+ padding:9px 17px 9px 9px!important;border-radius:999px!important;
+ background:linear-gradient(128deg,#604060 0%,#995b81 52%,#bb7c9d 100%)!important;
+ border:1px solid #ffe0ef!important;color:#fff!important;
+ box-shadow:0 14px 34px #5c315c42,0 2px 10px #f9d4e566!important;
+ font:700 13px/1.35 system-ui,sans-serif!important;
+}
+#nb43-happy-host #nb-happy-piga-open .nbh-orb{
+ flex:none!important;display:grid!important;place-items:center!important;
+ width:35px!important;height:35px!important;border-radius:50%!important;
+ background:radial-gradient(circle at 30% 24%,#fff 1%,#efcfe9 23%,#ac78bd 63%,#54305f 100%)!important;
+ color:#fff;box-shadow:0 0 20px #ebd4ff96
+}
+#nb43-happy-host #nb-happy-piga-dock-note{max-width:min(310px,calc(100vw - 48px));line-height:1.5}
+#nb45-happy-inline{display:none!important} /* no duplicate inline button alongside original orb */
+#nb43-voice-band .nb43-voice-actions{display:flex!important;align-items:center!important;flex-wrap:wrap;gap:10px}
+#nb43-happy-host #nb-happy-piga-open:focus-visible,#nb43-happy-host #nb-happy-piga-open:hover:focus-visible{
+ outline:3px solid #5c315c!important;outline-offset:4px!important
+}
+/* Calm, accessible app management: visible keyboard focus, no clipped module labels. */
+#nb41-hub .nb41-tile{min-width:0;overflow-wrap:anywhere}
+#nb41-hub .nb41-tile:focus-visible,#nb41-hub button:focus-visible,
+#nb41-hub input:focus-visible,#nb41-hub select:focus-visible{
+ outline:3px solid #89669a!important;outline-offset:3px!important
+}
+#nb41-hub .nb49-filter,#nb50-filter-reset{min-height:44px}
+@media(max-width:800px){
+ #view-start #nb43-happy-host{display:block!important;width:100%}
+ #view-start #nb43-voice-band .nb43-voice-actions{grid-column:1/-1!important}
+ #view-start #nb43-voice-band{grid-template-columns:42px minmax(0,1fr)!important}
+ #view-start #nb43-happy-host #nb-happy-piga-dock{max-width:100%}
+ #view-start #nb43-happy-host #nb-happy-piga-open{min-height:54px!important}
+ #nb45-happy-inline{display:none!important}
+ /* Retain the existing Happy mobile tab for access outside the home screen. */
+ .mobilebar #nb43-happy-mobile{min-width:0!important}
+}
+@media(max-width:370px){
+ #view-start #nb43-voice-band{grid-template-columns:1fr!important}
+ #view-start #nb43-voice-band .nb43-voice-actions{grid-column:1!important}
+ #view-start #nb43-happy-host #nb-happy-piga-open{width:100%;justify-content:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ #nb43-happy-host #nb-happy-piga-open{transition:none!important}
+}
+</style>
 </body></html>
