@@ -1,5 +1,5 @@
 /* Nadia's Bloom v28: safe, bounded offline shell. Authentication URLs are never cached. */
-const CACHE='nadias-bloom-pages-v56-20261029-party-happy-teaser';
+const CACHE='nadias-bloom-pages-v57-20261030-wisteria-contrast';
 // Authentic 1536x1024 Drive original is precached for a full-quality front crop; lightweight WebP is available for preview.
 const COVER_WEBP=new URL('./barakah-home-2027-cover-480.webp',self.location.href).toString();
 const CORE=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./barakah-home-2027-cover-480.webp','./barakah-home-2027-original-cover.png','./Nadias_Bloom_Offline.html'];
