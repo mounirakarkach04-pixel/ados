@@ -988,7 +988,7 @@ body{font-kerning:normal}
 
 <section class="nb43-voice-band" id="nb43-voice-band" aria-label="Happy und PIGA Sprachzugang">
  <span class="nb43-voice-emblem" aria-hidden="true">✦</span>
- <div class="nb43-voice-intro"><strong id="nb43-voice-title">Happy – für deinen Alltag</strong><p id="nb43-voice-description">Fragen stellen, schreiben oder sprechen – wann immer du möchtest. Das Mikrofon startet nur nach deiner Freigabe.</p></div>
+ <div class="nb43-voice-intro"><strong id="nb43-voice-title">Happy – für deinen Alltag</strong><p id="nb43-voice-description">Happy wird schon bald freigeschaltet. Freu dich auf persönliche Gespräche, neue Ideen und liebevolle Begleitung für deinen Familienalltag.</p></div>
  <div class="nb43-voice-actions"><div id="nb43-happy-host"></div><button type="button" id="nb45-happy-inline" aria-controls="nb-happy-piga-dialog" aria-haspopup="dialog"><span aria-hidden="true">✦</span> Happy</button><a class="nb43-piga-link" id="nb43-piga-link" href="https://pigapocket.com/showroom" target="_blank" rel="noopener noreferrer" aria-label="PIGA Sprach-KI im separaten Showroom öffnen">PIGA-Sprach-KI <span aria-hidden="true">↗</span></a></div>
  <p id="nb43-happy-status" class="nb43-happy-status" role="status" hidden></p>
 </section>
@@ -2603,8 +2603,48 @@ translate();
    document.body.style.removeProperty('overflow');
    if(priorFocus&&typeof priorFocus.focus==='function')priorFocus.focus();
   }
+
+  // Public, graceful release preview. Preserve the original v39/v51 Happy shell,
+  // family data and single Gemini controller; never load the failed iframe.
+  const nb54Copy={"de":["BALD FÜR DICH DA","Happy kommt bald.","Eine Stimme, die deinen Alltag ein bisschen leichter macht. Happy wird schon bald freigeschaltet – für Gespräche, neue Ideen und liebevolle Begleitung im Familienleben. Freu dich auf Happy!","Nadia’s Bloom entdecken","Deine vertraute Begleiterin wächst gerade heran."],"en":["COMING SOON","Meet Happy. Soon.","A warm voice to make everyday family life a little lighter. Happy will be available soon – for conversations, fresh ideas and thoughtful everyday support. Something lovely is on the way!","Explore Nadia’s Bloom","Your personal companion is getting ready."],"fr":["BIENTÔT DISPONIBLE","Happy arrive bientôt.","Une voix chaleureuse pour accompagner ta vie de famille. Happy sera bientôt disponible pour échanger, trouver des idées et profiter des petits moments du quotidien.","Explorer Nadia’s Bloom","Une belle rencontre se prépare."],"ar":["قريبًا","هابي قادمة قريبًا.","صوت ودود يرافق يومك العائلي بمزيد من الهدوء. ستتوفر هابي قريبًا للمحادثات والأفكار الجديدة والمساعدة اللطيفة. ترقّبي المفاجأة!","اكتشفي ناديا بلوم","رفيقتك الجديدة تستعد للانطلاق."],"es":["MUY PRONTO","Happy llega pronto.","Una voz cercana para hacer más ligero el día a día en familia. Happy estará disponible pronto para conversar, compartir ideas y acompañarte con cariño.","Explorar Nadia’s Bloom","Tu nueva compañera se está preparando."],"it":["IN ARRIVO","Happy arriva presto.","Una voce gentile per rendere più leggero ogni giorno in famiglia. Happy sarà presto disponibile per conversazioni, nuove idee e un aiuto premuroso.","Scopri Nadia’s Bloom","La tua nuova compagna si sta preparando."],"pt":["EM BREVE","A Happy chega em breve.","Uma voz carinhosa para tornar o dia a dia da família mais leve. Em breve a Happy estará disponível para conversar, descobrir ideias e acompanhar-te.","Explorar Nadia’s Bloom","Uma companhia especial está a chegar."],"th":["เร็ว ๆ นี้","Happy กำลังจะมา","เสียงอบอุ่นที่จะช่วยให้ชีวิตครอบครัวเบาสบายขึ้น อีกไม่นาน Happy จะพร้อมให้พูดคุย แบ่งปันไอเดีย และอยู่เคียงข้างคุณ","สำรวจ Nadia’s Bloom","เพื่อนคู่ใจของคุณกำลังเตรียมพร้อม"],"ms":["AKAN DATANG","Happy akan tiba tidak lama lagi.","Suara mesra untuk menceriakan kehidupan keluarga. Happy bakal tersedia untuk berbual, berkongsi idea dan menemani rutin harian anda.","Teroka Nadia’s Bloom","Teman baharu anda sedang bersedia."],"id":["SEGERA HADIR","Happy segera hadir.","Suara hangat untuk membuat keseharian keluarga lebih ringan. Happy akan segera tersedia untuk berbincang, berbagi ide, dan mendampingi harimu.","Jelajahi Nadia’s Bloom","Teman barumu sedang bersiap."],"ko":["곧 만나요","Happy가 곧 찾아와요.","가족의 일상을 조금 더 따뜻하고 편안하게 만들어 줄 목소리. Happy와의 대화, 새로운 아이디어, 다정한 일상 지원을 곧 만나보세요.","Nadia’s Bloom 둘러보기","당신의 새로운 동반자가 준비 중이에요."],"ja":["まもなく登場","Happyがもうすぐやってきます。","家族の日常をもっとやさしくする声。会話や新しいアイデア、毎日の小さなサポートを届けるHappyを、どうぞお楽しみに。","Nadia’s Bloomを見る","あなたの新しいパートナーが準備中です。"],"ru":["СКОРО","Happy скоро появится.","Тёплый голос, который сделает семейные будни чуть легче. Скоро Happy будет доступна для бесед, новых идей и доброй поддержки каждый день.","Открыть Nadia’s Bloom","Твоя новая помощница готовится к встрече."],"nl":["BINNENKORT","Happy komt eraan.","Een warme stem die het gezinsleven nét wat lichter maakt. Happy is binnenkort beschikbaar voor gesprekken, nieuwe ideeën en liefdevolle hulp in het dagelijks leven.","Ontdek Nadia’s Bloom","Je nieuwe maatje maakt zich klaar."],"zh":["即将上线","Happy 即将与你见面。","一个温暖的声音，为家庭日常增添一份轻松。Happy 即将开放，陪你交流、发现新点子、享受生活中的美好时刻。","探索 Nadia’s Bloom","你的贴心伙伴正在准备中。"]};
+  window.NadiaHappyPreviewCopy=Object.freeze(nb54Copy);
+  const nb54Lang=()=>nb54Copy[(document.documentElement.lang||'de').toLowerCase().split(/[-_]/)[0]]||nb54Copy.de;
+  function showHappyPreview(){
+    const t=nb54Lang();
+    document.getElementById('nb54-happy-preview')?.remove();
+    const section=create('section','nb54-happy-preview');
+    section.setAttribute('aria-labelledby','nb54-happy-preview-title');
+    const ornament=create('div',null,'✦');ornament.className='nb54-happy-ornament';ornament.setAttribute('aria-hidden','true');
+    const eyebrow=create('span',null,t[0]);eyebrow.className='nb54-happy-eyebrow';
+    const title=create('h2','nb54-happy-preview-title',t[1]);
+    const paragraph=create('p',null,t[2]);paragraph.className='nb54-happy-description';
+    const signoff=create('p',null,t[4]);signoff.className='nb54-happy-signoff';
+    const button=create('button',null,t[3]);button.type='button';button.className='nb54-happy-return';
+    button.addEventListener('click',()=>{shut();document.getElementById('nb41-hub')?.scrollIntoView({behavior:'auto',block:'start'});});
+    section.append(ornament,eyebrow,title,paragraph,signoff,button);
+    panel.append(section);subtitle.textContent=t[4];
+    priorFocus=document.activeElement;dlg.hidden=false;document.body.style.overflow='hidden';close.focus();
+  }
+  async function nb54HappyEndpointReady(){
+    if(!navigator.onLine||location.protocol!=='https:'||!['pigapocket.com','www.pigapocket.com'].includes(location.hostname))return false;
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),6000);
+    try{
+      const response=await fetch('/nadias-bloom/happy-live',{method:'GET',cache:'no-store',credentials:'omit',signal:controller.signal});
+      if(!response.ok)return false;
+      const html=await response.text();
+      return html.includes('HAPPY DIALOG')&&html.includes('<title>Happy');
+    }catch{return false}finally{clearTimeout(timer)}
+  }
+
   async function launch(){
    if(pending)return;
+   pending=true;open.disabled=true;
+   let ready=false;
+   try{ready=await nb54HappyEndpointReady()}finally{pending=false;open.disabled=false}
+   if(!ready){showHappyPreview();return;}
+   document.getElementById('nb54-happy-preview')?.remove();
+   subtitle.textContent=lang()[2];
    if(!navigator.onLine){message(lang()[6]);return}
    if(location.protocol!=='https:'||!['pigapocket.com','www.pigapocket.com'].includes(location.hostname)){
     // A saved standalone HTML file cannot host the shared live engine;
@@ -2674,7 +2714,7 @@ translate();
   window.addEventListener('pagehide',()=>{document.getElementById('nb-happy-piga-frame')?.remove()});
   window.addEventListener('online',()=>message(''));
   window.addEventListener('offline',()=>{if(!dlg.hidden)shut();message(lang()[6])});
-  const updateLang=()=>{openLabel.textContent='Happy';open.title=lang()[0];open.setAttribute('aria-label',lang()[0]);name.textContent=lang()[1];subtitle.textContent=lang()[2];close.setAttribute('aria-label',lang()[3]);direct.textContent=separateText()};
+  const updateLang=()=>{if(!dlg.hidden&&document.getElementById('nb54-happy-preview')){showHappyPreview();}openLabel.textContent='Happy';open.title=lang()[0];open.setAttribute('aria-label',lang()[0]);name.textContent=lang()[1];subtitle.textContent=document.getElementById('nb54-happy-preview')?nb54Lang()[4]:lang()[2];close.setAttribute('aria-label',lang()[3]);direct.textContent=separateText()};
   new MutationObserver(updateLang).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  }
  window.NadiaHappyPigaSharedV38=Object.freeze({version:'v38-one-piga-gemini-live',provider:'original-Gemini-Live-Gacrux',profile:'nadias-bloom-happy',offline:'local-only',autoMicrophone:false,localFamilySync:false,gate2:'BLOCK'});
@@ -3116,6 +3156,302 @@ window.NadiaBloomV49=Object.freeze({version:'49.0',moduleCount:ids.length,mode:'
 @media(forced-colors:active){
  #nb41-hub .nb41-group,#nb41-hub .nb41-tile{border:1px solid CanvasText}
  #nb41-hub .nb49-filter[aria-pressed="true"]{border:2px solid Highlight}
+}
+</style>
+<style id="nb53-editorial-family-finish">
+/* Nadia's Bloom v53 · visual-only editorial finish, original wisteria palette.
+   Do not alter Happy's v39/v51 mask/controller, any local state, original front cover, or offline functionality. */
+#view-start{
+  --nb53-ink:#4c3851;
+  --nb53-muted:#675a6c;
+  --nb53-plum:#694c72;
+  --nb53-wisteria:#a98bb8;
+  --nb53-rose:#a96a87;
+  --nb53-sage:#56765e;
+  --nb53-cream:#fffdfa;
+}
+#view-start>.hero{
+  isolation:isolate;
+  border-radius:clamp(24px,3vw,34px);
+  border:1px solid #bfa4c155;
+  background:radial-gradient(ellipse 77% 110% at 103% 10%,#d9b4d94d 0%,transparent 69%),
+             linear-gradient(120deg,#402d4b 0%,#654468 56%,#805c7b 100%);
+  box-shadow:0 19px 46px #4b315226;
+}
+#view-start>.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 83% 65%,#f7dbe222 0 11%,transparent 12%),
+             radial-gradient(circle at 91% 38%,#ffffff14 0 5%,transparent 6%);
+}
+#view-start>.hero>div:first-child{position:relative;z-index:1}
+#view-start>.hero .eyebrow{
+  display:inline-flex;align-items:center;min-height:28px;
+  padding:5px 12px;border:1px solid #f4dfea60;
+  border-radius:999px;background:#ffffff13;
+  color:#ffebf5!important;letter-spacing:.13em;font-size:10px;
+}
+#view-start>.hero h1{
+  color:#fff8fb;max-width:14ch;
+  font:500 clamp(36px,4.25vw,62px)/1.11 Georgia,"Times New Roman",serif;
+  letter-spacing:-.043em;margin-block:17px 16px;text-wrap:balance;
+}
+#view-start>.hero h1 em{color:#f9d9e8}
+#view-start>.hero p{
+  color:#f6e8f0;font-size:clamp(13px,1.14vw,15px);
+  line-height:1.78;max-width:54ch;
+}
+#view-start>.hero .actions{gap:10px;row-gap:10px;margin-top:22px}
+#view-start>.hero .actions .btn{
+  min-height:48px;padding:12px 18px;border-radius:15px;
+  border:1px solid #ffffff70;font-size:13px;font-weight:750;
+  box-shadow:0 6px 15px #24152e19;
+}
+#view-start>.hero .actions .btn.primary{
+  background:#fff5fa!important;color:#543450!important;border-color:#fff5fa!important;
+}
+#view-start>.hero .actions .btn.light{
+  background:#ffffff19!important;color:#fff!important;border-color:#f5dce15c!important;
+}
+#view-start>.hero .actions .btn:focus-visible{
+  outline:3px solid #fff8fa!important;outline-offset:3px!important;
+}
+#view-start>.hero .hero-bloom{
+  color:#f4cfe5;opacity:.57;filter:drop-shadow(0 12px 24px #e8abd134);
+}
+#view-start .section-name{
+  display:flex;align-items:center;gap:11px;
+  margin-block:32px 17px;color:var(--nb53-ink);
+  font:500 clamp(22px,2.1vw,29px)/1.26 Georgia,"Times New Roman",serif;
+  letter-spacing:-.025em;text-wrap:balance;
+}
+#view-start .section-name::before{
+  content:"";display:block;flex:0 0 5px;width:5px;align-self:stretch;
+  min-height:23px;max-height:33px;border-radius:100px;
+  background:linear-gradient(#a27eae,#c88fa6);
+}
+#view-start .cards3{gap:clamp(10px,1.35vw,17px);align-items:stretch}
+#view-start .cards3>.card.stat{
+  position:relative;overflow:hidden;min-height:128px;
+  padding:clamp(17px,1.9vw,24px);
+  border-radius:21px;border:1px solid #e8dce9;
+  background:linear-gradient(145deg,#fffefe,#f9f3fb)!important;
+  box-shadow:0 8px 25px #5a3f6510;text-align:start;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+#view-start .cards3>.card.stat:nth-child(2){
+  background:linear-gradient(145deg,#fffefd,#fbf0f4)!important;
+  border-color:#efdce6;
+}
+#view-start .cards3>.card.stat:nth-child(3){
+  background:linear-gradient(145deg,#fffffe,#f0f6ee)!important;
+  border-color:#deeadc;
+}
+#view-start .cards3>.card.stat::after{
+  content:"";position:absolute;width:110px;height:110px;
+  right:-51px;top:-62px;border-radius:50%;
+  background:radial-gradient(circle,#bca0ca29,transparent 72%);pointer-events:none;
+}
+#view-start .cards3>.card.stat span{
+  display:inline-grid;place-items:center;width:37px;height:37px;
+  border-radius:12px;background:#efe3f2;color:#73547a;font-size:19px;
+}
+#view-start .cards3>.card.stat:nth-child(2) span{background:#f6e5eb;color:#975a77}
+#view-start .cards3>.card.stat:nth-child(3) span{background:#e4eee2;color:#55735c}
+#view-start .cards3>.card.stat .num{
+  margin:8px 0 4px;color:var(--nb53-ink);
+  font:500 clamp(30px,3vw,41px)/1 Georgia,serif;
+  font-variant-numeric:tabular-nums;
+}
+#view-start .cards3>.card.stat small{
+  color:#66576a;font-size:12px;font-weight:650;line-height:1.4;
+}
+#view-start .nb-focus-bar{
+  border-radius:23px;border-color:#e5d7e7;
+  background:linear-gradient(115deg,#fffefa,#fbf4fa 55%,#f2f6ef);
+  box-shadow:0 8px 22px #65476b0d;
+}
+#view-start .nb-focus-action{
+  border:1px solid #e8dbe9;border-radius:16px;
+  background:#fffefd;color:#593f60;
+}
+#view-start .nb-focus-action:focus-visible,
+#view-start .nb-step:focus-visible,
+#view-start .nb-book-shortcut:focus-visible{
+  outline:3px solid #89659b!important;outline-offset:3px!important;
+}
+#view-start .nb-quickstart{
+  border-radius:24px;border-color:#e9dce9;
+  background:linear-gradient(139deg,#fffdfa,#fcf6fc 61%,#f5f8f1)!important;
+  box-shadow:0 10px 27px #6146660f;
+}
+#view-start .nb-quickstart h2{
+  color:var(--nb53-ink);line-height:1.23;letter-spacing:-.03em;text-wrap:balance;
+}
+#view-start .nb-step{
+  background:#fffefd!important;border:1px solid #e8dce8!important;
+  border-radius:19px!important;box-shadow:0 5px 14px #6d56720d!important;
+}
+#view-start .nb-step b{color:#594660}
+#view-start .nb-step small{color:#695a70;line-height:1.5}
+#view-start .nb-promo-book,#view-start .nb-promo-install{
+  border-radius:24px;border-color:#e9dbe8;
+  box-shadow:0 9px 23px #6d4c6b0c;
+}
+#view-start .nb-promo-book{
+  background:linear-gradient(115deg,#fffefd 0%,#f9f0f8 100%)!important;
+}
+#view-start .nb-promo-install{
+  background:linear-gradient(135deg,#f3f7f0 0%,#fffdfc 90%)!important;
+  border-color:#dce9d9;
+}
+.view:not(#view-start)>.title{
+  color:#513d58;font-size:clamp(31px,4.1vw,51px);
+  line-height:1.14;letter-spacing:-.041em;text-wrap:balance;
+}
+.view:not(#view-start)>.sub{
+  color:#665c6b;line-height:1.75;max-width:67ch;margin-bottom:24px;
+}
+.view:not(#view-start)>.eyebrow{color:#8e6184!important;letter-spacing:.15em}
+.view:not(#view-start) .card,
+.view:not(#view-start) .nb37-card{
+  border-radius:22px;border:1px solid #e7dce8;
+  background:linear-gradient(155deg,#fffefd,#fdfafd);
+  box-shadow:0 8px 23px #6149680e;min-width:0;
+}
+.view:not(#view-start) .card h2,
+.view:not(#view-start) .nb37-card h2{
+  color:#5d4565;line-height:1.25;letter-spacing:-.025em;
+}
+.view:not(#view-start) input:not([type="checkbox"]):not([type="radio"]),
+.view:not(#view-start) select,
+.view:not(#view-start) textarea,
+#view-start .card input,
+#view-start .card textarea{
+  min-height:44px;border:1px solid #ddcedf;border-radius:13px;
+  background:#fffefe;color:#493e4c;
+}
+.view input:focus-visible,.view select:focus-visible,.view textarea:focus-visible{
+  outline:3px solid #bfa7cf!important;outline-offset:1px!important;
+  border-color:#805e91!important;
+}
+.view .btn:focus-visible,.view button:focus-visible,.view a:focus-visible{
+  outline:3px solid #916e9e;outline-offset:3px;
+}
+@media (min-width:801px) and (hover:hover) and (pointer:fine){
+  #view-start .cards3>.card.stat:hover{
+    transform:translateY(-2px);box-shadow:0 12px 29px #60466b19;
+  }
+}
+@media(max-width:800px){
+  #view-start>.hero{padding:clamp(22px,4vw,32px);min-height:255px}
+  #view-start>.hero h1{max-width:17ch}
+  #view-start>.hero .hero-bloom{opacity:.24;right:4px;bottom:-24px}
+  #view-start .nb-quickstart{padding:18px}
+  #view-start .section-name{margin-top:26px}
+}
+@media(max-width:560px){
+  #view-start>.hero{border-radius:23px;padding:24px 20px}
+  #view-start>.hero h1{font-size:clamp(34px,8.2vw,45px)}
+  #view-start>.hero p{font-size:13px;line-height:1.68}
+  #view-start>.hero .actions{display:grid;grid-template-columns:1fr;gap:9px}
+  #view-start>.hero .actions .btn{width:100%;justify-content:center}
+  #view-start .cards3{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #view-start .cards3>.card.stat{min-height:116px;padding:16px}
+  #view-start .cards3>.card.stat:nth-child(3){grid-column:1/-1;min-height:105px}
+  #view-start .section-name{font-size:24px}
+  #view-start .nb-quickstart{padding:16px;border-radius:20px}
+  .view:not(#view-start) .card,.view:not(#view-start) .nb37-card{border-radius:19px}
+}
+@media(max-width:360px){
+  #view-start .cards3{grid-template-columns:1fr}
+  #view-start .cards3>.card.stat:nth-child(3){grid-column:auto}
+  #view-start .cards3>.card.stat{min-height:108px}
+  #view-start>.hero h1{font-size:33px}
+}
+@media(prefers-reduced-motion:reduce){
+  #view-start .cards3>.card.stat,#view-start .nb-step,#view-start>.hero .btn{
+    transition:none!important;transform:none!important;
+  }
+}
+</style>
+<style id="nb54-balanced-app-and-happy-preview">
+/* v54: responsive editorial hierarchy, all modules, no structural or data changes. */
+:root{--nb54-purple:#69466e;--nb54-lilac:#aa8cb6;--nb54-ink:#4f3b53;--nb54-edge:#e6d9e8}
+html{scroll-padding-top:22px}
+.content{min-width:0;overflow-wrap:anywhere}
+.content>.topbar{gap:14px;align-items:center;border-bottom:1px solid #eadddf;margin-bottom:22px;padding-bottom:17px}
+.content>.topbar .crumb{color:#735876;letter-spacing:.045em}
+.content>.topbar .date-line{color:#675b68}
+.topbar-actions{flex-wrap:wrap;gap:9px;justify-content:flex-end}
+.sidebar .logo{border-radius:17px}
+.sidebar .side-title{letter-spacing:.12em}
+.sidebar .side-btn{min-height:43px;border-radius:13px;line-height:1.32;transition:background .17s ease,transform .17s ease}
+.sidebar .side-btn.active{box-shadow:inset 3px 0 #f5d3ed,0 5px 13px #33233a18}
+.sidebar .side-btn:focus-visible{outline:3px solid #f6d9f1;outline-offset:2px}
+#nb41-hub{scroll-margin-top:22px}
+#nb41-hub .nb41-heading{gap:15px;align-items:center}
+#nb41-hub .nb41-heading h2{font:500 clamp(28px,3vw,39px)/1.17 Georgia,"Times New Roman",serif;letter-spacing:-.035em;color:var(--nb54-ink)}
+#nb41-hub .nb41-heading p{line-height:1.6;color:#66576d}
+#nb41-hub .nb41-search-wrap{max-width:700px;border-radius:18px;border:1px solid #e3d4e5;box-shadow:0 5px 17px #7152740b;background:#fffefd}
+#nb49-tools{border-radius:19px;padding:15px 17px;background:linear-gradient(125deg,#fffdfa,#fbf7fc);border:1px solid #e8dce8}
+#nb49-tools .nb49-tools-heading{gap:9px;flex-wrap:wrap}
+#nb49-tools .nb49-filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#nb49-tools .nb49-filter{min-height:39px;padding:8px 13px;border:1px solid #e4d5e7;border-radius:999px;background:#fffefd;color:#634d6a;font-weight:650}
+#nb49-tools .nb49-filter[aria-pressed="true"]{background:#74517a!important;color:white!important;border-color:#74517a!important;box-shadow:0 5px 13px #74457925}
+#nb41-hub .nb41-categories{gap:18px}
+#nb41-hub .nb41-group{border:1px solid #e8dce8;border-radius:24px;background:linear-gradient(145deg,#fffefd,#faf6fb);box-shadow:0 8px 24px #7250740d;overflow:hidden}
+#nb41-hub .nb41-group-heading{gap:11px}
+#nb41-hub .nb41-group-heading h3{font:500 clamp(20px,2vw,25px)/1.2 Georgia,serif;color:#644d69}
+#nb41-hub .nb41-group-heading p{color:#6e6174;line-height:1.45}
+#nb41-hub .nb41-tiles{gap:10px}
+#nb41-hub .nb41-tile{min-width:0;min-height:91px;padding:13px 14px;border-radius:17px;border:1px solid #ecdfed;background:#fffefd!important;box-shadow:0 4px 14px #6e54730c;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+#nb41-hub .nb41-tile strong{color:#584360;line-height:1.3;overflow-wrap:normal;word-break:normal}
+#nb41-hub .nb41-tile-icon{flex-shrink:0;border-radius:13px}
+#nb41-hub .nb41-tile:focus-visible{outline:3px solid #906ba0!important;outline-offset:3px}
+#view-start #nb43-voice-band{border-radius:24px;box-shadow:0 10px 28px #64486714;border:1px solid #d7c3dc}
+#view-start #nb43-voice-title{font:500 clamp(21px,2.3vw,27px)/1.2 Georgia,serif}
+#view-start #nb43-voice-description{line-height:1.58}
+#view-start .nb-promo-copy{align-items:center;gap:clamp(14px,2.5vw,29px)}
+#view-start .nb-book-cover--mini{flex-shrink:0}
+#view-start .nb-book-cover--mini img{width:100%;height:auto;object-fit:contain;box-shadow:0 14px 25px #432c4826}
+.view:not(#view-start)>.grid,.view:not(#view-start)>.cards3{gap:clamp(12px,1.4vw,20px)}
+.view:not(#view-start) .card,.view:not(#view-start) .nb37-card{padding:clamp(17px,2vw,27px)}
+.view:not(#view-start) .form,.view:not(#view-start) .fields{row-gap:14px}
+.view:not(#view-start) .field{min-width:0}
+.view:not(#view-start) .field>label{line-height:1.4}
+.view .btn,.view button,.topbar-actions button{touch-action:manipulation}
+#nb-happy-piga-dialog[hidden]{display:none!important}
+#nb54-happy-preview{position:relative;isolation:isolate;text-align:center;overflow:hidden;padding:clamp(25px,5vw,44px) clamp(17px,4vw,35px) 30px;margin:8px 12px 14px;border-radius:25px;border:1px solid #ead3e3;background:radial-gradient(ellipse at 80% -5%,#e9cde8b8,transparent 56%),linear-gradient(145deg,#fffefa,#faf2fb 78%,#f8edf6);box-shadow:inset 0 1px #fff,0 13px 33px #683e691a;color:#513b55}
+#nb54-happy-preview .nb54-happy-ornament{width:70px;height:70px;display:grid;place-items:center;margin:2px auto 20px;border-radius:50%;font-size:32px;color:#fff;background:radial-gradient(circle at 28% 23%,#f9e8ff,#ae7caf 47%,#6c3c69 82%);box-shadow:0 0 0 8px #eee0f1b2,0 11px 27px #6d43745a}
+#nb54-happy-preview .nb54-happy-eyebrow{display:block;color:#98688e;font-size:10px;letter-spacing:.18em;font-weight:820}
+#nb54-happy-preview h2{font:500 clamp(31px,6vw,44px)/1.16 Georgia,"Times New Roman",serif;color:#573e5f;letter-spacing:-.032em;margin:12px auto 15px;text-wrap:balance}
+#nb54-happy-preview .nb54-happy-description{max-width:54ch;margin:0 auto;line-height:1.78;color:#645466;font-size:clamp(14px,2vw,16px)}
+#nb54-happy-preview .nb54-happy-signoff{font:italic 16px/1.5 Georgia,serif;color:#926b92;margin:21px auto 17px}
+#nb54-happy-preview .nb54-happy-return{display:inline-flex;align-items:center;justify-content:center;min-height:46px;max-width:100%;padding:11px 20px;border-radius:999px;border:1px solid #6f4d77;background:#6d4a74;color:#fff;font:730 13px/1.4 system-ui;cursor:pointer}
+#nb54-happy-preview .nb54-happy-return:hover{background:#5d3e65}
+#nb54-happy-preview .nb54-happy-return:focus-visible{outline:3px solid #9d7aad;outline-offset:3px}
+@media(min-width:801px) and (hover:hover) and (pointer:fine){
+ #nb41-hub .nb41-tile:hover{transform:translateY(-2px);box-shadow:0 8px 22px #6e547322;border-color:#d9bddc}
+}
+@media(max-width:800px){
+ .content>.topbar{padding-bottom:13px;margin-bottom:15px}
+ #nb41-hub .nb41-group{border-radius:20px}
+ #nb49-tools{padding:12px}
+ #nb-happy-piga-panel{max-height:calc(100dvh - 24px);overflow:auto}
+ .mobilebar{padding-bottom:max(8px,env(safe-area-inset-bottom));border-top:1px solid #e7d9e9;box-shadow:0 -6px 20px #4d345217}
+ .mobilebar button{min-height:47px;line-height:1.25}
+}
+@media(max-width:560px){
+ .topbar-actions{justify-content:flex-start}
+ #nb41-hub .nb41-heading{align-items:flex-start}
+ #nb41-hub .nb41-tiles{gap:8px}
+ #nb41-hub .nb41-tile{min-height:80px;padding:12px 10px}
+ #nb54-happy-preview{margin:5px 8px 11px;border-radius:22px}
+ #view-start .nb-promo-copy{gap:14px}
+ .view:not(#view-start) .card,.view:not(#view-start) .nb37-card{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ #nb41-hub .nb41-tile,.sidebar .side-btn{transition:none!important;transform:none!important}
 }
 </style>
 </body></html>
