@@ -6,9 +6,11 @@
 (()=>{
  const API='https://sanrkcovmkkhgdqydxfk.supabase.co';
  const KEY='sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ'; // publishable, never service role
- const C=window.PigaOrthoAccessCore,$=id=>document.getElementById(id);
- if(!C){document.body.textContent='BLOCK: Rollenkernel fehlt.';return;}
- let session=null,identity=null,role=null,clinic=null,clinics=[],admin=false,taskCache=[],currentTask=null,profileMap=new Map(),chosenPrintFile=null,printSha=null,lastPopupTask=null,busy=false,mode='login',recoveryMode=false;
+ const C=window.PigaOrthoAccessCore,S=window.PigaPortalStability,$=id=>document.getElementById(id);
+ if(!C||!S){document.body.textContent='BLOCK: Rollen- oder Stabilitätskernel fehlt.';return;}
+ let session=null,identity=null,role=null,clinic=null,clinics=[],admin=false,taskCache=[],currentTask=null,profileMap=new Map(),chosenPrintFile=null,printSha=null,busy=false,mode='login',recoveryMode=false;
+ const taskGate=S.latestOnly(),fileGate=S.latestOnly(),popupSeen=S.alertTracker();
+ let taskRespondBusy=false,printBusy=false,refreshPromise=null;
  const safe=s=>String(s??'').slice(0,160);
  const feedback=(msg,failed=false)=>{
    const el=$('liveMessage');el.textContent=msg;el.classList.add('shown');el.classList.toggle('error',failed);
@@ -29,10 +31,16 @@
    return data;
  }
  async function refreshSession(){
-   if(!session?.refresh_token)throw Error('Sitzung abgelaufen, bitte neu anmelden.');
-   const s=await request('/auth/v1/token?grant_type=refresh_token','POST',{refresh_token:session.refresh_token},false);
-   if(!s?.access_token)throw Error('Authentifizierung abgelaufen.');
-   session=s;
+   if(refreshPromise)return refreshPromise;
+   const previous=session;
+   if(!previous?.refresh_token)throw Error('Sitzung abgelaufen, bitte neu anmelden.');
+   refreshPromise=(async()=>{
+     const next=await request('/auth/v1/token?grant_type=refresh_token','POST',{refresh_token:previous.refresh_token},false);
+     if(session!==previous)throw Error('Sitzung wurde während der Erneuerung geändert.');
+     if(!next?.access_token||!next?.refresh_token)throw Error('Authentifizierung abgelaufen.');
+     session=next;
+   })();
+   try{await refreshPromise;}finally{refreshPromise=null;}
  }
  function setMode(next){
    if(!['login','register','recover'].includes(next))return;
@@ -121,11 +129,20 @@
    $('roleInfo').textContent=role==='owner'?'Praxisinhaber: Einladungen, Prüffälle und Freigaben. Klinische Druckaktionen weiterhin BLOCK.':role==='employee'?'Mitarbeiter: zugewiesene Prüfschritte bestätigen, keine Therapiefreigabe.':'Buchhaltung: keine klinischen Prüfaufgaben oder Modelle.';
    await Promise.all([loadDirectory(),loadTasks()]);
  }
- $('clinicSelect').addEventListener('change',async e=>{clinic=e.target.value;clearInvite();lastPopupTask=null;await loadClinic()});
+ $('clinicSelect').addEventListener('change',async e=>{
+   taskGate.invalidate();fileGate.invalidate();popupSeen.reset();
+   if($('taskDialog').open)$('taskDialog').close();
+   currentTask=null;taskCache=[];chosenPrintFile=null;printSha=null;
+   resetPrintAttestations();
+   clinic=e.target.value;clearInvite();await loadClinic();
+ });
  $('refresh').addEventListener('click',()=>{if(session)void loadAccess().catch(e=>feedback(safe(e.message),true));});
  $('logout').addEventListener('click',async()=>{
-   const token=session?.access_token;session=null;identity=null;role=null;clinic=null;clinics=[];admin=false;taskCache=[];
+   taskGate.invalidate();fileGate.invalidate();popupSeen.reset();
+   if($('taskDialog').open)$('taskDialog').close();
+   currentTask=null;const token=session?.access_token;session=null;identity=null;role=null;clinic=null;clinics=[];admin=false;taskCache=[];
    $('loginPanel').hidden=false;$('signedIn').hidden=true;recoveryMode=false;clearInvite();chosenPrintFile=null;printSha=null;
+   resetPrintAttestations();
    try{if(token)await fetch(API+'/auth/v1/logout',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token},credentials:'omit'});}catch{}
    state('Abgemeldet. Sitzung und Dateiauswahl verworfen.');
  });
@@ -212,13 +229,21 @@
    }catch(err){feedback('Prüffall: '+safe(err.message),true);}
  });
  async function loadTasks(){
-   if(!C.permitted(role,'viewTasks')){$('taskList').textContent='Keine klinischen Aufgaben für diese Rolle.';$('taskCount').textContent='0';return;}
+   const ticket=taskGate.begin(),scope=clinic,account=identity?.id,scopeRole=role;
+   if(!scope||!C.permitted(scopeRole,'viewTasks')){
+     taskCache=[];$('taskList').textContent='Keine klinischen Aufgaben für diese Rolle.';$('taskCount').textContent='0';return;
+   }
    try{
-     const rows=await request('/rest/v1/ortho_clinic_tasks?select=id,clinic_id,case_id,title,state,note,assigned_to,responded_by,responded_at&clinic_id=eq.'+encodeURIComponent(clinic)+'&order=created_at.desc&limit=150');
-     taskCache=Array.isArray(rows)?rows:[];
-     renderTasks();
-     maybePopup();
-   }catch(err){$('taskList').textContent='Aufgaben nicht verfügbar.';feedback('Aufgaben: '+safe(err.message),true);}
+     const rows=await request('/rest/v1/ortho_clinic_tasks?select=id,clinic_id,case_id,title,state,note,assigned_to,responded_by,responded_at&clinic_id=eq.'+encodeURIComponent(scope)+'&order=created_at.desc&limit=150');
+     if(!taskGate.valid(ticket)||scope!==clinic||scopeRole!==role||account!==identity?.id)return;
+     taskCache=Array.isArray(rows)?rows.filter(t=>t.clinic_id===scope):[];
+     for(const t of taskCache)if(t.state==='done')popupSeen.forget(scope,t.id);
+     renderTasks();maybePopup();
+   }catch(err){
+     if(taskGate.valid(ticket)&&scope===clinic){
+       $('taskList').textContent='Aufgaben nicht verfügbar.';feedback('Aufgaben: '+safe(err.message),true);
+     }
+   }
  }
  function renderTasks(){
    const host=$('taskList');host.replaceChildren();
@@ -243,21 +268,32 @@
  }
  function maybePopup(){
    if(!$('notify').checked||!C.permitted(role,'acknowledge')||$('taskDialog').open)return;
-   const next=taskCache.find(t=>t.state!=='done'&&(t.assigned_to===null||t.assigned_to===identity?.id||role==='owner')&&t.id!==lastPopupTask&&C.canRespond(role,t));
-   if(next){lastPopupTask=next.id;openTask(next);}
+   const next=taskCache.find(t=>t.state!=='done'&&(t.assigned_to===null||t.assigned_to===identity?.id||role==='owner')&&C.canRespond(role,t)&&popupSeen.shouldNotify(clinic,t.id));
+   if(next)openTask(next);
  }
  $('loadTasks').addEventListener('click',()=>{void loadTasks()});
- $('notify').addEventListener('change',maybePopup);
+ $('notify').addEventListener('change',()=>{
+   if($('notify').checked)popupSeen.reset();
+   maybePopup();
+ });
  $('cancelTask').addEventListener('click',()=>{$('taskDialog').close();currentTask=null});
  async function answerTask(state){
-   if(!currentTask||!clinic||!C.canRespond(role,currentTask))return;
-   const note=$('taskNote').value.trim();
+   if(taskRespondBusy||!currentTask||!clinic||!C.canRespond(role,currentTask))return;
+   const note=$('taskNote').value.trim(),task=currentTask,scope=clinic;
    if(state==='done'&&(!$('confirmed').checked||note.length<8)){feedback('Kontrolle abhaken und Beobachtung mit mindestens acht Zeichen dokumentieren.',true);return;}
    if(state==='not_done'&&note.length<3){feedback('Für nicht erledigt bitte eine konkrete Begründung eingeben.',true);return;}
+   taskRespondBusy=true;
+   for(const b of $('taskResponse').querySelectorAll('button'))b.disabled=true;
    try{
-     await request('/rest/v1/rpc/ortho_clinic_task_respond','POST',{p_clinic:clinic,p_task:currentTask.id,p_state:state,p_note:note});
-     $('taskDialog').close();currentTask=null;await loadTasks();feedback(state==='done'?'Kontrolle serverseitig protokolliert.':'Offene Kontrolle serverseitig protokolliert.');
+     await request('/rest/v1/rpc/ortho_clinic_task_respond','POST',{p_clinic:scope,p_task:task.id,p_state:state,p_note:note});
+     if(scope!==clinic||currentTask!==task)return;
+     $('taskDialog').close();currentTask=null;await loadTasks();
+     feedback(state==='done'?'Kontrolle serverseitig protokolliert.':'Offene Kontrolle serverseitig protokolliert.');
    }catch(err){feedback('Kontrolle: '+safe(err.message),true);}
+   finally{
+     taskRespondBusy=false;
+     for(const b of $('taskResponse').querySelectorAll('button'))b.disabled=false;
+   }
  }
  $('taskResponse').addEventListener('submit',e=>{e.preventDefault();void answerTask('done')});
  $('blockedTask').addEventListener('click',()=>{void answerTask('not_done')});
