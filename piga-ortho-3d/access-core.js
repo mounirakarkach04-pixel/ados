@@ -28,6 +28,7 @@ function permitted(value,action){
    viewDirectory:['owner']
  })[action]?.includes(r)||false;
 }
+function canRespond(role,task){return permitted(role,'acknowledge')&&(!String(task?.title||'').startsWith('aerztliche_kontrolle:')||role==='owner');}
 const safeRef=s=>typeof s==='string'&&/^[A-Z0-9][A-Z0-9_-]{2,39}$/.test(s);
 const validInvite=s=>typeof s==='string'&&/^PIGA-STAFF-[A-F0-9]{48}$/.test(s);
 function taskSummary(tasks){
@@ -43,5 +44,5 @@ function assessMachineFile(file){
  if(!Number.isInteger(file.size)||file.size<64||file.size>80*1024*1024)return{ok:false,reason:'Dateigröße muss zwischen 64 Byte und 80 MiB liegen.'};
  return{ok:true,reason:'Dateiendung und Größe geprüft – kein Sicherheits-, Format-, Slicer- oder Gerätefunktionsnachweis.'};
 }
-return{TEMPLATE,role,permitted,safeRef,validInvite,taskSummary,expectedTasks,assessMachineFile};
+return{TEMPLATE,role,permitted,canRespond,safeRef,validInvite,taskSummary,expectedTasks,assessMachineFile};
 });
