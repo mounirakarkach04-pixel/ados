@@ -108,7 +108,7 @@ function packZip(entries){
   // Max total 100 MiB and 512 entries to bound mobile memory use.
   if(entries.length<1||entries.length>512)throw Error("ZIP: Dateianzahl nicht zulässig.");
   let total=0;const normalized=entries.map(e=>{
-    if(!/^[A-Za-z0-9_.-]{1,90}$/.test(e.name))throw Error("ZIP: unsicherer Dateiname.");
+    if(!/^[A-Za-z0-9_./-]{1,120}$/.test(e.name)||e.name.startsWith("/")||e.name.split("/").some(part=>part==="."||part===".."||!part))throw Error("ZIP: unsicherer Dateiname.");
     const name=new TextEncoder().encode(e.name),data=e.data instanceof ArrayBuffer?new Uint8Array(e.data):e.data;
     if(!(data instanceof Uint8Array))throw Error("ZIP: ungültige Daten.");
     total+=data.byteLength;if(total>100*1024*1024)throw Error("ZIP: 100 MiB überschritten.");
