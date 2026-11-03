@@ -28,7 +28,7 @@ function permitted(value,action){
    viewDirectory:['owner']
  })[action]?.includes(r)||false;
 }
-const safeRef=s=>typeof s==='string'&&/^[A-Za-z0-9_-]{3,48}$/.test(s);
+const safeRef=s=>typeof s==='string'&&/^[A-Z0-9][A-Z0-9_-]{2,39}$/.test(s);
 const validInvite=s=>typeof s==='string'&&/^PIGA-STAFF-[A-F0-9]{48}$/.test(s);
 function taskSummary(tasks){
  const t=Array.isArray(tasks)?tasks:[];
