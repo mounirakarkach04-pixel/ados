@@ -56,12 +56,14 @@
      const email=$('email').value.trim(),password=$('password').value;
      if(mode==='register'){
        if(password.length<12)throw Error('Mindestens zwölf Passwortzeichen erforderlich.');
-       const result=await request('/auth/v1/signup','POST',{email,password},false);
+       const redirectTo=new URL('./auth.html',location.href).href;
+       const result=await request('/auth/v1/signup?redirect_to='+encodeURIComponent(redirectTo),'POST',{email,password},false);
        state(result?.user?'Registrierung angefragt. E-Mail-Bestätigung und Praxisfreigabe sind erforderlich.':'Registrierung angefragt. Bitte Postfach prüfen.');
        $('password').value='';return;
      }
      if(mode==='recover'){
-       await request('/auth/v1/recover','POST',{email},false);
+       const redirectTo=new URL('./auth.html',location.href).href;
+       await request('/auth/v1/recover?redirect_to='+encodeURIComponent(redirectTo),'POST',{email},false);
        state('Wenn das Konto besteht, wird ein Wiederherstellungslink versendet.');return;
      }
      const s=await request('/auth/v1/token?grant_type=password','POST',{email,password},false);
@@ -106,6 +108,7 @@
    clinics=Array.isArray(membership)?membership.filter(a=>['owner','employee','accountant'].includes(a.role)):[];
    admin=Array.isArray(adminRows)&&adminRows.length===1;
    $('admin').hidden=!admin;
+   $('adminEnrollment').hidden=admin;
    if(admin)feedback('Plattform-Admin über serverseitiges Profil erkannt. Keine automatische Arztvollmacht.');
    $('pending').hidden=clinics.length>0;
    if(!clinics.length){
@@ -156,6 +159,28 @@
      recoveryMode=false;$('passwordResetPanel').hidden=true;
      feedback('Passwort aktualisiert. Bitte bewahren Sie es sicher auf.');
    }catch(err){feedback('Passwortänderung: '+safe(err.message),true);}
+ });
+ let claimingAdmin=false;
+ $('adminClaimForm').addEventListener('submit',async e=>{
+   e.preventDefault();
+   if(claimingAdmin||admin||!session?.access_token||!identity?.id)return;
+   const code=$('adminClaimCode').value.trim();
+   if(!/^PIGA-ADMIN-[A-F0-9]{48}$/.test(code)){
+     $('adminClaimState').textContent='Ungültiges Aktivierungscodeformat.';return;
+   }
+   claimingAdmin=true;$('adminClaimSubmit').disabled=true;
+   try{
+     const result=await request('/rest/v1/rpc/ortho_platform_claim_admin','POST',{p_code:code});
+     if(result!==true)throw Error('Serverseitige Adminbestätigung fehlt.');
+     $('adminClaimCode').value='';
+     await loadAccess();
+     if(!admin)throw Error('Adminrolle konnte nach Aktivierung nicht zurückgelesen werden.');
+     $('adminClaimState').textContent='Adminzugang serverseitig bestätigt.';
+     feedback('Plattformadministration aktiviert. Keine ärztlichen Rechte hinzugefügt.');
+   }catch(err){
+     $('adminClaimState').textContent='Aktivierung nicht bestätigt. Anmeldung und Einladung prüfen.';
+     feedback('Adminaktivierung BLOCK: '+safe(err.message),true);
+   }finally{claimingAdmin=false;$('adminClaimSubmit').disabled=false;}
  });
  $('acceptInviteForm').addEventListener('submit',async e=>{
    e.preventDefault();
