@@ -1,6 +1,7 @@
 'use strict';
 (()=>{
  const paths=[
+ {id:'portal',label:'Anmeldung & Team',desc:'Serverseitig geprüfte Praxisrollen, Mitarbeiter-Einladungen und persönliche Prüfaufgaben',href:'./portal.html',icon:'users'},
  {id:'manager',label:'PIGA Praxismanager',desc:'Systemstatus, Geräte-Failover, lokale Worker, Optimierung und Sicherungen',href:'./manager.html',icon:'activity'},
  {id:'setup',label:'Einrichtungsassistent',desc:'Erste Schritte, WLAN, Gerätespeicher, Worker und Sprache',href:'./setup.html',icon:'shield'},
  {id:'piga',label:'PIGA Control & Chat',desc:'Lokaler PIGA Assistent, Worker-Herzschlag, Freigabe-Inbox, Teamchat und Sprachoption',href:'./piga-control.html',icon:'activity'},

@@ -5,7 +5,8 @@
  function topology(coords,precision=1e-4){
    if(!(coords instanceof Float32Array)||coords.length%9!==0)throw Error('Dreiecksmesh ungültig.');
    const faces=coords.length/9;
-   if(faces<4||faces>160000)return{status:'UNKNOWN',reason:'Mesh außerhalb des geprüften Topologiebereichs.',triangles:faces};
+   if(faces<4)return{status:'BLOCK',reason:'Zu wenige Flächen für eine geschlossene Oberfläche.',triangles:faces};
+   if(faces>160000)return{status:'UNKNOWN',reason:'Mesh außerhalb des geprüften Topologiebereichs.',triangles:faces};
    const edges=new Map();
    const point=i=>[
      Math.round(coords[i]/precision),
