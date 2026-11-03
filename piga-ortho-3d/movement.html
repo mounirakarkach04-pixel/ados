@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#edfaff">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'">
+<meta name="description" content="PIGA ORTHO 3D: technischer Einzelzahn-Bewegungsplaner mit FDI-Nummern, 6-Achsen-Geometrie, Staging, lokalem STL-Export und A7SEM-Gates.">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./navigation.css"><link rel="stylesheet" href="./movement.css">
+<title>Zahnbewegungen &amp; Staging | PIGA ORTHO 3D</title></head>
+<body><main class="movement-app" id="content">
+<header class="hero"><div class="eyebrow">PIGA ORTHO 3D · LOCAL MOVEMENT LAB · A7SEM REVERSE</div>
+<h1>Zahnbewegungen. <span>Präzise Geometrie.</span></h1>
+<p>Jeden einzeln segmentierten Zahn in sechs Freiheitsgraden planen, Zwischenstufen vergleichen und lokale STL-Geometrie als prüfbaren Forschungsdatensatz exportieren.</p>
+<div class="links"><a href="./studio.html">← STL-Studio</a><a href="./imaging.html">DICOM / CBCT</a><a href="./handoff.html">Praxis → Labor</a></div>
+</header>
+<section class="notice" role="note"><strong>Forschungs- und Planungsprototyp, keine klinische Zulassung.</strong> Einzelzahn-STLs benötigen eine extern geprüfte Segmentierung sowie nachweislich korrekt orientierte, skalierte Koordinaten (mm). Nur synthetische oder ausdrücklich anonymisierte Testdaten einsetzen. Die Transformation ist geometrisch reproduzierbar, aber berechnet weder sichere biomechanische Bewegungsgrenzen, Knochen-/Wurzelinteraktionen, Kräfte, Okklusion noch therapeutische Entscheidungen. Exportierte STLs sind <strong>nicht direkt druck- oder behandlungsfreigegeben.</strong></section>
+<div class="statrow" aria-live="polite"><div><span>Zähne</span><strong id="count">0</strong></div><div><span>Bewegungsstufen</span><strong id="stageCount">8</strong></div><div><span>Gate 1</span><strong id="gate1">BLOCK</strong></div><div><span>Gate 2 · klinischer Druck</span><strong>BLOCK</strong></div></div>
+<div class="layout">
+<section class="panel"><header class="panelhead"><span>01 / DATENQUELLE</span><h2>Segmentierte Zahnmodelle</h2></header>
+<label class="upload">Einzelzahn-STLs auswählen<input id="uploads" type="file" accept=".stl,model/stl" multiple></label>
+<p class="hint">Dateinamen müssen FDI-Zahnnummern enthalten, z. B. <code>11.stl</code>, <code>21.stl</code>, <code>36.stl</code>. Jedes Zahnmodell einzeln, maximal 28. Vollbogen-STL alleine kann keine Einzelzahnbewegung ermöglichen. Keine automatisierte Segmentierung.</p>
+<label class="check"><input type="checkbox" id="units"> Ich habe an der Scanquelle verifiziert, dass alle STL-Koordinaten in <b>Millimetern</b> und in einem gemeinsamen Koordinatensystem vorliegen.</label>
+<div class="field"><label for="case">Pseudonyme Fallkennung (optional)</label><input id="case" maxlength="40" placeholder="z. B. CASE-TEST-01" pattern="[A-Za-z0-9_-]*" autocomplete="off"></div>
+<ul id="files" class="filelist"><li>Keine Zahnsegmente geladen</li></ul>
+<button id="clear" type="button" class="secondary">Modelle aus Arbeitsspeicher entfernen</button>
+</section>
+<section class="panel plan"><header class="panelhead"><span>02 / BEWEGUNGSPLAN</span><h2>Pro Zahn · 6 Achsen</h2></header>
+<label for="tooth">FDI-Zahn auswählen</label><select id="tooth"><option value="">Erst Zahn-STLs hochladen</option></select>
+<div class="fieldgrid">
+<div><label for="x">Mesial / distal X · mm</label><input id="x" type="number" step="0.1" min="-20" max="20" value="0"></div>
+<div><label for="y">Vestibulär / oral Y · mm</label><input id="y" type="number" step="0.1" min="-20" max="20" value="0"></div>
+<div><label for="z">Intrusion / Extrusion Z · mm</label><input id="z" type="number" step="0.1" min="-20" max="20" value="0"></div>
+<div><label for="rx">Rotation um X · °</label><input id="rx" type="number" step="0.5" min="-45" max="45" value="0"></div>
+<div><label for="ry">Rotation um Y · °</label><input id="ry" type="number" step="0.5" min="-45" max="45" value="0"></div>
+<div><label for="rz">Rotation um Z · °</label><input id="rz" type="number" step="0.5" min="-45" max="45" value="0"></div>
+</div>
+<p class="hint">Achsen beziehen sich auf den verifizierten Scannerraum, nicht automatisch auf anatomische Zahnrichtungen. Winkel werden in Euler-Reihenfolge Rz·Ry·Rx um den jeweiligen Zahn-Bounding-Box-Mittelpunkt angewandt. Jede Zahnbewegung wird hier bewusst manuell eingegeben; keine automatisch errechnete Therapie.</p>
+<div class="twocol"><div><label for="stages">Zwischenstufen (1–40)</label><input id="stages" type="number" min="1" max="40" step="1" value="8"></div>
+<div><label for="stage">Angezeigte Stufe</label><output id="stageLabel" for="stage">0 / 8</output><input id="stage" type="range" min="0" max="8" value="0"></div></div>
+<div id="metrics" class="measurements" aria-live="polite">Bewegungsdaten erscheinen nach der Auswahl eines Zahnes.</div>
+</section>
+<section class="panel viewer"><header class="panelhead"><span>03 / 3D-VORSCHAU</span><h2>Ist–Soll im lokalen Koordinatensystem</h2></header>
+<canvas id="preview" width="900" height="500" role="img" aria-label="Drehbare Vorschau der geladenen Zahnsegmente mit Bewegungsstufen"></canvas>
+<div class="toolbar"><button id="left" type="button">↶ Drehen</button><button id="right" type="button">↷ Drehen</button><button id="reset" type="button">Ansicht zurücksetzen</button></div>
+<p class="hint">Vorschau verwendet eine begrenzte Stichprobe der Dreiecke, damit Smartphones flüssig bleiben. Für Berechnungen und STL-Export wird die vollständige eingelesene Geometrie verwendet. Keine Kollisions- oder Gingiva-Freigabe.</p>
+</section>
+<section class="panel"><header class="panelhead"><span>04 / GLASSBOX · A7SEM REVERSE</span><h2>Geometrieprüfung &amp; Freigabe</h2></header>
+<div class="gates"><p><b>Gate 1 · geometrische Plausibilität</b><span id="gateReason">Keine überprüften Segmente</span></p>
+<p><b>Gate 2 · klinische Nutzung</b><span>BLOCK · gesonderte klinische Validierung / MDR-Konformitätsbewertung notwendig</span></p>
+<p><b>A7SEM Reverse</b><span id="reverse">UNKNOWN · Rückrechnung nicht ausgeführt</span></p></div>
+<button id="verify" type="button">Drei endliche Prüfzyklen starten</button>
+<p class="hint">PIGA-Prüflinsen: Quelle → Repräsentation → Geometrie → Abhängigkeiten → Transformation → Autorität → Reverse. Ein PASS ist ausschließlich ein technisches Ergebnis, kein medizinisches Gütesiegel.</p>
+<div class="field"><label for="reviewer">Ärztliches Prüfkürzel (freiwillig, nicht verifiziert)</label><input id="reviewer" maxlength="32" placeholder="Fachliche Prüfung dokumentieren" autocomplete="off"></div>
+<label class="check"><input id="review" type="checkbox"> Manuelle fachliche Modellprüfung bestätigt; ich verstehe, dass die App keine klinische oder Fertigungsfreigabe erteilt.</label>
+</section>
+<section class="panel export"><header class="panelhead"><span>05 / TECHNISCHER EXPORT</span><h2>Stufen-STL &amp; Prüfpass</h2></header>
+<p>Nach gültiger geometrischer Prüfung und dokumentierter manueller Kontrolle können reine Zwischenstufen-STLs exportiert werden. Slicer, Material, Alignerdesign, Druckerprofil, fertigungsgerechte Modellbasis und klinische Validierung sind <b>nicht</b> im ZIP enthalten.</p>
+<div class="toolbar"><button id="exportStage" type="button" class="primary" disabled>Aktuelle Stufe als ZIP</button><button id="exportAll" type="button" disabled>Alle Stufen als ZIP</button><button id="exportReport" type="button" disabled>Plan &amp; Evidenz (JSON)</button></div>
+<p class="hint" id="exportNote">Export gesperrt bis Gate 1 PASS, Reverse PASS, Prüfkürzel und Bestätigung.</p>
+</section></div>
+<div id="notice" class="toast" role="status" aria-live="polite"></div>
+<footer>LOCAL FIRST · NO NETWORK · RESEARCH ONLY · GEOMETRY ≠ THERAPY · NO DEVICE ACTION</footer>
+</main>
+<script src="./movement-core.js" defer></script><script src="./movement.js" defer></script><script src="./navigation.js" defer></script></body></html>
