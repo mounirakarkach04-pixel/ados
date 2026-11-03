@@ -81,7 +81,7 @@
      // Implicit flow: do not persist or log URL tokens.
      const a=hash.get('access_token'),r=hash.get('refresh_token');
      history.replaceState(null,'','./portal.html');
-     if(a&&r){session={access_token:a,refresh_token:r,expires_at:Math.floor(Date.now()/1000)+(Number(hash.get('expires_in'))||3600)};
+     if(a&&r){recoveryMode=type==='recovery';session={access_token:a,refresh_token:r,expires_at:Math.floor(Date.now()/1000)+(Number(hash.get('expires_in'))||3600)};
        try{await loadAccess()}catch{state('Bestätigt; bitte erneut mit Passwort anmelden.',true);}}
    }else if(location.hash||location.search){history.replaceState(null,'','./portal.html');}
  }
