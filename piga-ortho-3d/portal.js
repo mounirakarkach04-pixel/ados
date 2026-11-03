@@ -193,7 +193,7 @@
  });
  $('createCaseForm').addEventListener('submit',async e=>{
    e.preventDefault();if(!C.permitted(role,'createCases')||!identity)return;
-   const ref=$('caseRef').value.trim();if(!C.safeRef(ref)){feedback('Fallkennung: 3–48 Zeichen, nur Buchstaben, Zahlen, _ und -.',true);return;}
+   const ref=$('caseRef').value.trim().toUpperCase();if(!C.safeRef(ref)){feedback('Fallkennung: 3–48 Zeichen, nur Buchstaben, Zahlen, _ und -.',true);return;}
    try{
      const id=await request('/rest/v1/rpc/ortho_clinic_open_checklist_case','POST',{p_clinic:clinic,p_case_ref:ref});
      if(!/^[0-9a-f-]{36}$/i.test(String(id)))throw Error('Fallstatus nicht bestätigt.');
