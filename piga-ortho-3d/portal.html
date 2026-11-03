@@ -1,0 +1,61 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#effbfc">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://sanrkcovmkkhgdqydxfk.supabase.co; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./portal.css"><title>PIGA ORTHO 3D · Anmeldung & Praxisrollen</title></head>
+<body><main class="page">
+<header><div><small>PIGA ORTHO 3D · AUTHENTICATED WORKSPACE</small><h1>Praxisportal <span>mit verantwortlicher Freigabe.</span></h1><p>Getrennte Profile für Plattform-Admin, Praxisleitung, Mitarbeitende und Buchhaltung. Patientendaten nur in ausdrücklich freigegebenen, geschützten Systemen.</p></div><a href="./studio.html">Zum 3D-Studio</a></header>
+<div class="notice"><strong>Keine klinische Live-Freigabe.</strong> Die Anmeldung prüft Konten und serverseitig berechtigte Praxiszugehörigkeiten. Diese öffentliche HTML-Ansicht selbst ist keine Zugriffssperre für statische Dateien; geschützte Praxisdaten liegen hinter RLS bzw. dem privaten Lizenzgateway. Für reale Patienten bleibt das Release-Gate BLOCK.</div>
+<section class="panel" id="loginPanel"><div class="heading"><span>01 / SICHER ANMELDEN</span><h2>Mein Praxiskonto</h2></div>
+<div class="tabs"><button type="button" class="selected" data-mode="login">Anmelden</button><button type="button" data-mode="register">Registrieren</button><button type="button" data-mode="recover">Passwort vergessen</button></div>
+<form id="loginForm"><label for="email">E-Mail-Adresse</label><input type="email" id="email" autocomplete="username" required maxlength="254">
+<div id="passwordBox"><label for="password">Passwort</label><input type="password" id="password" minlength="12" autocomplete="current-password" required></div>
+<button id="submitLogin" class="primary" type="submit">Anmelden</button></form>
+<p id="loginState" class="feedback" aria-live="polite">Noch nicht angemeldet. Für Registrierungen ist E-Mail-Bestätigung erforderlich.</p>
+</section>
+<section id="signedIn" hidden><div class="toolbar"><span id="userBadge">Profil wird geladen</span><button id="refresh" type="button">Aktualisieren</button><button id="logout" type="button">Sitzung beenden</button></div>
+<section class="panel" id="passwordResetPanel" hidden><div class="heading"><span>PASSWORT</span><h2>Neues Passwort festlegen</h2></div><form id="passwordResetForm"><label for="newPassword">Neues Passwort (mindestens 12 Zeichen)</label><input type="password" id="newPassword" minlength="12" autocomplete="new-password" required><label for="newPasswordConfirm">Passwort wiederholen</label><input type="password" id="newPasswordConfirm" minlength="12" autocomplete="new-password" required><button type="submit" class="primary">Passwort ändern</button></form></section><section class="panel" id="pending"><div class="heading"><span>02 / ZUGRIFF</span><h2>Profil und Praxisfreigabe</h2></div><p id="accessMessage">Serverseitige Zugehörigkeit wird abgefragt.</p>
+<form id="acceptInviteForm"><label for="inviteCode">Einmaliger Einladungscode der Praxisleitung</label><input id="inviteCode" autocomplete="off" placeholder="PIGA-STAFF-…" maxlength="59"><button type="submit">Einladung sicher einlösen</button></form>
+</section>
+<section class="panel" id="adminEnrollment" hidden><div class="heading"><span>PLATTFORMADMIN · EINMAL-AKTIVIERUNG</span><h2>Adminzugang sicher aktivieren</h2></div>
+<p>Für die technische PIGA-Administration ist ein separat vorab genehmigter Einladungscode erforderlich. Die Anmeldung mit bestätigter E-Mail allein erteilt keine Administratorrechte. Eine Adminrolle verleiht keine ärztlichen, klinischen oder Druckerrechte.</p>
+<form id="adminClaimForm" autocomplete="off"><label for="adminClaimCode">Persönlicher Aktivierungscode</label><input id="adminClaimCode" type="text" maxlength="59" minlength="59" placeholder="PIGA-ADMIN-…" pattern="PIGA-ADMIN-[A-F0-9]{48}" spellcheck="false" autocomplete="off" required><button id="adminClaimSubmit" type="submit" class="primary">Adminidentität verifizieren und aktivieren</button></form>
+<p class="muted" id="adminClaimState" aria-live="polite">Einladungen werden ausschließlich an zuvor genehmigte, bestätigte Konten gebunden und nach einmaliger Verwendung gesperrt.</p></section>
+<section class="panel" id="admin" hidden><div class="heading"><span>SYSTEMADMINISTRATION</span><h2>Mein PIGA-Adminbereich</h2></div><p><strong>Identität serverseitig verifiziert.</strong> Plattform-Admin wird ausschließlich durch einen bereits legitimierten Betreiber angelegt. Keine automatische Klinik- oder Arztvollmacht.</p>
+<div class="cards"><div><b>Plattformstatus</b><p>Administrationsrolle aktiv; geschützte medizinische Daten bleiben für den Plattform-Admin gesperrt.</p></div><div><b>Freigabeübersicht</b><p>Unbestätigte klinische Berechnungen, echte Druckaktionen und autonome Behandlungen sind BLOCK.</p></div></div>
+<p class="muted">Technische Administration und ärztliche Verantwortung bleiben bewusst getrennt.</p></section>
+<section id="clinicWorkspace" hidden>
+<section class="panel"><div class="heading"><span>03 / IDENTITÄT & ROLLE</span><h2>Mein Praxisprofil</h2></div>
+<div class="grid3"><div><small>Aktive Klinik</small><b id="clinicTag">—</b></div><div><small>Serverrolle</small><b id="roleTag">—</b></div><div><small>Berufsprofil</small><b id="professionTag">—</b></div></div>
+<label for="clinicSelect">Praxiszuordnung</label><select id="clinicSelect"></select>
+<div class="callout" id="roleInfo"></div>
+</section>
+<section class="panel" id="doctorPanel" hidden><div class="heading"><span>04 / ARZT & PERSONAL</span><h2>Praxisleitung · Verantwortlichkeiten</h2></div>
+<div class="grid2"><form id="createCaseForm"><h3>Technischen Prüffall anlegen</h3><label for="caseRef">Pseudonyme Fallkennung (keine Patientennamen)</label><input id="caseRef" placeholder="CASE-TEST-001" maxlength="40" required><button class="primary" type="submit">Prüffall mit Kontrollliste anlegen</button></form>
+<form id="inviteForm"><h3>Mitarbeiterzugang freigeben</h3><label for="staffEmail">Verifizierte E-Mail des Mitarbeiters</label><input type="email" id="staffEmail" maxlength="254" required><label for="staffRole">Serverseitige Praxisrolle</label><select id="staffRole"><option value="employee">Mitarbeiter (Assistenz / Technik)</option><option value="accountant">Buchhaltung (keine klinischen Fälle)</option></select><button type="submit">Einmalige Einladung erstellen</button></form></div>
+<div id="issuedInvite" class="callout" hidden><b>Einladungscode – nur einmal anzeigen und sicher weitergeben</b><output id="issuedInviteCode"></output><button type="button" id="copyInvite">Code kopieren</button></div>
+<h3>Teammitglieder und Berufsprofile</h3><p class="muted">Berufsbezeichnung ist informativ; die medizinisch privilegierte Serverrolle bleibt „owner“. Hier kann kein Mitarbeiter sich selbst zum Arzt oder Admin machen.</p>
+<div id="members"></div>
+</section>
+<section class="panel"><div class="heading"><span>05 / POP-UP-KONTROLLEN</span><h2>Meine Prüfaufgaben <span id="taskCount" class="count">0</span></h2></div><p>Jede Aufgabe erfordert aktives Öffnen, Prüfen und Bestätigen. Ein offener Prüfschritt ist keine Freigabe. Alle Antworten werden serverseitig mit persönlicher Kontoidentität protokolliert.</p>
+<div class="toolbar"><button type="button" id="loadTasks" class="primary">Offene Aufgaben prüfen</button><label class="check"><input type="checkbox" id="notify"> Pop-up bei neuen offenen Aufgaben im aktiven Tab</label></div>
+<div id="taskList" class="taskList"><p>Aufgaben werden nach Anmeldung angezeigt.</p></div></section>
+<section class="panel" id="printPanel" hidden><div class="heading"><span>06 / DRUCKDATEIEN</span><h2>Druckdatei technisch prüfen &amp; bereitstellen</h2></div>
+<p>Die geometrischen STL/3MF-Modelle kommen aus dem <a href="./movement.html">Zahnbewegungs-Studio</a>. Ein konkretes Maschinenformat (.gcode, .bgcode, .ctb, .photon oder .pws) wird nur von einem passenden Slicer mit validiertem Drucker- und Materialprofil erzeugt. Diese Oberfläche verifiziert die gewählte Datei und stellt sie unverändert zum Download bereit; keine heimliche Geräteaktion.</p>
+<label class="upload" for="machineFile">Vorhandene Geräte-Druckdatei auswählen<input id="machineFile" type="file" accept=".gcode,.bgcode,.3mf,.ctb,.photon,.pws"></label><p class="muted" id="printSummary">Keine Datei ausgewählt.</p>
+<form id="printChecklist" class="printChecks"><label class="check"><input type="checkbox" data-proof="device"> Druckermodell und Firmware gegen das Slicerprofil geprüft</label>
+<label class="check"><input type="checkbox" data-proof="material"> Material, Chargenhinweise und Nachbearbeitung geprüft</label>
+<label class="check"><input type="checkbox" data-proof="slicer"> Dateiformat, Maschinenprofil, Vorschau und Slicing unabhängig geprüft</label>
+<label class="check"><input type="checkbox" data-proof="case"> Fallkennung und Produktionszweck kontrolliert (kein klinischer Einsatz dieser Evaluation)</label>
+<label for="printerModel">Exaktes Druckermodell / Profil</label><input id="printerModel" maxlength="120" placeholder="Gerät, Profilversion" autocomplete="off" required>
+<button id="downloadPrint" type="submit" class="primary" disabled>Prüfdatei &amp; Manifest herunterladen</button></form>
+<p class="muted">Auch nach dem Download bleibt die medizinische Herstellung BLOCK. Für einen echten Druckerauftrag sind separate Gerätefreigabe und beobachteter Readback notwendig.</p>
+</section>
+</section>
+</section>
+<dialog id="taskDialog"><form id="taskResponse"><div class="heading"><span>AUFGABE KONTROLLIEREN</span><h2 id="dialogTitle">Prüfschritt</h2></div><p id="dialogDescription"></p>
+<label class="check"><input id="confirmed" type="checkbox"> Ich habe diesen konkreten Prüfschritt selbst kontrolliert und dokumentiere meine Beobachtung.</label>
+<label for="taskNote">Prüfbemerkung / Begründung</label><textarea id="taskNote" rows="3" maxlength="1000" placeholder="Was wurde tatsächlich geprüft?"></textarea>
+<div class="toolbar"><button type="button" id="cancelTask">Abbrechen</button><button type="button" id="blockedTask">Nicht erledigt</button><button type="submit" class="primary">Kontrolle bestätigt</button></div></form></dialog>
+<p id="liveMessage" role="status" aria-live="polite" class="liveMessage"></p>
+<footer>ROLE FIRST · HUMAN REVIEW · NO UNATTENDED PRINT · GATE 2 CLINICAL = BLOCK</footer></main>
+<script src="./access-core.js" defer></script><script src="./portal-stability.js" defer></script><script src="./portal.js" defer></script></body></html>

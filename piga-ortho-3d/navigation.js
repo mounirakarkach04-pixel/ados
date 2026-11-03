@@ -1,6 +1,7 @@
 'use strict';
 (()=>{
  const paths=[
+ {id:'portal',label:'Anmeldung & Team',desc:'Serverseitig geprüfte Praxisrollen, Mitarbeiter-Einladungen und persönliche Prüfaufgaben',href:'./portal.html',icon:'users'},
  {id:'manager',label:'PIGA Praxismanager',desc:'Systemstatus, Geräte-Failover, lokale Worker, Optimierung und Sicherungen',href:'./manager.html',icon:'activity'},
  {id:'setup',label:'Einrichtungsassistent',desc:'Erste Schritte, WLAN, Gerätespeicher, Worker und Sprache',href:'./setup.html',icon:'shield'},
  {id:'piga',label:'PIGA Control & Chat',desc:'Lokaler PIGA Assistent, Worker-Herzschlag, Freigabe-Inbox, Teamchat und Sprachoption',href:'./piga-control.html',icon:'activity'},
@@ -16,6 +17,8 @@
  {id:'voice',label:'PIGA Sprach-KI',desc:'Gemeinsame PIGA Showroom-KI mit KFO-Spezialisierung und ruhiger weiblicher Sprachausgabe, ohne Schlüssel am Gerät',href:'./piga-voice.html',icon:'activity'},
  {id:'atlas',label:'KFO Fachatlas',desc:'Befunde, Zahnspangen, Diagnostik, Zusatzleistungen und fachliche Prüfpunkte',href:'./kfo-atlas.html',icon:'document'},
  {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./inventory.html',icon:'grid'},
+ {id:'supply',label:'Materialversorgung',desc:'Materialkategorien und technische Versorgungsübersicht für den Praxisbetrieb',href:'./supply.html',icon:'grid'},
+ {id:'movement',label:'Zahnbewegungen & Staging',desc:'FDI-Einzelzahnmodelle, 6-Achsen-Geometrie, technische STL-Zwischenstufen mit A7SEM-Gates',href:'./movement.html',icon:'cube'},
  {id:'imaging',label:'DICOM / CBCT',desc:'Bildserien ansehen, Grauwertmasken und nichtklinische geometrische Staging-Proben mit Freigaben prüfen',href:'./imaging.html',icon:'cube'},
  {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./studio.html#studio',icon:'cube'},
  {id:'assistant',label:'Assistent',desc:'Geführte Schritte und KFO-Katalog',href:'./assist.html',icon:'flow'},

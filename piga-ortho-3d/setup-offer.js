@@ -2,7 +2,8 @@
 /* Gentle, dismissible first-install guidance: never blocks access to any module. */
 (()=>{
  const PAGE=(location.pathname.split('/').pop()||'dashboard.html');
- if(['setup.html','sales.html','privacy.html','index.html'].includes(PAGE))return;
+ // Installation guidance belongs on the start page, never over clinical controls.
+ if(PAGE!=='dashboard.html')return;
  const KEY='piga-ortho-setup-v1',OFFER='piga-ortho-setup-offer-v1';
  let done=false;try{done=JSON.parse(localStorage.getItem(KEY)||'null')?.completed===true}catch{}
  let ignored=false;try{ignored=sessionStorage.getItem(OFFER)==='dismissed'}catch{}

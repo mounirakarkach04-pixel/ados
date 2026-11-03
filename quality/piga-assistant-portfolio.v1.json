@@ -1,6 +1,6 @@
 {
   "schema": "piga.shared-assistant.portfolio.v1",
-  "updated": "2026-10-26",
+  "updated": "2026-11-03",
   "policy": "One server-side PIGA intelligence and five existing governance engines. Every app specializes the trusted profile, not the key.",
   "gateway": {
     "base": "https://pigapocket.com",
@@ -54,12 +54,14 @@
     {
       "id": "nadias-bloom",
       "profile": "nadias_bloom",
-      "clientSurface": "generic_opt_in_no_family_data"
+      "clientSurface": "PENDING_SOURCE_ADAPTER_REVIEW",
+      "reason": "App HTML carries an adapter marker but has no shared assistant CSS or JS load; no active shared assistant may be claimed. Family-data boundary stays fail-closed."
     },
     {
       "id": "ortho-preview",
       "profile": "ortho",
-      "clientSurface": "generic_opt_in_nonclinical"
+      "clientSurface": "PENDING_SOURCE_ADAPTER_REVIEW",
+      "reason": "Public sales preview only has opt-in mount/CSS; missing data-piga-app adapter and module script. No active public assistant is claimed."
     },
     {
       "id": "ortho-workspace",
@@ -97,7 +99,7 @@
     "sourceOnly": true,
     "serverStatus": "NOT_DEPLOYED_OR_NOT_VERIFIED",
     "fullAppRuntime": "UNKNOWN",
-    "reconciliation": "8 generic opt-in assistant UIs (including KFO HTML sales), 2 specialized, 1 pending LA PREUVE LAB; release only after live server readback",
+    "reconciliation": "6 source-verified generic opt-in widgets, 2 specialized UIs, 3 pending adapters (Nadia’s Bloom, Ortho sales preview, LA PREUVE LAB). Never represent partially linked UI as active; clinical Gate 2 BLOCK.",
     "gate2": "BLOCK"
   }
 }

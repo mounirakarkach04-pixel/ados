@@ -91,6 +91,27 @@ window.PigaDentalWebGL=(()=>{
   }catch{failed=true;canvas.hidden=true;return false;}
  }
  function upload(model){
+  // Render all triangles for binary STL scans up to 300k faces; sparse samples look like dots.
+  const dense=model?.gpuPositions;
+  if(dense instanceof Float32Array && dense.length>0 && dense.length%9===0){
+   const faces=dense.length/9;
+   if(faces>300000)return false;
+   const positions=new Float32Array(faces*21);
+   for(let t=0;t<faces;t++){
+    const q=t*9,offset=t*21;
+    const ax=dense[q+3]-dense[q],ay=dense[q+4]-dense[q+1],az=dense[q+5]-dense[q+2];
+    const bx=dense[q+6]-dense[q],by=dense[q+7]-dense[q+1],bz=dense[q+8]-dense[q+2];
+    let nx=ay*bz-az*by,ny=az*bx-ax*bz,nz=ax*by-ay*bx;
+    const size=Math.hypot(nx,ny,nz)||1;nx/=size;ny/=size;nz/=size;
+    for(let v=0;v<3;v++){
+     const k=offset+v*7,src=q+v*3;
+     positions[k]=dense[src];positions[k+1]=dense[src+1];positions[k+2]=dense[src+2];
+     positions[k+3]=nx;positions[k+4]=ny;positions[k+5]=nz;positions[k+6]=0;
+    }
+   }
+   gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,positions,gl.STATIC_DRAW);
+   mesh=model;count=faces*3;return true;
+  }
   const triangles=model?.vertices||[];
   if(!Array.isArray(triangles)||!triangles.length||triangles.length>100000)return false;
   // Memory cap <= ~8.4 MB and >0; no streaming unbounded arrays.
