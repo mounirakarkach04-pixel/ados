@@ -26,7 +26,7 @@
 <div class="callout" id="roleInfo"></div>
 </section>
 <section class="panel" id="doctorPanel" hidden><div class="heading"><span>04 / ARZT & PERSONAL</span><h2>Praxisleitung · Verantwortlichkeiten</h2></div>
-<div class="grid2"><form id="createCaseForm"><h3>Technischen Prüffall anlegen</h3><label for="caseRef">Pseudonyme Fallkennung (keine Patientennamen)</label><input id="caseRef" placeholder="CASE-TEST-001" maxlength="48" required><button class="primary" type="submit">Prüffall mit Kontrollliste anlegen</button></form>
+<div class="grid2"><form id="createCaseForm"><h3>Technischen Prüffall anlegen</h3><label for="caseRef">Pseudonyme Fallkennung (keine Patientennamen)</label><input id="caseRef" placeholder="CASE-TEST-001" maxlength="40" required><button class="primary" type="submit">Prüffall mit Kontrollliste anlegen</button></form>
 <form id="inviteForm"><h3>Mitarbeiterzugang freigeben</h3><label for="staffEmail">Verifizierte E-Mail des Mitarbeiters</label><input type="email" id="staffEmail" maxlength="254" required><label for="staffRole">Serverseitige Praxisrolle</label><select id="staffRole"><option value="employee">Mitarbeiter (Assistenz / Technik)</option><option value="accountant">Buchhaltung (keine klinischen Fälle)</option></select><button type="submit">Einmalige Einladung erstellen</button></form></div>
 <div id="issuedInvite" class="callout" hidden><b>Einladungscode – nur einmal anzeigen und sicher weitergeben</b><output id="issuedInviteCode"></output><button type="button" id="copyInvite">Code kopieren</button></div>
 <h3>Teammitglieder und Berufsprofile</h3><p class="muted">Berufsbezeichnung ist informativ; die medizinisch privilegierte Serverrolle bleibt „owner“. Hier kann kein Mitarbeiter sich selbst zum Arzt oder Admin machen.</p>
