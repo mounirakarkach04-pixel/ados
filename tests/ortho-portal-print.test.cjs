@@ -24,6 +24,8 @@ test('Only existing backend roles authorize privileged actions',()=>{
  assert.equal(A.permitted('accountant','viewTasks'),false);
  assert.equal(A.permitted('admin','downloadResearchPrint'),false);
  assert.equal(A.permitted('owner','clinicalPrinterStart'),false);
+ assert.equal(A.canRespond('employee',{title:'aerztliche_kontrolle: ärztliche Schlusskontrolle'}),false);
+ assert.equal(A.canRespond('owner',{title:'aerztliche_kontrolle: ärztliche Schlusskontrolle'}),true);
 });
 test('Case IDs match strict backend constraint and ten checks',()=>{
  assert.equal(A.safeRef('CASE-TEST-001'),true);
