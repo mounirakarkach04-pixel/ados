@@ -297,22 +297,32 @@
  }
  $('taskResponse').addEventListener('submit',e=>{e.preventDefault();void answerTask('done')});
  $('blockedTask').addEventListener('click',()=>{void answerTask('not_done')});
+ function resetPrintAttestations(){
+   for(const c of document.querySelectorAll('#printChecklist [data-proof]'))c.checked=false;
+   $('printerModel').value='';
+   $('downloadPrint').disabled=true;
+ }
  $('machineFile').addEventListener('change',async e=>{
-   const file=e.target.files?.[0]||null,gate=C.assessMachineFile(file);
-   chosenPrintFile=null;printSha=null;$('downloadPrint').disabled=true;
+   const file=e.target.files?.[0]||null,ticket=fileGate.begin(),gate=C.assessMachineFile(file);
+   chosenPrintFile=null;printSha=null;resetPrintAttestations();
    if(!gate.ok){$('printSummary').textContent=gate.reason;return;}
+   $('printSummary').textContent='Datei wird lokal auf Integrität geprüft…';
    try{
-     const bytes=await file.arrayBuffer();
-     const h=await crypto.subtle.digest('SHA-256',bytes);
+     const bytes=await file.arrayBuffer(),h=await crypto.subtle.digest('SHA-256',bytes);
+     if(!fileGate.valid(ticket))return;
      printSha=Array.from(new Uint8Array(h),x=>x.toString(16).padStart(2,'0')).join('');
-     chosenPrintFile=file;$('printSummary').textContent=file.name+' · '+file.size.toLocaleString('de-DE')+' Byte · SHA-256 '+printSha.slice(0,18)+'… | Kein unabhängiger Slicer-/Gerätenachweis.';
+     chosenPrintFile=file;
+     $('printSummary').textContent=file.name+' · '+file.size.toLocaleString('de-DE')+' Byte · SHA-256 '+printSha.slice(0,18)+'… | Kein unabhängiger Slicer-/Gerätenachweis.';
      checkPrint();
-   }catch(e){$('printSummary').textContent='Prüfung fehlgeschlagen: '+safe(e.message);}
+   }catch(err){if(fileGate.valid(ticket))$('printSummary').textContent='Prüfung fehlgeschlagen: '+safe(err.message);}
  });
  function checkPrint(){
    const checks=[...document.querySelectorAll('#printChecklist [data-proof]')];
-   $('downloadPrint').disabled=!(C.permitted(role,'downloadResearchPrint')&&chosenPrintFile&&printSha&&
-     checks.every(x=>x.checked)&&$('printerModel').value.trim().length>=5);
+   $('downloadPrint').disabled=printBusy||!S.printEligible({
+     verifiedOwner:C.permitted(role,'downloadResearchPrint'),filePresent:Boolean(chosenPrintFile),
+     sha256:printSha,size:chosenPrintFile?.size,
+     checked:checks.filter(c=>c.checked).length,model:$('printerModel').value
+   });
  }
  $('printChecklist').addEventListener('change',checkPrint);
  $('printerModel').addEventListener('input',checkPrint);
@@ -322,19 +332,36 @@
  }
  $('printChecklist').addEventListener('submit',async e=>{
    e.preventDefault();checkPrint();
-   if($('downloadPrint').disabled)return feedback('Druckdatei-Prüfschritte fehlen.',true);
-   const active=await request('/rest/v1/rpc/ortho_clinic_my_access','POST',{}).catch(()=>[]);
-   if(!Array.isArray(active)||!active.some(a=>a.clinic_id===clinic&&a.role==='owner'))return feedback('Serverrolle nicht mehr aktiv. Download gesperrt.',true);
-   const manifest={
-     schema:'piga-ortho-print-preflight-v1',timestamp:new Date().toISOString(),role:'owner',clinicId:clinic,
-     actorId:identity.id,file:{name:chosenPrintFile.name,size:chosenPrintFile.size,sha256:printSha},
-     deviceModel:$('printerModel').value.trim(),attested:[...document.querySelectorAll('#printChecklist [data-proof]')].map(x=>x.dataset.proof),
-     clinicalApproval:'BLOCK',printerStart:'NOT_EXECUTED',mechanicalCompatibility:'NOT_VERIFIED',source:'operator-supplied slicer file',
-     note:'Unverändert bereitgestellte, vom Betreiber gelieferte Forschungsdatei. Kein zertifizierter Druck- oder Aligner-Fertigungsauftrag.'
-   };
-   save(JSON.stringify(manifest,null,2),'PIGA_Ortho_Druck_Preflight_'+new Date().toISOString().slice(0,10)+'.json','application/json');
-   save(chosenPrintFile,chosenPrintFile.name,'application/octet-stream');
-   feedback('Originaldatei und nachvollziehbarer Prüfpass zum Download bereitgestellt. Keine Druckaktion ausgelöst.');
+   if(printBusy||$('downloadPrint').disabled)return feedback('Druckdatei-Prüfschritte fehlen.',true);
+   const ticket=fileGate.begin(),scope=clinic,actor=identity?.id,file=chosenPrintFile,digest=printSha;
+   printBusy=true;checkPrint();
+   try{
+     // Check at the moment of export: an earlier hash may not authorize a newer file.
+     const active=await request('/rest/v1/rpc/ortho_clinic_my_access','POST',{});
+     if(!Array.isArray(active)||!active.some(a=>a.clinic_id===scope&&a.role==='owner'))
+       throw Error('Serverrolle nicht mehr aktiv. Export gesperrt.');
+     const bytes=await file.arrayBuffer();
+     const hash=await crypto.subtle.digest('SHA-256',bytes);
+     const finalDigest=Array.from(new Uint8Array(hash),x=>x.toString(16).padStart(2,'0')).join('');
+     if(!fileGate.valid(ticket)||scope!==clinic||actor!==identity?.id||file!==chosenPrintFile||digest!==printSha)
+       throw Error('Datei oder Praxis während der Prüfung geändert. Erneut kontrollieren.');
+     if(finalDigest!==digest)throw Error('Dateiinhalt hat sich geändert. Integritätsprüfung BLOCK.');
+     const manifest={
+       schema:'piga-ortho-print-preflight-v1',timestamp:new Date().toISOString(),role:'owner',clinicId:scope,
+       actorId:actor,file:{name:file.name,size:file.size,sha256:finalDigest},
+       deviceModel:$('printerModel').value.trim(),attested:[...document.querySelectorAll('#printChecklist [data-proof]')].filter(x=>x.checked).map(x=>x.dataset.proof),
+       clinicalApproval:'BLOCK',printerStart:'NOT_EXECUTED',mechanicalCompatibility:'NOT_VERIFIED',
+       source:'operator-supplied slicer file',note:'Forschungsdatei unverändert ausgegeben. Kein zertifizierter Druckerauftrag.'
+     };
+     if(!S.printEligible({verifiedOwner:true,filePresent:true,sha256:finalDigest,size:file.size,
+       checked:manifest.attested.length,model:manifest.deviceModel}))
+       throw Error('Prüfung wurde zwischenzeitlich verändert.');
+     save(JSON.stringify(manifest,null,2),'PIGA_Ortho_Druck_Preflight_'+new Date().toISOString().slice(0,10)+'.json','application/json');
+     save(file,file.name.replace(/[\\/\x00-\x1f]/g,'_').slice(0,120),'application/octet-stream');
+     feedback('Datei und Prüfpass zum Download bereitgestellt. Keine Druckaktion ausgelöst.');
+   }catch(err){
+     feedback('Druckdatei BLOCK: '+safe(err.message),true);
+   }finally{printBusy=false;checkPrint();}
  });
  // Tab-visible notification poll only; never a 24/7 or background guarantee.
  setInterval(()=>{if(document.visibilityState==='visible'&&session&&clinic&&C.permitted(role,'viewTasks'))void loadTasks();},60000);
