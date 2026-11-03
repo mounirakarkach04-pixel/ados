@@ -52,6 +52,10 @@ test('No false clinical authority from incomplete or uncalibrated input',()=>{
 test('Invalid ranges and malformed geometry are blocked',()=>{
  assert.throws(()=>C.limits({...plan,x:21}));
  assert.throws(()=>C.atStage(plan,4,2));
+ assert.throws(()=>C.atStage(plan,1.5,8));
+ assert.throws(()=>C.atStage(plan,1,8.2));
+ assert.throws(()=>C.limits({...plan,x:''}));
+ assert.throws(()=>C.limits({...plan,rz:null}),/\b/);
  assert.throws(()=>C.parseSTL(new ArrayBuffer(83)));
  assert.throws(()=>C.parseSTL(new ArrayBuffer(84)));
 });
