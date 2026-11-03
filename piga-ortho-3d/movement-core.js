@@ -11,7 +11,7 @@
 "use strict";
 const MAX_BYTES=36*1024*1024, MAX_TRIANGLES=600000, FDI=/^(1[1-8]|2[1-8]|3[1-8]|4[1-8])$/;
 const clamp=(n,lo,hi)=>Math.max(lo,Math.min(hi,n));
-function assertFinite(v,label){const n=Number(v);if(!Number.isFinite(n))throw Error(label+" muss endlich sein.");return n;}
+function assertFinite(v,label){if(v===null||v===undefined||typeof v==="boolean"||(typeof v==="string"&&v.trim()===""))throw Error(label+" darf nicht leer oder boolesch sein.");const n=Number(v);if(!Number.isFinite(n))throw Error(label+" muss endlich sein.");return n;}
 function limits(plan){
   const p={};
   for(const k of ["x","y","z","rx","ry","rz"]){
@@ -56,8 +56,8 @@ function matrix(p){
           -sb,cb*sa,cb*ca];
 }
 function atStage(p,stage,total){
-  const count=Math.floor(assertFinite(total,"Stufenzahl")),idx=Math.floor(assertFinite(stage,"Stufe"));
-  if(count<1||count>40||idx<0||idx>count)throw Error("Stufe ungültig (1–40).");
+  const count=assertFinite(total,"Stufenzahl"),idx=assertFinite(stage,"Stufe");
+  if(!Number.isInteger(count)||!Number.isInteger(idx)||count<1||count>40||idx<0||idx>count)throw Error("Stufe ungültig (1–40).");
   const safe=limits(p),out={};for(const k of Object.keys(safe))out[k]=safe[k]*idx/count;return out;
 }
 function transform(source,p){
