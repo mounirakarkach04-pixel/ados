@@ -219,27 +219,27 @@
      const info=document.createElement('div'),heading=document.createElement('b'),sub=document.createElement('small');
      heading.textContent=t.title;sub.textContent=(t.state==='done'?'Bestätigt':'Kontrolle ausstehend')+' · Fall '+t.case_id.slice(0,8);
      info.append(heading,sub);row.append(info);
-     const button=document.createElement('button');button.type='button';button.textContent=t.state==='done'?'Erneut kontrollieren':'Kontrollieren';
+     const button=document.createElement('button');button.type='button';button.textContent=C.canRespond(role,t)?(t.state==='done'?'Erneut kontrollieren':'Kontrollieren'):'Nur ärztliche Kontrolle';button.disabled=!C.canRespond(role,t);
      button.addEventListener('click',()=>openTask(t));row.append(button);host.append(row);
    }
    if(!visible.length)host.textContent='Keine Aufgaben für dieses Konto.';
  }
  function openTask(t){
-   if(!C.permitted(role,'acknowledge'))return;
+   if(!C.canRespond(role,t))return;
    currentTask=t;$('dialogTitle').textContent=t.title;
    $('dialogDescription').textContent='Nur nach eigenständiger Prüfung bestätigen. Frühere Prüfung: '+(t.responded_at||'keine')+'.';
    $('confirmed').checked=false;$('taskNote').value='';$('taskDialog').showModal();
  }
  function maybePopup(){
    if(!$('notify').checked||!C.permitted(role,'acknowledge')||$('taskDialog').open)return;
-   const next=taskCache.find(t=>t.state!=='done'&&(t.assigned_to===null||t.assigned_to===identity?.id||role==='owner')&&t.id!==lastPopupTask);
+   const next=taskCache.find(t=>t.state!=='done'&&(t.assigned_to===null||t.assigned_to===identity?.id||role==='owner')&&t.id!==lastPopupTask&&C.canRespond(role,t));
    if(next){lastPopupTask=next.id;openTask(next);}
  }
  $('loadTasks').addEventListener('click',()=>{void loadTasks()});
  $('notify').addEventListener('change',maybePopup);
  $('cancelTask').addEventListener('click',()=>{$('taskDialog').close();currentTask=null});
  async function answerTask(state){
-   if(!currentTask||!clinic||!C.permitted(role,'acknowledge'))return;
+   if(!currentTask||!clinic||!C.canRespond(role,currentTask))return;
    const note=$('taskNote').value.trim();
    if(state==='done'&&(!$('confirmed').checked||note.length<8)){feedback('Kontrolle abhaken und Beobachtung mit mindestens acht Zeichen dokumentieren.',true);return;}
    if(state==='not_done'&&note.length<3){feedback('Für nicht erledigt bitte eine konkrete Begründung eingeben.',true);return;}
