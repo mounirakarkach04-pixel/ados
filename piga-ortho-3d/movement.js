@@ -25,7 +25,7 @@
    $('gate1').textContent=gate.status;
    $('gateReason').textContent=gate.reason;
    const allowed=gate.status==='PASS'&&verified&&reverse==='PASS'&&$('review').checked&&$('reviewer').value.trim().length>=3;
-   for(const id of ['exportStage','exportAll','exportReport'])$(id).disabled=!allowed;
+   for(const id of ['exportStage','exportAll','exportReport','export3mf'])$(id).disabled=!allowed;
    $('exportNote').textContent=allowed?
      'Nur technische STL-Geometriedateien. Klinische Anwendung, Aligner-/Modellfertigung und Druckfreigabe: BLOCK.':
      'Export gesperrt: mm-Quelle, FDI-Segmente, Gate 1, drei Reverse-Prüfzyklen, Prüfkürzel und manuelle Bestätigung benötigt.';
@@ -265,6 +265,18 @@
  $('exportStage').addEventListener('click',()=>exportFiles(false));
  $('exportAll').addEventListener('click',()=>exportFiles(true));
  $('exportReport').addEventListener('click',exportJson);
+ $('export3mf').addEventListener('click',()=>{
+   if($('export3mf').disabled)return;
+   const F=window.PigaPrintGeometry;
+   if(!F){show('3MF-Formatmodul nicht verfügbar.');return;}
+   try{
+     const objects=teeth.map(t=>({fdi:t.fdi,coords:C.transform(t.mesh,C.atStage(t.plan,stage,stages))}));
+     const buffer=F.to3mf(objects);
+     download(buffer,'PIGA_Ortho_GEOMETRIE_STUFE_'+stage+'.3mf','model/3mf');
+     log('EXPORT_3MF_GEOMETRY','OBSERVED',{stage,sourceTeeth:teeth.length,clinicalApproval:'BLOCK',deviceSlicing:'NOT_EXECUTED'});
+     show('Technische 3MF-Slicer-Vorlage erstellt. Modellaufbereitung, Material, Slicing und klinische Freigabe bleiben separat.');
+   }catch(e){log('EXPORT_3MF_GEOMETRY','BLOCK',{reason:e.message});show('3MF BLOCK: '+e.message);}
+ });
  $('left').addEventListener('click',()=>{yaw-=Math.PI/9;draw()});
  $('right').addEventListener('click',()=>{yaw+=Math.PI/9;draw()});
  $('reset').addEventListener('click',()=>{yaw=-.6;pitch=-.25;draw()});
