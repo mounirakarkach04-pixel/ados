@@ -1,0 +1,1 @@
+'use strict';(()=>{const dest=new URL('./portal.html',location.href);dest.search=location.search;dest.hash=location.hash;location.replace(dest.href)})();
