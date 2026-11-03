@@ -56,6 +56,7 @@
  }
  async function loadFiles(files){
    if(!files?.length)return;
+   const sourceBytes=teeth.reduce((sum,t)=>sum+84+50*t.mesh.triangles,0)+files.reduce((sum,file)=>sum+file.size,0);if(sourceBytes>48*1024*1024){show('BLOCK: zusammen höchstens 48 MiB Segmentdaten.');return;}
    if(files.length+teeth.length>28){show('BLOCK: höchstens 28 getrennte Zahnmodelle.');return;}
    const oldGen=generation,chosen=[],used=new Set(teeth.map(t=>t.fdi));
    try{

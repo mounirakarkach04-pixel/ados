@@ -16,6 +16,7 @@
  {id:'voice',label:'PIGA Sprach-KI',desc:'Gemeinsame PIGA Showroom-KI mit KFO-Spezialisierung und ruhiger weiblicher Sprachausgabe, ohne Schlüssel am Gerät',href:'./piga-voice.html',icon:'activity'},
  {id:'atlas',label:'KFO Fachatlas',desc:'Befunde, Zahnspangen, Diagnostik, Zusatzleistungen und fachliche Prüfpunkte',href:'./kfo-atlas.html',icon:'document'},
  {id:'inventory',label:'Inventur & Material',desc:'Bestände, Bedarfsplanung, Mindestmengen, Verfall und Bestellvorschläge',href:'./inventory.html',icon:'grid'},
+ {id:'movement',label:'Zahnbewegungen & Staging',desc:'FDI-Einzelzahnmodelle, 6-Achsen-Geometrie, technische STL-Zwischenstufen mit A7SEM-Gates',href:'./movement.html',icon:'cube'},
  {id:'imaging',label:'DICOM / CBCT',desc:'Bildserien ansehen, Grauwertmasken und nichtklinische geometrische Staging-Proben mit Freigaben prüfen',href:'./imaging.html',icon:'cube'},
  {id:'studio',label:'3D-Studio',desc:'STL ansehen, drehen, technische Geometrie prüfen',href:'./studio.html#studio',icon:'cube'},
  {id:'assistant',label:'Assistent',desc:'Geführte Schritte und KFO-Katalog',href:'./assist.html',icon:'flow'},
