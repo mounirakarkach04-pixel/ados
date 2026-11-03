@@ -39,3 +39,14 @@ test('printing remains blocked without every fresh attestation',()=>{
   {size:80*1024*1024+1},{checked:3},{model:'    '},
  ])assert.equal(S.printEligible({...base,...mutation}),false,JSON.stringify(mutation));
 });
+
+test('first-install guidance cannot block clinical workflows',()=>{
+ const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+ const script=fs.readFileSync(path.join(__dirname,'../piga-ortho-3d/setup-offer.js'),'utf8');
+ for(const page of ['movement.html','portal.html','studio.html','imaging.html','handoff.html']){
+   const blockedDocument=new Proxy({}, {get(){throw Error('Setup overlay attempted DOM access on '+page);}});
+   assert.doesNotThrow(()=>vm.runInNewContext(script,{
+     location:{pathname:'/piga-ortho-3d/'+page},document:blockedDocument
+   }),page);
+ }
+});
