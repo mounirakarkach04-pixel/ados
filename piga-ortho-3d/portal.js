@@ -8,7 +8,7 @@
  const KEY='sb_publishable_GWNQHoz-ML6wphVEyXz0pA_TLuNDzDQ'; // publishable, never service role
  const C=window.PigaOrthoAccessCore,$=id=>document.getElementById(id);
  if(!C){document.body.textContent='BLOCK: Rollenkernel fehlt.';return;}
- let session=null,identity=null,role=null,clinic=null,clinics=[],admin=false,taskCache=[],currentTask=null,profileMap=new Map(),chosenPrintFile=null,printSha=null,lastPopupTask=null,busy=false,mode='login';
+ let session=null,identity=null,role=null,clinic=null,clinics=[],admin=false,taskCache=[],currentTask=null,profileMap=new Map(),chosenPrintFile=null,printSha=null,lastPopupTask=null,busy=false,mode='login',recoveryMode=false;
  const safe=s=>String(s??'').slice(0,160);
  const feedback=(msg,failed=false)=>{
    const el=$('liveMessage');el.textContent=msg;el.classList.add('shown');el.classList.toggle('error',failed);
@@ -74,7 +74,7 @@
      try{
        if(!['signup','email','recovery'].includes(type))throw Error('Ungültiger Linktyp.');
        const data=await request('/auth/v1/verify','POST',{token_hash:token,type},false);
-       if(type==='recovery'&&data?.access_token){session=data;await loadAccess();state('Wiederherstellung bestätigt. Bitte Passwortänderung im Konto durchführen.');}
+       if(type==='recovery'&&data?.access_token){session=data;recoveryMode=true;await loadAccess();state('Wiederherstellung bestätigt. Legen Sie jetzt Ihr neues Passwort fest.');}
        else state('E-Mail bestätigt. Bitte mit E-Mail und Passwort anmelden.');
      }catch{state('Bestätigungslink abgelaufen oder ungültig.',true);}
    }else if(hash.has('access_token')){
@@ -89,7 +89,7 @@
    if(!session)throw Error('Nicht angemeldet.');
    const user=await request('/auth/v1/user');
    if(!user?.id||!user.email_confirmed_at)throw Error('Bestätigter E-Mail-Zugang erforderlich.');
-   identity={id:user.id,email:user.email||''};$('loginPanel').hidden=true;$('signedIn').hidden=false;
+   identity={id:user.id,email:user.email||''};$('loginPanel').hidden=true;$('signedIn').hidden=false;$('passwordResetPanel').hidden=!recoveryMode;
    $('userBadge').textContent='Verifiziertes Konto · '+safe(identity.email);
    const [membership,adminRows]=await Promise.all([
      request('/rest/v1/rpc/ortho_clinic_my_access','POST',{}),
@@ -125,9 +125,20 @@
  $('refresh').addEventListener('click',()=>{if(session)void loadAccess().catch(e=>feedback(safe(e.message),true));});
  $('logout').addEventListener('click',async()=>{
    const token=session?.access_token;session=null;identity=null;role=null;clinic=null;clinics=[];admin=false;taskCache=[];
-   $('loginPanel').hidden=false;$('signedIn').hidden=true;clearInvite();chosenPrintFile=null;printSha=null;
+   $('loginPanel').hidden=false;$('signedIn').hidden=true;recoveryMode=false;clearInvite();chosenPrintFile=null;printSha=null;
    try{if(token)await fetch(API+'/auth/v1/logout',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token},credentials:'omit'});}catch{}
    state('Abgemeldet. Sitzung und Dateiauswahl verworfen.');
+ });
+ $('passwordResetForm').addEventListener('submit',async e=>{
+   e.preventDefault();
+   const password=$('newPassword').value,confirm=$('newPasswordConfirm').value;
+   if(password.length<12||password!==confirm)return feedback('Passwort zu kurz oder Wiederholung stimmt nicht überein.',true);
+   try{
+     await request('/auth/v1/user','PUT',{password});
+     $('newPassword').value='';$('newPasswordConfirm').value='';
+     recoveryMode=false;$('passwordResetPanel').hidden=true;
+     feedback('Passwort aktualisiert. Bitte bewahren Sie es sicher auf.');
+   }catch(err){feedback('Passwortänderung: '+safe(err.message),true);}
  });
  $('acceptInviteForm').addEventListener('submit',async e=>{
    e.preventDefault();
@@ -289,6 +300,8 @@
    save(chosenPrintFile,chosenPrintFile.name,'application/octet-stream');
    feedback('Originaldatei und nachvollziehbarer Prüfpass zum Download bereitgestellt. Keine Druckaktion ausgelöst.');
  });
+ // Tab-visible notification poll only; never a 24/7 or background guarantee.
+ setInterval(()=>{if(document.visibilityState==='visible'&&session&&clinic&&C.permitted(role,'viewTasks'))void loadTasks();},60000);
  document.addEventListener('visibilitychange',()=>{
    if(document.visibilityState==='visible'&&session&&clinic&&C.permitted(role,'viewTasks'))void loadTasks();
  });
