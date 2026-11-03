@@ -15,7 +15,7 @@ function assertFinite(v,label){if(v===null||v===undefined||typeof v==="boolean"|
 function limits(plan){
   const p={};
   for(const k of ["x","y","z","rx","ry","rz"]){
-    const v=assertFinite(plan[k]??0,k),max=k[0]==="r"?45:20;
+    const v=assertFinite(plan[k]===undefined?0:plan[k],k),max=k[0]==="r"?45:20;
     if(Math.abs(v)>max)throw Error(k+": außerhalb des technischen Eingabebereichs (±"+max+").");
     p[k]=v;
   }
