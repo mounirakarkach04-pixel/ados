@@ -55,9 +55,10 @@
    syncFields();status();draw();
  }
  async function loadFiles(files){
-   if(!files?.length)return;
-   const sourceBytes=teeth.reduce((sum,t)=>sum+84+50*t.mesh.triangles,0)+files.reduce((sum,file)=>sum+file.size,0);if(sourceBytes>48*1024*1024){show('BLOCK: zusammen höchstens 48 MiB Segmentdaten.');return;}
-   if(files.length+teeth.length>28){show('BLOCK: höchstens 28 getrennte Zahnmodelle.');return;}
+   if(!files?.length){$('uploadStatus').textContent='Keine Datei ausgewählt. Bitte mindestens eine .stl-Datei mit FDI-Nummer wählen.';return;}
+   $('uploadStatus').textContent=files.length+' Datei(en) ausgewählt. STL und FDI-Zuordnung werden lokal geprüft …';
+   const sourceBytes=teeth.reduce((sum,t)=>sum+84+50*t.mesh.triangles,0)+files.reduce((sum,file)=>sum+file.size,0);if(sourceBytes>48*1024*1024){$('uploadStatus').textContent='BLOCK: zusammen höchstens 48 MiB Segmentdaten.';show('BLOCK: zusammen höchstens 48 MiB Segmentdaten.');return;}
+   if(files.length+teeth.length>28){$('uploadStatus').textContent='BLOCK: höchstens 28 getrennte Zahnmodelle.';show('BLOCK: höchstens 28 getrennte Zahnmodelle.');return;}
    const oldGen=generation,chosen=[],used=new Set(teeth.map(t=>t.fdi));
    try{
      for(const file of files){
@@ -74,8 +75,8 @@
      teeth.push(...chosen);teeth.sort((a,b)=>Number(a.fdi)-Number(b.fdi));
      selected=chosen[0].fdi;invalid('Neue Quelle geladen');
      log('IMPORT','OBSERVED',{fdi:chosen.map(t=>t.fdi),sha256:chosen.map(t=>t.sha),triangles:chosen.map(t=>t.mesh.triangles)});
-     syncFiles();show(chosen.length+' Zahnsegmente lokal geladen. Keine Cloud-Übertragung.');
-   }catch(e){log('IMPORT','BLOCK',{reason:e.message});show('BLOCK: '+e.message);}
+     syncFiles();$('uploadStatus').textContent='PASS_LOCAL: '+chosen.length+' FDI-Zahnsegmente geprüft und im Arbeitsspeicher geladen. Keine Cloud-Übertragung. Klinische Freigabe BLOCK.';show(chosen.length+' Zahnsegmente lokal geladen. Keine Cloud-Übertragung.');
+   }catch(e){$('uploadStatus').textContent='BLOCK: '+String(e.message).slice(0,240)+'. Dateinamen z. B. 11.stl oder 21.stl.';log('IMPORT','BLOCK',{reason:e.message});show('BLOCK: '+e.message);}
    $('uploads').value='';
  }
  function syncFields(){

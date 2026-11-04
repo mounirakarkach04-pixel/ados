@@ -2,7 +2,9 @@
 /* Non-blocking local backup/import offer. Never automatically exports plaintext,
    stores a passphrase, or transfers data without explicit user gesture. */
 (()=>{
- if(location.pathname.endsWith('/device-hub.html'))return;
+ // Data migration onboarding belongs on the Dashboard, never atop 3D controls, login or clinical workflow.
+ const PAGE=(location.pathname.split('/').pop()||'dashboard.html');
+ if(PAGE!=='dashboard.html')return;
  const META='piga-ortho-transfer-metadata-v1',PROMPT='piga-ortho-last-transfer-prompt-v1';
  const DAY=86400000;
  const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}};
