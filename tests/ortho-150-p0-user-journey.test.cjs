@@ -20,7 +20,7 @@ test('Studio and portal expose actual local movement route rather than a 404',()
 });
 test('Mobile PWA coherently busts the overlay cache, without pre-caching account pages',()=>{
  const sw=read('sw.js');
- assert.match(sw,/const CACHE='piga-ortho-v159-150-gated-3d-recovery'/);
+ assert.match(sw,/const CACHE='piga-ortho-v159-gated-movement-recovery'/);
  for(const f of ['movement.html','movement.js','movement.css','movement-core.js','print-geometry.js'])assert(sw.includes("'./"+f+"'"),f);
  for(const f of ['portal.html','portal.js','portal-auth.html','portal-auth-callback.js'])assert(!sw.includes("'./"+f+"'"),'auth resource must not be offline cached '+f);
  assert.match(read('setup-offer.js'),/if\(PAGE!=='dashboard\.html'\)return/);
