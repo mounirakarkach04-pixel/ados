@@ -31,3 +31,10 @@ test('No fake role on a pure confirmed account or old user password minimum',()=
  assert.match(s,/clinic=null;clinics=\[\];admin=false/);
  assert.doesNotMatch(s,/admin=true;\s*\$\('clinicWorkspace'\)\.hidden=false/);
 });
+
+test('Rejected Auth identity cannot retain a session or accidentally show workspace',()=>{
+ const s=read('portal.js');
+ assert.match(s,/invalid access token\|invalid jwt\|jwt expired\|server 401/);
+ assert.match(s,/catch\(e\)\{if\(!\$\('loginPanel'\)\.hidden\)\{session=null;identity=null;role=null;clinic=null;clinics=\[\];admin=false/);
+ assert.match(s,/Die Anmeldung konnte nicht sicher bestätigt werden/);
+});
