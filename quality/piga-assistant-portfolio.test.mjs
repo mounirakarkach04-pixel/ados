@@ -38,16 +38,21 @@ for(const item of assistant.apps){
   special++;
  }else{
   assert.equal(item.clientSurface,"PENDING_SOURCE_ADAPTER_REVIEW");
+  assert.ok(typeof item.reason==="string" && item.reason.length>=20,"Pending adapter needs explicit reason: "+item.id);
+  const fullyGeneric=html.includes('data-piga-app="'+item.id+'"') &&
+    /piga-assistant-widget\.css/.test(html) && /piga-assistant-widget\.mjs/.test(html);
+  assert.equal(fullyGeneric,false,"Do not label fully connected adapter pending: "+item.id);
+  assert.ok(!/piga-specialist\.mjs|kfo-shop-advisor\.js/.test(html),"Do not mark live specialized UI pending: "+item.id);
   pending++;
  }
 }
-assert.equal(active,8);
+assert.equal(active,6);
 assert.equal(special,2);
-assert.equal(pending,1);
+assert.equal(pending,3);
 assert.equal(assistant.apps.find(a=>a.id==="ortho-preview").profile,"ortho");
 assert.equal(assistant.apps.find(a=>a.id==="ortho-workspace").profile,"ortho");
 assert.match(model,/field\.maxLength=420/);
 assert.match(model,/confirm\.checked=false/);
 assert.match(model,/answer\.app!==profile/);
 assert.match(model,/data-piga-mount/);
-console.log("PASS PIGA portfolio: 11 mapped; 8 generic opt-in, 2 specialized, 1 pending; bounded Showroom profiles, no external effects");
+console.log("PASS PIGA portfolio: 11 mapped; 6 verified generic opt-in, 2 specialized, 3 evidence-backed pending; bounded profiles and no external effects");

@@ -13,6 +13,6 @@ assert(voice.includes("BLOCK: Keine eindeutig weibliche deutsche Gerätestimme")
 assert(persona.includes("utterance.onstart=")&&persona.includes("utterance.onend=")&&persona.includes("utterance.onerror="));
 assert(persona.includes("voice.name"));
 assert(!/\.speak\(/.test(voice.slice(0,2000)),"No unprompted speech at startup");
-assert(sw.includes("piga-ortho-v154-android-female-audio-check"));
+assert.match(sw,/const CACHE='piga-ortho-v[0-9]+-[^']+'/);
 assert(html.includes("wirklich hörbar")||html.includes("hörbar bestätigt"));
 console.log("PASS Android female device speech self-check: deliberate button, named voice only, start/end/error evidence, no fabricated audio success.");
