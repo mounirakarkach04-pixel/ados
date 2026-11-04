@@ -2,7 +2,8 @@
 // PIGA ORTHO 150 | Bounded static route/asset inventory. No network/no PHI/no modifications.
 import fs from 'node:fs';
 import path from 'node:path';
-const root=path.resolve('piga-ortho-3d');
+const project=path.resolve('.');
+const root=path.resolve(project,'piga-ortho-3d');
 const pages=fs.readdirSync(root).filter(x=>x.endsWith('.html'));
 const bad=[],valid=[],external=[];
 const isStatic=/\.(?:html?|mjs|js|css|svg|png|webp|jpe?g|json|webmanifest|csv|txt|wasm|glb|stl|jpg)(?:[?#]|$)/i;
@@ -17,7 +18,7 @@ for(const page of pages){
   const decoded=decodeURIComponent(raw.split(/[?#]/)[0]);
   const target=path.resolve(root,path.dirname(page),decoded);
   const item={from:page,to:raw};
-  if(target===root||!target.startsWith(root+path.sep)){bad.push({...item,reason:'OUTSIDE_ORTHO_TREE'});continue;}
+  if(target===project||!target.startsWith(project+path.sep)){bad.push({...item,reason:'OUTSIDE_REPOSITORY'});continue;}
   if(fs.existsSync(target)&&fs.statSync(target).isFile())valid.push(item);
   else bad.push({...item,reason:'MISSING_TARGET'});
  }
