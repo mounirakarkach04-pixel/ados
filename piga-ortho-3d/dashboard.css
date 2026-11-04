@@ -11,3 +11,7 @@
 .advanced-expand .advanced-grid{padding-bottom:17px}
 @media(max-width:1400px){.core-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.core-grid{grid-template-columns:1fr}.core-grid .module-card{min-height:175px}.advanced-expand{padding:0 12px}}
+
+/* PIGA native local STL picker: never hide the only functional input. */
+input.piga-file-input[type=file]{display:block;visibility:visible;width:100%;max-width:100%;background:#eff8f9;color:#134354;padding:10px;border:1px solid #9fcdd4;border-radius:12px;min-height:48px;cursor:pointer;margin:8px 0 12px}
+input.piga-file-input[type=file]::file-selector-button{background:#0b7486;border:0;border-radius:8px;padding:10px 12px;color:#fff;cursor:pointer}
