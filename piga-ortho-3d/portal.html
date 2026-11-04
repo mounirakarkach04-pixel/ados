@@ -7,10 +7,11 @@
 <div class="notice"><strong>Keine klinische Live-Freigabe.</strong> Die Anmeldung prüft Konten und serverseitig berechtigte Praxiszugehörigkeiten. Diese öffentliche HTML-Ansicht selbst ist keine Zugriffssperre für statische Dateien; geschützte Praxisdaten liegen hinter RLS bzw. dem privaten Lizenzgateway. Für reale Patienten bleibt das Release-Gate BLOCK.</div>
 <section class="panel" id="loginPanel"><div class="heading"><span>01 / SICHER ANMELDEN</span><h2>Mein Praxiskonto</h2></div>
 <div class="tabs"><button type="button" class="selected" data-mode="login">Anmelden</button><button type="button" data-mode="register">Registrieren</button><button type="button" data-mode="recover">Passwort vergessen</button></div>
+<p id="authHelp" class="auth-guide" aria-live="polite">Mit bestätigter E-Mail und bestehendem Passwort anmelden. Eine Praxisrolle wird nicht automatisch vergeben.</p>
 <form id="loginForm"><label for="email">E-Mail-Adresse</label><input type="email" id="email" autocomplete="username" required maxlength="254">
-<div id="passwordBox"><label for="password">Passwort</label><input type="password" id="password" minlength="12" autocomplete="current-password" required></div>
+<div id="passwordBox"><label for="password">Passwort</label><input type="password" id="password" autocomplete="current-password" aria-describedby="authHelp" required></div>
 <button id="submitLogin" class="primary" type="submit">Anmelden</button></form>
-<p id="loginState" class="feedback" aria-live="polite">Noch nicht angemeldet. Für Registrierungen ist E-Mail-Bestätigung erforderlich.</p>
+<p id="loginState" class="feedback" role="status" aria-live="polite">Noch nicht angemeldet. Für Registrierungen ist E-Mail-Bestätigung erforderlich.</p>
 </section>
 <section id="signedIn" hidden><div class="toolbar"><span id="userBadge">Profil wird geladen</span><button id="refresh" type="button">Aktualisieren</button><button id="logout" type="button">Sitzung beenden</button></div>
 <section class="panel" id="passwordResetPanel" hidden><div class="heading"><span>PASSWORT</span><h2>Neues Passwort festlegen</h2></div><form id="passwordResetForm"><label for="newPassword">Neues Passwort (mindestens 12 Zeichen)</label><input type="password" id="newPassword" minlength="12" autocomplete="new-password" required><label for="newPasswordConfirm">Passwort wiederholen</label><input type="password" id="newPasswordConfirm" minlength="12" autocomplete="new-password" required><button type="submit" class="primary">Passwort ändern</button></form></section><section class="panel" id="pending"><div class="heading"><span>02 / ZUGRIFF</span><h2>Profil und Praxisfreigabe</h2></div><p id="accessMessage">Serverseitige Zugehörigkeit wird abgefragt.</p>
