@@ -15,3 +15,12 @@
 .mesh-stage #jawWebgl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:1}
 .mesh-stage #jawWebgl[hidden]{display:none}
 @media(prefers-reduced-motion:reduce){.mesh-stage *{scroll-behavior:auto!important}}
+
+/* PIGA A7SEM upload usability: native picker stays visible on Android/keyboard. */
+.piga-stl-chooser{display:grid;gap:7px;min-width:220px;flex:1 1 225px}
+.piga-stl-chooser small{font-size:12px;line-height:1.45;color:#34596c}
+.piga-stl-chooser input[type=file]{display:block;visibility:visible;max-width:100%;width:100%;font-size:13px;color:#214358;background:#f4fafb;border:1px solid #9fc8cf;border-radius:12px;padding:8px;min-height:46px;cursor:pointer}
+.piga-stl-chooser input[type=file]::file-selector-button{background:#0b7385;color:#fff;border:0;border-radius:8px;padding:10px 13px;cursor:pointer}
+.piga-upload-state{display:block;padding:12px 14px;background:#eff7f8;border:1px solid #b5d8df;border-radius:12px;color:#143d4c;font-weight:650;overflow-wrap:anywhere}
+.piga-upload-state:empty{display:none}
+@media(max-width:650px){.piga-stl-chooser{flex-basis:100%;min-width:0}}
