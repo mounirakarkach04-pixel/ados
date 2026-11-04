@@ -16,8 +16,8 @@
 <div class="statrow" aria-live="polite"><div><span>Zähne</span><strong id="count">0</strong></div><div><span>Bewegungsstufen</span><strong id="stageCount">8</strong></div><div><span>Gate 1</span><strong id="gate1">BLOCK</strong></div><div><span>Gate 2 · klinischer Druck</span><strong>BLOCK</strong></div></div>
 <div class="layout">
 <section class="panel"><header class="panelhead"><span>01 / DATENQUELLE</span><h2>Segmentierte Zahnmodelle</h2></header>
-<label class="upload">Einzelzahn-STLs auswählen<input id="uploads" type="file" accept=".stl,model/stl" multiple></label>
-<p class="hint">Dateinamen müssen FDI-Zahnnummern enthalten, z. B. <code>11.stl</code>, <code>21.stl</code>, <code>36.stl</code>. Jedes Zahnmodell einzeln, maximal 28. Vollbogen-STL alleine kann keine Einzelzahnbewegung ermöglichen. Keine automatisierte Segmentierung.</p>
+<label class="upload" for="uploads">Einzelzahn-STL-Dateien vom Gerät auswählen</label><input id="uploads" class="piga-file-input" type="file" accept=".stl,model/stl" multiple aria-describedby="uploadGuide"><p id="uploadStatus" class="upload-state" role="status" aria-live="polite">Bereit: FDI-Einzelzahnmodelle auswählen. Keine Cloud-Übertragung.</p>
+<p class="hint" id="uploadGuide">Dateinamen müssen FDI-Zahnnummern enthalten, z. B. <code>11.stl</code>, <code>21.stl</code>, <code>36.stl</code>. Jedes Zahnmodell einzeln, maximal 28. Vollbogen-STL alleine kann keine Einzelzahnbewegung ermöglichen. Keine automatisierte Segmentierung.</p>
 <label class="check"><input type="checkbox" id="units"> Ich habe an der Scanquelle verifiziert, dass alle STL-Koordinaten in <b>Millimetern</b> und in einem gemeinsamen Koordinatensystem vorliegen.</label>
 <div class="field"><label for="case">Pseudonyme Fallkennung (optional)</label><input id="case" maxlength="40" placeholder="z. B. CASE-TEST-01" pattern="[A-Za-z0-9_-]*" autocomplete="off"></div>
 <ul id="files" class="filelist"><li>Keine Zahnsegmente geladen</li></ul>
