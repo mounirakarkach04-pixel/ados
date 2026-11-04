@@ -129,20 +129,27 @@
    if(!user?.id||!user.email_confirmed_at)throw Error('Bestätigter E-Mail-Zugang erforderlich.');
    identity={id:user.id,email:user.email||''};$('loginPanel').hidden=true;$('signedIn').hidden=false;$('passwordResetPanel').hidden=!recoveryMode;
    $('userBadge').textContent='Verifiziertes Konto · '+safe(identity.email);
-   const [membership,adminRows]=await Promise.all([
+   // A7SEM Reverse: identity confirmation is distinct from clinical/practice authorization.
+   role=null;clinic=null;clinics=[];admin=false;
+   $('clinicWorkspace').hidden=true;$('admin').hidden=true;$('adminEnrollment').hidden=true;
+   const [membershipResult,adminResult]=await Promise.allSettled([
      request('/rest/v1/rpc/ortho_clinic_my_access','POST',{}),
-     request('/rest/v1/ortho_platform_admins?select=user_id&user_id=eq.'+encodeURIComponent(identity.id)+'&status=eq.active&limit=1').catch(()=>[])
+     request('/rest/v1/ortho_platform_admins?select=user_id&user_id=eq.'+encodeURIComponent(identity.id)+'&status=eq.active&limit=1')
    ]);
+   const membershipUnavailable=membershipResult.status==='rejected',adminUnavailable=adminResult.status==='rejected';
+   const membership=membershipUnavailable?[]:membershipResult.value,adminRows=adminUnavailable?[]:adminResult.value;
    clinics=Array.isArray(membership)?membership.filter(a=>['owner','employee','accountant'].includes(a.role)):[];
    admin=Array.isArray(adminRows)&&adminRows.length===1;
-   $('admin').hidden=!admin;
-   $('adminEnrollment').hidden=admin;
+   $('admin').hidden=!admin;$('adminEnrollment').hidden=admin||adminUnavailable;
    if(admin)feedback('Plattform-Admin über serverseitiges Profil erkannt. Keine automatische Arztvollmacht.');
-   $('pending').hidden=clinics.length>0;
+   $('pending').hidden=clinics.length>0&&!membershipUnavailable;
+   if(membershipUnavailable){
+     $('accessMessage').textContent='E-Mail-Konto bestätigt. Praxisberechtigung derzeit nicht überprüfbar (DELAY). Der klinische Arbeitsbereich bleibt gesperrt. Bitte später aktualisieren.';
+     feedback('Identität bestätigt, Praxisprüfung nicht erreichbar. Keine klinische Freigabe.',true);
+     return;
+   }
    if(!clinics.length){
-     $('clinicWorkspace').hidden=true;
-     $('accessMessage').textContent=admin?'Administrationskonto aktiv. Ärztliche Praxiszugehörigkeit ist separat freizuschalten.':'Noch keine aktive, bezahlte oder ausdrücklich freigegebene Praxiszugehörigkeit. Einladung durch Praxisleitung erforderlich.';
-     state('Angemeldet: keine freigegebene klinische Sitzung.');
+     $('accessMessage').textContent=admin?'Administrationskonto aktiv. Ärztliche Praxiszugehörigkeit ist separat freizuschalten.':adminUnavailable?'E-Mail-Konto bestätigt. Keine Praxisfreigabe nachgewiesen; Adminstatus vorübergehend nicht prüfbar (DELAY).':'Noch keine aktive, bezahlte oder ausdrücklich freigegebene Praxiszugehörigkeit. Einladung durch Praxisleitung erforderlich.';
      return;
    }
    const select=$('clinicSelect');select.replaceChildren();
