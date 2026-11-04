@@ -16,6 +16,7 @@
  const friendlyAuthError=error=>{
    const message=String(error?.message??error??'');
    if(/invalid login credentials/i.test(message))return 'Anmeldung nicht möglich. Bitte E-Mail und Passwort prüfen. Falls noch nicht bestätigt, den E-Mail-Link öffnen.';
+   if(/invalid access token|invalid jwt|jwt expired|server 401|session expired/i.test(message))return 'Die Anmeldung konnte nicht sicher bestätigt werden. Bitte erneut anmelden.';
    if(/email not confirmed/i.test(message))return 'Bitte zuerst die Bestätigungs-E-Mail öffnen. Ohne Bestätigung ist keine Anmeldung möglich.';
    if(/email rate limit|too many requests|429|over_email_send_rate_limit/i.test(message))return 'Zu viele Versuche. Bitte später erneut versuchen; es wird kein weiterer Antrag gesendet.';
    if(/signup is disabled|signups not allowed|email signups are disabled/i.test(message))return 'Registrierung ist serverseitig deaktiviert. Bitte den Betreiber schriftlich kontaktieren.';
@@ -91,7 +92,7 @@
      if(!s?.access_token||!s?.user?.id)throw Error('Anmeldung nicht bestätigt.');
      session=s;$('password').value='';
      await loadAccess();
-   }catch(e){state(friendlyAuthError(e),true);$('password').value='';}
+   }catch(e){if(!$('loginPanel').hidden){session=null;identity=null;role=null;clinic=null;clinics=[];admin=false;$('clinicWorkspace').hidden=true;$('signedIn').hidden=true;}state(friendlyAuthError(e),true);$('password').value='';}
    finally{busy=false;$('submitLogin').disabled=false;}
  }
  $('loginForm').addEventListener('invalid',e=>{
