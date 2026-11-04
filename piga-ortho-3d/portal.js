@@ -12,6 +12,18 @@
  const taskGate=S.latestOnly(),fileGate=S.latestOnly(),popupSeen=S.alertTracker();
  let taskRespondBusy=false,printBusy=false,refreshPromise=null;
  const safe=s=>String(s??'').slice(0,160);
+ // Only user-facing error families are mapped. Server-side access rules remain authoritative.
+ const friendlyAuthError=error=>{
+   const message=String(error?.message??error??'');
+   if(/invalid login credentials/i.test(message))return 'Anmeldung nicht möglich. Bitte E-Mail und Passwort prüfen. Falls noch nicht bestätigt, den E-Mail-Link öffnen.';
+   if(/email not confirmed/i.test(message))return 'Bitte zuerst die Bestätigungs-E-Mail öffnen. Ohne Bestätigung ist keine Anmeldung möglich.';
+   if(/email rate limit|too many requests|429|over_email_send_rate_limit/i.test(message))return 'Zu viele Versuche. Bitte später erneut versuchen; es wird kein weiterer Antrag gesendet.';
+   if(/signup is disabled|signups not allowed|email signups are disabled/i.test(message))return 'Registrierung ist serverseitig deaktiviert. Bitte den Betreiber schriftlich kontaktieren.';
+   if(/invalid email|email address is invalid/i.test(message))return 'Bitte eine gültige E-Mail-Adresse eingeben.';
+   if(/failed to fetch|networkerror|network error/i.test(message))return 'Verbindung zum Anmeldeserver fehlgeschlagen. Bitte Netzwerk prüfen; keine Anmeldung bestätigt.';
+   if(/redirect|uri.*allow|not allowed.*url/i.test(message))return 'E-Mail-Rücksprungadresse nicht freigegeben. Betreiber muss die genaue Auth-Redirect-URL prüfen.';
+   return safe(message);
+ };
  const feedback=(msg,failed=false)=>{
    const el=$('liveMessage');el.textContent=msg;el.classList.add('shown');el.classList.toggle('error',failed);
    clearTimeout(feedback.timer);feedback.timer=setTimeout(()=>el.classList.remove('shown'),7500);
@@ -46,6 +58,15 @@
    if(!['login','register','recover'].includes(next))return;
    mode=next;document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('selected',b.dataset.mode===next));
    $('passwordBox').hidden=next==='recover';$('password').required=next!=='recover';
+   if(next==='register')$('password').setAttribute('minlength','12');
+   else $('password').removeAttribute('minlength'); // Existing users may have older, shorter passwords.
+   const guidance={
+    login:'Mit bestätigter E-Mail und bestehendem Passwort anmelden. Eine Praxisrolle wird nicht automatisch vergeben.',
+    register:'Neues Konto anlegen: mindestens 12 Passwortzeichen. Anschließend E-Mail bestätigen; Praxiszugriff benötigt zusätzlich eine Einladung.',
+    recover:'Passwort vergessen? Gib deine E-Mail-Adresse ein. Ein Wiederherstellungslink wird nur an bestehende Konten gesendet.'
+   };
+   $('authHelp').textContent=guidance[next];
+   state('');
    $('password').autocomplete=next==='register'?'new-password':'current-password';
    $('submitLogin').textContent=next==='recover'?'Reset-E-Mail anfordern':next==='register'?'Registrieren':'Anmelden';
  }
@@ -70,9 +91,16 @@
      if(!s?.access_token||!s?.user?.id)throw Error('Anmeldung nicht bestätigt.');
      session=s;$('password').value='';
      await loadAccess();
-   }catch(e){state(safe(e.message),true);$('password').value='';}
+   }catch(e){state(friendlyAuthError(e),true);$('password').value='';}
    finally{busy=false;$('submitLogin').disabled=false;}
  }
+ $('loginForm').addEventListener('invalid',e=>{
+   const el=e.target;
+   const message=el?.id==='password'?
+     (mode==='register'?'Passwort für die Registrierung: mindestens 12 Zeichen.':'Bitte das Passwort eingeben.') :
+     'Bitte eine gültige E-Mail-Adresse eingeben.';
+   state(message,true);
+ },true);
  $('loginForm').addEventListener('submit',e=>{e.preventDefault();void login()});
  async function verifyRecoveryOrConfirmation(){
    const q=new URLSearchParams(location.search),hash=new URLSearchParams(location.hash.replace(/^#/,''));
